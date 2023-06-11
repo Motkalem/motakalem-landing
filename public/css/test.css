@@ -1,0 +1,29 @@
+
+.accordion .acd-group.acd-active .acd-heading,
+.accordion .acd-group .acd-heading:hover {
+    color: #84ba3f;
+}
+
+.accordion.gray .acd-group.acd-active .acd-heading,
+.accordion.gray .acd-group .acd-heading:hover {
+    background: #84ba3f;
+}
+
+.accordion.shadow .acd-group.acd-active .acd-heading,
+.accordion.shadow .acd-group .acd-heading:hover {
+    background: #84ba3f;
+}
+
+.accordion.accordion-border .acd-group.acd-active .acd-heading,
+.accordion.accordion-border .acd-group .acd-heading:hover {
+    background: #84ba3f;
+}
+
+
+.accordion.animated .acd-group.acd-active .acd-heading {
+    color: #84ba3f;
+}
+
+.accordion.animated .acd-group .acd-heading:hover {
+    color: #84ba3f;
+}

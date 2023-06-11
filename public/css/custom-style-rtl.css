@@ -1,0 +1,36 @@
+*,html,body,
+h1, h2, h3, h4, h5, h6 
+{
+    font-family: 'El Messiri', sans-serif;
+}
+
+.text-start{
+    text-align: right !important;
+}
+
+ul.list-hand li::after,
+ul.page-breadcrumb li i
+{
+    transform: rotateY(180deg) !important;
+}
+
+.contact-form .section-field{
+    float: right;
+    margin-left: 3%;
+    margin-right: initial;
+    width: 30%;
+}
+
+.contact-form .section-field.textarea{
+    width: 100%;
+}
+
+.nice-select{
+    text-align: right !important;
+}
+
+.nice-select::after {
+    right: initial;
+    left: 22px;
+}
+
