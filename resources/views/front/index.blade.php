@@ -80,9 +80,17 @@ About-->
          data-xs-items="1" data-xx-items="1">
          <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/a.png')}}" alt="">
          </div>
+         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/b.png')}}" alt="">
+         </div>
          <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/c.png')}}" alt="">
          </div>
+         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/d.png')}}" alt="">
+         </div>
+         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/e.png')}}" alt="">
+         </div>
          <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/f.png')}}" alt="">
+         </div>
+         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/g.png')}}" alt="">
          </div>
        </div>
      </div>
@@ -299,7 +307,7 @@ portfolio -->
      <div class="col-md-12">
        <div class="section-title text-center">
          <h6> برنامج متكلم</h6>
-         <h2 class="title-effect">متأتئين اثروا في العالم</h2>
+         <h2 class="title-effect">متأتئين أثروا في العالم</h2>
        </div>
      </div>
    </div>
@@ -307,26 +315,26 @@ portfolio -->
    <div class="isotope popup-gallery columns-3">
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/a.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/Boyle.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/a.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/Boyle.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://ar.wikipedia.org/wiki/%D8%B1%D9%88%D8%A8%D8%B1%D8%AA_%D8%A8%D9%88%D9%8A%D9%84">روبرت وليام بويل</a>
           </div>
          </div>
        </div>
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/b.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/George-6th.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/b.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/George-6th.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://ar.wikipedia.org/wiki/%D8%AC%D9%88%D8%B1%D8%AC_%D8%A7%D9%84%D8%B3%D8%A7%D8%AF%D8%B3_%D9%85%D9%84%D9%83_%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9_%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%AF%D8%A9">جورج السادس</a>
           </div>
 
          </div>
@@ -334,52 +342,52 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/c.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/Kahtani.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/c.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/Kahtani.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://www.youtube.com/watch?v=1xbrNQoB5LY">محمد عبدالله القحطاني </a>
           </div>
          </div>
        </div>
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/d.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/Marlyn.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/d.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/Marlyn.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://ar.wikipedia.org/wiki/%D9%85%D8%A7%D8%B1%D9%84%D9%8A%D9%86_%D9%85%D9%88%D9%86%D8%B1%D9%88">مارلين مونرو </a>
           </div>
          </div>
        </div>
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/e.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/Newton.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/e.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/Newton.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://ar.wikipedia.org/wiki/%D8%A5%D8%B3%D8%AD%D8%A7%D9%82_%D9%86%D9%8A%D9%88%D8%AA%D9%86">إسحاق نيوتن</a>
           </div>
          </div>
        </div>
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/f.png')}}" alt="">
+         <img src="{{asset('images/portfolio/small/Steevie-harvey.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
-             <a class="portfolio-img" href="{{asset('images/portfolio/small/f.png')}}"><i class="fa fa-arrows-alt"></i></a>
+             <a class="portfolio-img" href="{{asset('images/portfolio/small/Steevie-harvey.png')}}"><i class="fa fa-arrows-alt"></i></a>
            </div>
            <div class="hover-name">
-            <a target="_blank" href="#">PHOTO ITEM</a>
+            <a target="_blank" href="https://ar.wikipedia.org/wiki/%D8%B3%D8%AA%D9%8A%D9%81_%D9%87%D8%A7%D8%B1%D9%81%D9%8A">ستيف هارفي</a>
           </div>
          </div>
        </div>
