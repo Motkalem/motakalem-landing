@@ -420,22 +420,39 @@ portfolio -->
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white"> من افضل الاماكن اللي ممكن تتدرب فيها</div>
-         <div class="author-info"> <strong><span>mohamed samir</span></strong> </div>
+         <div class="testimonial-info text-white"> مكان جميل جدا وكذلك العاملين قمة في الرقي وسرعة الاستجابة اذا فيه شكاوه وطريقة الدراسة مريحة ومفيده جدا </div>
+         <div class="author-info"> <strong><span>مزون المطبري</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
            <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-           <div class="testimonial-info text-white"> مكان اكثر من رائع ومدربين علي اعلا مستوي</div>
-           <div class="author-info"> <strong><span>mohamed samir</span></strong> </div>
+           <div class="testimonial-info text-white"> مكان رائع رائع رائع تعامل راقي،متابعة مستمرة ،اهتمام مميز من اول يوم، حتى وقت الغياب يسألوا عن الأسباب، والمعلمين والموظفين قمة في الرقي والأخلاق، اسلوب متميز ، والشيء المميز اللي يلفت الانتباه وبقوة مراعتهم لوقت المتدرب اذا كانت طالب او موظف يختاورا لك الوقت حسب مايناسبك</div>
+           <div class="author-info"> <strong><span>نورالحنيان</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white"> بجد مكان تحفه وهيفيدك كتير</div>
-         <div class="author-info"> <strong><span>mohamed samir</span></strong> </div>
+         <div class="testimonial-info text-white"> تعليقي مكان جميل ومرتب وجدول ومدربين بروفشنال متكامل من جميع النواحي</div>
+
+         <div class="author-info"> <strong><span>Hessa Al Dawy</span></strong> </div>
+       </div>
+     </div>
+     <div class="item">
+       <div class="testimonial dark">
+         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-info text-white">رغم انه في اماكن عند بيتي بس اجي من بعيد عن توصيه ومكان يستحق المشوار</div>
+
+         <div class="author-info"> <strong><span>فريال السبيعي</span></strong> </div>
+       </div>
+     </div>
+     <div class="item">
+       <div class="testimonial dark">
+         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-info text-white">مكان قمة النظافه والترتيب جميل جدا</div>
+
+         <div class="author-info"> <strong><span>Nada Fajal</span></strong> </div>
        </div>
      </div>
    </div>

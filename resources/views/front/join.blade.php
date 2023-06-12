@@ -83,10 +83,7 @@ contact-->
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">الجنسيه *</label>
-              <select class="wide fancyselect" name="nationality" required>
-                <option selected>سعودي</option>
-                <option>مصري</option>
-              </select>
+              <input type="text" placeholder="" class="form-control" name="nationality" required>
             </div>
           </div>
 
