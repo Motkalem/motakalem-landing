@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'أكادمية متكلم')
+@section('title', 'برنامج متكلم')
 
 
 @section('menu')
@@ -55,7 +55,7 @@ About-->
        <div class="section-title">
          <h6>برنامج التحكم بالتأتأة</h6>
          <h2 class="title-effect">نبذه عن برنامج متكلم</h2>
-         <p>يساعدك البرنامج بالتحكم بالتأتأة وإظهار شخصية ناطقة مختلفة من خلال كوادر متحكمة بالتأتأة ومدربين مختصين وخلق بيئة ومجتمع متفاعل ومنتج وخاص بالمتأتأ</p>
+         <p>يساعدك البرنامج بالتحكم بالتأتأة وإظهار شخصية ناطقة مختلفة من خلال كوادر متحكمة بالتأتأة ومدربين مختصين وخلق بيئة ومجتمع متفاعل ومنتج وخاص بالمتأتئ</p>
        </div>
        <br>
        <h4>كيفية التحكم في التأتأة</h4>
@@ -88,8 +88,8 @@ About-->
          </div>
          <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/e.png')}}" alt="">
          </div>
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/f.png')}}" alt="">
-         </div>
+         {{-- <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/f.png')}}" alt="">
+         </div> --}}
          <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/g.png')}}" alt="">
          </div>
        </div>
@@ -116,7 +116,7 @@ About-->
          </div>
          <div class="feature-info">
            <h5>رؤيتنا</h5>
-           <p>نطمح في برنامج متكلم ان نكون الوجهة الأولي والامنة للمتأتأ</p>
+           <p>نطمح في برنامج متكلم ان نكون الوجهة الأولي والامنة للمتأتئ</p>
          </div>
        </div>
      </div>
@@ -213,7 +213,7 @@ key features  -->
            <span class="ti-thumb-up theme-color" aria-hidden="true"></span>
          </div>
          <div class="feature-info">
-           <h5 class="text-back text-white">بيئة خاصة بالمتأتأ</h5>
+           <h5 class="text-back text-white">بيئة خاصة بالمتأتئ</h5>
          </div>
        </div>
      </div>
@@ -484,7 +484,7 @@ portfolio -->
    <div class="row">
      <div class="col-lg-12 col-md-12">
        <div class="section-title text-center">
-         <h6> أكادمية متكلم</h6>
+         <h6> برنامج متكلم</h6>
          <h2 class="title-effect">مصادر مهمه</h2>
        </div>
      </div>
@@ -519,7 +519,7 @@ portfolio -->
          <img class="img-fluid" src="images/about/01.jpg" alt="">
          <div class="blog-info">
            <h4> <a href="#"> افضل مكان للتحكم في التأتأه </a></h4>
-           <p>اذا كنت من داخل المملكة العربية السعودية فافضل مكان لتعلم التأتأه هي أكادمية متكلم   ...</p>
+           <p>اذا كنت من داخل المملكة العربية السعودية فافضل مكان لتعلم التأتأه هي برنامج متكلم   ...</p>
            <span><i class="fa fa-calendar-check-o"></i> 20 مايو 2023 </span>
            <a class="button icon-color" href="#">قراءة المزيد<i class="fa fa-angle-right"></i></a>
          </div>
@@ -549,7 +549,7 @@ contact  -->
        <div class="contact-3-info page-section-ptb">
          <div class="clearfix">
            <div class="section-title mb-4">
-             <h6> أكادمية متكلم </h6>
+             <h6> برنامج متكلم </h6>
              <h2 class="title-effect">الاسئلة المكررة</h2>
            </div>
 
@@ -564,10 +564,10 @@ contact  -->
              </div>
              {{-- <div class="acd-group">
                  <a href="#" class="acd-heading">افضل مكان للتحكم في التأتأه</a>
-                 <div class="acd-des">اذا كنت من داخل المملكة العربية السعودية فافضل مكان لتعلم التأتأه هي أكادمية متكلم </div>
+                 <div class="acd-des">اذا كنت من داخل المملكة العربية السعودية فافضل مكان لتعلم التأتأه هي برنامج متكلم </div>
              </div> --}}
              <div class="acd-group">
-                 <a href="#" class="acd-heading">هل اذا حضر المتأتأ الكورس ولم يستفد هل سيستعيد اموالة</a>
+                 <a href="#" class="acd-heading">هل اذا حضر المتأتئ الكورس ولم يستفد هل سيستعيد اموالة</a>
                  <div class="acd-des">نحن على ثقة تامة من أنك ستحصل على نتائج ترضيك وإذا لم تحصل على نتائج فسنرد إليك أموالك بالكامل شرط أن تستخدم كلّ ما نقدمه لك لتتحكم في تأتأتك وتقدّم دليل أنك نفذت كلّ الطرق الموضحة خطوة بخطوة.</div>
              </div>
          </div>
