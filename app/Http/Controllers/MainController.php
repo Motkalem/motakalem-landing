@@ -24,9 +24,9 @@ class MainController extends Controller
             'age'=>['required','int'],  // العمر *
             'address'=>['required', 'string', 'max:255'], // >مكان الاقامة *
             'postal_code'=>['required','int'], // الرمز البريدي *
-            'phone'=>['required','int'], // الهاتف *
+            'phone'=>['required','numeric'], // الهاتف *
             'email'=> ['required', 'string', 'email', 'max:255'], // البريد الالكتروني *
-            'another_phone'=>['required','int'], // هاتف شخص لحالات الطوارئ *
+            'another_phone'=>['required','numeric'], // هاتف شخص لحالات الطوارئ *
             'severe_stuttering'=> ['in:متوسطة,خفيفة,شديدة'], // شدة التأتأة لديك *
             'effect_stuttering_social_life'=>['in:متوسطة,خفيفة,شديدة'], // تأثير التأتأة بحياتك الاجتماعية *
             'impact_stuttering_professional_study_life'=>['in:متوسطة,خفيفة,شديدة'], //  تأثير التأتأة في حياتك المهنية / الدراسية *
@@ -48,7 +48,7 @@ class MainController extends Controller
 
 
 
-        $noReplayEmail = "ahamdy@alkyan.com.sa";
+        $noReplayEmail = "info@motkalem.com";
 
         Mail::to($noReplayEmail)->send(new ContactMail($request->all()));
 

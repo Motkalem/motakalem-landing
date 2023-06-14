@@ -5,10 +5,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="keywords" content="HTML5 Template" />
-  <meta name="description" content="@yield('title','أكادمية متكلم')" />
+  <meta name="description" content="@yield('title','برنامج متكلم')" />
   <meta name="author" content="motkalem.com" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>@yield('title','أكادمية متكلم')</title>
+  <title>@yield('title','برنامج متكلم')</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}" />
@@ -168,7 +168,7 @@
           <div class="row">
             <div class="col-lg-6 col-md-6">
               <p class="mt-15"> جميع الحقوق محفوظه لدي
-                </span> <a href="{{route('home')}}"> أكادمية متكلم </a> </p>
+                </span> <a href="{{route('home')}}"> برنامج متكلم </a> </p>
             </div>
             <div class="col-lg-6 col-md-6 ">
               <div class="footer-widget-social text-center text-md-end">
