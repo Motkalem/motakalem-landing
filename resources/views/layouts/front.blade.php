@@ -98,7 +98,7 @@
                   <!-- menu logo -->
                   <ul class="menu-logo">
                     <li>
-                      <a href="{{route('home')}}"><img id="logo_img" class="img-fluid" src="{{asset('images/logo.png')}}" alt=""> </a>
+                      <a href="{{route('home')}}"><img loading="lazy"  id="logo_img" class="img-fluid" src="{{asset('images/logo.png')}}" alt=""> </a>
                     </li>
                   </ul>
                   <!-- menu links -->

@@ -78,19 +78,19 @@ About-->
      <div class="col-lg-6 xs-mt-30 xs-mb-30">
        <div class="owl-carousel" data-nav-arrow="true" data-items="1" data-md-items="1" data-sm-items="1"
          data-xs-items="1" data-xx-items="1">
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/a.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/a.png')}}" alt="">
          </div>
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/b.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/b.png')}}" alt="">
          </div>
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/c.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/c.png')}}" alt="">
          </div>
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/d.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/d.png')}}" alt="">
          </div>
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/e.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/e.png')}}" alt="">
          </div>
-         {{-- <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/f.png')}}" alt="">
+         {{-- <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/f.png')}}" alt="">
          </div> --}}
-         <div class="item"><img class="img-fluid full-width" src="{{asset('images/about/g.png')}}" alt="">
+         <div class="item"><img loading="lazy" class="img-fluid full-width" src="{{asset('images/about/g.png')}}" alt="">
          </div>
        </div>
      </div>
@@ -315,7 +315,7 @@ portfolio -->
    <div class="isotope popup-gallery columns-3">
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/Boyle.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/Boyle.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Boyle.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -328,7 +328,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/George-6th.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/George-6th.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/George-6th.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -342,7 +342,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/Kahtani.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/Kahtani.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Kahtani.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -355,7 +355,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/Marlyn.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/Marlyn.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Marlyn.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -368,7 +368,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/Newton.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/Newton.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Newton.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -381,7 +381,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img src="{{asset('images/portfolio/small/Steevie-harvey.png')}}" alt="">
+         <img loading="lazy" src="{{asset('images/portfolio/small/Steevie-harvey.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Steevie-harvey.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -419,21 +419,21 @@ portfolio -->
    <div class="owl-carousel" data-nav-dots="true" data-items="1" data-md-items="1" data-sm-items="1">
      <div class="item">
        <div class="testimonial dark">
-         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
          <div class="testimonial-info text-white"> مكان جميل جدا وكذلك العاملين قمة في الرقي وسرعة الاستجابة اذا فيه شكاوه وطريقة الدراسة مريحة ومفيده جدا </div>
          <div class="author-info"> <strong><span>مزون المطبري</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
-           <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+           <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
            <div class="testimonial-info text-white"> مكان رائع رائع رائع تعامل راقي،متابعة مستمرة ،اهتمام مميز من اول يوم، حتى وقت الغياب يسألوا عن الأسباب، والمعلمين والموظفين قمة في الرقي والأخلاق، اسلوب متميز ، والشيء المميز اللي يلفت الانتباه وبقوة مراعتهم لوقت المتدرب اذا كانت طالب او موظف يختاورا لك الوقت حسب مايناسبك</div>
            <div class="author-info"> <strong><span>نورالحنيان</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
-         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
          <div class="testimonial-info text-white"> تعليقي مكان جميل ومرتب وجدول ومدربين بروفشنال متكامل من جميع النواحي</div>
 
          <div class="author-info"> <strong><span>Hessa Al Dawy</span></strong> </div>
@@ -441,7 +441,7 @@ portfolio -->
      </div>
      <div class="item">
        <div class="testimonial dark">
-         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
          <div class="testimonial-info text-white">رغم انه في اماكن عند بيتي بس اجي من بعيد عن توصيه ومكان يستحق المشوار</div>
 
          <div class="author-info"> <strong><span>فريال السبيعي</span></strong> </div>
@@ -449,7 +449,7 @@ portfolio -->
      </div>
      <div class="item">
        <div class="testimonial dark">
-         <div class="testimonial-avatar"> <img alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+         <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
          <div class="testimonial-info text-white">مكان قمة النظافه والترتيب جميل جدا</div>
 
          <div class="author-info"> <strong><span>Nada Fajal</span></strong> </div>
@@ -492,7 +492,7 @@ portfolio -->
    <div class="row">
      <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
        <div class="blog-box blog-2 h-100 white-bg">
-         <img class="img-fluid" src="images/about/avatar.png" alt="">
+         <img loading="lazy" class="img-fluid" src="images/about/avatar.png" alt="">
          <div class="blog-info">
            <h4> <a href="#"> ما المقصود بالتأتأة</a></h4>
            <p>التأتأة هي اضطرابات تمس الوظائف اللسانية وتمس الجانب الأدائي اللفظي للإنسان  ...</p>
@@ -504,7 +504,7 @@ portfolio -->
 
      <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
        <div class="blog-box blog-2 h-100 white-bg">
-         <img class="img-fluid" src="images/about/01.jpg" alt="">
+         <img loading="lazy" class="img-fluid" src="images/about/01.jpg" alt="">
          <div class="blog-info">
            <h4> <a href="#"> ما معني التحكم بالتأتأة</a></h4>
            <p>يقصد بها مدى إمكانية وقدرة وثقة المتأتئ على التحكم بالاضطرابات المختلفة التي أصابت  ...</p>
@@ -516,7 +516,7 @@ portfolio -->
 
      <div class="col-lg-4 col-md-4 mb-4 mb-md-0">
        <div class="blog-box blog-2 h-100 white-bg">
-         <img class="img-fluid" src="images/about/01.jpg" alt="">
+         <img loading="lazy" class="img-fluid" src="images/about/01.jpg" alt="">
          <div class="blog-info">
            <h4> <a href="#"> افضل مكان للتحكم في التأتأه </a></h4>
            <p>اذا كنت من داخل المملكة العربية السعودية فافضل مكان لتعلم التأتأه هي برنامج متكلم   ...</p>
