@@ -20,7 +20,8 @@
  banner -->
 
  <section class="slider-parallax popup-video-banner bg-overlay-black-50 parallax"
- style="background: url('{{asset('images/bg/home_slider.gif')}}');">
+ style="position:relative">
+ <img loading="lazy" src="{{asset('images/bg/home_slider.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt="">
  <div class="slider-content-middle">
    <div class="container">
      <div class="row">
@@ -171,7 +172,10 @@ counter-->
 <!--=================================
 key features  -->
 
-<section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature.gif')}}">
+{{-- <section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature.gif')}}"> --}}
+  <section id="features" class="page-section-ptb jarallax"
+  style="position:relative">
+ <img loading="lazy" src="{{asset('images/bg/feature.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt="">
  <div class="container">
    <div class="row">
      <div class="col-lg-8">
@@ -412,7 +416,11 @@ portfolio -->
 
 
 
-<section class="page-section-ptb  parallax" style="background-image:url('{{asset('images/bg/feature.gif')}}');">
+<section class="page-section-ptb  parallax" style="position: relative">
+
+  <img loading="lazy" src="{{asset('images/bg/feature.gif')}}" style="position:absolute; width:100%; height:100%; object-fit:cover" alt="">
+
+
 <div class="container">
 <div class="row justify-content-center">
  <div class="col-md-8">
