@@ -83,8 +83,7 @@
 
     <section id="homesection"></section>
 
-    <!--=================================
- header -->
+    <!--================================= header -->
 
     <header id="header" class="header default">
       <div class="menu" id="onepagenav">
@@ -124,6 +123,14 @@
 
  @yield('content')
 
+
+
+
+
+
+<!-- wpp-btn-mobile -->
+<div class="phone-call cbh-phone cbh-green cbh-show  cbh-static" id="clbh_phone_div" style=""><a id="WhatsApp-button" href="https://wa.me/966537340614" target="_blank" class="phoneJs" title="WhatsApp 360imagem"><div class="cbh-ph-circle"></div><div class="cbh-ph-circle-fill"></div><div class="cbh-ph-img-circle1"></div></a></div>
+<!-- wpp-btn-mobile -->
 
 
 
@@ -201,7 +208,7 @@
   <!-- plugins-jquery -->
   <script src="{{asset('js/plugins-jquery.js')}}"></script>
 
-
+{{--
   <!--Start of Tawk.to Script-->
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -214,7 +221,7 @@
     s0.parentNode.insertBefore(s1,s0);
     })();
     </script>
-    <!--End of Tawk.to Script-->
+    <!--End of Tawk.to Script--> --}}
 
 
   <script>var plugin_path = 'js/';</script>
@@ -225,6 +232,8 @@
   <script src="{{asset('js/custom.js')}}"></script>
 
   <script src="{{asset('js/join.js')}}"></script>
+
+
 
 
 </body>
