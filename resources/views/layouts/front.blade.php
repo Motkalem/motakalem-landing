@@ -156,7 +156,7 @@
               <div class="text-center">
                 <i class="ti-mobile text-white"></i>
                 <h5 class="mt-15">الجوال</h5>
-                <p><a href="tel:009660537340614" >0537340614</a></p>
+                <p><a dir="ltr" href="tel:00966537340614" >+966 53 734 0614</a></p>
               </div>
             </div>
           </div>
