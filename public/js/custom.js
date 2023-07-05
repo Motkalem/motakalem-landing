@@ -318,6 +318,7 @@ POTENZA.masonry = function () {
     Magnific Popup
 *************************/
   POTENZA.mediaPopups = function () {
+
      if ($(".popup-single").exists() || $(".popup-gallery").exists() || $('.modal-onload').exists() || $(".popup-youtube, .popup-vimeo, .popup-gmaps").exists()) {
       loadScript(plugin_path + 'magnific-popup/jquery.magnific-popup.min.js', function() {
         if ($(".popup-single").exists()) {
@@ -373,6 +374,12 @@ POTENZA.masonry = function () {
                   }, 0)
               }, 1500);
          }
+
+        // document.querySelectorAll('#images.portfolio').forEach(elem=>{
+        //     elem.style.display = ''
+        // })
+
+
        });
     }
   }

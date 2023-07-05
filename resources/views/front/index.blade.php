@@ -21,7 +21,7 @@
 
  <section class="slider-parallax popup-video-banner bg-overlay-black-50 parallax"
  style="position:relative">
- <img loading="lazy" src="{{asset('images/bg/home_slider.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt="">
+ <img loading="lazy" src="{{asset('images/bg/home_slider.webp')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt="">
  <div class="slider-content-middle">
    <div class="container">
      <div class="row">
@@ -172,11 +172,11 @@ counter-->
 <!--=================================
 key features  -->
 
-{{-- <section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature.gif')}}"> --}}
+{{-- <section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature.webp')}}"> --}}
   <section id="features" class="page-section-ptb jarallax"
   style="position:relative">
- {{-- <img loading="lazy" src="{{asset('images/bg/feature.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt=""> --}}
- <img loading="lazy" src="{{asset('images/bg/feature.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover; top:0px" alt="">
+ {{-- <img loading="lazy" src="{{asset('images/bg/feature.webp')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt=""> --}}
+ <img loading="lazy" src="{{asset('images/bg/feature.webp')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover; top:0px" alt="">
  <div class="container">
    <div class="row">
      <div class="col-lg-8">
@@ -306,6 +306,7 @@ key features -->
 <!--=================================
 portfolio -->
 
+{{-- <section id="images" class="portfolio white-bg page-section-ptb" style="display: none"> --}}
 <section id="images" class="portfolio white-bg page-section-ptb">
  <div class="container">
    <div class="row">
@@ -320,7 +321,7 @@ portfolio -->
    <div class="isotope popup-gallery columns-3">
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/Boyle.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/Boyle.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Boyle.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -333,7 +334,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/George-6th.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/George-6th.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/George-6th.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -347,7 +348,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/Kahtani.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/Kahtani.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Kahtani.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -360,7 +361,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/Marlyn.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/Marlyn.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Marlyn.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -373,7 +374,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/Newton.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/Newton.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Newton.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -386,7 +387,7 @@ portfolio -->
      </div>
      <div class="grid-item">
        <div class="portfolio-item-2">
-         <img loading="lazy" src="{{asset('images/portfolio/small/Steevie-harvey.png')}}" alt="">
+         <img  src="{{asset('images/portfolio/small/Steevie-harvey.png')}}" alt="">
          <div class="portfolio-hover">
            <div class="hover-icon">
              <a class="portfolio-img" href="{{asset('images/portfolio/small/Steevie-harvey.png')}}"><i class="fa fa-arrows-alt"></i></a>
@@ -419,7 +420,7 @@ portfolio -->
 
 <section class="page-section-ptb  parallax" style="position: relative">
 
-  <img loading="lazy" src="{{asset('images/bg/feature.gif')}}" style="position:absolute; width:100%; height:100%; object-fit:cover;  top:0px" alt="">
+  <img loading="lazy" src="{{asset('images/bg/feature.webp')}}" style="position:absolute; width:100%; height:100%; object-fit:cover;  top:0px" alt="">
 
 
 <div class="container">
