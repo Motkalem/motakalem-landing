@@ -430,21 +430,21 @@ portfolio -->
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white"> مكان جميل جدا وكذلك العاملين قمة في الرقي وسرعة الاستجابة اذا فيه شكاوه وطريقة الدراسة مريحة ومفيده جدا </div>
+         <div class="testimonial-info text-white"> بيئة محفزة كل الأشخاص يبون يساعدون بعض شكرا لعائلتي الجديدة </div>
          <div class="author-info"> <strong><span>مزون المطبري</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
            <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-           <div class="testimonial-info text-white"> مكان رائع رائع رائع تعامل راقي،متابعة مستمرة ،اهتمام مميز من اول يوم، حتى وقت الغياب يسألوا عن الأسباب، والمعلمين والموظفين قمة في الرقي والأخلاق، اسلوب متميز ، والشيء المميز اللي يلفت الانتباه وبقوة مراعتهم لوقت المتدرب اذا كانت طالب او موظف يختاورا لك الوقت حسب مايناسبك</div>
+           <div class="testimonial-info text-white"> ليتني معاكم من زمان فعلا نحتاج برنامج فاهمنا و فاهم مشكلتنا و عندهم حل حقيقي للتأتأة </div>
            <div class="author-info"> <strong><span>نورالحنيان</span></strong> </div>
        </div>
      </div>
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white"> تعليقي مكان جميل ومرتب وجدول ومدربين بروفشنال متكامل من جميع النواحي</div>
+         <div class="testimonial-info text-white"> شكراً عائلة متكلم على كل شي قدمتو ليا كانت اجمل ايام حياتي قضيتها معاكم و القادم اجمل معاكم</div>
 
          <div class="author-info"> <strong><span>Hessa Al Dawy</span></strong> </div>
        </div>
@@ -452,7 +452,7 @@ portfolio -->
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white">رغم انه في اماكن عند بيتي بس اجي من بعيد عن توصيه ومكان يستحق المشوار</div>
+         <div class="testimonial-info text-white">شكراً متكلم</div>
 
          <div class="author-info"> <strong><span>فريال السبيعي</span></strong> </div>
        </div>
@@ -460,11 +460,27 @@ portfolio -->
      <div class="item">
        <div class="testimonial dark">
          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
-         <div class="testimonial-info text-white">مكان قمة النظافه والترتيب جميل جدا</div>
+         <div class="testimonial-info text-white">مجتمع كله طاقة إيجابية و محفز وكان المدرب و المساعدين يعطو ويساعدو بكل طاقتهم مقصرتو والله </div>
 
          <div class="author-info"> <strong><span>Nada Fajal</span></strong> </div>
        </div>
      </div>
+     <div class="item">
+        <div class="testimonial dark">
+          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+          <div class="testimonial-info text-white">عجبتني البيئة و أجواء البرنامج و طريقة التدريب صح انها متعبة جداً لكن استفدت من كل شي و أن شاء الله راح اوصل للتحكم بتوجيهاتكم </div>
+
+          <div class="author-info"> <strong><span>حمزه عبدالله عليمات</span></strong> </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="testimonial dark">
+          <div class="testimonial-avatar"> <img loading="lazy" alt="" src="{{asset('images/team/avatar.png')}}"> </div>
+          <div class="testimonial-info text-white">الحمدلله تخرجت من المعسكر الحمدلله استفدت من كل شي و اهم جانب اتغير هوا شخصيتي صارت عندي ثقة بنفسي و اتكلم قدام جمهور بدون خوف باستخدام التكنيكات و بإذن الله راح التزم مثل ما وعدتكم </div>
+
+          <div class="author-info"> <strong><span>سحر الغوطي</span></strong> </div>
+        </div>
+      </div>
    </div>
  </div>
 </div>
