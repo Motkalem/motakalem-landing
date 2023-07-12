@@ -147,7 +147,7 @@
               <div class="text-center">
                 <i class="ti-map-alt text-white"></i>
                 <h5 class="mt-15">العنوان</h5>
-                <p><a href="#">السعودية - جده</a></p>
+                <p><a href="#">السعودية</a></p>
               </div>
             </div>
           </div>
