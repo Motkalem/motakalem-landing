@@ -23,7 +23,7 @@ class MainController extends Controller
             'nationality'=>['required', 'string', 'max:255'], // الجنسيه *
             'age'=>['required','int'],  // العمر *
             'address'=>['required', 'string', 'max:255'], // >مكان الاقامة *
-            'postal_code'=>['required','int'], // الرمز البريدي *
+            // 'postal_code'=>['required','int'], // الرمز البريدي *
             'phone'=>['required','numeric'], // الهاتف *
             'email'=> ['required', 'string', 'email', 'max:255'], // البريد الالكتروني *
             'another_phone'=>['required','numeric'], // هاتف شخص لحالات الطوارئ *

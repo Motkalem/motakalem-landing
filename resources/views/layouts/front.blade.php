@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="keywords" content="HTML5 Template" />
+  <meta name="keywords" content="برنامج متكلم تأتأه اكادمية " />
   <meta name="description" content="@yield('title','برنامج متكلم')" />
   <meta name="author" content="motkalem.com" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

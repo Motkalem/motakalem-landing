@@ -92,25 +92,22 @@ contact-->
               <label class="form-label">العمر *</label>
               <input type="number" placeholder="" class="form-control" name="age" value="{{old('age')}}" required>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-8 mb-3">
               <label class="form-label">مكان الاقامة *</label>
               <input type="text" placeholder="" class="form-control" name="address" value="{{old('address')}}" required>
             </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">الرمز البريدي *</label>
-              <input type="number" placeholder="" class="form-control" name="postal_code" value="{{old('postal_code')}}" required>
-            </div>
+
           </div>
 
 
           <div class="row mb-3">
             <div class="col-md-4 mb-3">
-              <label class="form-label">الهاتف *</label>
-              <input type="number" placeholder="" class="form-control" name="phone" value="{{old('phone')}}" required>
-            </div>
-            <div class="col-md-4 mb-3">
               <label class="form-label">البريد الالكتروني *</label>
               <input type="email" placeholder="" class="form-control" name="email" value="{{old('email')}}" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">الهاتف *</label>
+              <input type="number" placeholder="" class="form-control" name="phone" value="{{old('phone')}}" required>
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">هاتف شخص لحالات الطوارئ *</label>
