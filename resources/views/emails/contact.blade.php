@@ -4,7 +4,7 @@
 <p><strong> الجنس </strong>{{$data['type']}}</p>
 <p><strong> الجنسيه </strong>{{$data['nationality']}}</p>
 <p><strong> العمر </strong>{{$data['age']}}</p>
-<p><strong> >مكان الاقامة </strong>{{$data['address']}}</p>
+<p><strong> مكان الاقامة </strong>{{$data['address']}}</p>
 {{-- <p><strong> الرمز البريدي </strong>{{$data['postal_code']}}</p> --}}
 <p><strong> الهاتف </strong>{{$data['phone']}}</p>
 <p><strong> البريد الالكتروني </strong>{{$data['email']}}</p>
