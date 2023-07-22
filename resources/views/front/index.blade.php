@@ -172,11 +172,11 @@ counter-->
 <!--=================================
 key features  -->
 
-{{-- <section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature.webp')}}"> --}}
+{{-- <section id="features" class="page-section-ptb jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/feature2.gif')}}"> --}}
   <section id="features" class="page-section-ptb jarallax"
   style="position:relative">
- {{-- <img loading="lazy" src="{{asset('images/bg/feature.webp')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt=""> --}}
- <img loading="lazy" src="{{asset('images/bg/feature.webp')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover; top:0px" alt="">
+ {{-- <img loading="lazy" src="{{asset('images/bg/feature2.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover" alt=""> --}}
+ <img loading="lazy" src="{{asset('images/bg/feature2.gif')}}"  style="position:absolute; width:100%; height:100%; object-fit:cover; top:0px" alt="">
  <div class="container">
    <div class="row">
      <div class="col-lg-8">
@@ -420,7 +420,7 @@ portfolio -->
 
 <section class="page-section-ptb  parallax" style="position: relative">
 
-  <img loading="lazy" src="{{asset('images/bg/feature.webp')}}" style="position:absolute; width:100%; height:100%; object-fit:cover;  top:0px" alt="">
+  <img loading="lazy" src="{{asset('images/bg/feature2.gif')}}" style="position:absolute; width:100%; height:100%; object-fit:cover;  top:0px" alt="">
 
 
 <div class="container">
