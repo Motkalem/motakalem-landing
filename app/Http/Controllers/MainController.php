@@ -80,8 +80,17 @@ class MainController extends Controller
         // $noReplayEmail = "info@motkalem.com";
         // Mail::to($noReplayEmail)->send(new ContactMail($request->all()));
 
-        return redirect()->route('home')->with(['success'=> 'تم الارسال بنجاح']);
+        return redirect()->route('thankyou')->with(['success' => 'تم الارسال بنجاح']);
 
 
+    }
+
+
+    public function aaa(){
+        return __('fff');
+    }
+
+    public function thankyouPage(){
+        return view('front.thankyou');
     }
 }

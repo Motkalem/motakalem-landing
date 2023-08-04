@@ -273,6 +273,7 @@ class JoinCrudController extends CrudController
         CRUD::addField([
             'name'=>'effect_stuttering_social_life',
             'label'=>Mhelper::t('effect_stuttering_social_life'),
+            'type'=>'select_from_array',
             'options'     => ['شديدة' => 'شديدة', 'خفيفة' => 'خفيفة','متوسطة'=>'متوسطة'],
         ]);
         CRUD::addField([

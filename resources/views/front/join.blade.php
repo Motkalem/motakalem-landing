@@ -16,20 +16,7 @@
 
 @section('content')
 
-
-
-
-
-
-
-
-
-
-
-    <!--=================================
-page-title-->
-
-<section class="page-title bg-overlay-black-60 jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/home_slider.gif')}}">
+<section class="page-title bg-overlay-black-60 jarallax" data-speed="0.6" data-img-src="{{asset('images/bg/home_slider.webp')}}">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -46,12 +33,6 @@ page-title-->
     </div>
   </section>
 
-  <!--=================================
-page-title -->
-
-
-  <!--=================================
-contact-->
 
   <form class="page-section-ptb" method="post" action="{{route('sendEmail')}}">
 
@@ -211,12 +192,6 @@ contact-->
             </div>
           </div>
 
-
-
-
-
-
-
           <div class="row mb-3">
             <div class="col-md-12 mb-3">
               <label class="form-label">هل حصلت علي علاجات او دخلت نوادي او اي شيئ يخص التأتأه سابقا *</label>
@@ -264,9 +239,6 @@ contact-->
             </div>
           </div>
 
-
-
-
           <div class="row mb-3">
 
             <div class="col-md-12 mb-3">
@@ -299,30 +271,9 @@ contact-->
 
           </div>
 
-
-
         </div>
       </div>
   </form>
-
-  <!--=================================
-contact -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @endsection
 
