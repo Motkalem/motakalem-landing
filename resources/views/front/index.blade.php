@@ -11,6 +11,8 @@
     {{-- <li><a href="#blog">مصادر مهمه</a></li> --}}
     <li><a href="#questions">الاسئلة المكرره</a></li>
     <li><a href="{{route('join')}}">الانضمام</a></li>
+    <li><a href="{{route('terms_privacy')}}">الشروط والأحكام</a></li>
+
 @endsection
 
 

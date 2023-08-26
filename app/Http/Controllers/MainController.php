@@ -17,6 +17,11 @@ class MainController extends Controller
         return view('front.join');
     }
 
+
+    public function terms(){
+        return view('front.terms');
+    }
+
     public function sendEmail(Request $request){
         $request->validate([
             'name'=>['required', 'string', 'max:255'], // الاسم *

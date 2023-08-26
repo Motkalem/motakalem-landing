@@ -285,7 +285,7 @@ div.style-customizer.opened a.opener {  right: -45px ! important; }
 /*blockquote */
 /*.blockquote-right { text-align: left; border-left: 5px solid #eee; border-right:0; }*/
 table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child { border-right-width: 1px; }
-table.table-bordered.dataTable th, table.table-bordered.dataTable td { border-right-width: 0: border-left-width: inherit;  }
+table.table-bordered.dataTable th, table.table-bordered.dataTable td { border-right-width: 0; border-left-width: inherit;  }
 table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before { left: 1em; right: inherit; }
 table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after { left: 0.5em; right: inherit; }
 .addresss-info i { float: right; }
@@ -444,7 +444,7 @@ table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_des
 
 /*action-box */
 .action-box.action-box-border a.button, .action-box.theme-bg a.button, .action-box.black-bg a.button, .action-box.gray-bg a.button, .action-box.full-width a.button  { right: inherit; left: 30px; }
-.action-box .action-box-text { padding-right: 0; padding-left: 230px; }
+.action-box .action-box-text { padding-right: 0;  }
 .action-box.small .action-box-text { padding: 0; }
 .action-box.small a.button { left: inherit; }
 .action-box a.button { left: 0; right: inherit; }

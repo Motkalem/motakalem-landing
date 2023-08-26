@@ -728,7 +728,7 @@ body.rtl .img-side img {right: auto; left: 0;}
 .isotope-filters  button.active, .isotope-filters  button:hover { background: #84ba3f; color: #fff; border-color: #84ba3f; }
 .isotope-filters  button+button { margin-left: 10px; }
 .isotope, .masonry { margin: 0 -15px 0 0; }
-.isotope.full-screen, 
+.isotope.full-screen,
 .masonry.full-screen { margin: 0; }
 .isotope.full-screen.columns-2 .grid-item,
 .isotope.full-screen.columns-3 .grid-item,
@@ -2209,8 +2209,45 @@ img.bottom-img { top: 0; }
 .newsletter.fancy button { padding: 14px 20px; }
 }
 
-@media not all and (min-resolution:.001dpcm) { @media
-    {
+@media not all and (min-resolution:.001dpcm) {
      .newsletter.fancy button { padding: 14px 20px;  }
-    }
+
+}
+
+#policy{
+    background-image: url('../images/bg/Main-image.jpg');
+    background-size: cover;
+    background-position: center center;
+
+}
+#policy h1{
+ line-height: 50px;
+}
+
+.description_notes{
+    background: #f3f3f3;
+
+}
+.description_notes p{
+ line-height: 35px;
+}
+
+.read_more p
+{
+ line-height: 35px;
+
+}
+
+#more {display: none;}
+
+.button{
+    background: #00a895;
+    border: 2px solid #00a895;    font-family: 'El Messiri', sans-serif;
+
+}
+
+.button:hover, .button:focus {
+    background: #00a895;
+    color: #ffffff;
+    border-color: #00a895;
 }

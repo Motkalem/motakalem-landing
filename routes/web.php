@@ -18,6 +18,8 @@ Route::get('/', [MainController::class,'index'])->name('home');
 Route::get('/join', [MainController::class,'join'])->name('join');
 Route::post('/join', [MainController::class,'sendEmail'])->name('sendEmail');
 Route::get('/thankyou', [MainController::class,'thankyouPage'])->name('thankyou');
+Route::get('/terms_privacy', [MainController::class,'terms'])->name('terms_privacy');
+
 
 
 

@@ -11,6 +11,8 @@
     {{-- <li><a href="{{route('home')}}/#blog">مصادر مهمه</a></li> --}}
     <li><a href="{{route('home')}}/#questions">الاسئلة المكرره</a></li>
     <li class="active"><a href="{{route('join')}}">الانضمام</a></li>
+    <li><a href="{{route('terms_privacy')}}">الشروط والأحكام</a></li>
+
 @endsection
 
 
