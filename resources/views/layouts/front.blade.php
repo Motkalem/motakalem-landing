@@ -20,6 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@600&display=swap" rel="stylesheet">
 
+
     <!-- Plugins -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins-css.css') }}" />
 
@@ -201,10 +202,25 @@
                         <div class="col-lg-6 col-md-6 ">
                             <div class="footer-widget-social text-center text-md-end">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-dribbble"></i> </a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i> </a></li>
+                                    <li><a target="_blank" href="https://www.facebook.com/MotkalemSA?mibextid=LQQJ4d" ><i class="fa fa-facebook"></i></a></li>
+                                    <li><a target="_blank" href="https://twitter.com/motkalemsa/status/1687890975023091712?s=20"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a target="_blank" href="https://instagram.com/motkalemsa?igshid=OGQ5ZDc2ODk2ZA=="><i class="fa fa-instagram"></i></a></li>
+                                    <li><a target="_blank" href="https://t.snapchat.com/K9XVxtSx"><i class="fa fa-snapchat-ghost"></i></a></li>
+                                    <li>
+                                     <a target="_blank" href="https://www.tiktok.com/@motkalemsa?_t=8fIOMqLsHH4&_r=1">
+                                        <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" fill="#ffffff80">
+                                    <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+                                  </svg>
+                                       </i>
+
+                                </a>
+                            </li>
+
+
+
+
+
                                 </ul>
                             </div>
                         </div>
@@ -245,9 +261,6 @@
     <script src="{{ asset('js/custom.js') }}"></script>
 
     <script src="{{ asset('js/join.js') }}"></script>
-
-
-
 
 </body>
 

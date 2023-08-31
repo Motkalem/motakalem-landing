@@ -975,6 +975,9 @@ a.blog-btn {
 .footer-widget-social a i:hover {
     background: #00a895;
 }
+.footer-widget-social a svg:hover {
+    background: #00a895;
+}
 .footer .footer-nav ul li a:hover {
     color: #00a895;
 }

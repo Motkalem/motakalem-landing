@@ -50,56 +50,59 @@
             <p class="mb-50">يرجي ملئ هذه الحقول</p>
           </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-8">
 
           <div class="row mb-3">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
               <label class="form-label">الاسم *</label>
               <input type="text" placeholder="" class="form-control" name="name" value="{{old('name')}}" required>
             </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">الجنس *</label>
-              <select class="wide fancyselect" name="type" value="{{old('type')}}" required>
-                <option  selected>ذكر</option>
-                <option >انثي</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">الجنسيه *</label>
-              <input type="text" placeholder="" class="form-control" name="nationality" value="{{old('nationality')}}" required>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
               <label class="form-label">العمر *</label>
               <input type="number" placeholder="" class="form-control" name="age" value="{{old('age')}}" required>
             </div>
-            <div class="col-md-8 mb-3">
-              <label class="form-label">مكان الاقامة *</label>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">الهاتف *</label>
+              <input type="number" placeholder="" class="form-control" name="phone" value="{{old('phone')}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">هاتف شخص لحالات الطوارئ *</label>
+              <input type="number" placeholder="" class="form-control" name="another_phone" value="{{old('another_phone')}}"
+                required>
+            </div>
+
+             <div class="col-md-6 mb-3">
+              <label class="form-label">البلد *</label>
+              <input type="text" placeholder="" class="form-control" name="nationality" value="{{old('nationality')}}" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">المدينة *</label>
               <input type="text" placeholder="" class="form-control" name="address" value="{{old('address')}}" required>
             </div>
 
           </div>
 
 
-          <div class="row mb-3">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">البريد الالكتروني *</label>
-              <input type="email" placeholder="" class="form-control" name="email" value="{{old('email')}}" required>
+
+            <!-- <div class="col-md-4 mb-3">
+              <label class="form-label">الجنس *</label>
+              <select class="wide fancyselect" name="type" value="{{old('type')}}" required>
+                <option  selected>ذكر</option>
+                <option >انثي</option>
+              </select>
+            </div> -->
+            <!-- <div class="col-md-4 mb-3">
+              <label class="form-label">الجنسيه *</label>
+              <input type="text" placeholder="" class="form-control" name="nationality" value="{{old('nationality')}}" required>
             </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">الهاتف *</label>
-              <input type="number" placeholder="" class="form-control" name="phone" value="{{old('phone')}}" required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">هاتف شخص لحالات الطوارئ *</label>
-              <input type="number" placeholder="" class="form-control" name="another_phone" value="{{old('another_phone')}}"
-                required>
-            </div>
-          </div>
+          </div> -->
 
 
+
+
+<!--
           <div class="row mb-3">
             <div class="col-md-6 mb-3">
               <label class="form-label">شدة التأتأة لديك *</label>
@@ -118,10 +121,10 @@
                 <option >شديدة</option>
               </select>
             </div>
-          </div>
+          </div> -->
 
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-6 mb-3">
               <label class="form-label">تأثير التأتأة في حياتك المهنية / الدراسية *</label>
               <select class="wide fancyselect" name="impact_stuttering_professional_study_life" value="{{old('impact_stuttering_professional_study_life')}}" required>
@@ -139,9 +142,9 @@
                 <option >شديدة</option>
               </select>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-12 mb-3">
 
               <label class="form-label">هل لديك اعاقة جسدية *</label>
@@ -157,9 +160,9 @@
               <textarea class="input-message form-control" placeholder="" rows="7"
                 name="type_disability" value="{{old('type_disability')}}"></textarea>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-12 mb-3">
               <label class="form-label">هل لديك مرض عضوي او نفسي *</label>
               <select class="wide fancyselect" onchange="moHideOrShow(event)" name="have_physical_mental_illness" value="{{old('have_physical_mental_illness')}}" required>
@@ -175,11 +178,11 @@
                 placeholder=" (مثال: مرض في القلب او الرئتین، ثنائي القطبیة،اضطراب فرط الحركة وقصور الانتباه)"
                 rows="7" name="type_disease" value="{{old('type_disease')}}"></textarea>
             </div>
-          </div>
+          </div> -->
 
 
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-12 mb-3">
               <label class="form-label">هل يوجد شيء متعلق بصحتك تود اخبارنا به *</label>
               <select class="wide fancyselect" onchange="moHideOrShow(event)" name="anything_related_health" value="{{old('anything_related_health')}}" required>
@@ -192,9 +195,9 @@
               <textarea class="input-message form-control" placeholder="" rows="7"
                 name="notice" value="{{old('notice')}}"></textarea>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-12 mb-3">
               <label class="form-label">هل حصلت علي علاجات او دخلت نوادي او اي شيئ يخص التأتأه سابقا *</label>
               <select class="wide fancyselect" onchange="moHideOrShow(event)" name="treatments_entered_club_anything_related_stuttering_before" value="{{old('treatments_entered_club_anything_related_stuttering_before')}}" required>
@@ -239,9 +242,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
 
             <div class="col-md-12 mb-3">
               <label class="form-label">كيف علمت عنـــــــا *</label>
@@ -252,16 +255,16 @@
                 <option value="other">اسباب اخري</option>
               </select>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <div class="col-md-12 mb-3">
               <label class="form-label">ما نقاط التحسين او الافكار التي تود تغييرها بالبرامج او النوادي؟</label>
               <textarea class="input-message form-control" placeholder="" rows="7"
                   name="improvement_points_ideas_like_change_programs_clubs" value="{{old('improvement_points_ideas_like_change_programs_clubs')}}"></textarea>
             </div>
 
-          </div>
+          </div> -->
 
             <div class="row mb-3">
               <div class="col-md-12 mb-3">
