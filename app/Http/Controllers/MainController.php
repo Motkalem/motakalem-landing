@@ -55,7 +55,7 @@ class MainController extends Controller
 
         Join::create([
             'name'=>$request->name,
-            'type'=>$request->type,
+            'type'=>$request->type ?? 'ذكر',
             'nationality'=>$request->nationality,
             'age'=>$request->age,
             'address'=>$request->address,
