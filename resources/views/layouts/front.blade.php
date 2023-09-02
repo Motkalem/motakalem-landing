@@ -10,6 +10,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>@yield('title', 'برنامج متكلم')</title>
 
+    <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-PTCJSTM2');
+        </script>
+    <!-- End Google Tag Manager -->
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
 
@@ -40,22 +59,12 @@
     <!-- Responsive -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/responsive.css') }}" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H9Z5N03ZZ2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-H9Z5N03ZZ2');
-    </script>
-
 </head>
 
 <body class="rtl">
+
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PTCJSTM2"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="wrapper">
 
@@ -202,20 +211,30 @@
                         <div class="col-lg-6 col-md-6 ">
                             <div class="footer-widget-social text-center text-md-end">
                                 <ul>
-                                    <li><a target="_blank" href="https://www.facebook.com/MotkalemSA?mibextid=LQQJ4d" ><i class="fa fa-facebook"></i></a></li>
-                                    <li><a target="_blank" href="https://twitter.com/motkalemsa/status/1687890975023091712?s=20"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a target="_blank" href="https://instagram.com/motkalemsa?igshid=OGQ5ZDc2ODk2ZA=="><i class="fa fa-instagram"></i></a></li>
-                                    <li><a target="_blank" href="https://t.snapchat.com/K9XVxtSx"><i class="fa fa-snapchat-ghost"></i></a></li>
+                                    <li><a target="_blank"
+                                            href="https://www.facebook.com/MotkalemSA?mibextid=LQQJ4d"><i
+                                                class="fa fa-facebook"></i></a></li>
+                                    <li><a target="_blank"
+                                            href="https://twitter.com/motkalemsa/status/1687890975023091712?s=20"><i
+                                                class="fa fa-twitter"></i></a></li>
+                                    <li><a target="_blank"
+                                            href="https://instagram.com/motkalemsa?igshid=OGQ5ZDc2ODk2ZA=="><i
+                                                class="fa fa-instagram"></i></a></li>
+                                    <li><a target="_blank" href="https://t.snapchat.com/K9XVxtSx"><i
+                                                class="fa fa-snapchat-ghost"></i></a></li>
                                     <li>
-                                     <a target="_blank" href="https://www.tiktok.com/@motkalemsa?_t=8fIOMqLsHH4&_r=1">
-                                        <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" fill="#ffffff80">
-                                    <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
-                                  </svg>
-                                       </i>
+                                        <a target="_blank"
+                                            href="https://www.tiktok.com/@motkalemsa?_t=8fIOMqLsHH4&_r=1">
+                                            <i>
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                                    viewBox="0 0 448 512" fill="#ffffff80">
+                                                    <path
+                                                        d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z" />
+                                                </svg>
+                                            </i>
 
-                                </a>
-                            </li>
+                                        </a>
+                                    </li>
 
 
 
