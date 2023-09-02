@@ -31,6 +31,8 @@ body {
     position: relative;
     border-radius: 20px;
     background-color: #fff;
+    box-shadow: 2px 2px 14px 2px #e0e7c5;
+
 }
 .registeration_done .inner_box img {
     width: 125px;
