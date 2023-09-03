@@ -26,11 +26,20 @@
 
 @section('content')
 
-    <div class="registeration_back">
-        <div class="registeration_done">
+<div class="registeration_done">
             <a href="" class="logo">
                 <img src="{{ asset('images/thankyou/white-logo.png') }}" alt="" />
             </a>
+        </div>
+
+    <div class="registeration_back">
+    <div class="registeration_done">
+            <a href="" class="logo">
+                <!-- <img src="{{ asset('images/thankyou/white-logo.png') }}" alt="" /> -->
+            </a>
+        </div>
+
+        <div class="registeration_done">
             <div class="inner_box">
                 <img src="{{ asset('images/thankyou/icon-star.png') }}" alt="" />
                 <h1>تم التسجيل <span>بـنـجـــاح</span></h1>
