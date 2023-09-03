@@ -2,6 +2,29 @@
 
 @section('title', 'برنامج متكلم')
 
+@section('head')
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function pushFormDataToDataLayer() {
+            const form = document.forms.join;
+            const formData = new FormData(form);
+
+            // Create an object to hold the form data
+            const formDataObject = {};
+            formData.forEach((value, key) => {
+                formDataObject[key] = value;
+            });
+
+            // Push the form data to the data layer
+            dataLayer.push({
+                'event': 'formSubmit',
+                'formData': formDataObject
+            });
+        }
+    </script>
+@endsection
+
 
 @section('menu')
     <li><a href="{{route('home')}}/#homesection">الرئيسيه</a></li>
@@ -36,7 +59,7 @@
   </section>
 
 
-  <form class="page-section-ptb" method="post" action="{{route('sendEmail')}}">
+  <form class="page-section-ptb" method="post" action="{{route('sendEmail')}}" onsubmit="pushFormDataToDataLayer()" id="join">
 
     @csrf
 

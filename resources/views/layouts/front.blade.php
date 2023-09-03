@@ -59,6 +59,8 @@
     <!-- Responsive -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/responsive.css') }}" />
 
+    @yield('head')
+
 </head>
 
 <body class="rtl">
