@@ -26,7 +26,7 @@ class ContactUsRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'], // الاسم *
             'phone' => ['required', 'numeric'], // الهاتف *
-            'email' => ['string', 'email', 'max:255'], // البريد الالكتروني *
+            'email' => ['required', 'string', 'email', 'max:255'], // البريد الالكتروني *
             "message" => ['required', 'string']
         ];
     }
