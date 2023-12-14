@@ -26,7 +26,7 @@ class JoinRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'], // الاسم *
             'type' => ['in:ذكر,انثي'], // الجنس *
-            'nationality' => ['string', 'max:255'], // الجنسيه *
+            'nationality' => ['nullable', 'string', 'max:255'], // الجنسيه *
             'age' => ['required', 'int'],  // العمر *
             'address' => ['string', 'max:255'], // >مكان الاقامة *
             // 'postal_code'=>['required','int'], // الرمز البريدي *
