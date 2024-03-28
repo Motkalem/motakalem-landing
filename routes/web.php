@@ -1,5 +1,6 @@
 <?php
 
+ use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/callback', callbackAction::class)->name('callback');
+
 
 Route::get('/', [MainController::class,'index'])->name('home');
 Route::get('/join', [MainController::class,'join'])->name('join');

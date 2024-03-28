@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Actions\Paymob\CreditAction;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/join', [JoinController::class, 'store']);
 Route::post('/contact-us', [ContactUsController::class, 'store']);
+
+
+Route::post('/credit', CreditAction::class)->name('credit');
