@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_pay_order_id');
+            $table->unsignedBigInteger('transaction_id');
              $table->decimal('amount', 20,2);
             $table->string('success')->default('false');
             $table->longText('data');

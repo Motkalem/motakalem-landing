@@ -40,7 +40,8 @@ class CreditAction
 
         $paymentToken = GetPaymentToken::make()->handle($clientOrderPay->id,$order, $token);
 
-        dd('https://ksa.paymob.com/api/acceptance/iframes/' . env('PAYMOB_IFRAME_ID') . '?payment_token=' . $paymentToken );
-         return back()->with('response','https://ksa.paymob.com/api/acceptance/iframes/' . env('PAYMOB_IFRAME_ID') . '?payment_token=' . $paymentToken ) ;
+        return ['payment_token'=>  'https://ksa.paymob.com/api/acceptance/iframes/'
+            . env('PAYMOB_IFRAME_ID') . '?payment_token=' . $paymentToken];
+
     }
 }

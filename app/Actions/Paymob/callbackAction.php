@@ -58,6 +58,7 @@ class callbackAction
 
                 $transaction = Transaction::query()->create([
                     'transaction_id' => data_get($data, 'id'),
+                    'client_pay_order_id' => data_get(explode('-', data_get($data, 'merchant_order_id')), 0),
                      'success' => data_get($data, 'success'),
                     'amount' => data_get($data, 'amount_cents') / 100,
                     'data' => $data,
@@ -65,16 +66,12 @@ class callbackAction
 
                 if (($transaction->success == "true") || ($transaction->success === true)) {
 
-                     $invoice = Invoice::where('order_id', $order->id)->latest()->first();
-                    $invoice->update(['is_paid' => 1]);
-                    $invoice->update(['status' => Invoice::ACCEPTED]);
 
-                    $this->notifyUserWithOrderConfirmed($order,$generalSettings);
-
-                    return Redirect::route('front.orders.status', $order->id)->with('success', __('Success'));
+                   return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
                 } else {
 
-                    return Redirect::route('front.orders.status', $order->id)->with('error', __('Failed payment'));
+                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
+
                 }
 
 

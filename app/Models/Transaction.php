@@ -6,7 +6,7 @@ namespace App\Models;
 
 class Transaction extends Model
 {
-    protected $fillable = ['transaction_id', 'success', 'amount', 'status', 'data'];
+    protected $fillable = ['transaction_id', 'client_pay_order_id','success', 'amount', 'status', 'data'];
     protected $casts = ['data'=> 'array'];
 
     /**
