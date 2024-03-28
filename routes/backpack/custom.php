@@ -19,6 +19,6 @@ Route::group([
     Route::crud('join', 'JoinCrudController');
     Route::crud('contact', 'ContactCrudController');
     // Route::crud('user', 'UserCrudController');
+    Route::crud('client-pay-order', 'ClientPayOrderCrudController');
+    Route::crud('transaction', 'TransactionCrudController');
 }); // this should be the absolute last line of this file
-
-

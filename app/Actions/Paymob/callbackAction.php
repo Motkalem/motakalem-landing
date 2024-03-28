@@ -64,17 +64,14 @@ class callbackAction
                     'data' => $data,
                 ]);
 
-                if (($transaction->success == "true") || ($transaction->success === true)) {
-
+                if (($transaction->success == "true") || ($transaction->success === true))
+                {
 
                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
                 } else {
 
                     return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
-
                 }
-
-
             return Redirect::route('home');
         } else {
 

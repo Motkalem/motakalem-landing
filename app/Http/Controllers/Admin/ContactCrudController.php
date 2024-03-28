@@ -52,7 +52,7 @@ class ContactCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'phone',
             'type' => 'text',
-            'label' => Mhelper::t('phone'),
+            'label' =>__('phone'),
         ]);
 
         CRUD::addColumn([

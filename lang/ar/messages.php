@@ -36,4 +36,14 @@
   'message' => 'الرساله',
   'contact' => 'اتصال',
   'contacts' => 'الاتصالات',
+  'Client pay orders' => 'عملاء قاموا بالتسجيل',
+  'Client pay order' => 'عميل قاموا بالتسجيل',
+  'registered client' => 'العميل المسجلين',
+  'registered clients' => 'العملاء المسجلين',
+  'client' => 'العميل',
+  'status' => 'الحالة',
+  'amount' => 'المبلغ',
+   'transaction ID' => 'رقم المعاملة',
+
+
 );

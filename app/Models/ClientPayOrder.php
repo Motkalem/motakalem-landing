@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
  use Illuminate\Database\Eloquent\Model;
 
 class ClientPayOrder extends Model
 {
+    use CrudTrait;
    protected $fillable = ['name', 'age', 'phone', 'city'];
 
 

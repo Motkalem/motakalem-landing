@@ -7,3 +7,6 @@
 
 
 <li class="nav-item"><a class="nav-link" href="{{backpack_url('user')}}"><i class="nav-icon las la-dot-circle"></i> {{\App\CPU\Mhelper::t('Users')}}</a></li>
+
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('client-pay-order') }}"><i class="nav-icon la la-question"></i> Client pay orders</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction') }}"><i class="nav-icon la la-question"></i> Transactions</a></li>

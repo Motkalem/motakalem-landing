@@ -45,5 +45,11 @@
     "Verify Your Email Address": "تحقق من عنوان البريد الإلكتروني الخاص بك",
     "You are receiving this email because we received a password reset request for your account.": "لقد استلمت هذا البريد الإلكتروني لأننا استقبلنا طلباً لاستعادة كلمة مرور حسابك.",
     "Whoops!": "عذراً!",
-    "Whoops, something went wrong on our servers.": "عفوًا، حدث خطأ ما على خوادمنا."
+    "Whoops, something went wrong on our servers.": "عفوًا، حدث خطأ ما على خوادمنا.",
+    "client pay orders": "عملاء قاموا بالتسجيل",
+    "age": "السن",
+    "phone": "السن",
+    "transactions": "المعاملات المالية",
+    "transaction": "المعاملة المالية",
+    "city": "المدينة"
 }
