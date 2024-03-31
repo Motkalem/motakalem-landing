@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ClientPayOrder extends Model
 {
     use CrudTrait;
-   protected $fillable = ['name', 'age', 'phone', 'city'];
+   protected $fillable = ['name', 'age', 'is_paid','phone', 'city'];
 
 
     /**

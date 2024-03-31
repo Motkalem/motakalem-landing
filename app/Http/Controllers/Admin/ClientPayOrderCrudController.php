@@ -38,9 +38,19 @@ class ClientPayOrderCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::addColumn([
+            'name' => 'id',
+            'type' => 'text',
+            'label' => __('client ID'),
+        ]);
+        CRUD::addColumn([
             'name' => 'name',
             'type' => 'text',
             'label' => Mhelper::t('name'),
+        ]);
+        CRUD::addColumn([
+            'name' => 'is_paid',
+            'type' => 'text',
+            'label' => __('paid status'),
         ]);
         CRUD::addColumn([
             'name' => 'age',

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Paymob;
 
+ use App\Models\ClientPayOrder;
  use App\Models\Transaction;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
@@ -54,11 +55,12 @@ class callbackAction
 
         $hased = hash_hmac('sha512', $connectedString, $secret);
 
-        if ($hased == $hmac) {
+            $client_pay_order_id = data_get(explode('-', data_get($data, 'merchant_order_id')), 0);
 
+            if ($hased == $hmac) {
                 $transaction = Transaction::query()->create([
                     'transaction_id' => data_get($data, 'id'),
-                    'client_pay_order_id' => data_get(explode('-', data_get($data, 'merchant_order_id')), 0),
+                    'client_pay_order_id' => $client_pay_order_id,
                      'success' => data_get($data, 'success'),
                     'amount' => data_get($data, 'amount_cents') / 100,
                     'data' => $data,
@@ -66,9 +68,15 @@ class callbackAction
 
                 if (($transaction->success == "true") || ($transaction->success === true))
                 {
+                    $client_pay_order_id = ClientPayOrder::where('id' ,$client_pay_order_id)->first();
+                    if ($client_pay_order_id){
+                        $client_pay_order_id->update(['is_paid'=> 'paid']);
+                    }
 
                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
                 } else {
+
+
 
                     return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
                 }
