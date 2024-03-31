@@ -25,7 +25,7 @@ class TransactionCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Transaction::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
-        CRUD::setEntityNameStrings(__('transaction'), __('transactions'));
+        CRUD::setEntityNameStrings(Mhelper::t('transaction'), Mhelper::t('transactions'));
     }
 
     /**
@@ -44,7 +44,7 @@ class TransactionCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'client_pay_order_id',
             'type' => 'text',
-            'label' => Mhelper::t('client'),
+            'label' => __('client ID'),
         ]);
         CRUD::addColumn([
             'name' => 'success',
@@ -57,7 +57,7 @@ class TransactionCrudController extends CrudController
             'label' => Mhelper::t('amount'),
         ]);
 
-
+        CRUD::enableResponsiveTable();
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -90,15 +90,35 @@ class TransactionCrudController extends CrudController
          */
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
+    protected function setupShowOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::addColumn([
+            'name' => 'transaction_id',
+            'type' => 'text',
+            'label' => Mhelper::t('transaction ID'),
+        ]);
+        CRUD::addColumn([
+            'name' => 'client_pay_order_id',
+            'type' => 'text',
+            'label' => __('client ID'),
+        ]);
+        CRUD::addColumn([
+            'name' => 'success',
+            'type' => 'text',
+            'label' => Mhelper::t('status'),
+         ]);
+        CRUD::addColumn([
+            'name' => 'amount',
+            'type' => 'text',
+            'label' => Mhelper::t('amount'),
+        ]);
+
+        CRUD::addColumn([
+            'name'  => 'created_at',
+            'label' => __('created at'),
+        ]);
     }
+
+
 
 }

@@ -215,8 +215,6 @@ class JoinCrudController extends CrudController
     {
         CRUD::setValidation(JoinRequest::class);
 
-
-
         CRUD::addField([
             'name'=>'name',
             'label'=>Mhelper::t('name'),

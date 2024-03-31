@@ -43,7 +43,9 @@
   'client' => 'العميل',
   'status' => 'الحالة',
   'amount' => 'المبلغ',
-   'transaction ID' => 'رقم المعاملة',
-
-
+  'transaction ID' => 'رقم المعاملة',
+  'Transaction' => 'رقم المعاملة',
+  'Transactions' =>  'المعاملة المالية',
+  'transaction' =>  'المعاملة المالية',
+  'transactions' =>  'المعاملات المالية',
 );

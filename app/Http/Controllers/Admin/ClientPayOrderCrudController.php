@@ -90,6 +90,44 @@ class ClientPayOrderCrudController extends CrudController
          */
     }
 
+    protected function setupShowOperation()
+    {
+
+        CRUD::addColumn([
+            'name'  => 'id',
+            'label' => __('client ID'),
+            'type'  => 'text',
+         ]);
+
+        CRUD::addColumn([
+            'name'  => 'name',
+            'label' => __('Name'),
+            'type'  => 'text',
+         ]);
+
+        CRUD::addColumn([
+            'name'  => 'age',
+            'label' => __('age'),
+          ]);
+
+        CRUD::addColumn([
+            'name'  => 'phone',
+            'label' => __('phone'),
+          ]);
+
+        CRUD::addColumn([
+            'name'  => 'city',
+            'label' => __('city'),
+          ]);
+
+        CRUD::addColumn([
+            'name'  => 'created_at',
+            'label' => __('created at'),
+          ]);
+
+
+    }
+
     /**
      * Define what happens when the Update operation is loaded.
      *

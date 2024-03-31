@@ -48,8 +48,10 @@
     "Whoops, something went wrong on our servers.": "عفوًا، حدث خطأ ما على خوادمنا.",
     "client pay orders": "عملاء قاموا بالتسجيل",
     "age": "السن",
-    "phone": "السن",
+    "phone": "الجوال",
     "transactions": "المعاملات المالية",
     "transaction": "المعاملة المالية",
-    "city": "المدينة"
+    "city": "المدينة",
+    "client ID": "رقم العميل",
+    "created at": "تاريخ الإنشاء"
 }

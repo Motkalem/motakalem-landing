@@ -9,24 +9,25 @@ class GetPaymentToken
 {
     use AsAction;
 
-    public function handle($localOrder ,$order,  $token)
+    public function handle($localOrder ,$order,  $token, $clientOrderPay)
     {
 
         $order_id = $order->id ;
 
+        $name =$clientOrderPay->name;
         $amount =  1;
-        $amount =  1;
+
         $billingData = [
             "apartment" => "803",
-            "email" => "claudette09@exa.com",
+            "email" => "claudette09@exa2.com",
             "floor" => "42",
-            "first_name" => "test",
+            "first_name" =>$name ,
             "street" => "Ethan Land",
             "building" => "8028",
-            "phone_number" => "+86(8)9135210487",
+            "phone_number" => "+966".$clientOrderPay->phone ,
             "shipping_method" => "PKG",
             "postal_code" => "01898",
-            "city" => "SAU",
+            "city" =>$clientOrderPay->city,
             "country" => "SAU",
             "last_name" => "user",
             "state" => "SAU",

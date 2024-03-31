@@ -38,7 +38,7 @@ class CreditAction
 
         $order = CreateOrder::make()->handle($clientOrderPay->id,$token);
 
-        $paymentToken = GetPaymentToken::make()->handle($clientOrderPay->id,$order, $token);
+        $paymentToken = GetPaymentToken::make()->handle($clientOrderPay->id,$order, $token, $clientOrderPay);
 
         return ['payment_token'=>  'https://ksa.paymob.com/api/acceptance/iframes/'
             . env('PAYMOB_IFRAME_ID') . '?payment_token=' . $paymentToken];
