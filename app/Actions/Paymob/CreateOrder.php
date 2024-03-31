@@ -11,7 +11,7 @@ class CreateOrder
 
     public function handle($orderId ,string $token)
     {
-        $amount = 1;
+        $amount = env('SUBSCRIPTION_AMOUNT')??12000;
         $data = [
 
             "auth_token" => $token,

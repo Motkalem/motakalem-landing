@@ -15,7 +15,8 @@ class GetPaymentToken
         $order_id = $order->id ;
 
         $name =$clientOrderPay->name;
-        $amount =  1;
+        $amount = env('SUBSCRIPTION_AMOUNT')??12000;
+
 
         $billingData = [
             "apartment" => "803",
