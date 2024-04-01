@@ -2,6 +2,7 @@
 
  use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
+use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/test', function (){
+
+    $client = \App\Models\ClientPayOrder::first();
+    \Illuminate\Support\Facades\Notification::send($client,
+        new SuccessSubscriptionPaidNotification($client->id, $client->name));
+}) ;
+
+
 Route::get('/callback', callbackAction::class)->name('callback');
 
 

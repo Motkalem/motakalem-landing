@@ -13,21 +13,25 @@ class CreditAction
 
     use AsAction;
 
-    public function rules(){
+    public function rules()
+    {
+
        return $rules =  [
             'name'=>'required|string',
             'age'=>'required|numeric|min:10|max:100',
             'phone'=>'required|digits:10',
+            'email'=>'required|email',
             'city'=>'required|string',
         ];
     }
-    public function handle(ActionRequest $request)
+    public function handle(ActionRequest $request): array
     {
 
          $clientOrderPay = ClientPayOrder::query()->firstOrCreate([
-             'phone'=> $request->phone
+             'phone'=> $request->phone,
          ], [
              'name'=> $request->name,
+             'email'=> $request->email,
              'age'=> $request->age,
              'phone'=> $request->phone,
              'city'=> $request->city,

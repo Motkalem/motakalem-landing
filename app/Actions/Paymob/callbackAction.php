@@ -4,7 +4,9 @@ namespace App\Actions\Paymob;
 
  use App\Models\ClientPayOrder;
  use App\Models\Transaction;
-use Illuminate\Support\Facades\Redirect;
+ use App\Notifications\SuccessSubscriptionPaidNotification;
+ use Illuminate\Notifications\Notification;
+ use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -66,17 +68,19 @@ class callbackAction
                     'data' => $data,
                 ]);
 
+                    $client_pay_order = ClientPayOrder::where('id' ,$client_pay_order_id)->first();
                 if (($transaction->success == "true") || ($transaction->success === true))
                 {
-                    $client_pay_order_id = ClientPayOrder::where('id' ,$client_pay_order_id)->first();
-                    if ($client_pay_order_id){
-                        $client_pay_order_id->update(['is_paid'=> 'paid']);
+                    if ($client_pay_order ){
+                        $client_pay_order->update(['is_paid'=> 'paid']);
+
+                        $this->notifyClient($client_pay_order);
                     }
 
                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
                 } else {
 
-
+                    $this->notifyClient($client_pay_order);
 
                     return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
                 }
@@ -87,6 +91,12 @@ class callbackAction
             exit;
         }
 
+    }
+
+    public function notifyClient($client): void
+    {
+        \Illuminate\Support\Facades\Notification::send($client,
+            new SuccessSubscriptionPaidNotification($client->id, $client->name));
     }
 
 }
