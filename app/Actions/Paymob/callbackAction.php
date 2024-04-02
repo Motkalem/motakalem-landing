@@ -74,13 +74,12 @@ class callbackAction
                     if ($client_pay_order ){
                         $client_pay_order->update(['is_paid'=> 'paid']);
 
-                        $this->notifyClient($client_pay_order);
+                        $this->notifyClient($client_pay_order, $transaction);
                     }
 
                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
                 } else {
 
-                    $this->notifyClient($client_pay_order);
 
                     return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
                 }
@@ -93,10 +92,10 @@ class callbackAction
 
     }
 
-    public function notifyClient($client): void
+    public function notifyClient($client, $transaction): void
     {
         \Illuminate\Support\Facades\Notification::send($client,
-            new SuccessSubscriptionPaidNotification($client->id, $client->name));
+            new SuccessSubscriptionPaidNotification(  $client  , $transaction));
     }
 
 }

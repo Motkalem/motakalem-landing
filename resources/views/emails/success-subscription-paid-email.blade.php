@@ -1,106 +1,94 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+<html lang="ar">
 
-        * {
-            font-family: 'Cairo', sans-serif;
-            padding-right: 0 !important;
-        }
-    </style>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>
-        تم دفع قيمة الإشتراك بنجاح
-    </title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <title>شكــرا تم الدفـــع بنجــاح</title>
+
 </head>
 
-<body dir="rtl">
-<div>
-    <table class="main contenttable"  style="border: 0; margin-left: auto; margin-right: auto; color: #555559; background-color: white;
-           font-size: 16px; line-height: 26px; width: 600px;text-align: start; padding: 5px">
-        <tbody>
-        <tr>
-            <td colspan="4" class="image-section"
-                style="text-align: center; border: 0; margin: 0; padding: 0; -webkit-text-size-adjust: none;
-                color: #555559; font-size: 16px; line-height: 26px; background-color: #fff;">
+<body>
+<div class="primary-container" style="direction: rtl;">
+    <div style="width: 75%; margin: auto; border: .2px solid #06A996">
+        <div style="background-color: #06A996; padding: .2rem; text-align: center;">
 
-                <img style="max-width: 100px;margin: auto" src="/" />
-            </td>
-        </tr>
-        <tr style="text-align: start">
-            <td colspan="2" class="footer"
-                style="border: 0; margin: 0; padding: 0; -webkit-text-size-adjust: none; color: #555559; font-size: 16px; line-height: 26px; background: #fff">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
-                       style=", sans-serif; text-align: start">
-                    <tr>
-                        <td>
-                            <table
-                                style="background-color: #f2f3f8; max-width:670px; margin:0 auto; padding: 10px !important;"
-                                width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <table cellspacing="0" border="0" cellpadding="0" width="100%"
-                                               bgcolor="#f2f3f8">
-                                            <tr>
-                                                <td>
-                                                    <table
-                                                        style= "max-width:670px;  margin:0 auto;"
-                                                        width="100%" border="0" align="center" cellpadding="0"
-                                                        cellspacing="0">
-                                                        <tr>
-                                                        </tr>
-
-                                                        <tr>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <table width="95%" border="0" align="center"
-                                                                       cellpadding="0" cellspacing="0"
-                                                                       style="max-width:670px;
-
-                                                                       padding: 10px">
-                                                                    <tr>
-                                                                    </tr>
-                                                                    <tr style="padding: 10px">
-                                                                        <td style="padding: 10px">
-                                                                            <p style="padding: 5px;"> عزيزي   {{$name}} </p>
-                                                                            <p style="padding: 5px;"> تم دفع استراكك بنجاح</p>
-                                                                            <p style="padding: 5px; font-weight: bold"> رقم العميل الخاص بكم هو {{$clientID}}</p>
-
-                                                                            <p style="padding: 5px;">أطيب التحيات،</p>
-                                                                         </td>
-                                                                    </tr>
-
-                                                                </table>
-                                                            </td>
-                                                        <tr>
-
-                                                        </tr>
-                                                        <tr>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+            <img style="width: 10rem; margin-top: .5rem; margin-bottom: 1rem;" src="https://dev.motkalem.com/images/email/logo.png"
+                 alt="motkalem word beside the a yellow logo">
+        </div>
+        <div style="background-color: #D9D9D9;padding: 2rem;">
+            <div style="text-align: center;">
+                <img style="width: 4rem;" src="https://dev.motkalem.com/images/email/checkmark.png" alt="checkmark in green">
+                <div>
+                    <p style="font-size: 1.2rem; font-weight: 600;">شكــرا تم الدفـــع بنجــاح</p>
+                </div>
+            </div>
+            <hr />
+            <table>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">اسم البرنامج: </td>
+                    <td>برنامج متكلم التأهيلي</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">اسم المشترك: </td>
+                    <td> {{$user->name}}  </td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">عمر المشترك: </td>
+                    <td>{{$user->age}} </td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم الجوال: </td>
+                    <td>{{$user->phone}}</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">المدينة: </td>
+                    <td>{{$user->city}}</td>
+                </tr>
+            </table>
+            <hr />
+            <table>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم الفاتورة: </td>
+                    <td>{{$transaction->id}}</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">طريقة الدفع: </td>
+                    <td>كارت فيزا</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">تكفلة البرنامج: </td>
+                    <td>{{$transaction->amount}} ر.س</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">المبلغ المدفوع: </td>
+                    <td>{{$transaction->amount}} ر.س</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="width: 75%; margin: auto; padding-top: .8rem ;">
+        <div style="font-weight: 600; color: #5e5e5e;">
+            <span>زر موقعنا: </span>
+            <a style="font-weight: normal;" href="https://motkalem.com/" target="_blank">motkalem.com</a>
+        </div>
+        <div style="color: #5e5e5e; font-weight: 600;">
+            <div style="display: flex; justify-content: right; align-items: center; margin-left: 1rem;">
+                <p style="margin: 0; margin-left: .8rem; font-size: .8rem;">رقم التسجيل الضريبي: </p>
+                <span style="font-size: .8rem;">۳۱۲۰۱۱٤۹۰۱۰۰۰۳</span>
+            </div>
+            <div style="display: flex; justify-content: right; align-items: center; margin-left: 1rem;">
+                <p style="margin: 0; margin-left: .8rem; font-size: .8rem;">رقم السجل التجاري: </p>
+                <span style="font-size: .8rem;">٤۰۳۰٥۱۱٤۷۷</span>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 

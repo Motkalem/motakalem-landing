@@ -8,19 +8,19 @@ use Illuminate\Notifications\Notification;
 
 class SuccessSubscriptionPaidNotification extends Notification
 {
-    protected int $clientID;
-    protected string $name;
+    protected   $user;
+    protected   $transaction;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($clientID,$name)
+    public function __construct($user, $transaction)
     {
 
-        $this->clientID = $clientID;
-        $this->name = $name;
+        $this->user = $user;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -44,11 +44,11 @@ class SuccessSubscriptionPaidNotification extends Notification
     {
 
         return (new MailMessage)
-            ->subject(  'تم دفع قيمة الإشتراك بنجاح')
+            ->subject(  'شكــرا تم الدفـــع بنجــاح')
             ->view('emails.success-subscription-paid-email',
                 [
-                    'clientID'=> $this->clientID,
-                    'name'=> $this->name,
+                    'user'=> $this->user,
+                    'transaction'=> $this->transaction,
                 ]);
     }
 }
