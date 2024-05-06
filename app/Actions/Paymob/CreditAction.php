@@ -16,14 +16,17 @@ class CreditAction
     public function rules()
     {
 
+
        return $rules =  [
             'name'=>'required|string',
             'age'=>'required|numeric|min:10|max:100',
             'phone'=>'required|digits:10',
             'email'=>'required|email',
             'city'=>'required|string',
+            'payment_type'=>'required|in:'.implode(',',array_values(ClientPayOrder::$paymentTypes)),
         ];
     }
+
     public function handle(ActionRequest $request): array
     {
 
@@ -35,10 +38,11 @@ class CreditAction
              'age'=> $request->age,
              'phone'=> $request->phone,
              'city'=> $request->city,
+             'payment_type'=> $request->payment_type,
+             'total_payment_amount'=>  env('SUBSCRIPTION_AMOUNT')??12000,
          ]);
 
         $token = GetAuthToken::make()->handle();
-
 
         $order = CreateOrder::make()->handle($clientOrderPay->id,$token);
 

@@ -10,8 +10,16 @@ use Illuminate\Notifications\Notifiable;
 class ClientPayOrder extends Model
 {
     use CrudTrait, Notifiable;
-   protected $fillable = ['name', 'email','age', 'is_paid','phone', 'city'];
+   protected $fillable = ['name', 'email','payment_type','total_payment_amount','age', 'is_paid','phone', 'city'];
 
+   # payment types
+   const ONE_TIME = 'one_time';
+   const INSTALLMENTS = 'installments';
+
+   public static array $paymentTypes = [
+       self::ONE_TIME,
+       self::INSTALLMENTS
+   ];
 
     /**
      * @return HasMany

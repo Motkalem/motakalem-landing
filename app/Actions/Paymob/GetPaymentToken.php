@@ -2,6 +2,7 @@
 
 namespace App\Actions\Paymob;
 
+use App\Models\ClientPayOrder;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -15,15 +16,15 @@ class GetPaymentToken
         $order_id = $order->id ;
 
         $name =$clientOrderPay->name;
-        $amount = env('SUBSCRIPTION_AMOUNT')??12000;
 
+        $amount = env('SUBSCRIPTION_AMOUNT')??12000;
 
         $billingData = [
             "apartment" => "803",
             "email" => "claudette09@exa2.com",
             "floor" => "42",
             "first_name" =>$name ,
-            "street" => "Ethan Land",
+            "street" => "Riyad",
             "building" => "8028",
             "phone_number" => "+966".$clientOrderPay->phone ,
             "shipping_method" => "PKG",
@@ -43,6 +44,13 @@ class GetPaymentToken
             "currency" => "SAR",
             "integration_id" => env('PAYMOB_INTEGRATION_ID'),
         ];
+
+        if(request()->payment_type == ClientPayOrder::INSTALLMENTS){
+
+            $data =  array_merge($data, [
+                "integration_id" => env('TABBY_PAYMOB_INTEGRATION_ID'),
+            ]);
+        }
 
 
         $ch = curl_init();

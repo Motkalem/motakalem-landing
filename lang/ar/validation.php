@@ -64,8 +64,8 @@ return [
         'string' => 'الـ :attribute يجب ان يكون اكبر من او يساوي :value حروفٍ/حرفًا.',
     ],
     'image' => 'يجب أن يكون الحقل :attribute صورةً',
-    'in' => 'الحقل :attribute لاغٍ',
-    'in_array' => 'الحقل :attribute غير موجود في :other.',
+    'in' => ':attribute غير موجود.',
+    'in_array' => ':attribute غير موجود في :other.',
     'integer' => 'يجب أن يكون الحقل :attribute عددًا صحيحًا',
     'ip' => 'يجب أن يكون الحقل :attribute عنوان IP ذا بُنية صحيحة',
     'ipv4' => 'يجب أن يكون الحقل :attribute عنوان IPv4 ذا بنية صحيحة.',
@@ -206,6 +206,7 @@ return [
         'q'                     => 'البحث',
         'link'                  => ' ',
         'slug'                  => ' ',
+        'payment_type'                  => 'نوع الدفع',
     ],
 
 ];
