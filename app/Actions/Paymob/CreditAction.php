@@ -17,12 +17,13 @@ class CreditAction
     {
 
 
-       return $rules =  [
+       return    [
             'name'=>'required|string',
             'age'=>'required|numeric|min:10|max:100',
             'phone'=>'required|digits:10',
             'email'=>'required|email',
             'city'=>'required|string',
+            'clienttermsConsent'=>'required|boolean',
             'payment_type'=>'required|in:'.implode(',',array_values(ClientPayOrder::$paymentTypes)),
         ];
     }
