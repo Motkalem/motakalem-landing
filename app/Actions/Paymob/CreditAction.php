@@ -24,7 +24,7 @@ class CreditAction
             'email'=>'required|email',
             'city'=>'required|string',
             'clienttermsConsent'=>'required|boolean',
-            'payment_type'=>'required|in:'.implode(',',array_values(ClientPayOrder::$paymentTypes)),
+            'payment_type'=>'nullable|in:'.implode(',',array_values(ClientPayOrder::$paymentTypes)),
         ];
     }
 
@@ -39,7 +39,7 @@ class CreditAction
              'age'=> $request->age,
              'phone'=> $request->phone,
              'city'=> $request->city,
-             'payment_type'=> $request->payment_type,
+             'payment_type'=> $request->payment_type??'one_time',
              'total_payment_amount'=>  env('SUBSCRIPTION_AMOUNT')??12000,
          ]);
 

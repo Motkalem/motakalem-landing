@@ -207,6 +207,7 @@ return [
         'link'                  => ' ',
         'slug'                  => ' ',
         'payment_type'                  => 'نوع الدفع',
+        'clienttermsConsent'                  => 'الموافقة علي الشروط والاحكام',
     ],
 
 ];
