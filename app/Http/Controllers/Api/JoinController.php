@@ -50,9 +50,14 @@ class JoinController extends Controller
 
         ]);
 
-        $row = ParentContract::create(array_merge($vlaidated,['accept_terms'=>true]));
+        $row = ParentContract::create(array_merge($vlaidated,['accept_terms']));
 
         $this->notifyClient( $row);
+
+        return [
+            'status'=>1,
+            'message'=>'تم إرسال العقد الي البريد الإلكتروني الخاص بكم '
+        ];
     }
 
 
