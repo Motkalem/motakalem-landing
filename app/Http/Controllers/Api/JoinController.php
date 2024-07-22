@@ -32,40 +32,36 @@ class JoinController extends Controller
 
     public function sendContract(Request $request)
     {
-
-
-        $vlaidated = $request->validate([
-            'email' => 'email|required',
+        $validated = $request->validate([
+            'email' => 'required|email',
             'name' => 'required|string',
             'age' => 'required|integer',
             'phone' => 'required|string',
             'city' => 'required|string',
             'id_number' => 'required|digits:10',
-            'id_end' => ['required','date',
-            function ($attribute, $value, $fail) {
+            'id_end' => ['required', 'date', function ($attribute, $value, $fail) {
                 if (strtotime($value) <= strtotime(now())) {
                     $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
                 }
-            },],
-
+            }],
+            //'accept_terms' => 'required|boolean',
         ]);
 
-        $row = ParentContract::create(array_merge($vlaidated,['accept_terms']));
+        $contract = ParentContract::create(array_merge($validated,['accept_terms']));
 
-        $this->notifyClient( $row);
+        /*$contract = ParentContract::firstOrCreate(
+            ['phone' => $validated['phone']],
+            $validated
+        );*/
 
-        return [
-            'status'=>1,
-            'message'=>'تم إرسال العقد الي البريد الإلكتروني الخاص بكم '
-        ];
+        return $contract;
     }
+
 
 
     public function notifyClient( $row): void
     {
-
         try {
-
             Notification::route('mail', $row->email)
             ->notify(new  SendContractNotification($row));
         }
