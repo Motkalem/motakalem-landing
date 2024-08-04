@@ -7,7 +7,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
-class ClientPayOrder extends Model
+class Student extends Model
 {
     use CrudTrait, Notifiable;
    protected $fillable = ['name', 'email','payment_type','total_payment_amount','age', 'is_paid','phone', 'city'];

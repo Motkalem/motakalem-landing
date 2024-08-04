@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>
+        عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
+
+    </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
@@ -58,11 +61,12 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-spacing:0px;font-family:Cairo,Geneva,sans-serif" bgcolor="#FFFFFF">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                            style="border-spacing:0px;font-family:Cairo,Geneva,sans-serif;padding-left:10px" bgcolor="#FFFFFF">
                                                 <tbody>
                                                     <tr>
                                                         <td colspan="4" align="right" style="padding:20px;font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
-                                                            <p align="center" style="font-weight:bold;font-size:38px;text-align:center;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
+                                                            <p align="center" style="font-weight:bold;font-size:20px;text-align:center;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
                                                                 عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
                                                             </p>
                                                             <hr/>
@@ -203,13 +207,13 @@
 
                                                             </ul>
                                                             <br/>
-                                                            <p style="font-family:Cairo,Geneva,sans-serif; padding-right:10px">
+                                                            <p style="font-family:Cairo,Geneva,sans-serif; padding-right:20px; padding-left:20px">
                                                                 توقيع الطرف الأول:   {{data_get($data, 'name')}}
                                                                 <br/>
                                                                 توقيع الطرف الثاني:  شركة متكلم الطبية، وعنوانها: جدة، حي الورود.
                                                             </p>
                                                             <br/>
-                                                            <p style="font-family:Cairo,Geneva,sans-serif; padding-right:10px">
+                                                            <p style="font-family:Cairo,Geneva,sans-serif;padding-right:20px; padding-left:20px"; padding-right:20px>
                                                                 للمزيد من المعلومات، يمكنكم زيارة موقعنا على الرابط التالي:
                                                                 <br/>
                                                                 <br/>

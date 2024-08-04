@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\CPU\Mhelper;
-use App\Http\Requests\ClientPayOrderRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Validation\Rule;
 /**
- * Class ClientPayOrderCrudController
+ * Class StudentCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class ClientPayOrderCrudController extends CrudController
+class StudentCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
       use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+      use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+      use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+      use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -24,9 +26,9 @@ class ClientPayOrderCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\ClientPayOrder::class);
+        CRUD::setModel(\App\Models\Student::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/client-pay-order');
-        CRUD::setEntityNameStrings(Mhelper::t(('registered client')), Mhelper::t(('registered clients')));
+        CRUD::setEntityNameStrings(Mhelper::t(('student')), Mhelper::t(('students')));
     }
 
     /**
@@ -41,6 +43,7 @@ class ClientPayOrderCrudController extends CrudController
             'name' => 'id',
             'type' => 'text',
             'label' => __('client ID'),
+
         ]);
         CRUD::addColumn([
             'name' => 'name',
@@ -69,11 +72,7 @@ class ClientPayOrderCrudController extends CrudController
             'label' => __('city'),
         ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+
     }
 
     /**
@@ -85,19 +84,18 @@ class ClientPayOrderCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation([
-            // 'name' => 'required|min:2',
+             'name' => 'required|min:2',
+             'age' => 'required|max:100',
+             'phone' => 'required|digits:10|unique:students,phone',
+             'email' => 'required|email|unique:students,email',
+             'city' => 'required|string|max:50',
         ]);
 
-        CRUD::field('name');
-        CRUD::field('age');
-        CRUD::field('phone');
-        CRUD::field('city');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        CRUD::field('name')->label(__('Name'));
+        CRUD::field('age')->label(__('age'));
+        CRUD::field('phone')->label(__('phone'));
+        CRUD::field('email')->type('email')->label(__('Email'));
+        CRUD::field('city')->label(__('city'));
     }
 
     protected function setupShowOperation()
@@ -120,10 +118,15 @@ class ClientPayOrderCrudController extends CrudController
             'label' => __('age'),
           ]);
 
-        CRUD::addColumn([
-            'name'  => 'phone',
-            'label' => __('phone'),
-          ]);
+          CRUD::addColumn([
+              'name'  => 'phone',
+              'label' => __('phone'),
+            ]);
+
+            CRUD::addColumn([
+                'name'  => 'email',
+                'label' => __('Email'),
+              ]);
 
         CRUD::addColumn([
             'name'  => 'city',
@@ -146,6 +149,21 @@ class ClientPayOrderCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+
+        CRUD::setValidation([
+            'name' => 'required|min:2',
+            'age' => 'required|max:100',
+            'phone' => Rule::unique('students', 'phone')->ignore(request('id')),
+            'email' => Rule::unique('students', 'email')->ignore(request('id')),
+            'city' => 'required|string|max:50',
+       ]);
+
+
+       CRUD::field('name')->label(__('Name'));
+       CRUD::field('age')->label(__('age'));
+       CRUD::field('phone')->label(__('phone'));
+       CRUD::field('email')->label(__('email'));
+       CRUD::field('city')->label(__('city'));
+
     }
 }

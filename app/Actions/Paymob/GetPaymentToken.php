@@ -2,8 +2,7 @@
 
 namespace App\Actions\Paymob;
 
-use App\Models\ClientPayOrder;
-use Illuminate\Support\Facades\Log;
+use App\Models\Student;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GetPaymentToken
@@ -45,7 +44,7 @@ class GetPaymentToken
             "integration_id" => env('PAYMOB_INTEGRATION_ID'),
         ];
 
-        if(request()->payment_type == ClientPayOrder::INSTALLMENTS){
+        if(request()->payment_type == Student::INSTALLMENTS){
 
             $data =  array_merge($data, [
                 "integration_id" => env('TABBY_PAYMOB_INTEGRATION_ID'),

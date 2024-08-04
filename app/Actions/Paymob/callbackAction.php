@@ -2,7 +2,7 @@
 
 namespace App\Actions\Paymob;
 
- use App\Models\ClientPayOrder;
+ use App\Models\Student;
  use App\Models\Transaction;
  use App\Notifications\SuccessSubscriptionPaidNotification;
  use Illuminate\Notifications\Notification;
@@ -68,7 +68,7 @@ class callbackAction
                     'data' => $data,
                 ]);
 
-                    $client_pay_order = ClientPayOrder::where('id' ,$client_pay_order_id)->first();
+                    $client_pay_order = Student::where('id' ,$client_pay_order_id)->first();
                 if (($transaction->success == "true") || ($transaction->success === true))
                 {
                     if ($client_pay_order ){

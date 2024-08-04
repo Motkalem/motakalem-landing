@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\ClientPayOrder;
+use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::table('client_pay_orders', function (Blueprint $table) {
 
-            $table->string('payment_type')->after('email')->default(ClientPayOrder::ONE_TIME);
+            $table->string('payment_type')->after('email')->default(Student::ONE_TIME);
         });
 
         Schema::table('client_pay_orders', function (Blueprint $table) {

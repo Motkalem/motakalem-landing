@@ -4,7 +4,7 @@ namespace App\Actions\Paymob;
 
  use App\Actions\Paymob\GetAuthToken;
 use App\Actions\Paymob\GetPaymentToken;
- use App\Models\ClientPayOrder;
+ use App\Models\Student;
  use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -24,14 +24,14 @@ class CreditAction
             'email'=>'required|email',
             'city'=>'required|string',
             'clienttermsConsent'=>'required|boolean',
-            'payment_type'=>'nullable|in:'.implode(',',array_values(ClientPayOrder::$paymentTypes)),
+            'payment_type'=>'nullable|in:'.implode(',',array_values(Student::$paymentTypes)),
         ];
     }
 
     public function handle(ActionRequest $request): array
     {
 
-         $clientOrderPay = ClientPayOrder::query()->firstOrCreate([
+         $clientOrderPay = Student::query()->firstOrCreate([
              'phone'=> $request->phone,
          ], [
              'name'=> $request->name,

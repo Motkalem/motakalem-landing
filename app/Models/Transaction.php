@@ -17,6 +17,6 @@ class Transaction extends Model
      */
     public function transations()
     {
-        return $this->belongsTo(ClientPayOrder::class);
+        return $this->belongsTo(Student::class);
     }
 }

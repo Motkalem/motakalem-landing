@@ -38,8 +38,8 @@
   'contacts' => 'الاتصالات',
   'Client pay orders' => 'عملاء قاموا بالتسجيل',
   'Client pay order' => 'عميل قاموا بالتسجيل',
-  'registered client' => 'العميل المسجلين',
-  'registered clients' => 'العملاء المسجلين',
+  'student' => 'الطالب',
+  'students' => 'الطلاب',
   'client' => 'العميل',
   'status' => 'الحالة',
   'amount' => 'المبلغ',
@@ -49,4 +49,5 @@
   'transaction' => 'المعاملة المالية',
   'transactions' => 'المعاملات المالية',
   'client ID' => 'Client ID',
+  'Email' => 'Email',
 );
