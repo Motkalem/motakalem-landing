@@ -23,6 +23,7 @@ class TransactionCrudController extends CrudController
      */
     public function setup()
     {
+       
         CRUD::setModel(\App\Models\Transaction::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
         CRUD::setEntityNameStrings(Mhelper::t('transaction'), Mhelper::t('transactions'));

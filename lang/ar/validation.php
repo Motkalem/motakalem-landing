@@ -208,6 +208,9 @@ return [
         'slug'                  => ' ',
         'payment_type'                  => 'نوع الدفع',
         'clienttermsConsent'                  => 'الموافقة علي الشروط والاحكام',
+        'installment_value' => 'قيمة القسط',
+        'number_of_months' => 'عدد الشهور',
+        'is_active' => 'الحالة',
     ],
 
 ];
