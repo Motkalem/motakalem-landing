@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 
     <style>
-        p,div,td,span,h1,h2,h3,h4,h5,h6,button {
+        p,div,td,span,h1,h2,h3,h4,h5,h6,button,label {
             font-family: "Cairo", sans-serif;
             font-optical-sizing: auto;
             font-weight: <weight>;

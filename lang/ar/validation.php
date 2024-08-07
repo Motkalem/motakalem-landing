@@ -211,6 +211,10 @@ return [
         'installment_value' => 'قيمة القسط',
         'number_of_months' => 'عدد الشهور',
         'is_active' => 'الحالة',
+        'package_id' => 'الباقة',
+        'student_id' => 'الطالب',
+        'payment_url' => 'رابط الدفع',
+        'total_payment_amount'=> 'اجمالي المبلغ المدفوع'
     ],
 
 ];

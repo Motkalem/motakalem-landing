@@ -62,7 +62,7 @@ class callbackAction
             if ($hased == $hmac) {
                 $transaction = Transaction::query()->create([
                     'transaction_id' => data_get($data, 'id'),
-                    'client_pay_order_id' => $client_pay_order_id,
+                    'student_id' => $client_pay_order_id,
                      'success' => data_get($data, 'success'),
                     'amount' => data_get($data, 'amount_cents') / 100,
                     'data' => $data,

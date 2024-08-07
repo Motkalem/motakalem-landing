@@ -21,19 +21,72 @@
             </div>
         </div>
         <ul class="sidebar-menu scrollable pos-r">
-            <li class="nav-item mT-30 actived">
-                <a class="sidebar-link" href="{{route('dashboard.index')}}"><span class="icon-holder">
-                    <i class="c-blue-500 ti-home"></i>
-                </span><span class="title">داشبورد</span>
+            <li class="nav-item mT-30 {{ Route::currentRouteName() == 'dashboard.index' ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-blue-500 ti-home"></i>
+                    </span>
+                    <span class="title">داشبورد</span>
                 </a>
-             </li>
+            </li>
 
-             <li class="nav-item mT-10 ">
-                <a class="sidebar-link" href="{{route('dashboard.packages.index')}}"><span class="icon-holder">
-                    <i class="c-indigo-500 ti-bar-chart"></i>
-                </span><span class="title">{{__('packages')}}</span>
+            <li class="nav-item mT-10 {{ Request::routeIs('dashboard.packages.index') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.packages.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-package"></i>
+                    </span>
+                    <span class="title">{{ __('packages') }}</span>
                 </a>
-             </li>
+            </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.payments.index')
+            ||
+             Request::routeIs('dashboard.payments.create')
+             ||
+            Request::routeIs('dashboard.payments.edit')
+
+             ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.payments.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-money"></i>
+                    </span>
+                    <span class="title">{{ __('Payments') }}</span>
+                </a>
+            </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.transactions.index')
+            ||
+             Request::routeIs('dashboard.transactions.show')
+
+             ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.transactions.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-credit-card"></i>
+                    </span>
+                    <span class="title">{{ __('Transactions') }}</span>
+                </a>
+            </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.students.index')
+            ||
+             Request::routeIs('dashboard.students.show')
+            ||
+             Request::routeIs('dashboard.students.create')
+            ||
+             Request::routeIs('dashboard.students.edit')
+
+             ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.students.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-user"></i>
+                    </span>
+                    <span class="title">{{ __('Students') }}</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>
