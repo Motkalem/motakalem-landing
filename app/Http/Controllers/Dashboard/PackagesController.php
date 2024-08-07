@@ -12,12 +12,17 @@ class PackagesController extends AdminBaseController
     public function index()
     {
         $packages = Package::orderBy('id', 'desc')->paginate(12);
-        return view('admin.packages.index', compact('packages'));
+        $title= 'الباقات';
+
+        return view('admin.packages.index',
+         compact('packages','title'));
     }
 
     public function create()
     {
-        return view('admin.packages.create');
+        $title= 'إنشاء باقة';
+
+        return view('admin.packages.create',compact('title'));
     }
 
     public function store(Request $request)
@@ -44,8 +49,11 @@ class PackagesController extends AdminBaseController
 
     public function edit($id)
     {
+        $title= 'تحديث الباقة';
+
         $package = Package::findOrFail($id);
-        return view('admin.packages.edit', compact('package'));
+        return view('admin.packages.edit',
+         compact('package','title'));
     }
 
     public function update(Request $request, $id)

@@ -10,13 +10,18 @@ class StudentsController extends AdminBaseController
 {
     public function index()
     {
+        $title = 'الطلاب';
+
         $students = Student::orderBy('id', 'desc')->paginate(12);
-        return view('admin.students.index', compact('students'));
+        return view('admin.students.index',
+         compact('students','title'));
     }
 
     public function create()
     {
-        return view('admin.students.create');
+
+        $title = 'إضافة طالب جديد';
+        return view('admin.students.create',compact( 'title'));
     }
 
     public function store(Request $request)
@@ -27,7 +32,7 @@ class StudentsController extends AdminBaseController
             'payment_type' => 'required|string|max:255',
             'total_payment_amount' => 'required|numeric',
             'age' => 'required|integer',
-            'is_paid' => 'sometimes|boolean',
+            'is_paid' => 'sometimes',
             'phone' => 'required|string|max:20',
             'city' => 'required|string|max:255',
         ]);
@@ -50,8 +55,11 @@ class StudentsController extends AdminBaseController
 
     public function edit($id)
     {
+        $title = ' تعديل طالب ';
+
         $student = Student::findOrFail($id);
-        return view('admin.students.edit', compact('student'));
+        return view('admin.students.edit',
+         compact('student','title'));
     }
 
     public function update(Request $request, $id)
@@ -62,7 +70,7 @@ class StudentsController extends AdminBaseController
             'payment_type' => 'required|string|max:255',
             'total_payment_amount' => 'required|numeric',
             'age' => 'required|integer',
-            'is_paid' => 'sometimes|boolean',
+            'is_paid' => 'sometimes',
             'phone' => 'required|string|max:20',
             'city' => 'required|string|max:255',
         ]);
@@ -84,8 +92,11 @@ class StudentsController extends AdminBaseController
 
     public function show($id)
     {
+        $title = 'عرض طالب ';
+
         $student = Student::findOrFail($id);
-        return view('admin.students.show', compact('student'));
+        return view('admin.students.show',
+         compact('student','title'));
     }
 
     public function destroy($id)

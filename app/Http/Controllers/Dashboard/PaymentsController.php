@@ -12,18 +12,25 @@ class PaymentsController extends AdminBaseController
 {
     public function index()
     {
+        $title= 'المدفوعات';
+
         $payments = Payment::with(['student', 'package'])->orderBy('id', 'desc')->paginate(12);
         $students = Student::all();
         $packages = Package::all();
 
-        return view('admin.payments.index', compact('payments', 'students', 'packages'));
+        return view('admin.payments.index',
+         compact('payments',
+          'students','title', 'packages'));
     }
 
     public function create()
     {
+        $title= 'إنشاء دفعة جديدة';
         $students = Student::all();
         $packages = Package::all();
-        return view('admin.payments.create', compact('students', 'packages'));
+        return view('admin.payments.create',
+         compact('students',
+         'title', 'packages'));
     }
 
     public function store(Request $request)
@@ -32,7 +39,7 @@ class PaymentsController extends AdminBaseController
             'student_id' => 'required|exists:students,id',
             'package_id' => 'required|exists:packages,id',
             'payment_type' => 'required|string|max:255',
-            'is_finished' => 'sometimes|boolean',
+            'is_finished' => 'sometimes',
         ]);
 
         $payment = new Payment([
@@ -51,10 +58,12 @@ class PaymentsController extends AdminBaseController
 
     public function edit($id)
     {
+        $title = 'تحديث الدفعة';
         $payment = Payment::findOrFail($id);
         $students = Student::all();
         $packages = Package::all();
-        return view('admin.payments.edit', compact('payment', 'students', 'packages'));
+        return view('admin.payments.edit',
+         compact('payment','title', 'students', 'packages'));
     }
 
     public function update(Request $request, $id)
