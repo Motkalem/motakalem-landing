@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Route;
 // Admin Routes
 // --------------------------
 
+Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage' );
+
+Route::get('checkout/result',  function(){
+
+    return request()->all();
+});
 Route::group([
     'prefix'     =>  'admin',
     'middleware' => ['web', 'admin'],
@@ -15,7 +21,6 @@ Route::group([
 
 
     Route::get('panel', 'DashboardController@index')->name('index');
-
 
         Route::resource( 'packages', 'PackagesController');
         Route::resource( 'payments', 'PaymentsController');

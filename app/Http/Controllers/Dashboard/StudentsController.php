@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudentsController extends AdminBaseController
 {
@@ -66,12 +67,12 @@ class StudentsController extends AdminBaseController
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email,' . $id,
+            'email' => ['required','email',Rule::unique('students', 'email')->ignore($id)],
+            'phone' => ['required',Rule::unique('students', 'phone')->ignore($id)],
             'payment_type' => 'required|string|max:255',
             'total_payment_amount' => 'required|numeric',
             'age' => 'required|integer',
             'is_paid' => 'sometimes',
-            'phone' => 'required|string|max:20',
             'city' => 'required|string|max:255',
         ]);
 

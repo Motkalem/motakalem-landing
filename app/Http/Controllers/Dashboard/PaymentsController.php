@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\Helper;
 use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Package;
 use App\Models\Payment;
@@ -92,8 +93,7 @@ class PaymentsController extends AdminBaseController
     public function destroy($id)
     {
         $payment = Payment::findOrFail($id);
-        $payment->delete();
-        notify()->success('تم حذف الدفعة بنجاح.');
+        Helper::tryDelete($payment);
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment deleted successfully.');
     }
 }

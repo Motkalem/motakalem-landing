@@ -41,9 +41,9 @@
                         <a class="btn btn-info btn-sm" href="{{ route('dashboard.students.edit', $student->id) }}">
                             تعديل
                         </a>
-                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $student->id }}">
+                        {{-- <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $student->id }}">
                             حذف
-                        </button>
+                        </button> --}}
                     </td>
                 </tr>
                 @endforeach

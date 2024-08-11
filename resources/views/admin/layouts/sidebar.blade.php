@@ -29,7 +29,23 @@
                     <span class="title">داشبورد</span>
                 </a>
             </li>
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.students.index')
+            ||
+             Request::routeIs('dashboard.students.show')
+            ||
+             Request::routeIs('dashboard.students.create')
+            ||
+             Request::routeIs('dashboard.students.edit')
 
+             ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.students.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-user"></i>
+                    </span>
+                    <span class="title">{{ __('Students') }}</span>
+                </a>
+            </li>
             <li class="nav-item mT-10 {{
              Request::routeIs('dashboard.packages.index')
              ||
@@ -74,25 +90,6 @@
                     <span class="title">{{ __('Transactions') }}</span>
                 </a>
             </li>
-
-            <li class="nav-item mT-10
-            {{ Request::routeIs('dashboard.students.index')
-            ||
-             Request::routeIs('dashboard.students.show')
-            ||
-             Request::routeIs('dashboard.students.create')
-            ||
-             Request::routeIs('dashboard.students.edit')
-
-             ? 'bg-light m-3' : '' }}">
-                <a class="sidebar-link" href="{{ route('dashboard.students.index') }}">
-                    <span class="icon-holder">
-                        <i class="c-indigo-500 ti-user"></i>
-                    </span>
-                    <span class="title">{{ __('Students') }}</span>
-                </a>
-            </li>
-
         </ul>
     </div>
 </div>

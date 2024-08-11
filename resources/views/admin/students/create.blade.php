@@ -36,9 +36,8 @@
                 <div class="col-sm-10">
                     <select class="form-select @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" required>
                         <option value="">اختر نوع الدفع</option>
-                        <option value="cash" {{ old('payment_type') == 'cash' ? 'selected' : '' }}>نقداً</option>
-                        <option value="credit_card" {{ old('payment_type') == 'credit_card' ? 'selected' : '' }}>بطاقة ائتمان</option>
-                        <option value="bank_transfer" {{ old('payment_type') == 'bank_transfer' ? 'selected' : '' }}>تحويل بنكي</option>
+                        <option value="{{\App\Models\Student::ONE_TIME}}" {{ old('payment_type') == \App\Models\Student::ONE_TIME ? 'selected' : '' }}>دفعة واحدة</option>
+                        <option value="{{\App\Models\Student::INSTALLMENTS}}" {{ old('payment_type') == \App\Models\Student::INSTALLMENTS ? 'selected' : '' }}>  اقساط</option>
                         <!-- Add more options as needed -->
                     </select>
                     @error('payment_type')

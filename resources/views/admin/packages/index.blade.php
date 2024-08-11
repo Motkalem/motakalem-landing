@@ -18,9 +18,11 @@
                 <thead>
                     <tr>
                         <th style="width: 20%">اسم الباقة</th>
-                        <th style="width: 30%">الحالة</th>
+                        <th>الحالة</th>
+                        <th>نوع الدفع</th>
                         <th>عدد الشهور</th>
                         <th>القسط الشهري</th>
+                        <th>الإجمالي</th>
                         <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -28,15 +30,26 @@
                     @foreach($packages as $package)
                     <tr>
                         <td>{{ $package->name }}</td>
-                        <td>
+                        <td>{{ $package->payment_type == 'one_time' ? 'دفع مرة واحدة' : 'أقساط' }}</td>
+                        <td class="text-center">
                             @if($package->is_active)
                             <span class="text-success text-bold">نشط</span>
                             @else
                             <span class="text-danger text-bold">غير نشط</span>
                             @endif
                         </td>
-                        <td><span class="text-success">{{ $package->number_of_months }}</span></td>
-                        <td class="project_progress"><span class="text-success">{{ $package->installment_value }}</span></td>
+                        <td class="text-center">
+                            <span >{{  $package->number_of_months == null ? '---': $package->number_of_months }}</span>
+                        </td>
+                        <td class="text-center project_progress">
+                            <span  >
+                            {{$package->installment_value == null ? '---' : $package->installment_value.' '.__('SAR') }}</span>
+                        </td>
+
+                        <td class="text-center project_progress ">
+                            <span >
+                            {{$package->total == null ? '---' : $package->total.' '.__('SAR') }}</span>
+                        </td>
                         <td class="text-right project-actions">
                             <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.packages.edit', $package->id) }}">
                                 تعديل

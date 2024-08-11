@@ -63,7 +63,9 @@
     "Transactions": "المعاملات المالية",
     "Show": "عرض",
     "SAR": "ريال",
-    "Students":"الطلاب"
+    "Students":"الطلاب",
+    "Deleted successfully":"تم الحذف",
+    "Can not deleted": "لايمكن حذفه"
 
 
 }

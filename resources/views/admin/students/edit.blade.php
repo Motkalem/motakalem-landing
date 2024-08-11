@@ -35,7 +35,12 @@
             <div class="mb-3 row">
                 <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" value="{{ old('payment_type', $student->payment_type) }}" placeholder="نوع الدفع" required>
+                    <select class="form-select @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" required>
+                        <option value="">اختر نوع الدفع</option>
+                        <option value="{{\App\Models\Student::ONE_TIME}}" {{ $student->payment_type == \App\Models\Student::ONE_TIME ? 'selected' : '' }}>دفعة واحدة</option>
+                        <option value="{{\App\Models\Student::INSTALLMENTS}}" {{  $student->payment_type == \App\Models\Student::INSTALLMENTS ? 'selected' : '' }}>  اقساط</option>
+                        <!-- Add more options as needed -->
+                    </select>
                     @error('payment_type')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -62,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            {{-- <div class="mb-3 row">
                 <label for="is_paid" class="form-label col-sm-2 col-form-label">مدفوع</label>
                 <div class="col-sm-10">
                     <div class="form-check">
@@ -73,7 +78,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
 
             <div class="mb-3 row">
                 <label for="phone" class="form-label col-sm-2 col-form-label">الهاتف</label>

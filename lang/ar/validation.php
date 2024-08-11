@@ -214,7 +214,8 @@ return [
         'package_id' => 'الباقة',
         'student_id' => 'الطالب',
         'payment_url' => 'رابط الدفع',
-        'total_payment_amount'=> 'اجمالي المبلغ المدفوع'
+        'total_payment_amount'=> 'اجمالي المبلغ المدفوع',
+        'total'=> 'الإجمالي',
     ],
 
 ];
