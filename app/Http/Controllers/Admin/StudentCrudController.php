@@ -15,9 +15,9 @@ class StudentCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
       use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-      use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-      use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-      use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+      #use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+      #use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+      #use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -70,6 +70,12 @@ class StudentCrudController extends CrudController
             'name' => 'city',
             'type' => 'text',
             'label' => __('city'),
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'created_at',
+            'type' => 'text',
+            'label' => __('created at'),
         ]);
 
 
