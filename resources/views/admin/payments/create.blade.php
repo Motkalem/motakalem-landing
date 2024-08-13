@@ -1,6 +1,7 @@
 @extends('admin.layouts.master')
 
 @push('styles')
+
     <link href="{{ asset('admin/table.css') }}" rel="stylesheet" />
 @endpush
 
@@ -44,25 +45,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="payment_type" name="payment_type" placeholder="نوع الدفع" value="{{ old('payment_type') }}">
-                    @error('payment_type')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="is_finished" class="form-label col-sm-2 col-form-label">هل اكتمل</label>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="is_finished" name="is_finished" {{ old('is_finished') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_finished">إضغط للتنشيط</label>
-                    </div>
-                </div>
-            </div>
-
+    
             <div class="mb-3 row">
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary btn-color">حفظ الدفعة</button>

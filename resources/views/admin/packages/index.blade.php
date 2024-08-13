@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @push('styles')
-<link href="{{ asset('admin/table.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/table.css') }}" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -42,7 +42,7 @@
                             <span >{{  $package->number_of_months == null ? '---': $package->number_of_months }}</span>
                         </td>
                         <td class="text-center project_progress">
-                            <span  >
+                            <span>
                             {{$package->installment_value == null ? '---' : $package->installment_value.' '.__('SAR') }}</span>
                         </td>
 

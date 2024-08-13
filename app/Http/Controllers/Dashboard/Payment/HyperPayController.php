@@ -24,78 +24,33 @@ class HyperPayController extends Controller
                 'numeric',
                 'regex:/^\d+(\.\d{1,2})?$/'
             ],
-            'payment_method' => 'required|in:VISA,MASTER,MADA,APPLEPAY',
         ]);
 
         $total_price = $this->priceFormatting($request['total_price']);
 
-        if ($validator->fails()) {
-            $errorMessage = $validator->errors()->first();
-            return 'validator failed';
-        }
-
-        Log::notice('=== Request Parameter == ',$request->all());
-
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
-        if($request->payment_method == 'MADA'){
 
-            $entitiy_id = config('hyperpay.entity_id_mada');
-        }elseif($request->payment_method == 'APPLEPAY'){
-            $entitiy_id = config('hyperpay.entity_id_apple_pay');
-            $access_token = config('hyperpay.access_token_apple_pay');
-        }
-        $url = config('hyperpay.link')."checkouts";
+        $url = "https://eu-test.oppwa.com/v1/checkouts";
 
-        $user = Auth::user();
-        $timestamp = Carbon::now()->timestamp;
-        $micro_time = microtime(true);
-        $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
-
-        $customer_email = $user->email ?? $user->username.'@email.com';
-        $billing_street1 = $user->street ?? '123 Test Street';
-        $billing_city = $user->city ?? 'Jeddah';
-        $billing_state = $user->state ?? 'JED';
-        $billing_country = $user->country ?? 'SA';
-        $billing_postcode = $user->postcode ?? '22230';
-        $customer_given_name = $user->username ?? 'John';
-        $customer_surname = $user->surname ?? 'Doe';
-
-        $data = "entityId=".$entitiy_id .
-            "&amount=".$total_price .
-            "&currency=".config('hyperpay.currency') .
-            "&paymentType=".config('hyperpay.payment_type') .
-            "&merchantTransactionId=".$unique_transaction_id .
-            "&customer.email=".$customer_email .
-            "&billing.street1=".$billing_street1 .
-            "&billing.city=".$billing_city .
-            "&billing.state=".$billing_state .
-            "&billing.country=".$billing_country .
-            "&billing.postcode=".$billing_postcode .
-            "&customer.givenName=".$customer_given_name .
-            "&customer.surname=".$customer_surname;
+        $data =  $entitiy_id."&amount=".$total_price
+        ."&currency=SAR" ."&paymentType=DB";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER,
-            array('Authorization:Bearer '.$access_token)
-        );
+        array(  'Authorization:Bearer '. $access_token));
+
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if(curl_errno($ch)) {
             return curl_error($ch);
-            // run here ***********
         }
         curl_close($ch);
-        $d = json_decode($responseData);
-
-        Log::notice('=== Checkout ID == ',[$d->id]);
-
-
-        return $d->id;
+        return $responseData;
     }
 
     public function getPaymentStatus(Request $request)

@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th>رقم المعاملة</th>
-                    <th>رقم طلب الدفع</th>
+                    <th>رقم الدفعة  </th>
                     <th>الحالة</th>
                     <th>المبلغ</th>
                      <th style="width: 20%" class="text-center">الإجراءات</th>
@@ -23,7 +23,7 @@
                 @foreach($transactions as $transaction)
                 <tr>
                     <td>{{ $transaction->transaction_id }}</td>
-                    <td>{{ $transaction->client_pay_order_id }}</td>
+                    <td>{{ $transaction->payment_id }}</td>
                   <td class="{{ $transaction->success =='true' ? 'text-success' : 'text-danger'}}">
                     {{ $transaction->success  =='true' ? 'نجاح' : 'فشل' }}
                 </td>

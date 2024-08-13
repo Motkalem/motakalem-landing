@@ -22,7 +22,8 @@
                         <th>نوع الدفع</th>
                         <th>رابط الدفع</th>
                         <th>هل اكتمل</th>
-                        <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
+                        <th>   حالة اخر معاملة</th>
+                        <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody id="paymentsTableBody">
@@ -30,8 +31,10 @@
                     <tr>
                         <td>{{ $payment->student->name }}</td>
                         <td>{{ $payment->package->name }}</td>
-                        <td>{{ $payment->payment_type }}</td>
-                        <td>{{ $payment->payment_url }}</td>
+                        <td>{{ $payment->package?->payment_type == 'one time' ? 'مرة واحدة' : 'اقساط' }}</td>
+                        <td>
+                            <button class="btn btn-link" onclick="copyToClipboard('{{ $payment->payment_url }}')" title="{{$payment->payment_url}}">   نسخ الرابط</button>
+                        </td>
                         <td>
                             @if($payment->is_finished)
                             <span class="text-success text-bold">نعم</span>
@@ -39,7 +42,26 @@
                             <span class="text-danger text-bold">لا</span>
                             @endif
                         </td>
+
+                        <td>
+                            @if($payment->transactions()->latest()->first()?->success == 'true')
+
+                                <span class="text-success text-bold">نجاح</span>
+                            @else
+                                <span class="text-danger text-bold">فشل</span>
+                            @endif
+                        </td>
                         <td class="text-center project-actions">
+
+                            @if(!$payment->is_finished == true
+                            && $payment->transactions()->latest()->first()?->success == 'false'
+                            && $payment->package?->payment_type == 'one time'
+                            )
+
+                                <a href="{{ route('dashboard.payments.update-payment-url', $payment->id) }}" class="px-4 btn bg-green btn-sm">
+                                    تحديث رابط الدفع
+                                </a>
+                            @endif
                             <a href="{{ route('dashboard.payments.edit', $payment->id) }}" class="px-4 btn btn-info btn-sm">
                                 تعديل
                             </a>
@@ -80,6 +102,14 @@
 
 @push('scripts')
 <script>
+    function copyToClipboard(url) {
+        navigator.clipboard.writeText(url).then(function() {
+            alert('Link copied to clipboard');
+        }, function(err) {
+            alert('Failed to copy: ', err);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         var deleteModal = document.getElementById('deleteModal');
         deleteModal.addEventListener('show.bs.modal', function (event) {

@@ -14,7 +14,7 @@
         <form method="POST" action="{{ route('dashboard.payments.update', $payment->id) }}">
             @csrf
             @method('PUT')
-
+{{--
             <div class="mb-3 row">
                 <label for="student_id" class="form-label col-sm-2 col-form-label">اسم الطالب</label>
                 <div class="col-sm-10">
@@ -28,8 +28,8 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-
+            </div> --}}
+{{--
             <div class="mb-3 row">
                 <label for="package_id" class="form-label col-sm-2 col-form-label">اسم الباقة</label>
                 <div class="col-sm-10">
@@ -43,44 +43,44 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="payment_type" name="payment_type" placeholder="نوع الدفع" value="{{ old('payment_type', $payment->payment_type) }}">
-                    @error('payment_type')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="payment_url" class="form-label col-sm-2 col-form-label">رابط الدفع</label>
-                <div class="col-sm-10">
-                    <input type="url" class="form-control" disabled id="payment_url" name="payment_url" placeholder="رابط الدفع" value="{{ old('payment_url', $payment->payment_url) }}">
-                    @error('payment_url')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
+            </div> --}}
 
             <div class="mb-3 row">
                 <label for="is_finished" class="form-label col-sm-2 col-form-label">هل اكتمل</label>
                 <div class="col-sm-10">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="is_finished" name="is_finished" {{ old('is_finished', $payment->is_finished) ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" id="is_finished" name="is_finished" {{ $payment->is_finished ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_finished">إضغط للتنشيط</label>
                     </div>
                 </div>
             </div>
 
             <div class="mb-3 row">
+                <label for="payment_url" class="form-label col-sm-2 col-form-label">رابط الدفع</label>
+                <div class="col-sm-10">
+                    <button type="button" class="p-0 btn btn-link" id="copyLinkButton" title={{$payment->payment_url}}>نسخ الرابط</button>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
                 <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-primary btn-color">تحديث الدفعة</button>
+                    <button type="submit" class="btn btn-primary btn-color">تحديث    </button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById('copyLinkButton').addEventListener('click', function() {
+        const paymentUrl = "{{ $payment->payment_url }}";
+        navigator.clipboard.writeText(paymentUrl).then(function() {
+            alert('تم نسخ الرابط إلى الحافظة');
+        }, function(err) {
+            alert('Failed to copy: ', err);
+        });
+    });
+</script>
+@endpush

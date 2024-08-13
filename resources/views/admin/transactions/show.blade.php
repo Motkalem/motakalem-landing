@@ -21,9 +21,9 @@
         </div>
 
         <div class="mb-3 row">
-            <label for="client_pay_order_id" class="form-label col-sm-2 col-form-label">رقم طلب الدفع</label>
+            <label for="client_pay_order_id" class="form-label col-sm-2 col-form-label">رقم الدفعة</label>
             <div class="col-sm-10">
-                <p class="form-control-plaintext">{{ $transaction->client_pay_order_id }}</p>
+                <p class="form-control-plaintext">{{ $transaction->payment_id }}</p>
             </div>
         </div>
 
@@ -41,6 +41,15 @@
             </div>
         </div>
 
+        <div class="mb-3 row">
+            <label for="amount" class="form-label col-sm-2 col-form-label">ملاحظات</label>
+            <div class="col-sm-10">
+                <h2 class="text-bold lead">{{
+                    data_get(data_get( $transaction->data, 'result'), 'description')
+                }}
+                     </p>
+            </div>
+        </div>
 
     </div>
 </div>

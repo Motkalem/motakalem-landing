@@ -12,10 +12,10 @@ class Helper
         try {
             $row->delete();
 
-            notify()->error(__('Deleted successfully'));
+            notify()->success(__('Deleted successfully'), 'نجاح');
         } catch (\Throwable  $e) {
 
-            notify()->error(__('Can not deleted'));
+            notify()->error(__('Can not deleted'), 'فشل');
             return false;
         }
         return true;

@@ -15,6 +15,6 @@ class Package extends Model
     ];
 
       # payment types
-   const ONE_TIME = 'one_time';
+   const ONE_TIME = 'one time';
    const INSTALLMENTS = 'installments';
 }

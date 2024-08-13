@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Route;
 // Admin Routes
 // --------------------------
 
-Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage' );
+Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage' )->name('checkout.index');
+Route::get('checkout/result/{paymentId}/{studentId}/',  'App\Http\Controllers\PaymentController@getStatus');
 
-Route::get('checkout/result',  function(){
-
-    return request()->all();
-});
 Route::group([
     'prefix'     =>  'admin',
     'middleware' => ['web', 'admin'],
@@ -26,4 +23,8 @@ Route::group([
         Route::resource( 'payments', 'PaymentsController');
         Route::resource('transactions', 'TransactionsController');
         Route::resource('students', 'StudentsController');
+
+        Route::get( 'payments/{id}/update-payment-url', 'PaymentsController@updatePaymentUrl')
+        ->name('payments.update-payment-url');
+
     });

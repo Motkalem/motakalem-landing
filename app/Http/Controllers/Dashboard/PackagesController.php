@@ -22,7 +22,8 @@ class PackagesController extends AdminBaseController
     public function create()
     {
         $title= 'إنشاء باقة';
-        return view('admin.packages.create',compact('title'));
+        return view('admin.packages.create',
+        compact('title'));
     }
 
     public function store(Request $request)
@@ -53,8 +54,8 @@ class PackagesController extends AdminBaseController
 
     public function edit($id)
     {
-        $title= 'تحديث الباقة';
 
+        $title= 'تحديث الباقة';
         $package = Package::findOrFail($id);
         return view('admin.packages.edit',
          compact('package','title'));
@@ -62,7 +63,6 @@ class PackagesController extends AdminBaseController
 
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
