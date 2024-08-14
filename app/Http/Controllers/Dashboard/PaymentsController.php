@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Student;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentsController extends AdminBaseController
 {
@@ -16,8 +17,8 @@ class PaymentsController extends AdminBaseController
     {
         $title = 'المدفوعات';
 
-        $payments = Payment::with(['student', 'package','transactions'])->orderBy('id', 'desc')->paginate(12);
-        
+        $payments = Payment::with(['student', 'package', 'transactions'])->orderBy('id', 'desc')->paginate(12);
+
         return view(
             'admin.payments.index',
             compact(
@@ -54,30 +55,37 @@ class PaymentsController extends AdminBaseController
         $package = Package::find($request->package_id);
         try {
             if ($package->payment_type == Package::ONE_TIME) {
-              $responseData = $this->createCheckoutId($package->total);
+                $responseData = $this->createCheckoutId($package->total);
             }
         } catch (\Throwable $th) {
             //throw $th;
         }
 
-         $payment = Payment::create([
+        $payment = Payment::create([
             'student_id' => $request->student_id,
             'package_id' => $request->package_id,
             'payment_type' => $request->payment_type,
-            'payment_url' =>route('checkout.index')
-            .'?checkoutId='
-            .data_get( json_decode($responseData),"id")
-             .'&studentId='.$request->student_id,
+            'payment_url' => route('checkout.index')
+                . '?pid='
+                . data_get(json_decode($responseData), "id")
+                . '&sid=' . $request->student_id,
             'is_finished' => $request->has('is_finished') ? $request->is_finished : false,
         ]);
 
+        $paymentUrl = route('checkout.index')
+        . '?checkoutId='
+        . data_get(json_decode($responseData), "id")
+            . '&sid=' . $request->student_id
+            . '&pid=' . $payment->id;
+
         $payment->update([
-            'payment_url' =>route('checkout.index')
-            .'?checkoutId='
-            .data_get( json_decode($responseData),"id")
-             .'&studentId='.$request->student_id
-             .'&paymentId='.$payment->id
+            'payment_url' =>  $paymentUrl
         ]);
+
+        $studentPaymentUrl = route('checkout.index')
+        . '?sid=' . $request->student_id
+        . '&pid=' . $payment->id;
+        $this->notifyStudent($payment->student?->email, $studentPaymentUrl);
 
         notify()->success('تم إنشاء الدفعة بنجاح.');
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment created successfully.');
@@ -117,7 +125,8 @@ class PaymentsController extends AdminBaseController
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment updated successfully.');
     }
 
-    protected function updatePaymentUrl($paymentId){
+    protected function updatePaymentUrl($paymentId)
+    {
 
         $payment = Payment::with('package')->find($paymentId);
 
@@ -125,16 +134,15 @@ class PaymentsController extends AdminBaseController
 
             $responseData = $this->createCheckoutId($payment->package?->total);
 
-      $payment->update([
-                'payment_url' =>route('checkout.index')
-                .'?checkoutId='
-                .data_get( json_decode($responseData),"id")
-                 .'&studentId='.$payment->student_id
-                 .'&paymentId='.$payment->id
+            $payment->update([
+                'payment_url' => route('checkout.index')
+                    . '?checkoutId='
+                    . data_get(json_decode($responseData), "id")
+                    . '&sid=' . $payment->student_id
+                    . '&pid=' . $payment->id
             ]);
 
             notify()->success('تم تحديث رابط الدفعة', 'نجاح');
-
         } catch (\Throwable $th) {
             notify()->error('لم يتم تحديث رابط الدفعة', 'فشل');
         }
@@ -153,12 +161,7 @@ class PaymentsController extends AdminBaseController
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment deleted successfully.');
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param [type] $total_price
-     * @return void
-     */
+
     public function createCheckoutId($total_price)
     {
 
@@ -187,5 +190,21 @@ class PaymentsController extends AdminBaseController
         curl_close($ch);
 
         return $responseData;
+    }
+
+    public function notifyStudent($email, $paymentUrl)
+    {
+
+        Mail::html("
+        <p>شكرًا للاشتراك في متكلم.</p>
+        <p>لقد قمنا بإنشاء رابط دفع لك. يمكنك الدفع من خلال الرابط أدناه:</p>
+        <p><a href=\"{$paymentUrl}\" target=\"_blank\">اضغط هنا للدفع</a></p>
+        <br>
+        <p>للمزيد من المعلومات، يرجى زيارة موقعنا على:</p>
+        <p><a href=\"" . url('/') . "\" target=\"_blank\">" . url('/') . "</a></p>
+    ", function ($message) use ($email) {
+            $message->to($email)
+                ->subject('شكرًا للاشتراك في متكلم');
+        });
     }
 }

@@ -10,14 +10,58 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
 
-
     public function getPayPage()
     {
+        $payment = Payment::with('package')->find(request()->pid);
+        $responseData = null;
 
-        $payment = Payment::with('package')->find(request()->paymentId);
-        return view('payments.one-time-pay', compact('payment'));
+        if($payment == null){
+
+            echo '<h3 style="text-align:center; padding:10px">عذرًا، لم نتمكن من العثور على دفعتك. يرجى التواصل معنا    </h1>';
+            echo '</br>';
+            echo "<p style='text-align:center'><a href=".url('/').">".url('/'). " </a></p>";
+            die();
+        }
+        try {
+            if ($payment->package?->payment_type == Package::ONE_TIME) {
+                $responseData = $this->createCheckoutId($payment?->package?->total);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        $paymentId = data_get(json_decode($responseData), "id");
+        return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
 
+    public function createCheckoutId($total_price)
+    {
+
+        $entitiy_id = config('hyperpay.entity_id');
+        $access_token = config('hyperpay.access_token');
+
+        $url = "https://eu-test.oppwa.com/v1/checkouts";
+        $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array('Authorization:Bearer ' . $access_token)
+        );
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if (curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+
+        return $responseData;
+    }
     public function processResponse(Request $request)
     {
 

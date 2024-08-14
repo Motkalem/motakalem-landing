@@ -59,8 +59,7 @@
                             )
 
                                 <a href="{{ route('dashboard.payments.update-payment-url', $payment->id) }}" class="px-4 btn bg-green btn-sm">
-                                    تحديث رابط الدفع
-                                </a>
+                                    تحديث الرابط                                   </a>
                             @endif
                             <a href="{{ route('dashboard.payments.edit', $payment->id) }}" class="px-4 btn btn-info btn-sm">
                                 تعديل
