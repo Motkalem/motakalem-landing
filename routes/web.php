@@ -24,7 +24,7 @@ Route::get('/store-data', function () {
         "&amount=23" .
         "&paymentType=DB" .
         "&createRegistration=true" .
-        "&merchantTransactionId=310" .
+        "&merchantTransactionId=3120" .
         "&currency=SAR" .
         "&testMode=EXTERNAL" .
         "&paymentBrand=MADA" .
@@ -86,7 +86,7 @@ Route::get('/schedule', function () {
         $data = "entityId=8ac7a4c790e4d8720190e56cfc7f014f" .
                     "&amount=23.00" .
                     "&paymentType=DB" .
-                    "&registrationId=8ac7a4a29154004c019155af79621c25" .
+                    "&registrationId=8ac7a4a2915b426e01916159ae6b37a0" .
                     "&currency=SAR" .
                     "&testMode=EXTERNAL" .
                     "&standingInstruction.type=RECURRING" .
@@ -118,12 +118,11 @@ Route::get('/schedule', function () {
         curl_close($ch);
         return $responseData;
 
-
 });
 
 Route::get('/cancel', function () {
 
-    $url = "https://eu-test.oppwa.com/scheduling/v1/schedules/8ac7a49f9153f7c9019155b05ea74ba0";
+    $url = "https://eu-test.oppwa.com/scheduling/v1/schedules/8ac7a4a0915b424c0191616d54805567";
 	$url .= "?entityId=8ac7a4c790e4d8720190e56cfc7f014f";
 	$url .=	"&testMode=EXTERNAL";
 

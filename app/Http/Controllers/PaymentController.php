@@ -38,7 +38,6 @@ class PaymentController extends Controller
 
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
-
         $url = "https://eu-test.oppwa.com/v1/checkouts";
         $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
 
@@ -84,13 +83,14 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
+            
             return curl_error($ch);
         }
         curl_close($ch);
 
         $data = (array) json_decode($responseData);
 
-        $transactionData = array_merge($data, [
+      return   $transactionData = array_merge($data, [
 
             'student_id' => request()->studentId,
             'payment_id' =>  request()->paymentId
