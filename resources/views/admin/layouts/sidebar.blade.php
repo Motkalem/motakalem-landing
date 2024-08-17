@@ -90,6 +90,21 @@
                     <span class="title">{{ __('Transactions') }}</span>
                 </a>
             </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.installment-payments.index')
+            ||
+             Request::routeIs('dashboard.installment-payments.show')
+
+             ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.installment-payments.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-credit-card"></i>
+                    </span>
+                    <span class="title">{{ __('installments payments') }}</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>

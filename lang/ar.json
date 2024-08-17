@@ -65,7 +65,8 @@
     "SAR": "ريال",
     "Students":"الطلاب",
     "Deleted successfully":"تم الحذف",
-    "Can not deleted": "لايمكن حذفه"
+    "Can not deleted": "لايمكن حذفه",
+    "installments payments": "المدفوعات المجدولة"
 
 
 }

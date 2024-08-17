@@ -20,7 +20,8 @@ class InstallmentPaymentsController extends AdminBaseController
         $installmentPayments = InstallmentPayment::with(['student', 'package', 'transactions'])->orderBy('id', 'desc')->paginate(12);
 
         return view(
-            'admin.installment-payments.index',
+
+         'admin.installmentPayments.index',
             compact(
                 'installmentPayments',
                 'title',

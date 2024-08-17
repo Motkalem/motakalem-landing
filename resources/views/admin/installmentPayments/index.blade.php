@@ -8,70 +8,13 @@
 <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
     <div class="col-md-12">
         <div class="mx-4 text-end">
-            <a href="{{ route('dashboard.payments.create') }}" class="px-4 btn btn-primary">
+            <a href="{{ route('dashboard.installment-payments.create') }}" class="px-4 btn btn-primary">
                 + إنشاء
             </a>
         </div>
 
         <div class="p-20 mt-4 bgc-white bd">
-            <table class="table table-striped table-class">
-                <thead>
-                    <tr>
-                        <th>اسم الطالب</th>
-                        <th>اسم الباقة</th>
-                        <th>نوع الدفع</th>
-                        <th>رابط الدفع</th>
-                        <th>هل اكتمل</th>
-                        <th>   حالة اخر معاملة</th>
-                        <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody id="paymentsTableBody">
-                    @foreach($payments as $payment)
-                    <tr>
-                        <td>{{ $payment->student->name }}</td>
-                        <td>{{ $payment->package->name }}</td>
-                        <td>{{ $payment->package?->payment_type == 'one time' ? 'مرة واحدة' : 'اقساط' }}</td>
-                        <td>
-                            <button class="btn btn-link" onclick="copyToClipboard('{{ $payment->payment_url }}')" title="{{$payment->payment_url}}">   نسخ الرابط</button>
-                        </td>
-                        <td>
-                            @if($payment->is_finished)
-                            <span class="text-success text-bold">نعم</span>
-                            @else
-                            <span class="text-danger text-bold">لا</span>
-                            @endif
-                        </td>
 
-                        <td>
-                            @if($payment->transactions()->latest()->first()?->success == 'true')
-
-                                <span class="text-success text-bold">نجاح</span>
-                            @else
-                                <span class="text-danger text-bold">فشل</span>
-                            @endif
-                        </td>
-                        <td class="text-center project-actions">
-
-                            @if(!$payment->is_finished == true
-                            && $payment->transactions()->latest()->first()?->success == 'false'
-                            && $payment->package?->payment_type == 'one time'
-                            )
-
-                                <a href="{{ route('dashboard.payments.update-payment-url', $payment->id) }}" class="px-4 btn bg-green btn-sm">
-                                    تحديث الرابط                                   </a>
-                            @endif
-                            <a href="{{ route('dashboard.payments.edit', $payment->id) }}" class="px-4 btn btn-info btn-sm">
-                                تعديل
-                            </a>
-                            <button class="px-4 btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $payment->id }}">
-                                حذف
-                            </button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
