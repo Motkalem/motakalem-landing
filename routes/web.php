@@ -158,3 +158,5 @@ Route::get('hash/{password}', function ($password) {
 
     return Hash::make($password);
 });
+
+

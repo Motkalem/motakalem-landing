@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\HyperPayWebHooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Actions\Paymob\CreditAction;
+use App\Models\Package;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +31,10 @@ Route::post('/send-contract', [JoinController::class, 'sendContract']);
 Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::post('/credit', CreditAction::class)->name('credit');
+
+Route::get('/packages',  function(){
+
+    return Package::where('is_active', 1)->get();
+});
 
 Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
