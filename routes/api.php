@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
+use App\Http\Controllers\Api\HyperPayWebHooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Actions\Paymob\CreditAction;
@@ -30,3 +31,4 @@ Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::post('/credit', CreditAction::class)->name('credit');
 
+Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);

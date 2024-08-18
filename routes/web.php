@@ -21,10 +21,10 @@ Route::get('/store-data', function () {
 
     $url = "https://eu-test.oppwa.com/v1/payments";
     $data = "entityId=8ac7a4c790e4d8720190e56cfc7f014f" .
-        "&amount=23" .
+        "&amount=23".
         "&paymentType=DB" .
         "&createRegistration=true" .
-        "&merchantTransactionId=3120" .
+        "&merchantTransactionId=31222" .
         "&currency=SAR" .
         "&testMode=EXTERNAL" .
         "&paymentBrand=MADA" .
@@ -44,12 +44,12 @@ Route::get('/store-data', function () {
         "&billing.state=jeda" .
         "&billing.street1=MyStreet" .
         "&standingInstruction.expiry=2030-08-11" .
-        // "&customParameters[3DS2_enrolled]=true".
         "&customParameters[3DS2_flow]=challenge" .
         "&standingInstruction.mode=REPEATED" .
         "&standingInstruction.type=UNSCHEDULED" .
         "&standingInstruction.source=CIT" .
         "&standingInstruction.recurringType=SUBSCRIPTION"
+        // "&customParameters[3DS2_enrolled]=true".
         // "&threeDSecure.eci=05" .
         // "&threeDSecure.authenticationStatus=Y" .
         // "&threeDSecure.version=2.2.0"
@@ -86,7 +86,7 @@ Route::get('/schedule', function () {
         $data = "entityId=8ac7a4c790e4d8720190e56cfc7f014f" .
                     "&amount=23.00" .
                     "&paymentType=DB" .
-                    "&registrationId=8ac7a4a2915b426e01916159ae6b37a0" .
+                    "&registrationId=8ac7a4a0915b424c019164b65e632f12" .
                     "&currency=SAR" .
                     "&testMode=EXTERNAL" .
                     "&standingInstruction.type=RECURRING" .
@@ -99,7 +99,7 @@ Route::get('/schedule', function () {
                     "&job.endDate=2024-12-16 00:00:00".
                     "&job.hour=7" .
                     "&job.dayOfMonth=5" .
-                    "&job.month=*" .
+                    "&job.month=*".
                     "&job.dayOfWeek=?" .
                     "&job.year=*";
 

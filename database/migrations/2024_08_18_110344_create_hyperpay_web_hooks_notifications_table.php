@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-
-
-        Schema::create('installment_payments', function (Blueprint $table) {
+        Schema::create('hyperpay_web_hooks_notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id')->nullable();
-            $table->unsignedBigInteger('package_id')->nullable();
+            $table->unsignedBigInteger('installment_payment_id')->nullable();
+            $table->string('type')->nullable();
+            $table->json('action')->nullable();
+            $table->json('payload')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('installment_payments');
+        Schema::dropIfExists('hyperpay_web_hooks_notifications');
     }
 };
