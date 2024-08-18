@@ -15,9 +15,9 @@ class HyperPayWebHooksController extends Controller
 
         HyperpayWebHooksNotification::create([
             'installment_payment_id' =>  null,
-            'type' => $data['type'],
-            'action' => $data['action'],
-            'payload' =>  $data['payload'],
+            'type' => data_get($data, 'type'),
+            'action' => data_get($data, 'action') ,
+            'payload' =>data_get($data, 'payload') ,
         ]);
         return response()->json([
             "message" => "saved Successfully"
