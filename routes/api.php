@@ -27,7 +27,6 @@ Route::post('/join', [JoinController::class, 'store']);
 
 Route::post('/send-contract', [JoinController::class, 'sendContract']);
 
-
 Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::post('/credit', CreditAction::class)->name('credit');

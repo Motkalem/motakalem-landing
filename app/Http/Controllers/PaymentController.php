@@ -13,6 +13,7 @@ class PaymentController extends Controller
     public function getPayPage()
     {
         $payment = Payment::with('package')->find(request()->pid);
+
         $responseData = null;
 
         if($payment == null){
@@ -61,6 +62,7 @@ class PaymentController extends Controller
 
         return $responseData;
     }
+    
     public function processResponse(Request $request)
     {
 
@@ -83,7 +85,7 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
-            
+
             return curl_error($ch);
         }
         curl_close($ch);

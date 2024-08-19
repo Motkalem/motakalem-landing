@@ -4,8 +4,10 @@ namespace App\Actions\Paymob;
 
 use App\Actions\Paymob\GetAuthToken;
 use App\Actions\Paymob\GetPaymentToken;
- use Lorisleiva\Actions\ActionRequest;
+use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
+use App\Models\Package;
+use App\Models\Payment;
 use App\Models\Student;
 use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -28,6 +30,7 @@ class CreditAction
     public function rules(): array
     {
         return [
+            'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
             'phone' => 'required|digits:10',
@@ -59,7 +62,7 @@ class CreditAction
                 ];
             }
 
-            $clientOrderPay = Student::query()->firstOrCreate([
+            $student = Student::query()->firstOrCreate([
                 'phone' => $request->phone,
             ], [
                 'name' => $request->name,
@@ -71,11 +74,12 @@ class CreditAction
                 'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
             ]);
 
-            $token = GetAuthToken::make()->handle();
+            $package = Package::find($request->package_id);
 
-            $order = CreateOrder::make()->handle($clientOrderPay->id, $token);
+            if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
 
-            $paymentToken = GetPaymentToken::make()->handle($clientOrderPay->id, $order, $token, $clientOrderPay);
+                $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
+            }
 
             DB::commit();
 
@@ -83,8 +87,8 @@ class CreditAction
 
             return [
                 'status' => 1,
-                'payment_token' => 'https://ksa.paymob.com/api/acceptance/iframes/'
-                    . env('PAYMOB_IFRAME_ID') . '?payment_token=' . $paymentToken,
+                'payment_token' => '#'  ,
+                'hyper-pay-payment-page' => route('checkout.index').'?pid='.$payment?->id.'&sid='.$student?->id
             ];
         } catch (\Exception $e) {
             DB::rollBack();
@@ -93,5 +97,18 @@ class CreditAction
                 'message' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.',
             ];
         }
+    }
+
+    protected function createOneTimePaymentUrl($stID, $pckID) {
+
+        return Payment::firstOrcreate([
+            'student_id'=> $stID,
+            'package_id'=> $pckID,
+        ],[
+            'student_id'=> $stID,
+            'package_id'=> $pckID,
+            'payment_url'=> '#'
+        ]);
+
     }
 }

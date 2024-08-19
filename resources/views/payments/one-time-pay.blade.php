@@ -8,11 +8,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <script src="https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
-{{-- <script type="text/javascript">
-    var wpwlOptions = {
-      paymentTarget: "_top",
-    }
-    </script> --}}
     <body>
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total . __('SAR')}}</h1>
         <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'}}"
