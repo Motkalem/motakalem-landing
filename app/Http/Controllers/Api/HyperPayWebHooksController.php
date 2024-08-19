@@ -18,6 +18,7 @@ class HyperPayWebHooksController extends Controller
             'type' => data_get($data, 'type'),
             'action' => data_get($data, 'action') ,
             'payload' =>data_get($data, 'payload') ,
+            'log' => $data ,
         ]);
         return response()->json([
             "message" => "saved Successfully"

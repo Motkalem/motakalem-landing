@@ -32,7 +32,7 @@
                     <div class="cursor-pointer col-sm-10 d-flex align-items-center">
                         <div class="cursor-pointer form-check me-4 ">
                             <input class="form-check-input" required type="radio" name="payment_type" id="one_time" value="one_time"
-                                {{ old('payment_type', $package->payment_type ?? '') == 'one_time' ? 'checked' : '' }}>
+                                {{ old('payment_type', $package->payment_type ?? '') == 'one time' ? 'checked' : '' }}>
                             <label class="form-check-label" for="one_time">دفع مرة واحدة</label>
                         </div>
                         <div class=" form-check">

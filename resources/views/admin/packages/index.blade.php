@@ -30,7 +30,7 @@
                     @foreach($packages as $package)
                     <tr>
                         <td>{{ $package->name }}</td>
-                        <td>{{ $package->payment_type == 'one_time' ? 'دفع مرة واحدة' : 'أقساط' }}</td>
+                        <td>{{ $package->payment_type == 'one time' ? 'دفع مرة واحدة' : 'أقساط' }}</td>
                         <td class="text-center">
                             @if($package->is_active)
                             <span class="text-success text-bold">نشط</span>

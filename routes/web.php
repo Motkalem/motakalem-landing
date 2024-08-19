@@ -38,11 +38,13 @@ Route::get('/store-data', function () {
         "&customer.ip=192.168.0.0" .
         "&customer.surname=John" .
         "&customer.language=AR" .
+
         "&billing.city=MyCity" .
         "&billing.country=SA" .
         "&billing.postcode=11564" .
         "&billing.state=jeda" .
         "&billing.street1=MyStreet" .
+        
         "&standingInstruction.expiry=2030-08-11" .
         "&customParameters[3DS2_flow]=challenge" .
         "&standingInstruction.mode=REPEATED" .

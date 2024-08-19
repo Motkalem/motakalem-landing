@@ -26,7 +26,7 @@
         <div class="mb-3 row">
             <label class="form-label col-sm-2 col-form-label">نوع الدفع</label>
             <div class="col-sm-10">
-                <p class="form-control-plaintext">{{ $student->payment_type =='one_time'? 'دفعة واحدة' : 'اقساط' }}</p>
+                <p class="form-control-plaintext">{{ $student->payment_type =='one time'? 'دفعة واحدة' : 'اقساط' }}</p>
             </div>
         </div>
 

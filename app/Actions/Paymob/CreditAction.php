@@ -2,10 +2,12 @@
 
 namespace App\Actions\Paymob;
 
+use App\Actions\HyperPay\StoreRecurringPaymentData;
 use App\Actions\Paymob\GetAuthToken;
 use App\Actions\Paymob\GetPaymentToken;
 use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
+use App\Models\InstallmentPayment;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Student;
@@ -29,7 +31,7 @@ class CreditAction
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
@@ -45,9 +47,20 @@ class CreditAction
                 }
             }],
         ];
+
+        if (Package::where('id',  request()->package_id)
+            ->where('payment_type', Package::INSTALLMENTS)->exists()
+        ) {
+
+            $rules = [
+                'card'=> 'required|array',
+                'billing'=> 'required|array'
+            ];
+        }
+        return $rules;
     }
 
-    public function handle(ActionRequest $request): array
+    public function handle(ActionRequest $request)
     {
         DB::beginTransaction();
 
@@ -70,7 +83,7 @@ class CreditAction
                 'age' => $request->age,
                 'phone' => $request->phone,
                 'city' => $request->city,
-                'payment_type' => $request->payment_type ?? 'one_time',
+                'payment_type' => $request->payment_type ?? Package::ONE_TIME,
                 'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
             ]);
 
@@ -79,17 +92,28 @@ class CreditAction
             if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
 
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
+            } else {
+
+
+              return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
             DB::commit();
 
             $this->joinController->notifyClient($contract);
 
-            return [
+
+            $reponse =  [
                 'status' => 1,
-                'payment_token' => '#'  ,
-                'hyper-pay-payment-page' => route('checkout.index').'?pid='.$payment?->id.'&sid='.$student?->id
+                'payment_token' => '#',
+                'hyper-pay-payment-page' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
             ];
+
+            if ($package->payment_type) ############
+            {
+            }
+
+            return $reponse;
         } catch (\Exception $e) {
             DB::rollBack();
             return [
@@ -99,16 +123,52 @@ class CreditAction
         }
     }
 
-    protected function createOneTimePaymentUrl($stID, $pckID) {
+    protected function createOneTimePaymentUrl($stID, $pckID)
+    {
 
         return Payment::firstOrcreate([
-            'student_id'=> $stID,
-            'package_id'=> $pckID,
-        ],[
-            'student_id'=> $stID,
-            'package_id'=> $pckID,
-            'payment_url'=> '#'
+            'student_id' => $stID,
+            'package_id' => $pckID,
+        ], [
+            'student_id' => $stID,
+            'package_id' => $pckID,
+            'payment_url' => '#'
+        ]);
+    }
+
+    protected function createScheduledPayment($stID, $pckID, $student, $data)
+    {
+
+        $installmentPayment = InstallmentPayment::firstOrcreate([
+
+            'student_id' => $stID,
+            'package_id' => $pckID,
+        ], [
+
+            'student_id' => $stID,
+            'package_id' => $pckID,
         ]);
 
-    }
+        if($installmentPayment->wasRecentlyCreated){
+
+                $response =  StoreRecurringPaymentData::make()
+                ->handle(
+                    $installmentPayment?->package,
+                    $installmentPayment,
+                    $student,
+                    $data
+                );
+
+
+                return [
+                    'status' => 0,
+                    'message' => 'شكرا لانضمامك الينا ! سنقوم بإعلامك',
+                ];
+            }else {
+                return [
+                    'status' => 0,
+                    'message' => 'الدفعه موجوده بالفعل',
+                ];
+            }
+        }
 }

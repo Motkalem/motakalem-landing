@@ -74,7 +74,7 @@ class PackagesController extends AdminBaseController
 
         $package = Package::findOrFail($id);
 
-        if($request->payment_type == 'one_time')
+        if($request->payment_type == 'one time')
         {
 
             $package->number_of_months = null;
