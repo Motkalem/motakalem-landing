@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            {{-- <div class="mb-3 row">
                 <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
                 <div class="col-sm-10">
                     <select class="form-select @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" required>
@@ -45,9 +45,9 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="mb-3 row">
+            {{-- <div class="mb-3 row">
                 <label for="total_payment_amount" class="form-label col-sm-2 col-form-label">إجمالي المبلغ المدفوع</label>
                 <div class="col-sm-10">
                     <input type="number" class="form-control @error('total_payment_amount') is-invalid @enderror" id="total_payment_amount" name="total_payment_amount" placeholder="إجمالي المبلغ المدفوع" step="0.01" value="{{ old('total_payment_amount', $student->total_payment_amount) }}" required>
@@ -55,7 +55,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
 
             <div class="mb-3 row">
                 <label for="age" class="form-label col-sm-2 col-form-label">العمر</label>

@@ -19,7 +19,6 @@ class HyperpayWebHooksNotification extends Model
 
     public function installmentPayment()
     {
-
         return $this->belongsTo(InstallmentPayment::class);
     }
 }

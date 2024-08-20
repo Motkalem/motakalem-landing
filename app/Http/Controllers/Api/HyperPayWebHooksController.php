@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\HyperpayWebHooksNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class HyperPayWebHooksController extends Controller
 {
@@ -13,6 +14,8 @@ class HyperPayWebHooksController extends Controller
     {
         $data = $request->all();
 
+        Log::info('data', $data);
+        
         HyperpayWebHooksNotification::create([
             'installment_payment_id' =>  null,
             'type' => data_get($data, 'type'),

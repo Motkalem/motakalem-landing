@@ -89,19 +89,17 @@ class CreditAction
 
             $package = Package::find($request->package_id);
 
+            DB::commit();
+
             if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
 
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
             } else {
 
-
               return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
-            DB::commit();
-
             $this->joinController->notifyClient($contract);
-
 
             $reponse =  [
                 'status' => 1,
@@ -111,6 +109,7 @@ class CreditAction
 
             if ($package->payment_type) ############
             {
+                
             }
 
             return $reponse;
@@ -141,9 +140,9 @@ class CreditAction
 
         $installmentPayment = InstallmentPayment::firstOrcreate([
 
-            'student_id' => $stID,
-            'package_id' => $pckID,
-        ], [
+                'student_id' => $stID,
+                'package_id' => $pckID,
+            ], [
 
             'student_id' => $stID,
             'package_id' => $pckID,
@@ -158,7 +157,6 @@ class CreditAction
                     $student,
                     $data
                 );
-
 
                 return [
                     'status' => 0,
