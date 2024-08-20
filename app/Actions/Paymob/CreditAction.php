@@ -95,7 +95,7 @@ class CreditAction
 
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
             } else {
-                    
+
               return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
@@ -107,9 +107,16 @@ class CreditAction
                 'hyper-pay-payment-page' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
             ];
 
-            if ($package->payment_type) ############
+            if ($package->payment_type == Package::INSTALLMENTS)
             {
+                $reponse =  [
 
+                    'status' => 1,
+                    'message'=> 'subscribed success',
+                    'payment_token' => '',
+                    'hyper-pay-payment-page' => ''
+
+                ];
             }
 
             return $reponse;
