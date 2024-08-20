@@ -12,7 +12,7 @@ class StoreRecurringPaymentData
     public function handle($package, $payment, $student, $data)
     {
 
-        try{
+        // try{
             $url = env('HYPERPAY_URL')."/payments";
             $data = "entityId=".env('ENITY_ID').
                 "&amount=".(int)$package->installment_value.
@@ -75,9 +75,9 @@ class StoreRecurringPaymentData
             }
             curl_close($ch);
             return $responseData;
-        }   catch(Exception $e)    {
+        // }   catch(Exception $e)    {
 
-        }
+        // }
 
 
     }

@@ -95,7 +95,7 @@ class CreditAction
 
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
             } else {
-
+                    
               return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
