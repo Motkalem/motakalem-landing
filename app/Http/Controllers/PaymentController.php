@@ -62,7 +62,7 @@ class PaymentController extends Controller
 
         return $responseData;
     }
-    
+
     public function processResponse(Request $request)
     {
 
@@ -92,7 +92,7 @@ class PaymentController extends Controller
 
         $data = (array) json_decode($responseData);
 
-      return   $transactionData = array_merge($data, [
+          $transactionData = array_merge($data, [
 
             'student_id' => request()->studentId,
             'payment_id' =>  request()->paymentId
@@ -104,10 +104,10 @@ class PaymentController extends Controller
 
         if($transaction->success == 'true'){
 
-            echo "<h1 style='text-align:center;padding:10px;color:green'>Your transaction is successful, and you will be redirected shortly.</h1>";
+            echo "<h1 style='text-align:center;padding:10px;color:green'>لقد تمت معاملتك بنجاح، وسيتم إعادة توجيهك قريبًا.</h1>";
         }else{
 
-            echo "<h1 style='text-align:center;padding:10px;color:red'>Your transaction has been failed, and you will be redirected shortly.</h1>";
+            echo "<h1 style='text-align:center;padding:10px;color:red'> لقد فشلت معاملتك، وسيتم إعادة توجيهك قريبًا.</h1>";
         }
 
         echo "<script>
