@@ -64,7 +64,7 @@ class CreditAction
     {
         DB::beginTransaction();
 
-        try {
+        // try {
             $request = request();
             $contract = $this->joinController->sendContract($request);
             if (!isset($contract)) {
@@ -109,17 +109,17 @@ class CreditAction
 
             if ($package->payment_type) ############
             {
-                
+
             }
 
             return $reponse;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return [
-                'status' => 0,
-                'message' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.',
-            ];
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     return [
+        //         'status' => 0,
+        //         'message' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.',
+        //     ];
+        // }
     }
 
     protected function createOneTimePaymentUrl($stID, $pckID)
