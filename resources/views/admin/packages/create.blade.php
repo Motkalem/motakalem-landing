@@ -146,7 +146,7 @@
             const installmentValueContainer = document.getElementById('installment_value_container');
             const numberOfMonthsContainer = document.getElementById('number_of_months_container');
 
-            if (paymentType === 'one_time') {
+            if (paymentType === 'one time') {
                 totalPaymentContainer.style.display = 'flex';
                 installmentValueContainer.style.display = 'none';
                 numberOfMonthsContainer.style.display = 'none';
