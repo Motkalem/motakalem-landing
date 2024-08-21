@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Api\General\GetPackages;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
 use App\Http\Controllers\Api\HyperPayWebHooksController;
@@ -31,9 +32,6 @@ Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::post('/credit', CreditAction::class)->name('credit');
 
-Route::get('/packages',  function(){
-
-    return Package::where('is_active', 1)->get();
-});
+Route::get('/packages', GetPackages::class);
 
 Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
