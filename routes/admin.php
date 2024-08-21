@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\HyperPay\CancelRecurringPayment;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -26,4 +27,8 @@ Route::group([
         Route::resource('students', 'StudentsController');
 
         Route::resource( 'installment-payments', 'InstallmentPaymentsController');
+
     });
+
+    Route::get( 'installment-payments/cancel/{id}', CancelRecurringPayment::class)
+    ->name('dashboard.cancel-schedule');

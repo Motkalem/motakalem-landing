@@ -176,7 +176,8 @@ class CreditAction
                 if(data_get(data_get(json_decode($response), 'result'), 'code') == '000.100.112'){
 
                         $installmentPayment->update([
-                            'registration_id'=>data_get(json_decode($response), 'registrationId')
+                            'registration_id'=>data_get(json_decode($response), 'registrationId'),
+                            'payment_id'=>data_get(json_decode($response), 'id')
                         ]);
 
                         $this->schedulePayment($installmentPayment); # shcedula payments for the student
