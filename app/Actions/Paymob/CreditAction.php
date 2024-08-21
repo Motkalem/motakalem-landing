@@ -2,6 +2,7 @@
 
 namespace App\Actions\Paymob;
 
+use App\Actions\HyperPay\ScheduleRecurringPayment;
 use App\Actions\HyperPay\StoreRecurringPaymentData;
 use App\Actions\Paymob\GetAuthToken;
 use App\Actions\Paymob\GetPaymentToken;
@@ -14,6 +15,8 @@ use App\Models\Student;
 use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isNull;
 
 class CreditAction
 {
@@ -101,25 +104,29 @@ class CreditAction
 
             $this->joinController->notifyClient($contract);
 
-            $reponse =  [
+            $response = [
                 'status' => 1,
-                'payment_token' => '#',
-                'hyper-pay-payment-page' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
+                'message' => 'success generate hyperpay url',
+                'payload' => [
+                    'payment_token' => '#',
+                    'hyper-pay-payment-page' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
+                ],
             ];
 
             if ($package->payment_type == Package::INSTALLMENTS)
             {
-                $reponse =  [
 
+                $response = [
                     'status' => 1,
-                    'message'=> 'subscribed success',
-                    'payment_token' => '',
-                    'hyper-pay-payment-page' => ''
-
+                    'message' => 'subscribed successfully',
+                    'payload' => [
+                        'payment_token' => '',
+                        'hyper-pay-payment-page' => ''
+                    ],
                 ];
-            }
+        }
 
-            return $reponse;
+            return response()->json($response, 200);
         // } catch (\Exception $e) {
         //     DB::rollBack();
         //     return [
@@ -153,11 +160,12 @@ class CreditAction
 
             'student_id' => $stID,
             'package_id' => $pckID,
+
         ]);
 
-        if($installmentPayment->wasRecentlyCreated){
+        if($installmentPayment->wasRecentlyCreated && isNull($installmentPayment->registration_id)) {
 
-                $response =  StoreRecurringPaymentData::make()
+                $response = StoreRecurringPaymentData::make()
                 ->handle(
                     $installmentPayment?->package,
                     $installmentPayment,
@@ -165,15 +173,54 @@ class CreditAction
                     $data
                 );
 
-                return [
-                    'status' => 0,
-                    'message' => 'شكرا لانضمامك الينا ! سنقوم بإعلامك',
-                ];
+                if(data_get(data_get(json_decode($response), 'result'), 'code') == '000.100.112'){
+
+                        $installmentPayment->update([
+                            'registration_id'=>data_get(json_decode($response), 'registrationId')
+                        ]);
+
+                        $this->schedulePayment($installmentPayment); # shcedula payments for the student
+
+                        $response = [
+                            'status' => 1,
+                            'message' => 'شكرا لانضمامك الينا ! تم إنضمامك الي الباقة بنجاح  ',
+                            'payload' => [
+                                'success'=> [
+                                    'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
+                                    'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
+                                    ]
+                            ],
+                        ];
+                }else {
+
+
+                    $response = [
+                        'status' => 0,
+                        'message' => 'حدث خطأ اثناء اجراء عملية الدفع',
+                        'payload' => [
+                            'error'=> [
+                                'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
+                                'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
+                                ]
+                            ],
+                    ];
+                }
+                return response()->json($response, 200);
             }else {
-                return [
+
+                $response = [
                     'status' => 0,
-                    'message' => 'الدفعه موجوده بالفعل',
+                    'message' => 'تم تسجيل بالباقة مسبقا',
+                    'payload' => [],
                 ];
+
+                return response()->json($response, 200);
             }
+        }
+
+        protected function schedulePayment($installmentPayment)
+        {
+
+            ScheduleRecurringPayment::make()->handle(  $installmentPayment  );
         }
 }

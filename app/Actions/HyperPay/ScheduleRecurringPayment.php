@@ -8,42 +8,62 @@ class ScheduleRecurringPayment
 {
     use AsAction;
 
-    public function handle($orderId ,string $token)
+    public function handle($installmentPayment)
     {
+        $package = $installmentPayment->package;
+        $amount = $package->installment_value;
+
+        // Get the number of months from the package
+        $numberOfMonths = $package->number_of_months;
+
+        // Calculate start date and end date
+        $startDate = now();
+        $endDate = $startDate->copy()->addMonths($numberOfMonths);
+
+        // Schedule the first payment 5 minutes from now
+        $firstPaymentDate = $startDate->copy()->addMinutes(5);
+
+        // Format dates to the required format
+        $formattedStartDate = $startDate->format('Y-m-d H:i:s');
+        $formattedEndDate = $endDate->format('Y-m-d H:i:s');
+        $formattedFirstPaymentDate = $firstPaymentDate->format('Y-m-d H:i:s');
+
         $url = "https://eu-test.oppwa.com/scheduling/v1/schedules";
-        $data = "entityId=8ac7a4c790e4d8720190e56cfc7f014f" .
-                    "&amount=23.00" .
-                    "&paymentType=DB" .
-                    "&registrationId=8ac7a4a0915b424c019164b65e632f12" .
-                    "&currency=SAR" .
-                    "&testMode=EXTERNAL" .
-                    "&standingInstruction.type=RECURRING" .
-                    "&standingInstruction.mode=REPEATED" .
-                    "&standingInstruction.source=MIT" .
-                    "&standingInstruction.recurringType=SUBSCRIPTION" .
-                    "&job.second=33" .
-                    "&job.minute=43" .
-                    "&job.startDate=2024-08-16 00:00:00".
-                    "&job.endDate=2024-12-16 00:00:00".
-                    "&job.hour=7" .
-                    "&job.dayOfMonth=5" .
-                    "&job.month=*".
-                    "&job.dayOfWeek=?" .
-                    "&job.year=*";
+        $data = "entityId=" . env('ENTITY_ID') .
+            "&amount=" . $amount .
+            "&paymentType=DB" .
+            "&registrationId=" . $installmentPayment->registration_id .
+            "&currency=SAR" .
+            "&testMode=EXTERNAL" .
+            "&standingInstruction.type=RECURRING" .
+            "&standingInstruction.mode=REPEATED" .
+            "&standingInstruction.source=MIT" .
+            "&standingInstruction.recurringType=SUBSCRIPTION" .
+            "&job.second=" . $firstPaymentDate->second .
+            "&job.minute=" . $firstPaymentDate->minute .
+            "&job.startDate=" . $formattedStartDate .
+            "&job.endDate=" . $formattedEndDate .
+            "&job.hour=" . $firstPaymentDate->hour .
+            "&job.dayOfMonth=" . $firstPaymentDate->day .
+            "&job.month=" . $firstPaymentDate->month .
+            "&job.dayOfWeek=?" .
+            "&job.year=" . $firstPaymentDate->year;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                       'Authorization:Bearer OGFjN2E0Yzc5MGU0ZDg3MjAxOTBlNTZiYjRiZDAxNDZ8VGczeUNDY0RENmJlRldaOQ=='));
+            'Authorization:Bearer ' . env('AUTH_TOKEN')));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // this should be set to true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
-        if(curl_errno($ch)) {
+        if (curl_errno($ch)) {
             return curl_error($ch);
         }
         curl_close($ch);
         return $responseData;
     }
+
+
 }

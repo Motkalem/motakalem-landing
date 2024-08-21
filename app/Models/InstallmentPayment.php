@@ -10,6 +10,7 @@ class InstallmentPayment extends Model
     protected $fillable = [
         'student_id',
         'package_id',
+        'registration_id'
     ];
 
     public function student()

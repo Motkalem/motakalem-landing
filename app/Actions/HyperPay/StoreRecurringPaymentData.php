@@ -14,11 +14,11 @@ class StoreRecurringPaymentData
 
         // try{
             $url = env('HYPERPAY_URL')."/payments";
-            $data = "entityId=".env('ENITY_ID').
+            $data = "entityId=".env('ENTITY_ID').
                 "&amount=".(int)$package->installment_value.
                 "&merchantTransactionId=".$payment->id .
                 "&paymentBrand=MADA" .
-                 "&paymentType=DB" .
+                "&paymentType=DB" .
                 "&currency=SAR".
                 "&standingInstruction.expiry=2030-08-11" .
                 "&customer.language=AR" .
@@ -27,7 +27,7 @@ class StoreRecurringPaymentData
                 "&customParameters[3DS2_flow]=challenge" .
                 "&standingInstruction.mode=REPEATED" .
                 "&standingInstruction.type=UNSCHEDULED" .
-                "&customer.ip=192.168.0.0" .
+                "&customer.ip=".request()->ip() .
                 "&standingInstruction.recurringType=SUBSCRIPTION".
                 "&createRegistration=true".
                 "&shopperResultUrl=".url('/').

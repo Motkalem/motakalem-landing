@@ -24,7 +24,7 @@ Route::get('/store-data', function () {
         "&amount=23".
         "&paymentType=DB" .
         "&createRegistration=true" .
-        "&merchantTransactionId=31222" .
+        "&merchantTransactionId=3112" .
         "&currency=SAR" .
         "&testMode=EXTERNAL" .
         "&paymentBrand=MADA" .
@@ -44,7 +44,7 @@ Route::get('/store-data', function () {
         "&billing.postcode=11564" .
         "&billing.state=jeda" .
         "&billing.street1=MyStreet" .
-        
+
         "&standingInstruction.expiry=2030-08-11" .
         "&customParameters[3DS2_flow]=challenge" .
         "&standingInstruction.mode=REPEATED" .
