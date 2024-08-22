@@ -27,7 +27,7 @@ class StoreRecurringPaymentData
                 "&customParameters[3DS2_flow]=challenge" .
                 "&standingInstruction.mode=REPEATED" .
                 "&standingInstruction.type=UNSCHEDULED" .
-                "&customer.ip=".request()->ip() .
+                "&customer.ip=192.168.0.0" .
                 "&standingInstruction.recurringType=SUBSCRIPTION".
                 "&createRegistration=true".
                 "&shopperResultUrl=".url('/').

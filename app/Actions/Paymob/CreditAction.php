@@ -201,7 +201,9 @@ class CreditAction
                         'payload' => [
                             'error'=> [
                                 'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
-                                'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
+                                'message'=>data_get(data_get(json_decode($response), 'result'), 'description'),
+                                'log'=> json_decode($response)
+
                                 ]
                             ],
                     ];
