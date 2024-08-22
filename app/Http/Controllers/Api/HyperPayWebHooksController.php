@@ -17,13 +17,14 @@ class HyperPayWebHooksController extends Controller
         $iv = hex2bin($request->header('X-Initialization-Vector'));
         $authTag = hex2bin($request->header('X-Authentication-Tag'));
         $decryptedPayload = $this->decryptPayload($encryptedPayload, $iv, $authTag);
+
         $data = json_decode($decryptedPayload, true);
 
         Log::info('Full Request:', [
-            'url' => $request->fullUrl(),
-            'method' => $request->method(),
-            'headers' => $request->headers->all(),
             'body' => $data,
+            'type' => data_get($data, 'type'),
+            'action' => data_get($data, 'action'),
+            'payload' => data_get($data, 'payload'),
         ]);
 
         $installmentPayment = InstallmentPayment::where('registration_id', data_get($data, 'registrationId'))->first();
