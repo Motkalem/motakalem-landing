@@ -101,7 +101,7 @@ class CreditAction
 
                 # Reassign package to user if schedule payment failed
                InstallmentPayment::where('student_id', $student->id)
-               ->whereNull('registeration_id')?->first()?->delete();
+               ->whereNull('registration_id')?->first()?->delete();
 
               return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
