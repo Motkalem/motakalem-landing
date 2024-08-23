@@ -28,7 +28,7 @@ class HyperPayWebHooksController extends Controller
         ]);
 
         $installmentPayment = InstallmentPayment::where('registration_id',
-       data_get( data_get($data, 'payload'), 'registrationId' ))->first();
+       data_get( data_get($data, 'payload'), 'merchantTransactionId' ))->first();
 
         HyperpayWebHooksNotification::create([
             'installment_payment_id' => $installmentPayment?->id,
