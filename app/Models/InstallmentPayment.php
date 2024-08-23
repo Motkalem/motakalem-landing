@@ -24,4 +24,9 @@ class InstallmentPayment extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    public function hyperpayWebHooksNotifications()
+    {
+        return $this->hasMany(HyperpayWebHooksNotification::class);
+    }
 }
