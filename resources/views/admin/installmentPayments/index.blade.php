@@ -7,12 +7,6 @@
 @section('content')
 <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
     <div class="col-md-12">
-        <div class="mx-4 text-end">
-            <a href="{{ route('dashboard.installment-payments.create') }}" class="px-4 btn btn-primary">
-                + إنشاء
-            </a>
-        </div>
-
         <div class="p-20 mt-4 bgc-white bd">
             <table class="table table-striped table-class">
                 <thead>

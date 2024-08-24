@@ -113,7 +113,7 @@ class CreditAction
                 'message' => 'success generate hyperpay url',
                 'payload' => [
                     'payment_token' => '#',
-                    'hyper-pay-payment-page' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
+                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
                 ],
             ];
 
