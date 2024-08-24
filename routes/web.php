@@ -4,6 +4,7 @@ use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use App\Models\ParentContract;
 use App\Notifications\SuccessSubscriptionPaidNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,3 +33,25 @@ Route::get('hash/{password}', function ($password) {
 });
 
 
+
+Route::get('encrypt-form', function () {
+
+    return view('encrypt-form');
+});
+
+
+
+Route::post('encrypt-form-store', function (Request $request) {
+
+    if ($request->has(['data', 'iv'])) {
+        $encryptedData = base64_decode($request->input('data'));
+        $iv = base64_decode($request->input('iv'));
+        $key = 'secret key 123';
+
+        $decryptedData = openssl_decrypt($encryptedData, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        return response()->json(['decryptedData' => $decryptedData]);
+    }
+
+    return response()->json(['error' => 'Invalid data'], 400);
+
+})->name('process');
