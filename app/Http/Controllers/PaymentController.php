@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
 {
@@ -104,11 +105,11 @@ class PaymentController extends Controller
 
         if($transaction->success == 'true'){
 
-            return redirect('/one-step-closer?status=success');
+            return Redirect::away('https://motkalem.com/one-step-closer?status=success');
             // echo "<h1 style='text-align:center;padding:10px;color:green'>لقد تمت معاملتك بنجاح، وسيتم إعادة توجيهك قريبًا.</h1>";
         }else{
 
-            return redirect('/one-step-closer?status=fail');
+            return redirect('https://motkalem.com/one-step-closer?status=fail');
             // echo "<h1 style='text-align:center;padding:10px;color:red'> لقد فشلت معاملتك، وسيتم إعادة توجيهك قريبًا.</h1>";
         }
     }
