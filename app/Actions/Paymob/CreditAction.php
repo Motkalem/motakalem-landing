@@ -125,7 +125,7 @@ class CreditAction
                     'message' => 'subscribed successfully',
                     'payload' => [
                         'payment_token' => '',
-                        'hyper-pay-payment-page' => ''
+                        'hyperpay_payment' => ''
                     ],
                 ];
         }
@@ -217,7 +217,7 @@ class CreditAction
 
                 $response = [
                     'status' => 0,
-                    'message' => 'تم تسجيل بالباقة مسبقا',
+                    'message' => 'تم التسجيل بالباقة مسبقا',
                     'payload' => [],
                 ];
 

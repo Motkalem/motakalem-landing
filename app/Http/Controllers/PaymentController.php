@@ -104,17 +104,13 @@ class PaymentController extends Controller
 
         if($transaction->success == 'true'){
 
-            echo "<h1 style='text-align:center;padding:10px;color:green'>لقد تمت معاملتك بنجاح، وسيتم إعادة توجيهك قريبًا.</h1>";
+            return redirect('/one-step-closer?status=success');
+            // echo "<h1 style='text-align:center;padding:10px;color:green'>لقد تمت معاملتك بنجاح، وسيتم إعادة توجيهك قريبًا.</h1>";
         }else{
 
-            echo "<h1 style='text-align:center;padding:10px;color:red'> لقد فشلت معاملتك، وسيتم إعادة توجيهك قريبًا.</h1>";
+            return redirect('/one-step-closer?status=fail');
+            // echo "<h1 style='text-align:center;padding:10px;color:red'> لقد فشلت معاملتك، وسيتم إعادة توجيهك قريبًا.</h1>";
         }
-
-        echo "<script>
-            setTimeout(function(){
-                window.location.href = '/';
-            }, 5000);
-        </script>";
     }
 
     /**
