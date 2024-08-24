@@ -44,12 +44,17 @@ Route::get('encrypt-form', function () {
 Route::post('encrypt-form-store', function (Request $request) {
 
     if ($request->has(['data', 'iv'])) {
+
         $encryptedData = base64_decode($request->input('data'));
         $iv = base64_decode($request->input('iv'));
         $key = 'secret key 123';
 
         $decryptedData = openssl_decrypt($encryptedData, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
-        return response()->json(['decryptedData' => $decryptedData]);
+
+        return response()->json([
+            'decryptedData' => $decryptedData,
+            'iv'=>$iv
+        ]);
     }
 
     return response()->json(['error' => 'Invalid data'], 400);
