@@ -6,8 +6,7 @@ use App\Http\Controllers\Api\JoinController;
 use App\Http\Controllers\Api\HyperPayWebHooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Actions\Paymob\CreditAction;
-use App\Models\Package;
+use App\Actions\HyperPay\CreditAction;
 
 /*
 |--------------------------------------------------------------------------

@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Actions\Paymob;
+namespace App\Actions\HyperPay;
 
 use App\Actions\HyperPay\ScheduleRecurringPayment;
 use App\Actions\HyperPay\StoreRecurringPaymentData;
-use App\Actions\Paymob\GetAuthToken;
-use App\Actions\Paymob\GetPaymentToken;
 use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
 use App\Models\InstallmentPayment;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Student;
+use App\Notifications\Admin\NewSubscriptionNotification;
 use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 use function PHPUnit\Framework\isNull;
 
@@ -108,6 +109,8 @@ class CreditAction
 
             $this->joinController->notifyClient($contract);
 
+            if($package->payment_type == Package::ONE_TIME) {
+
             $response = [
                 'status' => 1,
                 'message' => 'success generate hyperpay url',
@@ -117,8 +120,9 @@ class CreditAction
                 ],
             ];
 
-            if ($package->payment_type == Package::INSTALLMENTS)
-            {
+
+
+        }else{
 
                 $response = [
                     'status' => 1,
@@ -230,4 +234,10 @@ class CreditAction
 
             ScheduleRecurringPayment::make()->handle(  $installmentPayment  );
         }
-}
+
+     
+
+
+
+
+    }

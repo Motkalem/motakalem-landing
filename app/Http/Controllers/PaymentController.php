@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Transaction;
+use App\Notifications\Admin\NewSubscriptionNotification;
+use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class PaymentController extends Controller
 {
@@ -17,11 +21,11 @@ class PaymentController extends Controller
 
         $responseData = null;
 
-        if($payment == null){
+        if ($payment == null) {
 
             echo '<h3 style="text-align:center; padding:10px">عذرًا، لم نتمكن من العثور على دفعتك. يرجى التواصل معنا    </h1>';
             echo '</br>';
-            echo "<p style='text-align:center'><a href=".url('/').">".url('/'). " </a></p>";
+            echo "<p style='text-align:center'><a href=" . url('/') . ">" . url('/') . " </a></p>";
             die();
         }
         try {
@@ -93,24 +97,24 @@ class PaymentController extends Controller
 
         $data = (array) json_decode($responseData);
 
-          $transactionData = array_merge($data, [
+        $transactionData = array_merge($data, [
 
             'student_id' => request()->studentId,
             'payment_id' =>  request()->paymentId
         ]);
 
-        $transaction = $this->createTransactions($transactionData);
+        $payment = Payment::find(request()->paymentId);
 
-        $this->markPaymentAsCompleted(request()->paymentId);
+        $transaction = $this->createTransactions($transactionData,   $payment);
 
-        if($transaction->success == 'true'){
+        $this->markPaymentAsCompleted($payment);
+
+        if ($transaction->success == 'true') {
 
             return Redirect::away('https://motkalem.com/one-step-closer?status=success');
-            // echo "<h1 style='text-align:center;padding:10px;color:green'>لقد تمت معاملتك بنجاح، وسيتم إعادة توجيهك قريبًا.</h1>";
-        }else{
+        } else {
 
             return redirect('https://motkalem.com/one-step-closer?status=fail');
-            // echo "<h1 style='text-align:center;padding:10px;color:red'> لقد فشلت معاملتك، وسيتم إعادة توجيهك قريبًا.</h1>";
         }
     }
 
@@ -120,7 +124,7 @@ class PaymentController extends Controller
      * @param [type] $data
      * @return void
      */
-    public function createTransactions($data)
+    public function createTransactions($data, $payment=null)
     {
         return  Transaction::create([
             'data' => $data,
@@ -133,10 +137,10 @@ class PaymentController extends Controller
         ]);
     }
 
-    private function markPaymentAsCompleted($id)
+    private function markPaymentAsCompleted($payment=null)
     {
 
-        $payment = Payment::find($id);
+
 
         if ($payment?->package?->payment_type == Package::ONE_TIME) {
             $transaction = Transaction::where('payment_id', $id)->latest()->first();
@@ -144,6 +148,42 @@ class PaymentController extends Controller
             if ($transaction->success == 'true') {
 
                 $payment->update(['is_finished' => true]);
+                $this->notifyClient($payment->student, $transaction);
+                $this->notifyAdmin($payment->student, $transaction, 'one time');
+            }
+        }
+    }
+
+    public function notifyClient($student, $transaction)
+    {
+        \Illuminate\Support\Facades\Notification::send(
+            $student,
+            new SuccessSubscriptionPaidNotification($student, $transaction)
+        );
+    }
+
+
+
+    public function notifyAdmin($student, $transaction, $type): void
+    {
+
+        if ($type == 'one time') {
+
+
+            try {
+                if (env('NOTIFY_ADMINS') == true) {
+
+                    $adminEmails = explode(',', env('ADMIN_EMAILS'));
+                    foreach ($adminEmails as $adminEmail) {
+                        NotificationFacade::route('mail', $adminEmail)
+                            ->notify(new  NewSubscriptionNotification(
+                                $student,
+                                $transaction
+                            ));
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
             }
         }
     }

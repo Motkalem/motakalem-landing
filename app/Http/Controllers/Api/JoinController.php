@@ -69,7 +69,5 @@ class JoinController extends Controller
 
             Log::error($e->getMessage());
         }
-
-
     }
 }

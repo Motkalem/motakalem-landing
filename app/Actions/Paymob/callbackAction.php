@@ -96,6 +96,7 @@ class callbackAction
     {
         \Illuminate\Support\Facades\Notification::send($client,
             new SuccessSubscriptionPaidNotification(  $client  , $transaction));
-    }
+
+        }
 
 }
