@@ -218,8 +218,9 @@
                                             <div class="single-timeline-content d-flex " data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
                                                 <div class="timeline-icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
                                                 <div class="m-2 timeline-text">
-                                                    <h6>{{ $notification->action }}</h6>
+                                                    <h2 class="px-10 h3 fw-500">{{ $notification->title }}</h2>
                                                     <h6> {{ $notification->type }} </h6>
+
                                                     <p>الوصف: {{ data_get($notification->payload, 'result.description') }}</p>
                                                     <p>الوصف الموسع: {{ data_get($notification->payload, 'resultDetails.ExtendedDescription') }}</p>
                                                     <p>المبلغ: {{ data_get($notification->payload, 'amount') }} {{ data_get($notification->payload, 'currency') }}</p>

@@ -15,7 +15,7 @@ class HyperpayNotificationProcessor
 
     protected $jsonResponse;
     private $registrationInvalidCode = '100.150.203';
-    
+
     public function __construct($jsonResponse)
     {
         $this->jsonResponse = $jsonResponse;
@@ -26,12 +26,10 @@ class HyperpayNotificationProcessor
 
         $response = json_decode($this->jsonResponse, true);
 
-        // Check if 'result' and 'code' exist in the response
         if (isset($response['payload']['result']['code'])) {
             $resultCode = $response['payload']['result']['code'];
 
 
-             // Check if 'result' and 'code' exist in the response
         if (isset($response['payload']['result']['code'])) {
             $resultCode = $response['payload']['result']['code'];
 
@@ -60,43 +58,36 @@ class HyperpayNotificationProcessor
     }
     }
 
-    // Check if the result code matches the success patterns
     private function isSuccess($code)
     {
         return preg_match($this->successRegex, $code);
     }
 
-    // Check if the result code matches the pending patterns
     private function isPending($code)
     {
         return preg_match($this->pendingRegex, $code);
     }
 
-    // Check if the result code matches the review patterns
     private function isUnderReview($code)
     {
         return preg_match($this->reviewRegex, $code);
     }
 
-    // Check if the result code matches the rejection patterns
     private function isRejection($code)
     {
         return preg_match($this->rejectionRegex, $code);
     }
 
-    // Check if the result code matches the communication error patterns
     private function isCommunicationError($code)
     {
         return preg_match($this->communicationErrorRegex, $code);
     }
 
-    // Check if the result code matches the payment method error patterns
     private function isPaymentMethodError($code)
     {
         return preg_match($this->paymentMethodErrorRegex, $code);
     }
 
-    // Check if the result code matches the risk notification patterns
     private function isRiskNotification($code)
     {
         return preg_match($this->riskNotificationRegex, $code);

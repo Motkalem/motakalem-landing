@@ -23,7 +23,7 @@
 
     <style>
         p,div,td,span,h1,h2,h3,h4,h5,h6,button,label {
-            font-family: "Cairo", sans-serif;
+            font-family: "Cairo", sans-serif !important;
             font-optical-sizing: auto;
             font-weight: <weight>;
             font-style: normal;
