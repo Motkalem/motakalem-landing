@@ -30,8 +30,7 @@ class PaymentController extends Controller
         }
         try {
             if ($payment->package?->payment_type == Package::ONE_TIME) {
-
-                $responseData = $this->createCheckoutId($payment?->package?->total, $payment->id);
+                $responseData = $this->createCheckoutId($payment?->package?->total);
             }
         } catch (\Throwable $th) {
             //throw $th;
@@ -40,35 +39,13 @@ class PaymentController extends Controller
         return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
 
-    public function createCheckoutId($total_price, $merchantTransactionId)
+    public function createCheckoutId($total_price)
     {
 
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
         $url = "https://eu-test.oppwa.com/v1/checkouts";
-
-        // $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
-
-        $data = [
-            'entityId' => $entitiy_id,
-            'amount' => $total_price,
-            'currency' => 'SAR',
-            'paymentType' => 'DB',
-            'createRegistration' => 'true',
-            'testMode' => 'EXTERNAL',
-            'merchantTransactionId' => $merchantTransactionId,
-            'customer.email' => 'customer@example.com',
-            'billing.city' => 'Riyadh',
-            'billing.country' => 'SA',
-            'billing.street1' => 'Street 1',
-            'billing.postcode' => '12345',
-            'customer.givenName' => 'John',
-            'customer.surname' => 'Doe',
-            'customer.ip' => request()->ip(),
-            'threeDSecure' => [
-                'mandatory' => 'true'
-            ]
-        ];
+        $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -91,6 +68,11 @@ class PaymentController extends Controller
         return $responseData;
     }
 
+    public function processResponse(Request $request)
+    {
+
+        return view('payments.one-time-pay');
+    }
 
     public function getStatus()
     {

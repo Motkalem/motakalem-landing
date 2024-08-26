@@ -45,20 +45,8 @@ class StoreRecurringPaymentData
                 "&billing.postcode=".data_get(data_get($data,'billing'), 'postcode')  .
                 "&billing.state=".data_get(data_get($data,'billing'), 'state') .
                 "&billing.street1=".data_get(data_get($data,'billing'), 'street1') .
-                "&billing.country=SA"
-
-
-                // "&customParameters[3DS2_enrolled]=true".
-                // "&threeDSecure.eci=05" .
-                // "&threeDSecure.authenticationStatus=Y" .
-                // "&threeDSecure.version=2.2.0"
-                // "&threeDSecure.dsTransactionId=c75f23af-9454-43f6-ba17-130ed529507e" .
-                // "&threeDSecure.acsTransactionId=2c42c553-176f-4f08-af6c-f9364ecbd0e8" .
-                // "&threeDSecure.verificationId=MTIzNDU2Nzg5MDEyMzQ1Njc4OTA=" .
-                // "&threeDSecure.amount=23" .
-                // "&threeDSecure.currency=SAR" .
-                // "&threeDSecure.flow=challenge"
-                ;
+                "&billing.country=SA" ;
+                
 
                 $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);

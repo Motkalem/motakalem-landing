@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
@@ -20,20 +21,16 @@ class HyperPayWebHooksController extends Controller
 
         $data = json_decode($decryptedPayload, true);
 
-        Log::info('Full Request:', [
-            'body' => $data,
-            'type' => data_get($data, 'type'),
-            'action' => data_get($data, 'action'),
-            'payload' => data_get($data, 'payload'),
-        ]);
-
-
         $installmentPayment = InstallmentPayment::where('id', data_get(data_get($data, 'payload'), 'merchantTransactionId'))
         ->orWhereHas('student', function ($query) use ($data) {
             $query->where('email', data_get(data_get($data, 'payload.customer'), 'email'));
         }) ->first();
 
+        $HyperpayNotificationProcessor = new HyperpayNotificationProcessor($decryptedPayload);
+        $title = $HyperpayNotificationProcessor->processNotification();
+
         HyperpayWebHooksNotification::create([
+            'title' => $title,
             'installment_payment_id' => $installmentPayment?->id,
             'type' => data_get($data, 'type'),
             'action' => data_get($data, 'action'),
