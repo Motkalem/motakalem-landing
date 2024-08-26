@@ -50,7 +50,6 @@ class HyperpayNotificationProcessor
 
         return 'استجابة غير صالحة: لم يتم العثور على رمز النتيجة.';
 
-        return 'Invalid response: result code not found.';
     }
 
     // Check if the result code matches the success patterns
