@@ -14,7 +14,8 @@ class HyperpayNotificationProcessor
     private $riskNotificationRegex = '/^(000\.500\.|000\.600\.)/';  // Hypothetical regex for risk notifications
 
     protected $jsonResponse;
-
+    private $registrationInvalidCode = '100.150.203';
+    
     public function __construct($jsonResponse)
     {
         $this->jsonResponse = $jsonResponse;
@@ -29,7 +30,14 @@ class HyperpayNotificationProcessor
         if (isset($response['payload']['result']['code'])) {
             $resultCode = $response['payload']['result']['code'];
 
-            if ($this->isSuccess($resultCode)) {
+
+             // Check if 'result' and 'code' exist in the response
+        if (isset($response['payload']['result']['code'])) {
+            $resultCode = $response['payload']['result']['code'];
+
+            if ($resultCode === $this->registrationInvalidCode) {
+                return 'التسجيل غير صالح، ربما تم رفضه في البداية.';
+            } elseif ($this->isSuccess($resultCode)) {
                 return 'تمت المعاملة بنجاح.';
             } elseif ($this->isPending($resultCode)) {
                 return 'المعاملة قيد الانتظار.';
@@ -38,7 +46,7 @@ class HyperpayNotificationProcessor
             } elseif ($this->isRejection($resultCode)) {
                 return 'تم رفض المعاملة.';
             } elseif ($this->isCommunicationError($resultCode)) {
-                return 'خطأ في الاتصال معالموصل.';
+                return 'خطأ في الاتصال مع المقتدر أو الموصل.';
             } elseif ($this->isPaymentMethodError($resultCode)) {
                 return 'خطأ متعلق بطريقة الدفع.';
             } elseif ($this->isRiskNotification($resultCode)) {
@@ -49,7 +57,7 @@ class HyperpayNotificationProcessor
         }
 
         return 'استجابة غير صالحة: لم يتم العثور على رمز النتيجة.';
-
+    }
     }
 
     // Check if the result code matches the success patterns
