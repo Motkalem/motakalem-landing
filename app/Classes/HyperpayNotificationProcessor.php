@@ -30,23 +30,25 @@ class HyperpayNotificationProcessor
             $resultCode = $response['payload']['result']['code'];
 
             if ($this->isSuccess($resultCode)) {
-                return 'Transaction was successful.';
+                return 'تمت المعاملة بنجاح.';
             } elseif ($this->isPending($resultCode)) {
-                return 'Transaction is pending.';
+                return 'المعاملة قيد الانتظار.';
             } elseif ($this->isUnderReview($resultCode)) {
-                return 'Transaction successful but under review.';
+                return 'تمت المعاملة بنجاح ولكنها تحت المراجعة.';
             } elseif ($this->isRejection($resultCode)) {
-                return 'Transaction was rejected.';
+                return 'تم رفض المعاملة.';
             } elseif ($this->isCommunicationError($resultCode)) {
-                return 'Communication error with acquirer or connector.';
+                return 'خطأ في الاتصال معالموصل.';
             } elseif ($this->isPaymentMethodError($resultCode)) {
-                return 'Payment method-specific error.';
+                return 'خطأ متعلق بطريقة الدفع.';
             } elseif ($this->isRiskNotification($resultCode)) {
-                return 'Transaction involves a risk notification or risk review.';
+                return 'المعاملة تتضمن إشعار خطر أو تحت المراجعة.';
             } else {
-                return 'Unknown result code.';
+                return 'رمز النتيجة غير معروف.';
             }
         }
+
+        return 'استجابة غير صالحة: لم يتم العثور على رمز النتيجة.';
 
         return 'Invalid response: result code not found.';
     }
