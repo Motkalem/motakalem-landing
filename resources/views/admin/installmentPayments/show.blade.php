@@ -77,9 +77,6 @@
     border-radius: 6px;
     margin-bottom: 15px;
     margin-top: 15px;
-    -webkit-box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
-    box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
-    border: 1px solid #ebebeb;
 }
 @media only screen and (max-width: 575px) {
     .single-timeline-area .single-timeline-content {
@@ -202,48 +199,64 @@
             </div>
         </div>
 
-        <!-- Notification Log Section -->
+
+      <!-- Notification Log Section -->
         <div class="p-20 col-md-5 bgc-white bd">
             <div class="mT-30">
                 <h6 class="c-grey-900">سجل الإشعارات</h6>
-                <section class="timeline_area section_padding_130">
+                <section class="mt-2 timeline_area section_padding_130">
                     <div class="container">
-
                         <div class="row">
                             <div class="col-12">
-                                <!-- Timeline Area-->
                                 <div class="apland-timeline-area">
-                                    @foreach($installmentPayment->hyperpayWebHooksNotifications as $notification)
-                                    <div class="single-timeline-area">
+                                    @foreach($installmentPayment->hyperpayWebHooksNotifications->sortByDesc('created_at') as $notification)
+                                    <div class="single-timeline-area @if($loop->first) shadow @endif">
                                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
                                             <p>{{ $notification->created_at }} </p>
                                         </div>
                                         <div class="row">
-                                            <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
-                                                <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
+                                            <div class="single-timeline-content d-flex " data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                                <div class="timeline-icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
                                                 <div class="m-2 timeline-text">
-                                                    <h6>    {{ $notification->action }}</h6>
-                                                    <h6>    {{ $notification->type }}</h6>
-                                                    <p>    الوصف  : {{ data_get($notification->payload, 'result.description') }}</p>
-                                                    <p>  الوصف الموسع : {{ data_get($notification->payload, 'resultDetails.ExtendedDescription') }}</p>
-                                                    <p>   المبلغ : {{ data_get($notification->payload, 'amount') }} {{ data_get($notification->payload, 'currency') }}</p>
-                                                    <p>   البريد الإلكتروني   : {{ data_get($notification->payload, 'customer.email') }}</p>
+                                                    <h6>{{ $notification->action }}</h6>
+                                                    <h6> {{ $notification->type }} </h6>
+                                                    <p>الوصف: {{ data_get($notification->payload, 'result.description') }}</p>
+                                                    <p>الوصف الموسع: {{ data_get($notification->payload, 'resultDetails.ExtendedDescription') }}</p>
+                                                    <p>المبلغ: {{ data_get($notification->payload, 'amount') }} {{ data_get($notification->payload, 'currency') }}</p>
+                                                    <p>البريد الإلكتروني: {{ data_get($notification->payload, 'customer.email') }}</p>
+                                                    <p>وضع التعليمات الدائمة: {{ data_get($notification->payload, 'standingInstruction.mode') }}</p>
+                                                    <p>نوع التعليمات الدائمة: {{ data_get($notification->payload, 'standingInstruction.type') }}</p>
+                                                    <p>اسم حامل البطاقة: {{ data_get($notification->payload, 'card.holder') }}</p>
+                                                    <p>نوع البطاقة: {{ data_get($notification->payload, 'card.type') }}</p>
+                                                    <p>رقم الهاتف للبنك: {{ data_get($notification->payload, 'card.issuer.phone') }}</p>
+                                                    <p>تاريخ انتهاء البطاقة: {{ data_get($notification->payload, 'card.expiryMonth') }}/{{ data_get($notification->payload, 'card.expiryYear') }}</p>
+                                                    <p>آخر 4 أرقام من البطاقة: {{ data_get($notification->payload, 'card.last4Digits') }}</p>
+                                                    <p>IP العميل: {{ data_get($notification->payload, 'customer.ip') }}</p>
+                                                    <p>اسم العميل: {{ data_get($notification->payload, 'customer.givenName') }}</p>
+                                                    <p>الرمز القصير: {{ data_get($notification->payload, 'shortId') }}</p>
+                                                    <p>الوقت: {{ data_get($notification->payload, 'timestamp') }}</p>
+                                                    <p>اسم القناة: {{ data_get($notification->payload, 'channelName') }}</p>
+                                                    <p>نوع الدفع: {{ data_get($notification->payload, 'paymentType') }}</p>
+                                                    <p>علامة الدفع: {{ data_get($notification->payload, 'paymentBrand') }}</p>
+                                                    <p>طريقة الدفع: {{ data_get($notification->payload, 'paymentMethod') }}</p>
+                                                    <p>كود النتيجة: {{ data_get($notification->payload, 'result.code') }}</p>
+                                                    <p class="text-bold">الاستجابة من المستحوذ: {{ data_get($notification->payload, 'resultDetails.AcquirerResponse') == 'APPROVED' ? 'مقبول' : data_get($notification->payload, 'resultDetails.AcquirerResponse') }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-
-
-
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
             </div>
         </div>
+
+
+
+
     </div>
 </div>
 

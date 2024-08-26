@@ -95,7 +95,8 @@ class StudentsController extends AdminBaseController
     {
         $title = 'عرض طالب ';
 
-        $student = Student::findOrFail($id);
+        $student = Student::with('installmentPayment', 'payment')->findOrFail($id);
+
         return view('admin.students.show',
          compact('student','title'));
     }

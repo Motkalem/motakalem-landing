@@ -34,4 +34,9 @@ class Student extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function installmentPayment()
+    {
+        return $this->hasOne(InstallmentPayment::class);
+    }
+
 }
