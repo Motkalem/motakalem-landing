@@ -24,7 +24,7 @@
             <div style="text-align: center;">
                 <img style="width: 4rem;" src="https://dev.motkalem.com/images/email/checkmark.png" alt="checkmark in green">
                 <div>
-                    <p style="font-size: 1.2rem; font-weight: 600;">تم تسجيل عملية دفع جديدة</p>
+                    <p style="font-size: 1.2rem; font-weight: 600;">تم تسجيل عملية جديدة</p>
                 </div>
             </div>
             <hr />
