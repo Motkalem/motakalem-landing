@@ -66,6 +66,8 @@
             ||
              Request::routeIs('dashboard.payments.create')
              ||
+             Request::routeIs('dashboard.payments.show')
+             ||
             Request::routeIs('dashboard.payments.edit')
 
              ? 'bg-light m-3' : '' }}">

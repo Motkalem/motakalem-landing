@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\HyperpayNotificationProcessor;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Transaction;
@@ -11,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+
+use function PHPUnit\Framework\isNan;
+use function PHPUnit\Framework\isNull;
 
 class PaymentController extends Controller
 {
@@ -35,6 +39,7 @@ class PaymentController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
+
         $paymentId = data_get(json_decode($responseData), "id");
         return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
@@ -95,16 +100,27 @@ class PaymentController extends Controller
         }
         curl_close($ch);
 
+        $response  = $responseData;
+        $res = new HyperpayNotificationProcessor( $response);
+
+        $title =  $res->processNotification()   ;
+
         $data = (array) json_decode($responseData);
 
         $transactionData = array_merge($data, [
 
             'student_id' => request()->studentId,
-            'payment_id' =>  request()->paymentId
+            'payment_id' =>  request()->paymentId,
+            'title' =>  $title
         ]);
 
         $payment = Payment::find(request()->paymentId);
 
+       if( data_get($transactionData, 'id') ==  null){
+
+         return Redirect::away('https://motkalem.com/one-step-closer?status=fail');
+
+       }
         $transaction = $this->createTransactions($transactionData,   $payment);
 
         $this->markPaymentAsCompleted($payment);
@@ -126,8 +142,10 @@ class PaymentController extends Controller
      */
     public function createTransactions($data, $payment=null)
     {
+
         return  Transaction::create([
             'data' => $data,
+            'title' => data_get($data, 'title'),
             'transaction_id' => data_get($data, 'id'),
             'student_id' => data_get($data, 'student_id'),
             'payment_id' => data_get($data, 'payment_id'),

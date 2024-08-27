@@ -131,7 +131,7 @@
         <div class="p-20 bgc-white bd">
             <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
             <div class="mx-4 text-end">
-                <a class="px-4 btn btn-info" href="{{ route('dashboard.installment-payments.index') }}">
+                <a class="px-4 btn btn-info" href="{{ route('dashboard.payments.index') }}">
                     رجوع
                 </a>
             </div>
@@ -139,7 +139,7 @@
                 <div class="mb-3 row">
                     <label for="installmentPayment_id" class="form-label col-sm-4 col-form-label">رقم الدفعة</label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $installmentPayment->id }}</p>
+                        <p class="form-control-plaintext">{{ $payment->id }}</p>
                     </div>
                 </div>
 
@@ -147,55 +147,32 @@
                     <label for="client_pay_order_id" class="form-label col-sm-4 col-form-label">الطالب</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">
-                            <a href="{{ route('dashboard.students.show', $installmentPayment?->student?->id) }}">
-                                {{ $installmentPayment?->student?->name }}
+                            <a href="{{ route('dashboard.students.show', $payment?->student?->id) }}">
+                                {{ $payment?->student?->name }}
                             </a>
                         </p>
                     </div>
                 </div>
-
                 <div class="mb-3 row">
-                    <label for="client_pay_order_id" class="form-label col-sm-4 col-form-label">رقم التسجيل (HyperPay)</label>
+                    <label for="amount" class="form-label col-sm-4 col-form-label">المبلغ الكلي  </label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">
-                            {{ $installmentPayment?->registration_id }}
-                        </p>
+                        <p class="form-control-plaintext">{{ $payment->package?->total . ' ' . __('SAR') }}</p>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">مقدار القسط</label>
+                    <label for="amount" class="form-label col-sm-4 col-form-label">تاريخ الدفع</label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $installmentPayment->package?->installment_value . ' ' . __('SAR') }}</p>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">تاريخ الاشتراك</label>
-                    <div class="col-sm-8">
-                        <p class="text-bold">{{ $installmentPayment->created_at }}</p>
+                        <p class="text-bold">{{ $payment->created_at }}</p>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="amount" class="form-label col-sm-4 col-form-label">اخر تحديث</label>
                     <div class="col-sm-8">
-                        <p class="text-bold">{{ $installmentPayment->updated_at }}</p>
+                        <p class="text-bold">{{ $payment->updated_at }}</p>
                     </div>
                 </div>
-
-                @if($installmentPayment->canceled == 0)
-                <div class="text-end">
-                    <button class="px-4 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelSubscriptionModal"
-                     data-url="{{route('dashboard.cancel-schedule', $installmentPayment->payment_id)}}">
-                        إلغاء الاشتراك
-                    </button>
-                </div>
-                @else
-                <p class="px-4 btn text-danger">
-                   تم إلغاء الإشتراك
-                </p>
-                @endif
             </div>
         </div>
 
@@ -208,30 +185,30 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="apland-timeline-area">
-                                    @foreach($installmentPayment->hyperpayWebHooksNotifications->sortByDesc('created_at') as $notification)
+                                    @foreach($payment->transactions->sortByDesc('created_at') as $transaction)
                                     <div class="single-timeline-area @if($loop->first) shadow @endif">
                                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                                            <p>{{ $notification->created_at }} </p>
+                                            <p>{{ $transaction->created_at }} </p>
                                         </div>
                                         <div class="row">
                                             <div class="single-timeline-content d-flex " data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
                                                 <div class="timeline-icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
                                                 <div class="m-2 timeline-text">
-                                                    <h2 class="px-10 h4 fw-500">{{ $notification->title }}</h2>
-                                                    <h6> {{ $notification->type }} </h6>
+                                                    <h2 class="px-10 h4 fw-500">{{ $transaction->title }}</h2>
+                                                    <h6> {{ $transaction->type }} </h6>
 
-                                                    <p>الوصف: {{ data_get($notification->payload, 'result.description') }}</p>
-                                                    <p>المبلغ: {{ data_get($notification->payload, 'amount') }} {{ data_get($notification->payload, 'currency') }}</p>
-                                                    <p>البريد الإلكتروني: {{ data_get($notification->payload, 'customer.email') }}</p>
-                                                    <p>اسم حامل البطاقة: {{ data_get($notification->payload, 'card.holder') }}</p>
-                                                    <p>نوع البطاقة: {{ data_get($notification->payload, 'card.type') }}</p>
-                                                    <p>تاريخ انتهاء البطاقة: {{ data_get($notification->payload, 'card.expiryMonth') }}/{{ data_get($notification->payload, 'card.expiryYear') }}</p>
-                                                    <p>آخر 4 أرقام من البطاقة: {{ data_get($notification->payload, 'card.last4Digits') }}</p>
-                                                    <p>IP العميل: {{ data_get($notification->payload, 'customer.ip') }}</p>
-                                                    <p>اسم العميل: {{ data_get($notification->payload, 'customer.givenName') }}</p>
-                                                    <p>الرمز القصير: {{ data_get($notification->payload, 'shortId') }}</p>
-                                                    <p>علامة الدفع: {{ data_get($notification->payload, 'paymentBrand') }}</p>
-                                                    <p class="text-bold">الاستجابة من المستحوذ: {{ data_get($notification->payload, 'resultDetails.AcquirerResponse') == 'APPROVED' ? 'مقبول' : data_get($notification->payload, 'resultDetails.AcquirerResponse') }}</p>
+                                                    <p>الوصف: {{ data_get($transaction->data, 'result.description') }}</p>
+                                                    <p>المبلغ: {{ data_get($transaction->data, 'amount') }} {{ data_get($transaction->data, 'currency') }}</p>
+                                                    <p>البريد الإلكتروني: {{ data_get($transaction->data, 'customer.email') }}</p>
+                                                    <p>اسم حامل البطاقة: {{ data_get($transaction->data, 'card.holder') }}</p>
+                                                    <p>نوع البطاقة: {{ data_get($transaction->data, 'card.type') }}</p>
+                                                    <p>تاريخ انتهاء البطاقة: {{ data_get($transaction->data, 'card.expiryMonth') }}/{{ data_get($transaction->data, 'card.expiryYear') }}</p>
+                                                    <p>آخر 4 أرقام من البطاقة: {{ data_get($transaction->data, 'card.last4Digits') }}</p>
+                                                    <p>IP العميل: {{ data_get($transaction->data, 'customer.ip') }}</p>
+                                                    <p>اسم العميل: {{ data_get($transaction->data, 'customer.givenName') }}</p>
+                                                    <p>الرمز القصير: {{ data_get($transaction->data, 'shortId') }}</p>
+                                                    <p>علامة الدفع: {{ data_get($transaction->data, 'paymentBrand') }}</p>
+                                                    <p class="text-bold">الاستجابة من المستحوذ: {{ data_get($transaction->data, 'resultDetails.AcquirerResponse') == 'APPROVED' ? 'مقبول' : data_get($transaction->data, 'resultDetails.AcquirerResponse') }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -245,43 +222,10 @@
             </div>
         </div>
 
-
-
-
     </div>
 </div>
 
 
-<!-- Cancel Subscription Modal -->
-<div class="modal fade" id="cancelSubscriptionModal" tabindex="-1" aria-labelledby="cancelSubscriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelSubscriptionModalLabel">تأكيد إلغاء الاشتراك</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                هل أنت متأكد أنك تريد إلغاء الاشتراك؟
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                <a href="#" class="btn btn-danger btn-confirm-cancel">تأكيد الإلغاء</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection
 
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var cancelSubscriptionModal = document.getElementById('cancelSubscriptionModal');
-            cancelSubscriptionModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var url = button.getAttribute('data-url');
-                var confirmCancelButton = cancelSubscriptionModal.querySelector('.btn-confirm-cancel');
-                confirmCancelButton.setAttribute('href', url);
-            });
-        });
-    </script>
-@endpush

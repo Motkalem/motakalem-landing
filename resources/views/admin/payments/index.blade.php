@@ -53,14 +53,12 @@
                         </td>
                         <td class="text-center project-actions">
 
-                            @if(!$payment->is_finished == true
-                            && $payment->transactions()->latest()->first()?->success == 'false'
-                            && $payment->package?->payment_type == 'one time'
-                            )
 
-                                <a href="{{ route('dashboard.payments.update-payment-url', $payment->id) }}" class="px-4 btn bg-green btn-sm">
-                                    تحديث الرابط                                   </a>
-                            @endif
+
+                                <a href="{{ route('dashboard.payments.show', $payment->id) }}" class="px-4 btn bg-green btn-sm">
+                                       عرض
+                                </a>
+
                             <a href="{{ route('dashboard.payments.edit', $payment->id) }}" class="px-4 btn btn-info btn-sm">
                                 تعديل
                             </a>

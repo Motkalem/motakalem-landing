@@ -32,7 +32,7 @@ class PaymentsController extends AdminBaseController
     {
         $title = 'إنشاء دفعة جديدة';
         $students = Student::all();
-        $packages = Package::where('is_active', 1)->get();
+        $packages = Package::where(['is_active'=> 1, 'payment_type'=> 'one time'])->get();
         return view(
             'admin.payments.create',
             compact(
@@ -123,6 +123,16 @@ class PaymentsController extends AdminBaseController
 
         notify()->success('تم تحديث الدفعة بنجاح.');
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment updated successfully.');
+    }
+
+    public function show($id)
+    {
+        $title = 'عرض الدفعه ';
+
+        $payment = Payment::with('transactions')->findOrFail($id);
+
+        return view('admin.payments.show',
+         compact('payment','title'));
     }
 
     protected function updatePaymentUrl($paymentId)

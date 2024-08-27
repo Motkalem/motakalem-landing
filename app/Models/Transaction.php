@@ -8,7 +8,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class Transaction extends Model
 {
     use CrudTrait;
-    protected $fillable = ['transaction_id', 'student_id','payment_id','success',
+    protected $fillable = ['title','transaction_id', 'student_id','payment_id','success',
     'amount', 'status', 'data'];
     protected $casts = ['data'=> 'array'];
 
