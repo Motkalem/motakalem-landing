@@ -79,7 +79,7 @@
                 </a>
             </li>
 
-            <li class="nav-item mT-10
+            {{-- <li class="nav-item mT-10
             {{ Request::routeIs('dashboard.transactions.index')
             ||
              Request::routeIs('dashboard.transactions.show')
@@ -91,7 +91,7 @@
                     </span>
                     <span class="title">{{ __('Transactions') }}</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="nav-item mT-10
             {{ Request::routeIs('dashboard.installment-payments.index')

@@ -157,16 +157,20 @@ class PaymentController extends Controller
 
     private function markPaymentAsCompleted($payment=null)
     {
-
-
-
         if ($payment?->package?->payment_type == Package::ONE_TIME) {
 
             $transaction = Transaction::where('payment_id', $payment->id)->latest()->first();
 
             if ($transaction->success == 'true')
              {
+
                 $payment->update(['is_finished' => true]);
+
+                $payment->student?->update([
+                    'package_id'=> $payment?->package?->id,
+                    'is_paid'=> true,
+                ]);
+
                 $this->notifyClient($payment->student, $transaction);
                 $this->notifyAdmin($payment->student, $transaction, 'one time');
             }
@@ -187,8 +191,6 @@ class PaymentController extends Controller
     {
 
         if ($type == 'one time') {
-
-
             try {
                 if (env('NOTIFY_ADMINS') == true) {
 

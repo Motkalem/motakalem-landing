@@ -29,7 +29,7 @@
                 <tbody id="paymentsTableBody">
                     @foreach($payments as $payment)
                     <tr>
-                        <td>{{ $payment->student->name }}</td>
+                        <td>{{ $payment->student?->name }}</td>
                         <td>{{ $payment->package->name }}</td>
                         <td>{{ $payment->package?->payment_type == 'one time' ? 'مرة واحدة' : 'اقساط' }}</td>
                         <td>

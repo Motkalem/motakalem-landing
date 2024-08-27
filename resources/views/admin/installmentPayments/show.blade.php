@@ -200,7 +200,7 @@
         </div>
 
       <!-- Notification Log Section -->
-        <div class="p-20 bgc-white bd">
+        <div class="p-20 bd">
             <div class="mT-30">
                 <h6 class="c-grey-900 h3">سجل الإشعارات</h6>
                 <section class="mt-2 timeline_area section_padding_130">
@@ -209,7 +209,7 @@
                             <div class="col-12">
                                 <div class="apland-timeline-area">
                                     @foreach($installmentPayment->hyperpayWebHooksNotifications->sortByDesc('created_at') as $notification)
-                                    <div class="single-timeline-area @if($loop->first) shadow @endif">
+                                    <div class="mt-3 bg-white border single-timeline-area border-1 rounded-2">
                                         <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
                                             <p>{{ $notification->created_at }} </p>
                                         </div>
@@ -227,11 +227,8 @@
                                                     <p>نوع البطاقة: {{ data_get($notification->payload, 'card.type') }}</p>
                                                     <p>تاريخ انتهاء البطاقة: {{ data_get($notification->payload, 'card.expiryMonth') }}/{{ data_get($notification->payload, 'card.expiryYear') }}</p>
                                                     <p>آخر 4 أرقام من البطاقة: {{ data_get($notification->payload, 'card.last4Digits') }}</p>
-                                                    <p>IP العميل: {{ data_get($notification->payload, 'customer.ip') }}</p>
                                                     <p>اسم العميل: {{ data_get($notification->payload, 'customer.givenName') }}</p>
-                                                    <p>الرمز القصير: {{ data_get($notification->payload, 'shortId') }}</p>
                                                     <p>علامة الدفع: {{ data_get($notification->payload, 'paymentBrand') }}</p>
-                                                    <p class="text-bold">الاستجابة من المستحوذ: {{ data_get($notification->payload, 'resultDetails.AcquirerResponse') == 'APPROVED' ? 'مقبول' : data_get($notification->payload, 'resultDetails.AcquirerResponse') }}</p>
                                                 </div>
                                             </div>
                                         </div>

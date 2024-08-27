@@ -135,30 +135,7 @@ class PaymentsController extends AdminBaseController
          compact('payment','title'));
     }
 
-    protected function updatePaymentUrl($paymentId)
-    {
-
-        $payment = Payment::with('package')->find($paymentId);
-
-        try {
-
-            $responseData = $this->createCheckoutId($payment->package?->total);
-
-            $payment->update([
-                'payment_url' => route('checkout.index')
-                    . '?checkoutId='
-                    . data_get(json_decode($responseData), "id")
-                    . '&sid=' . $payment->student_id
-                    . '&pid=' . $payment->id
-            ]);
-
-            notify()->success('تم تحديث رابط الدفعة', 'نجاح');
-        } catch (\Throwable $th) {
-            notify()->error('لم يتم تحديث رابط الدفعة', 'فشل');
-        }
-
-        return back();
-    }
+  
 
     public function destroy($id)
     {

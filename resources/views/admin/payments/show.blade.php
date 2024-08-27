@@ -154,6 +154,16 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
+                    <label for="client_pay_order_id" class="form-label col-sm-4 col-form-label">الباقه</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">
+                            <a href="{{ route('dashboard.packages.edit', $payment?->package?->id) }}">
+                                {{ $payment?->package?->name }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3 row">
                     <label for="amount" class="form-label col-sm-4 col-form-label">المبلغ الكلي  </label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">{{ $payment->package?->total . ' ' . __('SAR') }}</p>
@@ -204,11 +214,7 @@
                                                     <p>نوع البطاقة: {{ data_get($transaction->data, 'card.type') }}</p>
                                                     <p>تاريخ انتهاء البطاقة: {{ data_get($transaction->data, 'card.expiryMonth') }}/{{ data_get($transaction->data, 'card.expiryYear') }}</p>
                                                     <p>آخر 4 أرقام من البطاقة: {{ data_get($transaction->data, 'card.last4Digits') }}</p>
-                                                    <p>IP العميل: {{ data_get($transaction->data, 'customer.ip') }}</p>
-                                                    <p>اسم العميل: {{ data_get($transaction->data, 'customer.givenName') }}</p>
-                                                    <p>الرمز القصير: {{ data_get($transaction->data, 'shortId') }}</p>
                                                     <p>علامة الدفع: {{ data_get($transaction->data, 'paymentBrand') }}</p>
-                                                    <p class="text-bold">الاستجابة من المستحوذ: {{ data_get($transaction->data, 'resultDetails.AcquirerResponse') == 'APPROVED' ? 'مقبول' : data_get($transaction->data, 'resultDetails.AcquirerResponse') }}</p>
                                                 </div>
                                             </div>
                                         </div>

@@ -6,8 +6,13 @@ use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
+use App\Notifications\Admin\HyperPayNotification;
+use App\Notifications\Admin\NewSubscriptionNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+
+
 
 class HyperPayWebHooksController extends Controller
 {
@@ -29,7 +34,7 @@ class HyperPayWebHooksController extends Controller
         $HyperpayNotificationProcessor = new HyperpayNotificationProcessor($decryptedPayload);
         $title = $HyperpayNotificationProcessor->processNotification();
 
-        HyperpayWebHooksNotification::create([
+        $notifcation = HyperpayWebHooksNotification::create([
             'title' => $title,
             'installment_payment_id' => $installmentPayment?->id,
             'type' => data_get($data, 'type'),
@@ -37,6 +42,8 @@ class HyperPayWebHooksController extends Controller
             'payload' => data_get($data, 'payload'),
             'log' => $data,
         ]);
+
+        $this->notifyAdmin($notifcation);
 
         return response()->json([
             "message" => "saved Successfully"
@@ -55,5 +62,23 @@ class HyperPayWebHooksController extends Controller
             $iv,
             $authTag
         );
+    }
+
+    public function notifyAdmin($notification): void
+    {
+            try {
+                if (env('NOTIFY_ADMINS') == true) {
+
+                    $adminEmails = explode(',', env('ADMIN_EMAILS'));
+                    foreach ($adminEmails as $adminEmail) {
+                        Notification::route('mail', $adminEmail)
+                            ->notify(new  HyperPayNotification(
+                                $notification
+                            ));
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
     }
 }
