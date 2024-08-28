@@ -14,7 +14,7 @@ class CancelRecurringPayment
     {
 
         $url = "https://eu-test.oppwa.com/scheduling/v1/schedules/".$id;
-        $url .= "?entityId=".env('ENTITY_ID');
+        $url .= "?entityId=".env('RECURRING_ENTITY_ID');
         $url .=	"&testMode=EXTERNAL";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

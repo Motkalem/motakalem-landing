@@ -29,7 +29,7 @@ class ScheduleRecurringPayment
         $formattedFirstPaymentDate = $firstPaymentDate->format('Y-m-d H:i:s');
 
         $url = "https://eu-test.oppwa.com/scheduling/v1/schedules";
-        $data = "entityId=" . env('ENTITY_ID') .
+        $data = "entityId=" . env('RECURRING_ENTITY_ID') .
             "&amount=" . $amount .
             "&paymentType=DB" .
             "&registrationId=" . $installmentPayment->registration_id .

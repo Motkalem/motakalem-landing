@@ -27,18 +27,20 @@ class StoreRecurringPaymentData
                 "&customParameters[3DS2_flow]=challenge" .
                 "&standingInstruction.mode=REPEATED" .
                 "&standingInstruction.type=UNSCHEDULED" .
-                "&customer.ip=".request()->ip() .
-                "&standingInstruction.recurringType=SUBSCRIPTION".
-                "&createRegistration=true".
-                "&shopperResultUrl=".url('/').
                 "&card.number=".data_get(data_get($data,'card'), 'number')  .
                 "&card.holder=".data_get(data_get($data,'card'), 'holder') .
                 "&card.expiryMonth=".data_get(data_get($data,'card'), 'expiryMonth').
                 "&card.expiryYear=".data_get(data_get($data,'card'), 'expiryYear') .
                 "&card.cvv=".data_get(data_get($data,'card'), 'cvv').
+                "&standingInstruction.recurringType=SUBSCRIPTION".
+                "&createRegistration=true".
+                "&customer.ip=".request()->ip() .
                 "&customer.email=".$student?->email .
                 "&customer.givenName=".$student?->name??'' .
                 "&customer.surname=".$student?->name??'' .
+                "&customer.mobile=".$student?->phone??'' .
+
+                "&shopperResultUrl=".url('/').
 
                 "&billing.city=".data_get(data_get($data,'billing'), 'city') .
                 "&billing.postcode=".data_get(data_get($data,'billing'), 'postcode')  .

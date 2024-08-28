@@ -54,9 +54,9 @@ class PaymentController extends Controller
             $entitiy_id = config('hyperpay.entity_id_mada'); //mada
         }
 
-
         $access_token = config('hyperpay.access_token');
         $url = "https://eu-test.oppwa.com/v1/checkouts";
+        
         $data = 'entityId=' . $entitiy_id . "&amount="
         . $total_price . "&currency=SAR" . "&paymentType=DB";
 
