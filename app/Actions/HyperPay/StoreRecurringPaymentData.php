@@ -14,10 +14,10 @@ class StoreRecurringPaymentData
 
         // try{
             $url = env('HYPERPAY_URL')."/payments";
-            $data = "entityId=".env('ENTITY_ID').
+            $data = "entityId=".env('RECURRING_ENTITY_ID').
                 "&amount=".(int)$package->installment_value.
                 "&merchantTransactionId=".$payment->id .
-                "&paymentBrand=MADA" .
+                "&paymentBrand=".strtoupper(data_get($data, 'payment_brand')) .
                 "&paymentType=DB" .
                 "&currency=SAR".
                 "&standingInstruction.expiry=2030-08-11" .
@@ -36,7 +36,6 @@ class StoreRecurringPaymentData
                 "&card.expiryMonth=".data_get(data_get($data,'card'), 'expiryMonth').
                 "&card.expiryYear=".data_get(data_get($data,'card'), 'expiryYear') .
                 "&card.cvv=".data_get(data_get($data,'card'), 'cvv').
-
                 "&customer.email=".$student?->email .
                 "&customer.givenName=".$student?->name??'' .
                 "&customer.surname=".$student?->name??'' .
@@ -46,7 +45,7 @@ class StoreRecurringPaymentData
                 "&billing.state=".data_get(data_get($data,'billing'), 'state') .
                 "&billing.street1=".data_get(data_get($data,'billing'), 'street1') .
                 "&billing.country=SA" ;
-                
+
 
                 $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);

@@ -47,10 +47,18 @@ class PaymentController extends Controller
     public function createCheckoutId($total_price)
     {
 
-        $entitiy_id = config('hyperpay.entity_id');
+        $entitiy_id = config('hyperpay.entity_id'); //visa or master
+
+        if(request()->payment_method == 'MADA'){
+
+            $entitiy_id = config('hyperpay.entity_id_mada'); //mada
+        }
+
+
         $access_token = config('hyperpay.access_token');
         $url = "https://eu-test.oppwa.com/v1/checkouts";
-        $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
+        $data = 'entityId=' . $entitiy_id . "&amount="
+        . $total_price . "&currency=SAR" . "&paymentType=DB";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
