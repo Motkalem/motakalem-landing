@@ -135,7 +135,7 @@ class PaymentsController extends AdminBaseController
          compact('payment','title'));
     }
 
-  
+
 
     public function destroy($id)
     {
@@ -155,7 +155,7 @@ class PaymentsController extends AdminBaseController
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
 
-        $url = "https://eu-test.oppwa.com/v1/checkouts";
+        $url = "https://eu-prod.oppwa.com/v1/checkouts";
         $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
 
         $ch = curl_init();
