@@ -41,6 +41,7 @@ class PaymentController extends Controller
         }
 
         $paymentId = data_get(json_decode($responseData), "id");
+        
         return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
 
@@ -56,7 +57,7 @@ class PaymentController extends Controller
 
         $access_token = config('hyperpay.access_token');
         $url = "https://eu-test.oppwa.com/v1/checkouts";
-        
+
         $data = 'entityId=' . $entitiy_id . "&amount="
         . $total_price . "&currency=SAR" . "&paymentType=DB";
 
