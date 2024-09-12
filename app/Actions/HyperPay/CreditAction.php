@@ -10,14 +10,9 @@ use App\Models\InstallmentPayment;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Student;
-use App\Notifications\Admin\NewSubscriptionNotification;
 use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
-
-use function PHPUnit\Framework\isNull;
 
 class CreditAction
 {
@@ -171,7 +166,7 @@ class CreditAction
 
         ]);
 
-        if($installmentPayment->wasRecentlyCreated && isNull($installmentPayment->registration_id)) {
+        if($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
 
                 $response = StoreRecurringPaymentData::make()
                 ->handle(
@@ -235,7 +230,7 @@ class CreditAction
             ScheduleRecurringPayment::make()->handle(  $installmentPayment  );
         }
 
-     
+
 
 
 

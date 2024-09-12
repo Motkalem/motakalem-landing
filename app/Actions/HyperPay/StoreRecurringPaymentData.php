@@ -21,7 +21,7 @@ class StoreRecurringPaymentData
             "&paymentType=DB" .
             "&createRegistration=true" .
             "&currency=SAR" .
-            "&testMode=EXTERNAL" .
+            // "&testMode=EXTERNAL" .
             "&paymentBrand=" . strtoupper(data_get($data, 'payment_brand')) .
             "&card.number=" . data_get(data_get($data, 'card'), 'number')  .
             "&card.holder=" . data_get(data_get($data, 'card'), 'holder') .
@@ -44,12 +44,11 @@ class StoreRecurringPaymentData
 
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.mode=REPEATED" .
-            "&standingInstruction.source=CIT" .
+            "&standingInstruction.source=MIT" .
             "&standingInstruction.recurringType=SUBSCRIPTION" .
-
             "&merchantTransactionId=" . $payment->id .
             "&standingInstruction.expiry=2030-08-11" .
-            "&customParameters[3DS2_flow]=challenge" .
+            // "&customParameters[3DS2_flow]=challenge" .
             "&shopperResultUrl=" . url('/');
 
         $ch = curl_init();

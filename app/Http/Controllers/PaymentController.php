@@ -41,7 +41,7 @@ class PaymentController extends Controller
         }
 
         $paymentId = data_get(json_decode($responseData), "id");
-        
+
         return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
 
@@ -56,10 +56,10 @@ class PaymentController extends Controller
         }
 
         $access_token = config('hyperpay.access_token');
-        $url = "https://eu-test.oppwa.com/v1/checkouts";
 
-        $data = 'entityId=' . $entitiy_id . "&amount="
-        . $total_price . "&currency=SAR" . "&paymentType=DB";
+        $url = env('HYPERPAY_URL')."/checkouts";
+
+        $data = 'entityId=' . $entitiy_id . "&amount=". $total_price . "&currency=SAR" . "&paymentType=DB";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -93,7 +93,7 @@ class PaymentController extends Controller
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
 
-        $url = "https://eu-test.oppwa.com/v1/checkouts/" . $_GET['id'] . "/payment";
+        $url = env('HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entitiy_id;
 
         $ch = curl_init();
