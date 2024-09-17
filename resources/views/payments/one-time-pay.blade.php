@@ -13,8 +13,6 @@
             <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'}}"
             class="paymentWidgets" data-brands="MADA VISA MASTER"></form>
 
-            <script
-            src="https://eu-prod.oppwa.com/v1/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}">
-        </script>
+
         </body>
     </html>

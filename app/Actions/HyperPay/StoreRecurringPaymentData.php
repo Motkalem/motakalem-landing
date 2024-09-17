@@ -17,7 +17,7 @@ class StoreRecurringPaymentData
         // try{
         $url = env('HYPERPAY_URL') . "/payments";
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
-            "&amount=" . (int)$package->installment_value .
+            "&amount=" . $package->installment_value .
             "&paymentType=DB" .
             "&createRegistration=true" .
             "&currency=SAR" .
