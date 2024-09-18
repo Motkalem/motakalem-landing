@@ -36,12 +36,12 @@ class StoreRecurringPaymentData
             "&customer.language=AR" .
             "&customer.mobile=" . $student?->phone ?? '' .
 
+            "&shopperResultUrl=" . url('/') .
             "&billing.city=" . data_get(data_get($data, 'billing'), 'city') .
             "&billing.country=SA" .
             "&billing.postcode=" . data_get(data_get($data, 'billing'), 'postcode')  .
             "&billing.state=" . data_get(data_get($data, 'billing'), 'state') .
             "&billing.street1=" . data_get(data_get($data, 'billing'), 'street1') .
-            "&shopperResultUrl=" . url('/') .
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.source=MIT" .
