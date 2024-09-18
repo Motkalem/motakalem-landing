@@ -46,6 +46,7 @@ class ScheduleRecurringPayment
             "&job.dayOfMonth=" . $firstPaymentDate->day .
             "&job.month=" . $firstPaymentDate->month .
             "&job.dayOfWeek=?" .
+            "&shopperResultUrl=" . url('/') .
             "&job.year=" . $firstPaymentDate->year;
 
         $ch = curl_init();
