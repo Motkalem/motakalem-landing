@@ -30,7 +30,7 @@
                     @foreach($payments as $payment)
                     <tr>
                         <td>{{ $payment->student?->name }}</td>
-                        <td>{{ $payment->package->name }}</td>
+                        <td>{{ $payment->package?->name }}</td>
                         <td>{{ $payment->package?->payment_type == 'one time' ? 'مرة واحدة' : 'اقساط' }}</td>
                         <td>
                             <button class="btn btn-link" onclick="copyToClipboard('{{ $payment->payment_url }}')" title="{{$payment->payment_url}}">   نسخ الرابط</button>

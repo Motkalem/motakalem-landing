@@ -54,7 +54,7 @@ class ScheduleRecurringPayment
             'Authorization:Bearer ' . env('AUTH_TOKEN')));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // this should be set to true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // this should be set to true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
