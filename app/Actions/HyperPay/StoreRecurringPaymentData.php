@@ -41,15 +41,13 @@ class StoreRecurringPaymentData
             "&billing.postcode=" . data_get(data_get($data, 'billing'), 'postcode')  .
             "&billing.state=" . data_get(data_get($data, 'billing'), 'state') .
             "&billing.street1=" . data_get(data_get($data, 'billing'), 'street1') .
-
+            "&shopperResultUrl=" . url('/') .
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.source=MIT" .
             "&standingInstruction.recurringType=SUBSCRIPTION" .
             "&merchantTransactionId=" . $payment->id .
-            "&standingInstruction.expiry=2030-08-11" .
-            // "&customParameters[3DS2_flow]=challenge" .
-            "&shopperResultUrl=" . url('/');
+            "&standingInstruction.expiry=2030-08-11";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
