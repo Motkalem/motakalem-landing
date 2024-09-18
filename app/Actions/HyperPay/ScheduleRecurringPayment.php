@@ -21,7 +21,7 @@ class ScheduleRecurringPayment
         $endDate = $startDate->copy()->addMonths($numberOfMonths);
 
         // Schedule the first payment 5 minutes from now
-        $firstPaymentDate = $startDate->copy()->addMinutes(2);
+        $firstPaymentDate = $startDate;
 
         // Format dates to the required format
         $formattedStartDate = $startDate->format('Y-m-d H:i:s');
