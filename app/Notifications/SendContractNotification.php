@@ -14,8 +14,7 @@ class SendContractNotification extends Notification
      *
      * @return void
      */
-    public function __construct(public $data)
-    {}
+    public function __construct(public $data) {}
 
     /**
      * Get the notification's delivery channels.
@@ -38,12 +37,14 @@ class SendContractNotification extends Notification
     {
 
         return (new MailMessage)
-            ->subject(  'عقد انضمام برنامج متكلم للتأتأه')
-            ->cc('Info@motkalem.com')
-            ->cc('Executive@squarement.sa')
-            ->view('emails.contract',
+            ->subject('عقد انضمام برنامج متكلم للتأتأه')
+            // ->cc('Info@motkalem.com') @TODO read email from env
+            // ->cc('Executive@squarement.sa')
+            ->view(
+                'emails.contract',
                 [
-                    'data'=> $this->data,
-                ]);
+                    'data' => $this->data,
+                ]
+            );
     }
 }
