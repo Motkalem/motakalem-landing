@@ -31,7 +31,9 @@
                     <label class="form-label col-sm-2 col-form-label">نوع الدفع</label>
                     <div class="cursor-pointer col-sm-10 d-flex align-items-center">
                         <div class="cursor-pointer form-check me-4 ">
-                            <input class="form-check-input" required type="radio" name="payment_type" id="one_time" value="one_time"
+                            <input class="form-check-input"
+                             required type="radio"
+                             name="payment_type" id="one_time" value="one time"
                                 {{ old('payment_type', $package->payment_type ?? '') == 'one time' ? 'checked' : '' }}>
                             <label class="form-check-label" for="one_time">دفع مرة واحدة</label>
                         </div>
@@ -146,7 +148,7 @@
             const installmentValueContainer = document.getElementById('installment_value_container');
             const numberOfMonthsContainer = document.getElementById('number_of_months_container');
 
-            if (paymentType === 'one_time') {
+            if (paymentType === 'one time') {
                 totalPaymentContainer.style.display = 'flex';
                 installmentValueContainer.style.display = 'none';
                 numberOfMonthsContainer.style.display = 'none';

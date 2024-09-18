@@ -50,17 +50,22 @@ class PaymentController extends Controller
 
         $entitiy_id = config('hyperpay.entity_id'); //visa or master
 
+
         if(request()->payment_method == 'MADA'){
 
-            $entitiy_id = config('hyperpay.entity_id_mada'); //mada
+            $entitiy_id = env('ENTITY_ID_MADA'); //mada
         }
 
-        $access_token = config('hyperpay.access_token');
+        $access_token = env('AUTH_TOKEN');
 
         $url = env('HYPERPAY_URL')."/checkouts";
 
-        $data = 'entityId=' . $entitiy_id . "&amount=". $total_price . "&currency=SAR" . "&paymentType=DB";
+        $data = 'entityId='
+        . $entitiy_id . "&amount=". $total_price
+        . "&currency=SAR"
+        . "&paymentType=DB";
 
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt(
@@ -109,7 +114,7 @@ class PaymentController extends Controller
         }
         curl_close($ch);
 
-        $response  = $responseData;
+       return  $response  = $responseData;
         $res = new HyperpayNotificationProcessor( $response);
 
         $title =  $res->processNotification()   ;
@@ -172,7 +177,6 @@ class PaymentController extends Controller
 
             if ($transaction->success == 'true')
              {
-
                 $payment->update(['is_finished' => true]);
 
                 $payment->student?->update([

@@ -61,6 +61,7 @@ class CreditAction
 
     public function handle(ActionRequest $request)
     {
+
         DB::beginTransaction();
 
         // try {
@@ -92,6 +93,7 @@ class CreditAction
 
             if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
 
+  
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
             } else {
 

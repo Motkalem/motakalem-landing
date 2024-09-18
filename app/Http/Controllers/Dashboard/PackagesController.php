@@ -72,9 +72,10 @@ class PackagesController extends AdminBaseController
             ->ignore($id)],
         ]);
 
+
         $package = Package::findOrFail($id);
 
-        if($request->payment_type == 'one time')
+        if($request->payment_type == Package::ONE_TIME)
         {
 
             $package->number_of_months = null;
@@ -91,8 +92,8 @@ class PackagesController extends AdminBaseController
         $package->name = $request->name;
         $package->payment_type = $request->payment_type;
         $package->save();
-        notify()->success('تم تحديث الباقة.');
 
+        notify()->success('تم تحديث الباقة.');
         return redirect()->route('dashboard.packages.index')->with('success', 'Package updated successfully.');
     }
 
