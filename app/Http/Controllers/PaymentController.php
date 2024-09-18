@@ -114,7 +114,7 @@ class PaymentController extends Controller
         }
         curl_close($ch);
 
-       return  $response  = $responseData;
+        $response  = $responseData;
         $res = new HyperpayNotificationProcessor( $response);
 
         $title =  $res->processNotification()   ;
