@@ -11,6 +11,7 @@
         "backpack/permissionmanager": "^6.0",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
+        "hyperpay/payment": "dev-main",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",

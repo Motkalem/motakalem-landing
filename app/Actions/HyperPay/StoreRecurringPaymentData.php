@@ -13,6 +13,7 @@ class StoreRecurringPaymentData
 
     public function handle($package, $payment, $student, $data)
     {
+        dd($data);
 
         // try{
         $url = env('HYPERPAY_URL') . "/payments";
