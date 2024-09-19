@@ -2,7 +2,7 @@
 
 namespace App\Actions\HyperPay;
 
- use Lorisleiva\Actions\Concerns\AsAction;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class ScheduleRecurringPayment
 {
@@ -13,17 +13,13 @@ class ScheduleRecurringPayment
         $package = $installmentPayment->package;
         $amount = $package->installment_value;
 
-        // Get the number of months from the package
         $numberOfMonths = $package->number_of_months;
 
-        // Calculate start date and end date
         $startDate = now();
         $endDate = $startDate->copy()->addMonths($numberOfMonths);
 
-        // Schedule the first payment 5 minutes from now
         $firstPaymentDate = $startDate;
 
-        // Format dates to the required format
         $formattedStartDate = $startDate->format('Y-m-d H:i:s');
         $formattedEndDate = $endDate->format('Y-m-d H:i:s');
         $formattedFirstPaymentDate = $firstPaymentDate->format('Y-m-d H:i:s');
@@ -52,7 +48,8 @@ class ScheduleRecurringPayment
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization:Bearer ' . env('AUTH_TOKEN')));
+            'Authorization:Bearer ' . env('AUTH_TOKEN')
+        ));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // this should be set to true in production
@@ -64,6 +61,4 @@ class ScheduleRecurringPayment
         curl_close($ch);
         return $responseData;
     }
-
-
 }
