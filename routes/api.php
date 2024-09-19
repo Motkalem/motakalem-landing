@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\HyperPayWebHooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Actions\HyperPay\CreditAction;
+use App\Actions\HyperPay\ExcuteRecurringPaymentData;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::post('/credit', CreditAction::class)->name('credit');
 Route::get('/packages', GetPackages::class);
 
 Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
+
+Route::post('/test-excute', ExcuteRecurringPaymentData::class);
+
