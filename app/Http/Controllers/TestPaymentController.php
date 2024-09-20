@@ -46,7 +46,7 @@ class TestPaymentController extends Controller
         $amount = $request->input('amount');
         $currency = $request->input('currency');
 
-        $url = "https://test.oppwa.com/v1/registrations/{$registrationId}/payments";
+        $url = "https://eu-prod.oppwa.com/v1/registrations/{$registrationId}/payments";
         $data = [
             'entityId' => $this->entityId,
             'amount' => $amount,

@@ -4,6 +4,8 @@ namespace App\Actions\HyperPay;
 
 use Exception;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Support\Facades\Http;
+
 
 class StoreRecurringPaymentData
 {
@@ -13,7 +15,7 @@ class StoreRecurringPaymentData
 
     public function handle($package, $payment, $student, $data)
     {
-        dd($data);
+
 
         // try{
         $url = env('HYPERPAY_URL') . "/payments";
@@ -64,11 +66,33 @@ class StoreRecurringPaymentData
             return curl_error($ch);
         }
         curl_close($ch);
-        return $responseData;
+        dd( $responseData);
         // }   catch(Exception $e)    {
 
         // }
 
 
+    }
+
+
+    public function executeRecurringPayment($registrationId)
+    {
+        $registrationId = $registrationId;
+        $amount = 5;
+        $currency = 'SAR';
+
+        $url = "https://eu-prod.oppwa.com/v1/registrations/{$registrationId}/payments";
+        $data = [
+            'entityId' => config('payments.gateways.card.entity_id'),
+            'amount' => $amount,
+            'currency' => $currency,
+            'paymentType' => 'DB',
+        ];
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('payments.gateways.card.access_token'),
+        ])->post($url, $data);
+
+        return response()->json($response->json());
     }
 }

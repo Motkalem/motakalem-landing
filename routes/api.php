@@ -40,3 +40,4 @@ Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
 
 Route::post('/create-recurring-payment', [TestPaymentController::class, 'createRecurringPayment']);
 Route::post('/execute-recurring-payment', [TestPaymentController::class, 'executeRecurringPayment']);
+

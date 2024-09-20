@@ -93,7 +93,7 @@ class CreditAction
 
             if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
 
-  
+
                 $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
             } else {
 
@@ -101,7 +101,7 @@ class CreditAction
                InstallmentPayment::where('student_id', $student->id)
                ->whereNull('registration_id')?->first()?->delete();
 
-              return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
+            //   return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
             $this->joinController->notifyClient($contract);
