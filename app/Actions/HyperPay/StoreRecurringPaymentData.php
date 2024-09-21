@@ -22,6 +22,7 @@ class StoreRecurringPaymentData
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
             "&amount=" . $package->installment_value .
             "&paymentType=DB" .
+            "&shopperResultUrl=" . url('/') .
             "&createRegistration=true" .
             "&currency=SAR" .
             // "&testMode=EXTERNAL" .
@@ -39,7 +40,6 @@ class StoreRecurringPaymentData
             "&customer.language=AR" .
             "&customer.mobile=" . $student?->phone ?? '' .
 
-            "&shopperResultUrl=" . url('/') .
             "&billing.city=" . data_get(data_get($data, 'billing'), 'city') .
             "&billing.country=SA" .
             "&billing.postcode=" . data_get(data_get($data, 'billing'), 'postcode')  .
