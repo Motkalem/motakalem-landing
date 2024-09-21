@@ -66,7 +66,8 @@ class StoreRecurringPaymentData
             return curl_error($ch);
         }
         curl_close($ch);
-        dd( $responseData);
+
+        return $responseData;
         // }   catch(Exception $e)    {
 
         // }
