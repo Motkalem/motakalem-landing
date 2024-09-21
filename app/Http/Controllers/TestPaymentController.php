@@ -25,7 +25,7 @@ class TestPaymentController extends Controller
 
         $url = "https://test.oppwa.com/v1/registrations";
         $data = [
-            'entityId' => $this->entityId,
+            'entityId' => '8acda4c991e0574b0191e0b39afe0790',
             'amount' => $amount ?? 5,
             'currency' => $currency,
             'paymentType' => $paymentType,
@@ -35,7 +35,7 @@ class TestPaymentController extends Controller
         ];
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->accessToken,
+            'Authorization' => 'Bearer ' . 'OGFjZGE0Yzk5MWUwNTc0YjAxOTFlMGE1ZjU2MzA2Zjh8S25wc0xTaHM0YVlmK2o0PU01b1U',
         ])->post($url, $data);
 
         return response()->json($response->json());
