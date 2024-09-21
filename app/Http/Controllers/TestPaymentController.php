@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -18,10 +19,10 @@ class TestPaymentController extends Controller
 
     public function createRecurringPayment(Request $request)
     {
-        $student = $request->user();  // Assuming the student is the authenticated user
-        $package = $request->package; // Assuming the package comes from the request or related model
-        $payment = $request->payment; // Payment object from the request
-        $data = $request->all(); // All request data
+        $student = $request->user();
+        $package = Package::find( $request->package_id);
+        $payment = $request->payment;
+        $data = $request->all();
 
         // Construct the URL
         $url = "https://eu-prod.oppwa.com/v1/registrations";
