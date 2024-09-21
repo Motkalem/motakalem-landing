@@ -23,7 +23,7 @@ class TestPaymentController extends Controller
         $paymentType = $request->input('paymentType');
         $customerId = $request->input('customerId');
 
-        $url = "https://test.oppwa.com/v1/registrations";
+        $url = "https://eu-prod.oppwa.com/v1/registrations";
         $data = [
             'entityId' => '8acda4c991e0574b0191e0b39afe0790',
             'amount' => $amount ?? 5,
