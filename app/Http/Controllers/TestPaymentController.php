@@ -18,49 +18,74 @@ class TestPaymentController extends Controller
 
     public function createRecurringPayment(Request $request)
     {
-        $amount = $request->input('amount');
-        $currency = $request->input('currency');
-        $paymentType = $request->input('paymentType');
-        $customerId = $request->input('customerId');
+        $student = $request->user();  // Assuming the student is the authenticated user
+        $package = $request->package; // Assuming the package comes from the request or related model
+        $payment = $request->payment; // Payment object from the request
+        $data = $request->all(); // All request data
 
+        // Construct the URL
         $url = "https://eu-prod.oppwa.com/v1/registrations";
-        $data = [
-            'entityId' => '8acda4c991e0574b0191e0b39afe0790',
-            'amount' => $amount ?? 5,
-            'currency' => $currency,
-            'paymentType' => $paymentType,
-            'customer' => [
-                'id' => $customerId,
-            ],
-        ];
 
+        // Build the data string for the request
+        $postData = "entityId=" . env('RECURRING_ENTITY_ID') .
+            "&amount=" . $package->installment_value .
+            "&paymentType=DB" .
+            "&shopperResultUrl=" . url('/') .
+            "&createRegistration=true" .
+            "&currency=SAR" .
+            "&paymentBrand=" . strtoupper(data_get($data, 'payment_brand')) .
+            "&card.number=" . data_get(data_get($data, 'card'), 'number')  .
+            "&card.holder=" . data_get(data_get($data, 'card'), 'holder') .
+            "&card.expiryMonth=" . data_get(data_get($data, 'card'), 'expiryMonth') .
+            "&card.expiryYear=" . data_get(data_get($data, 'card'), 'expiryYear') .
+            "&card.cvv=" . data_get(data_get($data, 'card'), 'cvv') .
+
+            "&customer.email=" . $student?->email .
+            "&customer.givenName=" . $student?->name ?? '' .
+            "&customer.ip=" . request()->ip() .
+            "&customer.surname=" . $student?->name ?? '' .
+            "&customer.language=AR" .
+            "&customer.mobile=" . $student?->phone ?? '' .
+
+            "&billing.city=" . data_get(data_get($data, 'billing'), 'city') .
+            "&billing.country=SA" .
+            "&billing.postcode=" . data_get(data_get($data, 'billing'), 'postcode')  .
+            "&billing.state=" . data_get(data_get($data, 'billing'), 'state') .
+            "&billing.street1=" . data_get(data_get($data, 'billing'), 'street1') .
+            "&standingInstruction.type=UNSCHEDULED" .
+            "&standingInstruction.mode=REPEATED" .
+            "&standingInstruction.source=MIT" .
+            "&standingInstruction.recurringType=SUBSCRIPTION" .
+            "&merchantTransactionId=" . $payment->id .
+            "&standingInstruction.expiry=2030-08-11";
+
+        // Make the POST request with the concatenated string
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . 'OGFjZGE0Yzk5MWUwNTc0YjAxOTFlMGE1ZjU2MzA2Zjh8S25wc0xTaHM0YVlmK2o0PU01b1U',
-        ])->post($url, $data);
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ])->post($url, $postData);
 
-        return response()->json($response->json());
+        return $response->json();
     }
 
     public function executeRecurringPayment(Request $request)
     {
 
-        $registrationId = $request->input('registrationId');
-        $amount = 5.00;
-        $currency = 'SAR';
+        $registrationId = 'REGISTRATION_ID_FROM_INITIAL_PAYMENT';
 
         $url = "https://eu-prod.oppwa.com/v1/registrations/{$registrationId}/payments";
-
-        // Concatenate parameters into the URL
-        $url .= '?entityId=8acda4c991e0574b0191e0b39afe0790';
-        $url .= '&amount=' . urlencode($amount);
-        $url .= "&shopperResultUrl=https://motkalem.com/";
-        $url .= '&currency=' . urlencode($currency);
-        $url .= '&paymentType=DB';
-
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . 'OGFjZGE0Yzk5MWUwNTc0YjAxOTFlMGE1ZjU2MzA2Zjh8S25wc0xTaHM0YVlmK2o0PU01b1U',
-        ])->post($url);
+            'Authorization' => 'Bearer OGFjZGE0Yzk5MWUwNTc0YjAxOTFlMGE1ZjU2MzA2Zjh8S25wc0xTaHM0YVlmK2o0PU01b1U',
+        ])->asForm()->post($url, [
+            'entityId' => '8acda4c991e0574b0191e0b39afe0790',
+            'amount' => '5.00',
+            'currency' => 'SAR',
+            'paymentType' => 'DB',
+            'recurringType' => 'REPEATED',
+        ]);
 
-        return response()->json($response->json());
+        return $response->json();
+
+
     }
 }
