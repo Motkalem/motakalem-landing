@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get(
-    'checkout-recurring/{checoutId}',
+    'checkout-recurring/{checkoutId}',
     function () {
         return view('payments.recurring-pay');
     }
