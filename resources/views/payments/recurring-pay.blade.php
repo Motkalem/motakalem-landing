@@ -7,7 +7,7 @@
         <title>متكلم - الدفع</title>
         <link rel="stylesheet" href="styles.css">
     </head>
-    {{dd($_GET)}}
+    {{var_dump($_GET)}}
     <script src="https://eu-prod.oppwa.com/v1/paymentWidgets.js?checkoutId={{$_GET['checkoutId']}}"></script>
     <body>
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ 5</h1>
