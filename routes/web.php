@@ -2,8 +2,6 @@
 
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
-use App\Models\ParentContract;
-use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get(
+    'checkout-recurring/{checoutId}',
+    function () {
+        return view('payments.recurring-pay');
+    }
+);
+Route::get(
+    'recurring/result',
+    function () {
+        return [request()->all(), request()->segments()];
+    }
+);
+
+
 Route::get('/callback', callbackAction::class)->name('callback');
-
-
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::get('/join', [MainController::class, 'join'])->name('join');
 Route::post('/join', [MainController::class, 'sendEmail'])->name('sendEmail');
@@ -53,10 +63,9 @@ Route::post('encrypt-form-store', function (Request $request) {
 
         return response()->json([
             'decryptedData' => $decryptedData,
-            'iv'=>$iv
+            'iv' => $iv
         ]);
     }
 
     return response()->json(['error' => 'Invalid data'], 400);
-
 })->name('process');

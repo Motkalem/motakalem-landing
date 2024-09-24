@@ -2,7 +2,6 @@
 
 namespace App\Actions\HyperPay;
 
-use App\Actions\HyperPay\ScheduleRecurringPayment;
 use App\Actions\HyperPay\StoreRecurringPaymentData;
 use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
@@ -30,6 +29,7 @@ class CreditAction
 
     public function rules(): array
     {
+
         $rules = [
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
@@ -101,6 +101,7 @@ class CreditAction
                InstallmentPayment::where('student_id', $student->id)
                ->whereNull('registration_id')?->first()?->delete();
 
+               #schedule
               return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
             }
 
@@ -178,41 +179,39 @@ class CreditAction
                     $data
                 );
 
-                if(data_get(data_get(json_decode($response), 'result'), 'code') == '000.100.112'){
+                // if(data_get(data_get(json_decode($response), 'result'), 'code') == '000.100.112'){
 
-                        $installmentPayment->update([
-                            'registration_id'=>data_get(json_decode($response), 'registrationId'),
-                            'payment_id'=>data_get(json_decode($response), 'id')
-                        ]);
+                //         $installmentPayment->update([
+                //             'registration_id'=>data_get(json_decode($response), 'registrationId'),
+                //             'payment_id'=>data_get(json_decode($response), 'id')
+                //         ]);
 
-                        $this->schedulePayment($installmentPayment); # shcedula payments for the student
-
-                        $response = [
-                            'status' => 1,
-                            'message' => 'شكرا لانضمامك الينا ! تم إنضمامك الي الباقة بنجاح  ',
-                            'payload' => [
-                                'success'=> [
-                                    'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
-                                    'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
-                                    ]
-                            ],
-                        ];
-                }else {
+                //         $response = [
+                //             'status' => 1,
+                //             'message' => 'شكرا لانضمامك الينا ! تم إنضمامك الي الباقة بنجاح  ',
+                //             'payload' => [
+                //                 'success'=> [
+                //                     'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
+                //                     'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
+                //                     ]
+                //             ],
+                //         ];
+                // }else {
 
 
-                    $response = [
-                        'status' => 0,
-                        'message' => 'حدث خطأ اثناء اجراء عملية الدفع',
-                        'payload' => [
-                            'error'=> [
-                                'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
-                                'message'=>data_get(data_get(json_decode($response), 'result'), 'description'),
-                                'log'=> json_decode($response)
+                //     $response = [
+                //         'status' => 0,
+                //         'message' => 'حدث خطأ اثناء اجراء عملية الدفع',
+                //         'payload' => [
+                //             'error'=> [
+                //                 'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
+                //                 'message'=>data_get(data_get(json_decode($response), 'result'), 'description'),
+                //                 'log'=> json_decode($response)
 
-                                ]
-                            ],
-                    ];
-                }
+                //                 ]
+                //             ],
+                //     ];
+                // }
                 return response()->json($response, 200);
             }else {
 
@@ -225,15 +224,6 @@ class CreditAction
                 return response()->json($response, 200);
             }
         }
-
-        protected function schedulePayment($installmentPayment)
-        {
-
-            ScheduleRecurringPayment::make()->handle(  $installmentPayment  );
-        }
-
-
-
 
 
 
