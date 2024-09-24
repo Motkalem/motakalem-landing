@@ -3,6 +3,7 @@
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,8 @@ Route::get(
 Route::get(
     'recurring/result',
     function () {
+        Log::info('Replacing BackpackUser model in ', [request()->all(), request()->segments()]);
+
         return [request()->all(), request()->segments()];
     }
 );
