@@ -10,6 +10,6 @@
     <script src="https://eu-prod.oppwa.com/v1/paymentWidgets.js?checkoutId={{$checkoutId}}"></script>
     <body>
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ 5</h1>
-        <form action="/recurring/result" class="paymentWidgets" data-brands="MADA VISA MASTER"></form>
+        <form action="/recurring/result/" class="paymentWidgets" data-brands="MADA VISA MASTER"></form>
     </body>
     </html>
