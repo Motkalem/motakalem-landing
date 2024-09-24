@@ -26,8 +26,7 @@ Route::get(
 Route::get(
     'recurring/result',
     function () {
-        Log::info('Replacing BackpackUser model in ', [request()->all(), request()->segments()]);
-
+        Log::info('info ', [request()->all(), request()->segments()]);
         return [request()->all(), request()->segments()];
     }
 );
