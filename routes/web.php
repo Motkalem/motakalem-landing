@@ -17,10 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get(
     'checkout-recurring/{checkoutId}',
-    function () {
-        return view('payments.recurring-pay');
+    function ($checkoutId) {
+
+
+        return view('payments.recurring-pay', compact('checkoutId'));
     }
 );
 Route::get(

@@ -37,6 +37,6 @@ class StoreRecurringPaymentData
         }
         curl_close($ch);
 
-        return $responseData;
+        return json_decode($responseData);
     }
 }
