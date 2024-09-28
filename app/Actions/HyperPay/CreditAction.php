@@ -47,15 +47,6 @@ class CreditAction
             }],
         ];
 
-        if (Package::where('id',  request()->package_id)
-            ->where('payment_type', Package::INSTALLMENTS)->exists()
-        ) {
-
-            $rules = [
-                'card'=> 'required|array',
-                'billing'=> 'required|array'
-            ];
-        }
         return $rules;
     }
 
