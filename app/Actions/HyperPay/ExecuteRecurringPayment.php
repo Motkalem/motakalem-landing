@@ -19,7 +19,8 @@ class ExecuteRecurringPayment
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.type=UNSCHEDULED" .
-            "&standingInstruction.source=MIT";
+            "&standingInstruction.source=MIT".
+             "&shopperResultUrl=https://motkalem.com";
 
 
         $ch = curl_init();
