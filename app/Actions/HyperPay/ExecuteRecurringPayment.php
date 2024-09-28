@@ -13,19 +13,19 @@ class ExecuteRecurringPayment
     public function handle()
     {
         $registrationId = request()->registrationId;
-        $amount = 5;
+        $amount = 5.00;
         $currency = 'SAR';
 
         $url = "https://eu-prod.oppwa.com/v1/registrations/{$registrationId}/payments";
         $data = [
-            'entityId' => config('payments.gateways.card.entity_id'),
+            'entityId' => env('RECURRING_ENTITY_ID'),
             'amount' => $amount,
             'currency' => $currency,
             'paymentType' => 'DB',
         ];
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('payments.gateways.card.access_token'),
+            'Authorization' => 'Bearer ' .env('AUTH_TOKEN'),
         ])->post($url, $data);
 
         return response()->json($response->json());
