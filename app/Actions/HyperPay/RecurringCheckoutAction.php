@@ -2,6 +2,7 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Models\InstallmentPayment;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,7 +16,7 @@ class RecurringCheckoutAction
     public function handle(ActionRequest $request): Factory|View|Application
     {
         $checkoutId = $request->checkoutId;
-
-        return view('payments.recurring-pay', compact('checkoutId'));
+        $amount = InstallmentPayment::query()->findOrFail($request->paymentId)?->package?->installment_value;
+        return view('payments.recurring-pay', compact('checkoutId', 'amount'));
     }
 }
