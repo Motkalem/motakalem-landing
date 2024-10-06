@@ -15,6 +15,7 @@ class RecurringCheckoutAction
     public function handle(ActionRequest $request): Factory|View|Application
     {
         $checkoutId = $request->checkoutId;
+
         return view('payments.recurring-pay', compact('checkoutId'));
     }
 }

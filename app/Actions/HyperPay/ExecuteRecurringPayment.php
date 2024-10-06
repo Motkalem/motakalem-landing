@@ -8,9 +8,9 @@ class ExecuteRecurringPayment
 {
     use AsAction;
 
-    public function handle()
+    public function handle($registrationID=null)
     {
-        $registrationId = request()->registrationId;
+        $registrationId = $registrationID ?? request()->registrationId;
 
         $url = "https://eu-prod.oppwa.com/v1/registrations/". $registrationId."/payments";
         $data = "entityId=".env('RECURRING_ENTITY_ID') .

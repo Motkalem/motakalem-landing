@@ -2,11 +2,11 @@
 
 namespace App\Actions\Paymob;
 
- use App\Models\Student;
- use App\Models\Transaction;
- use App\Notifications\SuccessSubscriptionPaidNotification;
- use Illuminate\Notifications\Notification;
- use Illuminate\Support\Facades\Redirect;
+use App\Models\Student;
+use App\Models\Transaction;
+use App\Notifications\SuccessSubscriptionPaidNotification;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -57,32 +57,32 @@ class callbackAction
 
         $hased = hash_hmac('sha512', $connectedString, $secret);
 
-            $client_pay_order_id = data_get(explode('-', data_get($data, 'merchant_order_id')), 0);
+        $client_pay_order_id = data_get(explode('-', data_get($data, 'merchant_order_id')), 0);
 
-            if ($hased == $hmac) {
-                $transaction = Transaction::query()->create([
-                    'transaction_id' => data_get($data, 'id'),
-                    'student_id' => $client_pay_order_id,
-                     'success' => data_get($data, 'success'),
-                    'amount' => data_get($data, 'amount_cents') / 100,
-                    'data' => $data,
-                ]);
+        if ($hased == $hmac) {
+            $transaction = Transaction::query()->create([
+                'transaction_id' => data_get($data, 'id'),
+                'student_id' => $client_pay_order_id,
+                'success' => data_get($data, 'success'),
+                'amount' => data_get($data, 'amount_cents') / 100,
+                'data' => $data,
+            ]);
 
-                    $client_pay_order = Student::where('id' ,$client_pay_order_id)->first();
-                if (($transaction->success == "true") || ($transaction->success === true))
-                {
-                    if ($client_pay_order ){
-                        $client_pay_order->update(['is_paid'=> 'paid']);
+            $client_pay_order = Student::query()->where('id', $client_pay_order_id)->first();
 
-                        $this->notifyClient($client_pay_order, $transaction);
-                    }
+            if (($transaction->success == "true") || ($transaction->success === true)) {
+                if ($client_pay_order) {
+                    $client_pay_order->update(['is_paid' => 'paid']);
 
-                   return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
-                } else {
-
-
-                    return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=fail');
+                    $this->notifyClient($client_pay_order, $transaction);
                 }
+
+                return Redirect::away('https://www.motkalem.com/one-step-closer' . '?' . 'status=success');
+            } else {
+
+
+                return Redirect::away('https://www.motkalem.com/one-step-closer' . '?' . 'status=fail');
+            }
             return Redirect::route('home');
         } else {
 
@@ -95,8 +95,8 @@ class callbackAction
     public function notifyClient($client, $transaction): void
     {
         \Illuminate\Support\Facades\Notification::send($client,
-            new SuccessSubscriptionPaidNotification(  $client  , $transaction));
+            new SuccessSubscriptionPaidNotification($client, $transaction));
 
-        }
+    }
 
 }

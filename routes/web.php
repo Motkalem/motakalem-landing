@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('checkout-recurring/{checkoutId}', RecurringCheckoutAction::class)
     ->name('recurring.checkout');
 
-Route::get(   'recurring/result',RecurringCheckoutResultAction::class);
+Route::get(   'recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 
 
 

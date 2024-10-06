@@ -12,7 +12,8 @@ class InstallmentPayment extends Model
         'package_id',
         'registration_id',
         'payment_id',
-        'canceled'
+        'canceled',
+        'first_installment_date',
     ];
 
     public function student()
