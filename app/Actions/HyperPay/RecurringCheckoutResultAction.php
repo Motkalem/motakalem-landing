@@ -21,11 +21,13 @@ class RecurringCheckoutResultAction
 
         $response = Http::withoutVerifying()->get($url);
 
-        #TODO GET THE FORMAT OF SUCCESS RESPONSE AND EXTRACT THE REGISTRATION ID
+
 
         if ($response->successful()) {
 
            $data = $response->json();
+
+            #TODO GET THE FORMAT OF SUCCESS RESPONSE AND EXTRACT THE REGISTRATION ID
             $registrationId = data_get($data,'id')??'8acda4a0922e592f019238cc13433a95';
 
             $installmentPayment = InstallmentPayment::query()
