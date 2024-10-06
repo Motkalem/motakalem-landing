@@ -26,7 +26,7 @@ class RecurringCheckoutResultAction
         if ($response->successful()) {
 
            $data = $response->json();
-            $registrationId = $data['id']??'8acda4a0922e592f019238cc13433a95';
+            $registrationId = data_get($data,'id')??'8acda4a0922e592f019238cc13433a95';
 
             $installmentPayment = InstallmentPayment::query()
                 ->find($request->paymentId)?->update([
