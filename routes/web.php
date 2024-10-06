@@ -1,5 +1,7 @@
 <?php
 
+use App\Actions\HyperPay\RecurringCheckoutAction;
+use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
@@ -19,21 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get(
-    'checkout-recurring/{checkoutId}',
-    function ($checkoutId) {
+Route::get('checkout-recurring/{checkoutId}', RecurringCheckoutAction::class)
+    ->name('recurring.checkout');
 
+Route::get(   'recurring/result',RecurringCheckoutResultAction::class);
 
-        return view('payments.recurring-pay', compact('checkoutId'));
-    }
-);
-Route::get(
-    'recurring/result',
-    function () {
-        Log::info('info ', [request()->all(), request()->segments()]);
-        return [request()->all(), request()->segments()];
-    }
-);
 
 
 Route::get('/callback', callbackAction::class)->name('callback');
@@ -55,8 +47,6 @@ Route::get('encrypt-form', function () {
     return view('encrypt-form');
 });
 
-
-
 Route::post('encrypt-form-store', function (Request $request) {
 
     if ($request->has(['data', 'iv'])) {
@@ -72,6 +62,5 @@ Route::post('encrypt-form-store', function (Request $request) {
             'iv' => $iv
         ]);
     }
-
     return response()->json(['error' => 'Invalid data'], 400);
 })->name('process');

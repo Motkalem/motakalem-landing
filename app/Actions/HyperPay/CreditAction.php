@@ -3,6 +3,9 @@
 namespace App\Actions\HyperPay;
 
 use App\Actions\HyperPay\StoreRecurringPaymentData;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
 use App\Models\InstallmentPayment;
@@ -56,49 +59,48 @@ class CreditAction
         DB::beginTransaction();
 
         // try {
-            $request = request();
-            $contract = $this->joinController->sendContract($request);
-            if (!isset($contract)) {
-                DB::rollBack();
-                return [
-                    'status' => 0,
-                    'message' => 'حدث خطأ أثناء معالجة العقد',
-                ];
-            }
+        $request = request();
+        $contract = $this->joinController->sendContract($request);
+        if (!isset($contract)) {
+            DB::rollBack();
+            return [
+                'status' => 0,
+                'message' => 'حدث خطأ أثناء معالجة العقد',
+            ];
+        }
 
-            $student = Student::query()->firstOrCreate([
-                'phone' => $request->phone,
-            ], [
-                'name' => $request->name,
-                'email' => $request->email,
-                'age' => $request->age,
-                'phone' => $request->phone,
-                'city' => $request->city,
-                'payment_type' => $request->payment_type ?? Package::ONE_TIME,
-                'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
-            ]);
+        $student = Student::query()->firstOrCreate([
+            'phone' => $request->phone,
+        ], [
+            'name' => $request->name,
+            'email' => $request->email,
+            'age' => $request->age,
+            'phone' => $request->phone,
+            'city' => $request->city,
+            'payment_type' => $request->payment_type ?? Package::ONE_TIME,
+            'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
+        ]);
 
-            $package = Package::find($request->package_id);
+        $package = Package::query()->find($request->package_id);
 
-            DB::commit();
+        DB::commit();
 
-            if ($package->payment_type == Package::ONE_TIME) { # create a one time payment
+        if ($package->payment_type == Package::ONE_TIME) {
 
 
-                $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
-            } else {
+            $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
+        } else {
 
-                # Reassign package to user if schedule payment failed
-               InstallmentPayment::where('student_id', $student->id)
-               ->whereNull('registration_id')?->first()?->delete();
+            InstallmentPayment::query()->where('student_id', $student->id)
+                ->whereNull('registration_id')?->first()?->delete();
 
-               #schedule
-              return  $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
-            }
+            return $this->createScheduledPayment($student->id, $request->package_id,
+                $student, $request->all());
+        }
 
-            $this->joinController->notifyClient($contract);
+        $this->joinController->notifyClient($contract);
 
-            if($package->payment_type == Package::ONE_TIME) {
+        if ($package->payment_type == Package::ONE_TIME) {
 
             $response = [
                 'status' => 1,
@@ -109,34 +111,30 @@ class CreditAction
                 ],
             ];
 
+        } else {
 
-
-        }else{
-
-                $response = [
-                    'status' => 1,
-                    'message' => 'subscribed successfully',
-                    'payload' => [
-                        'payment_token' => '',
-                        'hyperpay_payment' => ''
-                    ],
-                ];
+            $response = [
+                'status' => 1,
+                'message' => 'success generate hyperpay url',
+                'payload' => [
+                    'payment_token' => '#',
+                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
+                ],
+            ];
         }
 
-            return response()->json($response, 200);
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return [
-        //         'status' => 0,
-        //         'message' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.',
-        //     ];
-        // }
+        return response()->json($response, 200);
     }
 
-    protected function createOneTimePaymentUrl($stID, $pckID)
+    /**
+     * @param $stID
+     * @param $pckID
+     * @return Model|Builder
+     */
+    protected function createOneTimePaymentUrl($stID, $pckID): Model|Builder
     {
 
-        return Payment::firstOrcreate([
+        return Payment::query()->firstOrcreate([
             'student_id' => $stID,
             'package_id' => $pckID,
         ], [
@@ -146,23 +144,31 @@ class CreditAction
         ]);
     }
 
-    protected function createScheduledPayment($stID, $pckID, $student, $data)
+    /**
+     * @param $stID
+     * @param $pckID
+     * @param $student
+     * @param $data
+     * @return JsonResponse
+     */
+    protected function createScheduledPayment($stID, $pckID, $student, $data): JsonResponse
     {
 
-        $installmentPayment = InstallmentPayment::firstOrcreate([
+        $installmentPayment = InstallmentPayment::query()->firstOrcreate([
 
-                'student_id' => $stID,
-                'package_id' => $pckID,
-            ], [
+            'student_id' => $stID,
+            'package_id' => $pckID,
+        ], [
 
             'student_id' => $stID,
             'package_id' => $pckID,
 
         ]);
 
-        if($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
+        if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
 
-                $response = StoreRecurringPaymentData::make()
+
+            $response = StoreRecurringPaymentData::make()
                 ->handle(
                     $installmentPayment?->package,
                     $installmentPayment,
@@ -170,52 +176,35 @@ class CreditAction
                     $data
                 );
 
-                // if(data_get(data_get(json_decode($response), 'result'), 'code') == '000.100.112'){
+            if (data_get(data_get($response, 'result'), 'code') == '000.200.100') {
 
-                //         $installmentPayment->update([
-                //             'registration_id'=>data_get(json_decode($response), 'registrationId'),
-                //             'payment_id'=>data_get(json_decode($response), 'id')
-                //         ]);
-
-                //         $response = [
-                //             'status' => 1,
-                //             'message' => 'شكرا لانضمامك الينا ! تم إنضمامك الي الباقة بنجاح  ',
-                //             'payload' => [
-                //                 'success'=> [
-                //                     'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
-                //                     'message'=>data_get(data_get(json_decode($response), 'result'), 'description')
-                //                     ]
-                //             ],
-                //         ];
-                // }else {
-
-
-                //     $response = [
-                //         'status' => 0,
-                //         'message' => 'حدث خطأ اثناء اجراء عملية الدفع',
-                //         'payload' => [
-                //             'error'=> [
-                //                 'code'=> data_get(data_get(json_decode($response), 'result'), 'code') ,
-                //                 'message'=>data_get(data_get(json_decode($response), 'result'), 'description'),
-                //                 'log'=> json_decode($response)
-
-                //                 ]
-                //             ],
-                //     ];
-                // }
-                return response()->json($response, 200);
-            }else {
+                $response = [
+                    'status' => 1,
+                    'message' => 'successfully created checkout',
+                    'payload' => [
+                    'payment_token' => '#',
+                    'hyperpay_payment' => route('recurring.checkout', data_get($response, 'id'))
+                        .'?paymentId='.$installmentPayment->id,
+                        'data'=> $response
+                ],
+                ];
+            } else {
 
                 $response = [
                     'status' => 0,
-                    'message' => 'تم التسجيل بالباقة مسبقا',
-                    'payload' => [],
+                    'message' => 'حدث خطأ',
+                    'payload' => $response,
                 ];
-
-                return response()->json($response, 200);
             }
+            return response()->json($response, 200);
+        } else {
+
+            $response = [
+                'status' => 0,
+                'message' => 'تم التسجيل بالباقة مسبقا',
+                'payload' => [],
+            ];
+            return response()->json($response, 200);
         }
-
-
-
     }
+}
