@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\ContactUs;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -38,8 +37,8 @@ class ProfileController extends AdminBaseController
 
             $adminUser->password = bcrypt($request->input('password'));
         }
-
         $adminUser->save();
+
         notify()->success( 'تم تحديث بيانات المشرف بنجاح.','نجاح');
 
         return redirect()->route('dashboard.profile.edit');

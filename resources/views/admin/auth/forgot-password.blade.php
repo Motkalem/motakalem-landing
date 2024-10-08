@@ -10,16 +10,20 @@
             <div class="nav-tabs-custom">
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
-                        <form class="col-md-12 p-t-10" role="form" method="POST"
-                              action="{{ route('dashboard.password.email') }}">
-                            <input type="hidden" name="_token" value="UqNdSYnR64wn8bQ1m6X4eVBMgQ0oW1X7AWWJxU6n">
+                        @if(session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('dashboard.password.email') }}">
+                            @csrf
 
                             <div class="form-group">
                                 <label class="control-label" for="email">البريد الالكتروني</label>
 
                                 <div>
                                     <input type="email" class="form-control" name="email" id="email" value="">
-
                                 </div>
                             </div>
 
@@ -33,6 +37,7 @@
                         </form>
                         <div class="clearfix"></div>
                     </div>
+
 
                 </div>
 

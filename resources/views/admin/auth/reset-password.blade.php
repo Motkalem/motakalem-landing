@@ -14,24 +14,24 @@
                             @csrf
                             <input type="hidden" name="token" value="{{ $token }}">
 
-                            <h2>Reset Password</h2>
+                            <h2>تعيين كلمة المرور</h2>
 
                             <div class="form-group">
-                                <label for="email">Email:</label>
+                                <label for="email">البريد الإلكتروني:</label>
                                 <input type="email" name="email" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="password">New Password:</label>
+                                <label for="password">كلمة المرور  :</label>
                                 <input type="password" name="password" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="password_confirmation">Confirm Password:</label>
+                                <label for="password_confirmation">  تأكيد كلمة المرور:</label>
                                 <input type="password" name="password_confirmation" class="form-control" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Reset Password</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </form>
                         <div class="clearfix"></div>
                     </div>

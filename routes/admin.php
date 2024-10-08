@@ -25,7 +25,7 @@ Route::group(['middleware' => 'guest:dashboard'], function () {
     Route::post('dashboard/login', [DashboardAuthController::class, 'login'])->name('dashboard.login.submit');
     Route::get('dashboard/forgot-password', [DashboardAuthController::class, 'showForgotPasswordForm'])->name('dashboard.password.request');
     Route::post('dashboard/forgot-password', [DashboardAuthController::class, 'sendResetLink'])->name('dashboard.password.email');
-    Route::get('dashboard/reset-password/{token}', [DashboardAuthController::class, 'showResetForm'])->name('dashboard.password.reset');
+    Route::get('dashboard/reset-password/{token}', [DashboardAuthController::class, 'showResetForm'])->name('password.reset');
     Route::post('dashboard/reset-password', [DashboardAuthController::class, 'resetPassword'])->name('dashboard.password.update');
 });
 
