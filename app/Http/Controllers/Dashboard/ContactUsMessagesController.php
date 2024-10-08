@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\ContactUs;
-use App\Models\InstallmentPayment;
-use App\Models\Student;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 
 class ContactUsMessagesController extends AdminBaseController
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
         $title = 'رسائل إتصل بنا';
 
@@ -26,7 +27,7 @@ class ContactUsMessagesController extends AdminBaseController
         );
     }
 
-    public function destroy($id): \Illuminate\Http\RedirectResponse
+    public function destroy($id): RedirectResponse
     {
         $contactMessage = ContactUs::query()->findOrFail($id);
         $contactMessage->delete();
