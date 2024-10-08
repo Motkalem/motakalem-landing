@@ -107,6 +107,15 @@
                 </a>
             </li>
 
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.contact-messages.index') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.contact-messages.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-credit-card"></i>
+                    </span>
+                    <span class="title">رسائل إتصل بنا</span>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
