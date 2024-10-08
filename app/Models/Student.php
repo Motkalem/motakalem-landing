@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class Student extends Model
 {
-    use CrudTrait, Notifiable;
+    use  Notifiable;
     protected $fillable = ['package_id','name', 'email', 'payment_type', 'total_payment_amount', 'age', 'is_paid', 'phone', 'city'];
 
     # payment types

@@ -37,6 +37,8 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
                 if ($currentDate->isSameDay($firstInstallmentDate->addMonths($monthsPassed)))
                 {
 
+                    #TODO store webhook notification from this request response
+
                     $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
                     Log::info('Installment date 2: '.now()->format('Y-m-d'), ['response' => $response]);
