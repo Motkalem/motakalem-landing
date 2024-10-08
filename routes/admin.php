@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\InstallmentPaymentsController;
 use App\Http\Controllers\Dashboard\PackagesController;
 use App\Http\Controllers\Dashboard\PaymentsController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\StudentsController;
 use App\Http\Controllers\Dashboard\TransactionsController;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +40,10 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
         Route::resource('installment-payments', InstallmentPaymentsController::class);
         Route::resource('contact-messages', ContactUsMessagesController::class);
 
-    Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
+        Route::get('profile', [ProfileController::class,'edit'])->name('profile.edit');
+        Route::post('profile/update', [ProfileController::class,'update'])->name('profile.update');
+
+        Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
 
 });
 

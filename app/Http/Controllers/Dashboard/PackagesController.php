@@ -63,6 +63,7 @@ class PackagesController extends AdminBaseController
 
     public function update(Request $request, $id)
     {
+
         $request->validate([
             'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
@@ -71,8 +72,6 @@ class PackagesController extends AdminBaseController
             'name' => ['required','string','max:255', Rule::unique('packages', 'name')
             ->ignore($id)],
         ]);
-
-
         $package = Package::findOrFail($id);
 
         if($request->payment_type == Package::ONE_TIME)
