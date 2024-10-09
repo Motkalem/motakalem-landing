@@ -208,9 +208,9 @@
                                                             </ul>
                                                             <br/>
                                                             <p style="font-family:Cairo,Geneva,sans-serif; padding-right:20px; padding-left:20px">
-                                                                توقيع الطرف الأول:   {{data_get($data, 'name')}}
+                                                                توقيع الطرف الأول:  شركة متكلم الطبية، وعنوانها: جدة، حي الورود.
                                                                 <br/>
-                                                                توقيع الطرف الثاني:  شركة متكلم الطبية، وعنوانها: جدة، حي الورود.
+                                                                توقيع الطرف الثاني: {{data_get($data, 'name')}}
                                                             </p>
                                                             <br/>
                                                             <p style="font-family:Cairo,Geneva,sans-serif;padding-right:20px; padding-left:20px"; padding-right:20px>
