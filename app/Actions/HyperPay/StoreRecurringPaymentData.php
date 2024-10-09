@@ -9,7 +9,7 @@ class StoreRecurringPaymentData
     use AsAction;
     public function handle($package, $payment, $student, $data)
     {
-        $url = "https://eu-prod.oppwa.com/v1/checkouts";
+        $url = env('HYPERPAY_URL')."/checkouts";
         $data = [
             'entityId' => env('RECURRING_ENTITY_ID'),
             'amount' => $package->installment_value,

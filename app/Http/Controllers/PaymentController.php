@@ -8,6 +8,9 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Notifications\Admin\NewSubscriptionNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -35,6 +38,7 @@ class PaymentController extends Controller
         try {
             if ($payment->package?->payment_type == Package::ONE_TIME) {
                 $responseData = $this->createCheckoutId($payment?->package?->total);
+
             }
         } catch (\Throwable $th) {
             //throw $th;
@@ -61,10 +65,10 @@ class PaymentController extends Controller
         $url = env('HYPERPAY_URL')."/checkouts";
 
         $data = 'entityId='
-        . $entitiy_id . "&amount=". $total_price
+        . $entitiy_id
+        . "&amount=". $total_price
         . "&currency=SAR"
         . "&paymentType=DB";
-
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -76,7 +80,7 @@ class PaymentController extends Controller
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
@@ -87,7 +91,11 @@ class PaymentController extends Controller
         return $responseData;
     }
 
-    public function processResponse(Request $request)
+    /**
+     * @param Request $request
+     * @return Factory|View|Application
+     */
+    public function processResponse(Request $request): Factory|View|Application
     {
 
         return view('payments.one-time-pay');

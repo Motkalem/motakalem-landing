@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 // Admin Routes
 // --------------------------
 
-    Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
-    Route::get('checkout/result/{paymentId}/{studentId}/', 'App\Http\Controllers\PaymentController@getStatus');
 
 
 Route::group(['middleware' => 'guest:dashboard'], function () {

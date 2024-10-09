@@ -7,8 +7,10 @@
         <title>متكلم - الدفع</title>
         <link rel="stylesheet" href="styles.css">
     </head>
-    <script src="https://eu-prod.oppwa.com/v1/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
+    <script src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
     <body>
+
+    {{env('HYPERPAY_URL')."/paymentWidgets.js?checkoutId=".$paymentId??data_get($_GET,'checkoutId') }}
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total . __('SAR')}}</h1>
         <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'}}" class="paymentWidgets" data-brands="MADA VISA MASTER"></form>
     </body>

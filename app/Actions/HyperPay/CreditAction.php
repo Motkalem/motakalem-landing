@@ -2,7 +2,6 @@
 
 namespace App\Actions\HyperPay;
 
-use App\Actions\HyperPay\StoreRecurringPaymentData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -107,7 +106,8 @@ class CreditAction
                 'message' => 'success generate hyperpay url',
                 'payload' => [
                     'payment_token' => '#',
-                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
+                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
+
                 ],
             ];
 
