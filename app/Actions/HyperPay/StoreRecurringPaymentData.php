@@ -11,7 +11,7 @@ class StoreRecurringPaymentData
     {
         $url = env('HYPERPAY_URL')."/checkouts";
         $data = [
-            'entityId' => env('RECURRING_ENTITY_ID'),
+            'entityId' => env('ENTITY_ID'),
             'amount' => $package->installment_value,
             'currency' => 'SAR',
             'paymentType' => 'DB',
@@ -20,6 +20,7 @@ class StoreRecurringPaymentData
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
             'merchantTransactionId' => $payment->id,
+            'testMode'=> 'EXTERNAL'
         ];
 
         $ch = curl_init($url);

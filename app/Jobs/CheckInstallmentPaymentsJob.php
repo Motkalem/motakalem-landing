@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
-
 class CheckInstallmentPaymentsJob implements ShouldQueue
 {
     use Queueable;

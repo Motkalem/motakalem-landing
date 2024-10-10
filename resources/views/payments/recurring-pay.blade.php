@@ -7,7 +7,7 @@
         <title>متكلم - الدفع</title>
         <link rel="stylesheet" href="styles.css">
     </head>
-    <script src="https://eu-prod.oppwa.com/v1/paymentWidgets.js?checkoutId={{$checkoutId}}"></script>
+    <script src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$checkoutId}}"></script>
     <body>
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ  {{ $amount}}</h1>
         <form action="/recurring/result/{{request()->paymentId}}" class="paymentWidgets" data-brands="MADA VISA MASTER"></form>

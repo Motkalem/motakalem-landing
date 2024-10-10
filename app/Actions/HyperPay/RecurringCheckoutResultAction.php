@@ -21,9 +21,9 @@ class RecurringCheckoutResultAction
     public function handle(ActionRequest $request)#: JsonResponse|int
     {
 
-        $url = "https://eu-prod.oppwa.com/v1/checkouts/" . $request->resourcePath . "/payment";
+          $url = env('HYPERPAY_WIDGET_URL') . $request->resourcePath ;
 
-        $response = Http::withoutVerifying()->get($url);
+          $response = Http::withoutVerifying()->get($url);
 
 
         if ($response->successful()) {
@@ -31,7 +31,7 @@ class RecurringCheckoutResultAction
            $data = $response->json();
 
             #TODO GET THE FORMAT OF SUCCESS RESPONSE AND EXTRACT THE REGISTRATION ID
-            $registrationId = data_get($data,'id')??'8acda4a0922e592f019238cc13433a95';
+            $registrationId = data_get($data,'registrationId') ;
 
             $installmentPayment = InstallmentPayment::query()
                 ->find($request->paymentId)?->update([
