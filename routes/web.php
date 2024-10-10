@@ -30,7 +30,7 @@ Route::get('/get-registration', function () {
 
     Log::info('response: '.now()->format('Y-m-d'), ['response' => $response]);
 
-    return $response;
+
     if ($response->successful()) {
 
         $data = $response->json();

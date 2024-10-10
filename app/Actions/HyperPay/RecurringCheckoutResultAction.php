@@ -14,13 +14,16 @@ class RecurringCheckoutResultAction
 {
     use AsAction;
 
+    /**
+     * @param ActionRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function handle(ActionRequest $request)#: JsonResponse|int
     {
 
         $url = "https://eu-prod.oppwa.com/v1/checkouts/" . $request->resourcePath . "/payment";
 
         $response = Http::withoutVerifying()->get($url);
-
 
 
         if ($response->successful()) {
