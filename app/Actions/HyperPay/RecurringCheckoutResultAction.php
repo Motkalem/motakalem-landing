@@ -30,7 +30,6 @@ class RecurringCheckoutResultAction
 
            $data = $response->json();
 
-            #TODO GET THE FORMAT OF SUCCESS RESPONSE AND EXTRACT THE REGISTRATION ID
             $registrationId = data_get($data,'registrationId') ;
 
             $installmentPayment = InstallmentPayment::query()

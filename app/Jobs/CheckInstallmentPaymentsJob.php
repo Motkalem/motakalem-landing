@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Jobs;
-namespace App\Jobs;
 
 use App\Actions\HyperPay\ExecuteRecurringPayment;
+use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -31,16 +31,22 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
             $monthsPassed = $firstInstallmentDate->diffInMonths($currentDate);
 
-            if ($installment->package && $monthsPassed <= $installment->package->number_of_months) {
+            if ($installment->package && $monthsPassed <= $installment->package->number_of_months ) {
 
-                if ($currentDate->isSameDay($firstInstallmentDate->addMonths($monthsPassed)))
+                if ($currentDate->isSameDay($firstInstallmentDate->addMonths($monthsPassed)) )
                 {
-
-                    #TODO store webhook notification from this request response
-
                     $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
-                    Log::info('Installment date 2: '.now()->format('Y-m-d'), ['response' => $response]);
+                    Log::info('ExecuteRecurringPayment job response',(array) $response);
+
+
+                    HyperpayWebHooksNotification::query()->create([
+                        'title'=> data_get($response,'result.description'),
+                        'installment_payment_id'=> $installment->id,
+                        'type'=> 'execute recurring payment',
+                        'payload' => $response,
+                        'log' => $response,
+                    ]);
                 }
             }
 

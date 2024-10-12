@@ -26,8 +26,7 @@ Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->nam
 Route::get('checkout/result/{paymentId}/{studentId}/', 'App\Http\Controllers\PaymentController@getStatus');
 
 
-Route::get('checkout-recurring/{checkoutId}',
-    RecurringCheckoutAction::class)->name('recurring.checkout');
+Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
 
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 

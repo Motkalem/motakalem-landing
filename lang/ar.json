@@ -66,6 +66,8 @@
     "Students":"الطلاب",
     "Deleted successfully":"تم الحذف",
     "Can not deleted": "لايمكن حذفه",
+    "execute recurring payment": "خصم القسط الشهري",
+    "transaction pending": "معاملة معلقة",
     "installments payments": "المدفوعات المجدولة"
 
 

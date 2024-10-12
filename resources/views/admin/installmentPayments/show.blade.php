@@ -217,19 +217,12 @@
                                             <div class="single-timeline-content d-flex " data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
                                                 <div class="timeline-icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
                                                 <div class="m-2 timeline-text">
-                                                    <h2 class="px-10 h4 fw-500">{{ $notification->title }}</h2>
-                                                    <h6> {{ $notification->type }} </h6>
+                                                    <h2 class="px-10 h4 fw-500">{{ __($notification->title) }}</h2>
+                                                    <h6> {{ __($notification->type) }} </h6>
 
-                                                    <p>الوصف: {{ data_get($notification->payload, 'result.description') }}</p>
-                                                    <p>المبلغ: {{ data_get($notification->payload, 'amount') }} {{ data_get($notification->payload, 'currency') }}</p>
-                                                    <p>البريد الإلكتروني: {{ data_get($notification->payload, 'customer.email') }}</p>
-                                                    <p>اسم حامل البطاقة: {{ data_get($notification->payload, 'card.holder') }}</p>
-                                                    <p>نوع البطاقة: {{ data_get($notification->payload, 'card.type') }}</p>
-                                                    <p>تاريخ انتهاء البطاقة: {{ data_get($notification->payload, 'card.expiryMonth') }}/{{ data_get($notification->payload, 'card.expiryYear') }}</p>
-                                                    <p>آخر 4 أرقام من البطاقة: {{ data_get($notification->payload, 'card.last4Digits') }}</p>
-                                                    <p>اسم العميل: {{ data_get($notification->payload, 'customer.givenName') }}</p>
-                                                    <p>علامة الدفع: {{ data_get($notification->payload, 'paymentBrand') }}</p>
-                                                </div>
+                                                    <p>الوصف: {{ __(data_get($notification->payload, 'result.description')) }}</p>
+                                                    <p>المبلغ: {{ data_get($notification->payload, 'amount') }} {{ __(data_get($notification->payload, 'currency')) }}</p>
+                                                  </div>
                                             </div>
                                         </div>
                                     </div>
