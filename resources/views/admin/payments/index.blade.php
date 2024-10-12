@@ -134,7 +134,6 @@
                     alert('Failed to copy: ', err);
                 });
             }
-
             document.addEventListener('DOMContentLoaded', function () {
                 var deleteModal = document.getElementById('deleteModal');
                 deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -144,7 +143,6 @@
                     form.action = "{{ route('dashboard.payments.destroy', ':id') }}".replace(':id', paymentId);
                 });
             });
-
 
             document.addEventListener('DOMContentLoaded', function () {
 
