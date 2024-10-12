@@ -34,6 +34,7 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
         Route::resource('packages', PackagesController::class);
         Route::resource('payments', PaymentsController::class);
         Route::resource('transactions', TransactionsController::class);
+
         Route::resource('students', StudentsController::class);
         Route::resource('installment-payments', InstallmentPaymentsController::class);
         Route::resource('contact-messages', ContactUsMessagesController::class);

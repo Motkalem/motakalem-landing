@@ -60,6 +60,7 @@ class CreditAction
         // try {
         $request = request();
         $contract = $this->joinController->sendContract($request);
+
         if (!isset($contract)) {
             DB::rollBack();
             return [
@@ -134,7 +135,7 @@ class CreditAction
     protected function createOneTimePaymentUrl($stID, $pckID): Model|Builder
     {
 
-        return Payment::query()->firstOrcreate([
+        $payment = Payment::query()->firstOrcreate([
             'student_id' => $stID,
             'package_id' => $pckID,
         ], [
@@ -142,6 +143,16 @@ class CreditAction
             'package_id' => $pckID,
             'payment_url' => '#'
         ]);
+
+        $studentPaymentUrl = route('checkout.index')
+            . '?sid=' . $stID
+            . '&pid=' . $payment->id;
+
+        $payment->update([
+            'payment_url' => $studentPaymentUrl
+        ]);
+
+        return $payment;
     }
 
     /**

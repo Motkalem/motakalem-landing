@@ -32,7 +32,8 @@ class PaymentsController extends AdminBaseController
     {
         $title = 'إنشاء دفعة جديدة';
         $students = Student::all();
-        $packages = Package::where(['is_active'=> 1, 'payment_type'=> 'one time'])->get();
+        $packages = Package::query()->where(['is_active'=> 1, 'payment_type'=> 'one time'])->get();
+
         return view(
             'admin.payments.create',
             compact(
@@ -58,6 +59,7 @@ class PaymentsController extends AdminBaseController
                 $responseData = $this->createCheckoutId($package->total);
             }
         } catch (\Throwable $th) {
+
             //throw $th;
         }
 
