@@ -71,7 +71,7 @@
                                             </p>
                                             <hr/>
                                             <p style="direction:rtl;line-height:30px;font-size:16px;text-align:right;font-family:Cairo,Geneva,sans-serif">
-                                                انه في يوم الأربعاء الموافق  {{ \Carbon\Carbon::now()->format('Y/n/j') }} م .
+                                                ‎انه في يوم الأربعاء الموافق 2024/6/26م    .
                                                 <br/>
                                                 ‎تحرر هذا العقد بين كلاً من:
                                                 <br/>
@@ -113,7 +113,7 @@
                                                     <br/>
                                                     3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
                                                     <br/>
-                                                    4. تاريخ بدء الدورة: {{ \Carbon\Carbon::now()->format('j/n/Y') }}.
+                                                    4. تاريخ بدء الدورة: 26/06/2024.
                                                     <br/>
                                                     5. تاريخ انتهاء الدورة: بنهاية الأشهر الأربعة.
                                                 </li>
@@ -132,6 +132,8 @@
                                                     <br/>
                                                     ◦ القسط الرابع: 2500 ريال، يُدفع بعد ثلاثة أشهر من تاريخ بدء البرنامج.
                                                 </li>
+
+
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الثالث: الالتزامات المتبادلة:
                                                     <br/>
@@ -206,9 +208,9 @@
                                             </ul>
                                             <br/>
                                             <p style="font-family:Cairo,Geneva,sans-serif; padding-right:20px; padding-left:20px">
-                                                توقيع الطرف الأول:  شركة متكلم الطبية، وعنوانها: جدة، حي الورود.
+                                                توقيع الطرف الأول:   {{data_get($data, 'name')}}
                                                 <br/>
-                                                توقيع الطرف الثاني: {{data_get($data, 'name')}}
+                                                توقيع الطرف الثاني:  شركة متكلم الطبية، وعنوانها: جدة، حي الورود.
                                             </p>
                                             <br/>
                                             <p style="font-family:Cairo,Geneva,sans-serif;padding-right:20px; padding-left:20px"; padding-right:20px>
