@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Api\JoinController;
 use App\Http\Controllers\Dashboard\AdminBaseController;
+use App\Models\ParentContract;
 use App\Models\Student;
+use App\Notifications\SendContractNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
 class StudentsController extends AdminBaseController
@@ -107,4 +112,43 @@ class StudentsController extends AdminBaseController
         $student->delete();
         return redirect()->route('dashboard.students.index')->with('success', 'Student deleted successfully.');
     }
+
+
+    public function sendContract($id)
+    {
+        $student = Student::query()->findOrFail($id);
+        $contractData = [
+            'email' => $student->email,
+            'name' => $student->name,
+            'age' => $student->age,
+            'phone' => $student->phone,
+            'city' => $student->city,
+            'id_number' => $student->id_number,
+            'id_end' => $student->id_end,
+        ];
+
+        // Create the contract and handle potential exceptions
+        try {
+            $contract = ParentContract::query()->create(array_merge($contractData, ['accept_terms']));
+
+            // Notify the student about the contract
+            Notification::route('mail', $contract->email)
+                ->notify(new SendContractNotification($contract));
+
+            // Return a success response
+            return response()->json([
+                'success' => true,
+                'message' => 'تم إرسال العقد بنجاح!', // Success message in Arabic
+            ]);
+        } catch (\Exception $e) {
+            // Log the error and return a failure response
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء إرسال العقد: ' . $e->getMessage(), // Error message in Arabic
+            ], 500); // 500 Internal Server Error
+        }
+    }
+
 }

@@ -98,7 +98,7 @@ class CreditAction
                 $student, $request->all());
         }
 
-        $this->joinController->notifyClient($contract);
+
 
         if ($package->payment_type == Package::ONE_TIME) {
 

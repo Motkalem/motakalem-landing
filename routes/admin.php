@@ -44,6 +44,9 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
 
         Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
 
+        Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
+            ->name('send-contract');
+
 });
 
 Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
