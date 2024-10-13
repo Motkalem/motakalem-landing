@@ -20,7 +20,7 @@ class ExecuteRecurringPayment
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT".
-             "&shopperResultUrl=https://motkalem.com";
+             "&shopperResultUrl=https://staging-front.motkalem.com";
 
 
         $ch = curl_init();

@@ -38,10 +38,10 @@ class RecurringCheckoutResultAction
                     'first_installment_date'=>now()
                 ]);
 
-            return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=success');
+            return  Redirect::away('https://staging-front.motkalem.com/one-step-closer'.'?'.'status=success');
 
         } else {
-            return  Redirect::away('https://www.motkalem.com/one-step-closer'.'?'.'status=failed');
+            return  Redirect::away('https://staging-front.motkalem.com/one-step-closer'.'?'.'status=failed');
 
         }
     }
