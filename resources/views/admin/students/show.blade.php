@@ -9,10 +9,18 @@
         </a>
     </div>
     <div class="mT-30">
+
         <div class="mb-3 row">
             <label class="form-label col-sm-2 col-form-label">الإسم</label>
             <div class="col-sm-10">
                 <p class="form-control-plaintext">{{ $student->name }}</p>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="form-label col-sm-2 col-form-label">الباقة</label>
+            <div class="col-sm-10">
+                <p class="form-control-plaintext text-danger">{{ $student->package?->name??'لايوجد باقة مرتبطة' }}</p>
             </div>
         </div>
 

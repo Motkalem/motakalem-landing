@@ -75,7 +75,7 @@
                     <span class="icon-holder">
                         <i class="c-indigo-500 ti-money"></i>
                     </span>
-                    <span class="title">{{ __('Payments') }}</span>
+                    <span class="title">{{ __('One time Payments') }}</span>
                 </a>
             </li>
 

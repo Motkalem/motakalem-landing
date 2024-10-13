@@ -18,9 +18,10 @@
                     <thead>
                     <tr>
                         <th>اسم الطالب</th>
+                        <th>  الهاتف</th>
                         <th>اسم الباقة</th>
                         <th>نوع الدفع</th>
-                        <th>رابط الدفع</th>
+{{--                        <th>رابط الدفع</th>--}}
                         <th>هل اكتمل</th>
                         <th> حالة اخر معاملة</th>
                         <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
@@ -30,13 +31,14 @@
                     @foreach($payments as $payment)
                         <tr>
                             <td>{{ $payment->student?->name }}</td>
+                            <td><a href="tel:{{$payment->student?->phone}}">{{ $payment->student?->phone }}</a></td>
                             <td>{{ $payment->package?->name }}</td>
                             <td>{{ $payment->package?->payment_type == 'one time' ? 'مرة واحدة' : 'اقساط' }}</td>
-                            <td>
-                                <button class="btn btn-link" onclick="copyToClipboard('{{ $payment->payment_url }}')"
-                                        title="{{$payment->payment_url}}"> نسخ الرابط
-                                </button>
-                            </td>
+{{--                            <td>--}}
+{{--                                <button class="btn btn-link" onclick="copyToClipboard('{{ $payment->payment_url }}')"--}}
+{{--                                        title="{{$payment->payment_url}}"> نسخ الرابط--}}
+{{--                                </button>--}}
+{{--                            </td>--}}
                             <td>
                                 @if($payment->is_finished)
                                     <span class="text-success text-bold">نعم</span>

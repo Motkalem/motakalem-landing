@@ -11,7 +11,9 @@ use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -101,7 +103,10 @@ class PaymentController extends Controller
         return view('payments.one-time-pay');
     }
 
-    public function getStatus()
+    /**
+     * @return Redirector|string|RedirectResponse|Application
+     */
+    public function getStatus(): Redirector|string|RedirectResponse|Application
     {
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
@@ -177,6 +182,10 @@ class PaymentController extends Controller
         ]);
     }
 
+    /**
+     * @param $payment
+     * @return void
+     */
     private function markPaymentAsCompleted($payment=null)
     {
         if ($payment?->package?->payment_type == Package::ONE_TIME) {

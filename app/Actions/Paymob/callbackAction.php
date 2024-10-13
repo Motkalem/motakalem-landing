@@ -77,11 +77,11 @@ class callbackAction
                     $this->notifyClient($client_pay_order, $transaction);
                 }
 
-                return Redirect::away('https://www.motkalem.com/one-step-closer' . '?' . 'status=success');
+                return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=success');
             } else {
 
 
-                return Redirect::away('https://www.motkalem.com/one-step-closer' . '?' . 'status=fail');
+                return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=fail');
             }
             return Redirect::route('home');
         } else {

@@ -8,6 +8,9 @@ use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\Transaction;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,7 +18,7 @@ class PaymentsController extends AdminBaseController
 {
     public function index()
     {
-        $title = 'المدفوعات';
+        $title = __('One time Payments');
 
         $payments = Payment::with(['student', 'package', 'transactions'])->orderBy('id', 'desc')->paginate(12);
 
@@ -93,12 +96,17 @@ class PaymentsController extends AdminBaseController
         return redirect()->route('dashboard.payments.index')->with('success', 'Payment created successfully.');
     }
 
+    /**
+     * @param $id
+     * @return Application|Factory|View
+     */
     public function edit($id)
     {
         $title = 'تحديث الدفعة';
         $payment = Payment::findOrFail($id);
         $students = Student::all();
-        $packages = Package::all();
+        $packages = Package::where('is_active', 1)->get();
+
         return view(
             'admin.payments.edit',
             compact('payment', 'title', 'students', 'packages')
