@@ -90,7 +90,7 @@ class StudentsController extends AdminBaseController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:100',
             'email' => ['required','email',Rule::unique('students', 'email')->ignore($id)],
             'phone' => ['required',Rule::unique('students', 'phone')->ignore($id)],
             'age' => 'required|integer',
