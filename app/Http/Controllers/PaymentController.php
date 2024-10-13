@@ -145,7 +145,7 @@ class PaymentController extends Controller
 
        if( data_get($transactionData, 'id') ==  null){
 
-         return Redirect::away('https://motkalem.com/one-step-closer?status=fail');
+           return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
        }
         $transaction = $this->createTransactions($transactionData,   $payment);
@@ -154,10 +154,10 @@ class PaymentController extends Controller
 
         if ($transaction->success == 'true') {
 
-            return Redirect::away('https://motkalem.com/one-step-closer?status=success');
+            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
 
-            return redirect('https://motkalem.com/one-step-closer?status=fail');
+            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
         }
     }
 
