@@ -13,13 +13,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-
-use function PHPUnit\Framework\isNan;
-use function PHPUnit\Framework\isNull;
 
 class PaymentController extends Controller
 {
@@ -104,9 +100,9 @@ class PaymentController extends Controller
     }
 
     /**
-     * @return Redirector|string|RedirectResponse|Application
+     * @return string|RedirectResponse
      */
-    public function getStatus(): Redirector|string|RedirectResponse|Application
+    public function getStatus(): string|RedirectResponse
     {
         $entitiy_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
@@ -127,7 +123,7 @@ class PaymentController extends Controller
         }
         curl_close($ch);
 
-        $response  = $responseData;
+         $response  = $responseData;
         $res = new HyperpayNotificationProcessor( $response);
 
         $title =  $res->processNotification()   ;
@@ -162,12 +158,11 @@ class PaymentController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param [type] $data
-     * @return void
+     * @param $data
+     * @param $payment
+     * @return mixed
      */
-    public function createTransactions($data, $payment=null)
+    public function createTransactions($data, $payment=null): mixed
     {
 
         return  Transaction::create([

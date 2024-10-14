@@ -5,12 +5,7 @@ use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
-use App\Models\InstallmentPayment;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
-Route::get('checkout/result/{paymentId}/{studentId}/',
-    PaymentController::class,'getStatus');
+Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
 
 
 Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
