@@ -22,13 +22,16 @@
         </div>
         <div style="background-color: #D9D9D9;padding: 2rem;">
             <div style="text-align: center;">
-                <img style="width: 4rem;" src="https://dev.motkalem.com/images/email/checkmark.png" alt="checkmark in green">
-                <div>
-                    <p style="font-size: 1.2rem; font-weight: 600;">تم تسجيل عملية جديدة</p>
+                 <div>
+                    <p style="font-size: 1.2rem; font-weight: 600;"> إشعار بوابة الدفع (Hyperpay) </p>
                 </div>
             </div>
             <hr />
             <table>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">وصف النتيجة: </td>
+                    <td>{{ __(data_get($notification->payload,'result.description')??' ') }}</td>
+                </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم المعاملة: </td>
                     <td>{{ $notification->payload['id'] }}</td>
@@ -39,39 +42,42 @@
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">طريقة الدفع: </td>
-                    <td>{{ $notification->payload['paymentMethod'] }}</td>
+                    <td>التقسيط</td>
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">العملة: </td>
-                    <td>{{ $notification->payload['currency'] }}</td>
+                    <td>{{ __('SAR')  }}</td>
+                </tr>
+
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">  اسم الطالب: </td>
+                    <td>{{ data_get($notification, 'installmentPayment.student.name')}}</td>
+                </tr>
+
+
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">البريد الإلكتروني للزبون: </td>
+                    <td>{{ data_get($notification, 'installmentPayment.student.email') }}</td>
                 </tr>
                 <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">وصف النتيجة: </td>
-                    <td>{{ $notification->payload['result']['description'] }}</td>
-                </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم التسجيل: </td>
-                    <td>{{ $notification->payload['registrationId'] }}</td>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;"> رقم الهاتف  : </td>
+                    <td>{{ data_get($notification, 'installmentPayment.student.phone') }}</td>
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">تاريخ ووقت العملية: </td>
-                    <td>{{ $notification->payload['timestamp'] }}</td>
-                </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">اسم الزبون: </td>
-                    <td>{{ $notification->payload['customer']['givenName'] }}</td>
-                </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">البريد الإلكتروني للزبون: </td>
-                    <td>{{ $notification->payload['customer']['email'] }}</td>
-                </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">المدينة: </td>
-                    <td>{{ $notification->payload['card']['issuer']['bank'] }}</td>
+                    <td>{{ data_get($notification->payload,'timestamp')   }}</td>
                 </tr>
             </table>
         </div>
     </div>
+    <div style="width: 75%; margin: auto; padding-top: 1rem;">
+        <h3>التفاصيل:</h3>
+        <pre style="background-color: #f5f5f5; padding: 1rem; border: 1px solid #ccc;
+         border-radius: 5px; max-height: 300px; overflow-y: auto;">
+        {{ json_encode($notification->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
+    </pre>
+    </div>
+
     <div style="width: 75%; margin: auto; padding-top: .8rem ;">
         <div style="font-weight: 600; color: #5e5e5e;">
             <span>زر موقعنا: </span>

@@ -5,13 +5,17 @@ namespace App\Jobs;
 use App\Actions\HyperPay\ExecuteRecurringPayment;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
+use App\Notifications\Admin\HyperPayNotification;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+
 class CheckInstallmentPaymentsJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, InteractsWithQueue;
 
     /**
      * @return void
@@ -31,25 +35,83 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
             $monthsPassed = $firstInstallmentDate->diffInMonths($currentDate);
 
-            if ($installment->package && $monthsPassed <= $installment->package->number_of_months ) {
+            $nextInstallmentDate = $firstInstallmentDate->addMonths($monthsPassed);
 
-                if ($currentDate->isSameDay($firstInstallmentDate->addMonths($monthsPassed)) )
-                {
-                    $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+            $paidThisMonth = HyperpayWebHooksNotification::query()
+                ->where('installment_payment_id', $installment->id)
+                ->whereMonth('created_at', Carbon::now()->month)
+                ->whereYear('created_at', Carbon::now()->year)
+                ->where('payload->result->code', '000.000.000')
+                ->exists();
 
-                    Log::info('ExecuteRecurringPayment job response',(array) $response);
+            Log::info('installment payment', [json_encode($paidThisMonth)] );
 
+            if ($installment->package && $currentDate->greaterThanOrEqualTo($nextInstallmentDate) && !$paidThisMonth) {
 
-                    HyperpayWebHooksNotification::query()->create([
-                        'title'=> data_get($response,'result.description'),
-                        'installment_payment_id'=> $installment->id,
-                        'type'=> 'execute recurring payment',
-                        'payload' => $response,
-                        'log' => $response,
-                    ]);
-                }
+                 $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+
+                $notification = HyperpayWebHooksNotification::query()->create([
+                    'title' => data_get($response, 'result.description'),
+                    'installment_payment_id' => $installment->id,
+                    'type' => 'execute recurring payment',
+                    'payload' => $response,
+                    'log' => $response,
+                ]);
+
+                $this->checkResult($notification?->load('installmentPayment.student'));
+
+                $this->notifyAdmin($notification);
             }
 
+        }
+    }
+
+    public function hasSuccessfulWebhookNotificationThisMonth($installment_payment): bool
+    {
+        return $installment_payment->hyperpayWebHooksNotifications()
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->where('payload->result->code', '000.000.000') // Check if result.code matches the success code
+            ->exists();
+    }
+    /**
+     * @param $notification
+     * @return void
+     */
+    protected function checkResult($notification): void
+    {
+
+        $payload = $notification->payload;
+
+        $resultCode = data_get($payload, 'result.code');
+
+
+        if ($resultCode !== '000.000.000') {
+            Log::warning("Recurring payment failed, will retry tomorrow for installment ID:
+                 {$notification->installment_payment_id}");
+
+            $this->release(86400); // 86400 seconds = 24 hours
+
+        } else {
+
+        }
+
+    }
+
+    protected function notifyAdmin($notification): void
+    {
+        try {
+
+            $adminEmails = explode(',', env('ADMIN_EMAILS'));
+            foreach ($adminEmails as $adminEmail) {
+                Notification::route('mail', $adminEmail)
+                    ->notify(new  HyperPayNotification(
+                        $notification
+                    ));
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
     }
 }
