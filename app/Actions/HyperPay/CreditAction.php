@@ -36,7 +36,7 @@ class CreditAction
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => 'required|digits:10',
+            'phone' => ['required', 'regex:/^(\d{10}|\d{13})$/'], // Accepts 10 or 13 digits
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
