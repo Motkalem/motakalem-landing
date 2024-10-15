@@ -39,6 +39,7 @@ class PaymentController extends Controller
 
             }
         } catch (\Throwable $th) {
+
             //throw $th;
         }
 
@@ -123,7 +124,8 @@ class PaymentController extends Controller
         }
         curl_close($ch);
 
-         $response  = $responseData;
+       $response  = $responseData;
+
         $res = new HyperpayNotificationProcessor( $response);
 
         $title =  $res->processNotification()   ;
@@ -137,9 +139,11 @@ class PaymentController extends Controller
             'title' =>  $title
         ]);
 
-        $payment = Payment::find(request()->paymentId);
+        $payment = Payment::query()->find(request()->paymentId);
 
        if( data_get($transactionData, 'id') ==  null){
+
+
 
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
@@ -147,6 +151,7 @@ class PaymentController extends Controller
         $transaction = $this->createTransactions($transactionData,   $payment);
 
         $this->markPaymentAsCompleted($payment);
+
 
         if ($transaction->success == 'true') {
 
@@ -173,7 +178,8 @@ class PaymentController extends Controller
             'payment_id' => data_get($data, 'payment_id'),
             'amount' => data_get($data, 'amount'),
             'success' =>
-            data_get(data_get($data, 'result'), 'code') == '000.100.110' ? 'true' : 'false',
+           in_array(data_get(data_get($data, 'result'), 'code'),
+               ['000.100.110','000.000.000'])  ? 'true' : 'false',
         ]);
     }
 

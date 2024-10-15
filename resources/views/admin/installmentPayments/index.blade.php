@@ -16,6 +16,7 @@
                         <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
+
                 <tbody id="paymentsTableBody">
                     @foreach($installmentPayments as $installmentPayment)
                     <tr>

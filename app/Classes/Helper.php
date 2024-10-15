@@ -10,16 +10,27 @@ class Helper
     public static function tryDelete($row): bool
     {
         try {
+
+            if ($row->getRelations()) {
+                foreach ($row->getRelations() as $relation => $relatedRecords) {
+
+                    if ($row->relationLoaded($relation) && $relatedRecords->count() > 0) {
+                        notify()->error(__('لايمكن الحذف : يوجد بيانات مرتبطه'), 'فشل');
+                        return false;
+                    }
+                }
+            }
+
             $row->delete();
-
-            notify()->success(__('Deleted successfully'), 'نجاح');
-        } catch (\Throwable  $e) {
-
-            notify()->error(__('Can not deleted'), 'فشل');
+            notify()->success(__('تم الحذف'), 'نجاح');
+        } catch (\Throwable $e) {
+            notify()->error(__('لايمكن الحذف'), 'فشل');
             return false;
         }
+
         return true;
     }
+
 
     public static function tryForceDelete($row): bool
     {

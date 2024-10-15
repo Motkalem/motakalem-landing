@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Classes\Helper;
 use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Package;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -13,10 +14,10 @@ class PackagesController extends AdminBaseController
     public function index()
     {
 
-        $packages = Package::orderBy('id', 'desc')->paginate(12);
+        $packages = Package::query()->orderBy('id', 'desc')->paginate(12);
         $title= 'الباقات';
-        return view('admin.packages.index',
-         compact('packages','title'));
+
+        return view('admin.packages.index',   compact('packages','title'));
     }
 
     public function create()
@@ -96,16 +97,17 @@ class PackagesController extends AdminBaseController
         return redirect()->route('dashboard.packages.index')->with('success', 'Package updated successfully.');
     }
 
+
       /**
      * Remove the specified package from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
 
-        $package = Package::findOrFail($id);
+        $package = Package::with('payments')->findOrFail($id);
         Helper::tryDelete($package);
          return redirect()->route('dashboard.packages.index');
     }
