@@ -141,9 +141,8 @@ class PaymentController extends Controller
 
         $payment = Payment::query()->find(request()->paymentId);
 
-       if( data_get($transactionData, 'id') ==  null){
-
-
+       if( data_get($transactionData, 'id') ==  null)
+       {
 
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 

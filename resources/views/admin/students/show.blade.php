@@ -17,13 +17,55 @@
             </div>
         </div>
 
-        <div class="mb-3 row">
-            <label class="form-label col-sm-2 col-form-label">الباقة</label>
-            <div class="col-sm-10">
-                <p class="form-control-plaintext text-danger">{{ $student->package?->name??'لايوجد باقة مرتبطة' }}</p>
+        @if( $student->package)
+            <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label">اسم الباقة</label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext">
+                        {{ $student->package?->name  }}
+                    </p>
+                </div>
             </div>
-        </div>
-
+            <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label">نوع الباقة</label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext ">
+                        {{ $student->package?->payment_type == 'one time' ? 'دفع لمرة واحدة' : 'اقساط'  }}
+                    </p>
+                </div>
+            </div>
+            @if($student->package?->payment_type == 'one time')
+                <div class="mb-3 row">
+                    <label class="form-label col-sm-2 col-form-label"> الإجمالي  </label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext ">
+                            {{ $student->package?->total   }} {{__('SAR')}}
+                        </p>
+                    </div>
+                </div>
+            @else
+                <div class="mb-3 row">
+                    <label class="form-label col-sm-2 col-form-label"> قيمة القسط  </label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext ">
+                            {{ $student->package?->installment_value   }} {{__('SAR')}}
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="form-label col-sm-2 col-form-label">   عدد الاقساط  </label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext ">
+                            {{ $student->package?->number_of_months   }}  شهر
+                        </p>
+                    </div>
+                </div>
+            @endif
+        @else
+            <p class="form-control-plaintext text-danger">
+                {{  'لايوجد باقة مرتبطة' }}
+            </p>
+        @endif
         <div class="mb-3 row">
             <label class="form-label col-sm-2 col-form-label">البريد الإلكتروني</label>
             <div class="col-sm-10">
