@@ -62,9 +62,17 @@
                 </div>
             @endif
         @else
-            <p class="form-control-plaintext text-danger">
-                {{  'لايوجد باقة مرتبطة' }}
-            </p>
+
+            <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label">    الباقة  </label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext ">
+                        {{  'لايوجد باقة مرتبطة' }}
+                    </p>
+                </div>
+            </div>
+
+
         @endif
         <div class="mb-3 row">
             <label class="form-label col-sm-2 col-form-label">البريد الإلكتروني</label>
