@@ -177,8 +177,6 @@ class CreditAction
         ]);
 
         if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
-
-
             $response = StoreRecurringPaymentData::make()
                 ->handle(
                     $installmentPayment?->package,

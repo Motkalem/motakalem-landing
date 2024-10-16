@@ -169,7 +169,7 @@ class PaymentController extends Controller
     public function createTransactions($data, $payment=null): mixed
     {
 
-        return  Transaction::create([
+        return  Transaction::query()->create([
             'data' => $data,
             'title' => data_get($data, 'title'),
             'transaction_id' => data_get($data, 'id'),

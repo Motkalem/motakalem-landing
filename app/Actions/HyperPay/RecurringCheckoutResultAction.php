@@ -2,6 +2,7 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
 use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Support\Facades\Http;
@@ -21,29 +22,52 @@ class RecurringCheckoutResultAction
     public function handle(ActionRequest $request)#: JsonResponse|int
     {
 
-          $url = env('HYPERPAY_WIDGET_URL') . $request->resourcePath ;
+        $url = env('HYPERPAY_WIDGET_URL') . $request->resourcePath;
 
-          $response = Http::withoutVerifying()->get($url);
+        $response = Http::withoutVerifying()->get($url);
 
+        $data = $response->json();
+
+        $installmentPayment = InstallmentPayment::query()->with('student')->find($request->paymentId);
+
+        $this->createWebHookNotification($data, $installmentPayment);
 
         if ($response->successful()) {
 
-           $data = $response->json();
+            $registrationId = data_get($data, 'registrationId');
 
-            $registrationId = data_get($data,'registrationId') ;
+            $installmentPayment?->update([
+                'registration_id' => $registrationId,
+                'first_installment_date' => now()
+            ]);
+            $installmentPayment->student?->update([
+                'package_id'=> $installmentPayment->package_id,
+                'is_paid'=> 1,
+            ]);
 
-            $installmentPayment = InstallmentPayment::query()
-                ->find($request->paymentId)?->update([
-                    'registration_id'=> $registrationId,
-                    'first_installment_date'=>now()
-                ]);
-
-            return  Redirect::away('https://staging-front.motkalem.com/one-step-closer'.'?'.'status=success');
+            return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=success');
 
         } else {
-            return  Redirect::away('https://staging-front.motkalem.com/one-step-closer'.'?'.'status=failed');
+            return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=failed');
 
         }
+    }
+
+    /**
+     * @param $response
+     * @param $installment
+     * @return void
+     */
+    public function createWebHookNotification($response, $installment)
+    {
+
+        $notification = HyperpayWebHooksNotification::query()->create([
+            'title' => data_get($response, 'result.description'),
+            'installment_payment_id' => $installment->id,
+            'type' => 'init recurring payment',
+            'payload' => $response,
+            'log' => $response,
+        ]);
     }
 
     /**

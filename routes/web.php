@@ -25,7 +25,6 @@ Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::clas
 
 
 Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
-
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 
 Route::get('/callback', callbackAction::class)->name('callback');

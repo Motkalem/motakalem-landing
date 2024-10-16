@@ -184,18 +184,18 @@
                     </div>
                 </div>
 
-                @if($installmentPayment->canceled == 0 && $installmentPayment->payment_id)
-                        <div class="text-end">
-                            <button class="px-4 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelSubscriptionModal"
-                             data-url="{{route('dashboard.cancel-schedule', $installmentPayment->payment_id)}}">
-                                إلغاء الاشتراك
-                            </button>
-                        </div>
-                    @else
-                        <p class="px-4 btn text-danger">
-                           تم إلغاء الإشتراك
-                        </p>
-                @endif
+{{--                @if($installmentPayment->canceled == 0 && $installmentPayment->payment_id)--}}
+{{--                        <div class="text-end">--}}
+{{--                            <button class="px-4 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelSubscriptionModal"--}}
+{{--                             data-url="{{route('dashboard.cancel-schedule', $installmentPayment->payment_id)}}">--}}
+{{--                                إلغاء الاشتراك--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
+{{--                    @else--}}
+{{--                        <p class="px-4 btn text-danger">--}}
+{{--                           تم إلغاء الإشتراك--}}
+{{--                        </p>--}}
+{{--                @endif--}}
             </div>
         </div>
 

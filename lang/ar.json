@@ -69,6 +69,7 @@
     "execute recurring payment": "خصم القسط الشهري",
     "transaction pending": "معاملة معلقة",
     "One time Payments": "مدفوعات لمرة واحده",
+    "init recurring payment": "بدأ عملية التقسيط",
     "installments payments": "المدفوعات المجدولة"
 
 
