@@ -146,7 +146,7 @@ class StudentsController extends AdminBaseController
 
         // Create the contract and handle potential exceptions
         try {
-            $contract = ParentContract::query()->create(array_merge($contractData, ['accept_terms']));
+            $contract = ParentContract::query()->with('course')->create(array_merge($contractData, ['accept_terms']));
 
             // Notify the student about the contract
             Notification::route('mail', $contract->email)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Join\JoinRequest;
+use App\Models\Course;
 use App\Models\ParentContract;
 use App\Models\User;
 use App\Services\JoinService;
@@ -50,7 +51,12 @@ class JoinController extends Controller
         ]);
         $phone = $this->formatMobile($request->phone);
 
-        $validated = array_merge($validated,['phone' => $phone]);
+        $activeCourse = Course::query()->where('active', 1)->first();
+
+        $validated = array_merge($validated,[
+            'phone' => $phone,
+            'course_id' => $activeCourse->id,
+        ]);
 
 
          $contract = ParentContract::firstOrCreate(
@@ -58,6 +64,7 @@ class JoinController extends Controller
             $validated
         );
 
+         $this->notifyClient($contract);
         return $contract;
     }
 
@@ -66,6 +73,8 @@ class JoinController extends Controller
     public function notifyClient( $row): void
     {
         try {
+            $row = $row->load('course');
+
             Notification::route('mail', $row->email)
             ->notify(new  SendContractNotification($row));
         }

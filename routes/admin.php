@@ -2,6 +2,7 @@
 
 use App\Actions\HyperPay\CancelRecurringPayment;
 use App\Http\Controllers\Dashboard\ContactUsMessagesController;
+use App\Http\Controllers\Dashboard\CoursesController;
 use App\Http\Controllers\Dashboard\DashboardAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\InstallmentPaymentsController;
@@ -32,6 +33,8 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
         Route::get('panel', [DashboardController::class,'index'])->name('index');
 
         Route::resource('packages', PackagesController::class);
+        Route::resource('courses', CoursesController::class);
+
         Route::resource('payments', PaymentsController::class);
         Route::resource('transactions', TransactionsController::class);
 
