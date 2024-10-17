@@ -7,12 +7,14 @@ use App\Http\Requests\Join\JoinRequest;
 use App\Models\ParentContract;
 use App\Models\User;
 use App\Services\JoinService;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use App\Notifications\SendContractNotification;
 use \Illuminate\Support\Facades\Notification;
 use \Illuminate\Support\Facades\Log;
 class JoinController extends Controller
 {
+    use HelperTrait;
     public function __construct(private JoinService $joinService)
     {}
 
@@ -46,13 +48,15 @@ class JoinController extends Controller
             }],
             //'accept_terms' => 'required|boolean',
         ]);
+        $phone = $this->formatMobile($request->phone);
 
-        $contract = ParentContract::create(array_merge($validated,['accept_terms']));
+        $validated = array_merge($validated,['phone' => $phone]);
 
-        /*$contract = ParentContract::firstOrCreate(
-            ['phone' => $validated['phone']],
+
+         $contract = ParentContract::firstOrCreate(
+            ['phone' => $phone],
             $validated
-        );*/
+        );
 
         return $contract;
     }

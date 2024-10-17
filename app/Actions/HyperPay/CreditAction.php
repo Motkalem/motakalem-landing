@@ -2,6 +2,7 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreditAction
 {
-    use AsAction;
+    use AsAction, HelperTrait;
 
     protected JoinService $joinService;
     protected JoinController $joinController;
@@ -36,7 +37,7 @@ class CreditAction
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => ['required', 'regex:/^(\d{10}|\d{13})$/'], // Accepts 10 or 13 digits
+            'phone' => ['required', 'regex:/^(\d{10}|\d{13})$/'],
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
@@ -68,14 +69,15 @@ class CreditAction
                 'message' => 'حدث خطأ أثناء معالجة العقد',
             ];
         }
+       $phone = $this->formatMobile($request->phone);
 
         $student = Student::query()->firstOrCreate([
-            'phone' => $request->phone,
+            'phone' => $phone,
         ], [
             'name' => $request->name,
             'email' => $request->email,
             'age' => $request->age,
-            'phone' => $request->phone,
+            'phone' => $phone,
             'city' => $request->city,
             'payment_type' => $request->payment_type ?? Package::ONE_TIME,
             'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
