@@ -37,7 +37,7 @@ class CreditAction
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => ['required', 'regex:/^(\d{10}|\d{13})$/'],
+            'phone' => ['required', 'regex:/^(0\d{9}|966\d{9})$/'],
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
@@ -60,16 +60,7 @@ class CreditAction
 
         // try {
         $request = request();
-        $contract = $this->joinController->sendContract($request);
-
-        if (!isset($contract)) {
-            DB::rollBack();
-            return [
-                'status' => 0,
-                'message' => 'حدث خطأ أثناء معالجة العقد',
-            ];
-        }
-       $phone = $this->formatMobile($request->phone);
+        $phone = $this->formatMobile($request->phone);
 
         $student = Student::query()->firstOrCreate([
             'phone' => $phone,
@@ -82,6 +73,17 @@ class CreditAction
             'payment_type' => $request->payment_type ?? Package::ONE_TIME,
             'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
         ]);
+        $contract = $this->joinController->sendContract($student);
+
+        if (!isset($contract)) {
+            DB::rollBack();
+            return [
+                'status' => 0,
+                'message' => 'حدث خطأ أثناء معالجة العقد',
+            ];
+        }
+
+
 
         $package = Package::query()->find($request->package_id);
 

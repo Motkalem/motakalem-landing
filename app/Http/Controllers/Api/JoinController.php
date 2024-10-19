@@ -33,34 +33,23 @@ class JoinController extends Controller
         ]);
     }
 
-    public function sendContract(Request $request)
+    public function sendContract($student)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'age' => 'required|integer',
-            'phone' => 'required|string',
-            'city' => 'required|string',
-            'id_number' => 'required|digits:10',
-            'id_end' => ['required', 'date', function ($attribute, $value, $fail) {
-                if (strtotime($value) <= strtotime(now())) {
-                    $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
-                }
-            }],
+        $validated =  [
+            'email' => $student->email,
+            'name' =>  $student->name,
+            'age' =>  $student->age,
+            'phone' =>  $student->phone,
+            'city' => $student->city,
+            'id_number' =>  $student->id_number,
+            'id_end' => $student->id_end,
             //'accept_terms' => 'required|boolean',
-        ]);
-        $phone = $this->formatMobile($request->phone);
+        ];
 
         $activeCourse = Course::query()->where('active', 1)->first();
 
-        $validated = array_merge($validated,[
-            'phone' => $phone,
-            'course_id' => $activeCourse->id,
-        ]);
-
-
          $contract = ParentContract::firstOrCreate(
-            ['phone' => $phone],
+            ['phone' =>  $student->phone],
             $validated
         );
 
