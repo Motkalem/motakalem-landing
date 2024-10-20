@@ -27,6 +27,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     @foreach($courses as $course)
                         <tr>
                             <td><a href="{{route('dashboard.courses.show', $course->id)}}">{{ $course->name }} </a></td>
