@@ -30,9 +30,11 @@ class RecurringCheckoutResultAction
 
         $installmentPayment = InstallmentPayment::query()->with('student')->find($request->paymentId);
 
-        $this->createWebHookNotification($data, $installmentPayment);
+       $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
-        if ($response->successful()) {
+        $resultCode = data_get($webHookNotification->payload, 'result.code');
+
+        if ($response->successful() && in_array($resultCode, ['000.100.112','000.000.000'])) {
 
             $registrationId = data_get($data, 'registrationId');
 
@@ -45,10 +47,10 @@ class RecurringCheckoutResultAction
                 'is_paid'=> 1,
             ]);
 
-            return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=success');
+            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
 
         } else {
-            return Redirect::away('https://staging-front.motkalem.com/one-step-closer' . '?' . 'status=failed');
+            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
         }
     }
@@ -56,12 +58,12 @@ class RecurringCheckoutResultAction
     /**
      * @param $response
      * @param $installment
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
     public function createWebHookNotification($response, $installment)
     {
 
-        $notification = HyperpayWebHooksNotification::query()->create([
+      return HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
             'installment_payment_id' => $installment->id,
             'type' => 'init recurring payment',
