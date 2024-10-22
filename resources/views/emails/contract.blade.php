@@ -71,7 +71,7 @@
                                             </p>
                                             <hr/>
                                             <p style="direction:rtl;line-height:30px;font-size:16px;text-align:right;font-family:Cairo,Geneva,sans-serif">
-                                                ‎انه في يوم الأربعاء الموافق  {{ now()->format('Y/n/j') }}
+                                                ‎انه في يوم {{ now()->translatedFormat('l') }} الموافق  {{ now()->format('Y/n/j') }}
                                                 م    .
                                                 <br/>
                                                 ‎تحرر هذا العقد بين كلاً من:
