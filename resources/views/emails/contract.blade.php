@@ -71,7 +71,7 @@
                                             </p>
                                             <hr/>
                                             <p style="direction:rtl;line-height:30px;font-size:16px;text-align:right;font-family:Cairo,Geneva,sans-serif">
-                                                ‎انه في يوم الأربعاء الموافق  {{ now()->format('Y/n/j') }}
+                                                ‎انه في يوم {{ now()->translatedFormat('l') }} الموافق  {{ now()->format('Y/n/j') }}
                                                 م    .
                                                 <br/>
                                                 ‎تحرر هذا العقد بين كلاً من:
@@ -114,7 +114,7 @@
                                                     <br/>
                                                     3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
                                                     <br/>
-                                                    4. تاريخ بدء الدورة: 9/10/2024.
+                                                    4. تاريخ بدء الدورة: 23/10/2024.
                                                     <br/>
                                                     5. تاريخ انتهاء الدورة: بنهاية الأشهر الأربعة.
                                                 </li>
