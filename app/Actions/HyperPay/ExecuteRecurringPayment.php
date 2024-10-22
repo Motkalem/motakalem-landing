@@ -2,42 +2,62 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Models\HyperpayWebHooksNotification;
+use App\Models\InstallmentPayment;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ExecuteRecurringPayment
 {
     use AsAction;
 
-    public function handle($registrationID=null)
+    public function handle($registrationID = null)
     {
         $registrationId = $registrationID ?? request()->registrationId;
 
-        $url = env('HYPERPAY_URL')."/registrations/". $registrationId."/payments";
-        $data = "entityId=".env('RECURRING_ENTITY_ID') .
+        $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
+        $data = "entityId=" . env('RECURRING_ENTITY_ID') .
             "&amount=5.00" .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.type=UNSCHEDULED" .
-            "&standingInstruction.source=MIT".
-             "&shopperResultUrl=https://staging-front.motkalem.com";
+            "&standingInstruction.source=MIT" .
+            "&shopperResultUrl=https://staging-front.motkalem.com";
 
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization:Bearer '.env('AUTH_TOKEN')));
+            'Authorization:Bearer ' . env('AUTH_TOKEN')));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
 
-        if(curl_errno($ch)) {
+        if (curl_errno($ch)) {
             return curl_error($ch);
         }
         curl_close($ch);
-        return json_decode($responseData);
+        $response = json_decode($responseData);
+
+        if (request()->registrationId) { # to avoid duplicate store notification from cron job
+
+            $installmentPayment = InstallmentPayment::where('registration_id', request()->registrationId)->first();
+            $this->storeNotification($response, $installmentPayment);
+        }
+
+        return $response;
     }
 
+    public function storeNotification($response, $installment)
+    {
+        $notification = HyperpayWebHooksNotification::query()->create([
+            'title' => data_get($response, 'result.description'),
+            'installment_payment_id' => $installment->id,
+            'type' => 'execute recurring payment',
+            'payload' => $response,
+            'log' => $response,
+        ]);
+    }
 }
