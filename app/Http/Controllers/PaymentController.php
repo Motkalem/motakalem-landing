@@ -22,7 +22,7 @@ class PaymentController extends Controller
 
     public function getPayPage()
     {
-        $payment = Payment::with('package')->find(request()->pid);
+        $payment = Payment::with('package','student')->find(request()->pid);
 
         $responseData = null;
 
@@ -34,9 +34,10 @@ class PaymentController extends Controller
             die();
         }
         try {
+
             if ($payment->package?->payment_type == Package::ONE_TIME) {
 
-                $responseData = $this->createCheckoutId($payment?->package?->total);
+                $responseData = $this->createCheckoutId($payment);
             }
         } catch (\Throwable $th) {
 
@@ -48,10 +49,10 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param $total_price
+     * @param $payment
      * @return bool|string
      */
-    public function createCheckoutId($total_price): bool|string
+    public function createCheckoutId($payment): bool|string
     {
 
         $entity_id = config('hyperpay.entity_id'); //visa or master
@@ -67,10 +68,19 @@ class PaymentController extends Controller
         $url = env('HYPERPAY_URL')."/checkouts";
 
         $data = 'entityId='
-        . $entity_id
-        . "&amount=". $total_price
-        . "&currency=SAR"
-        . "&paymentType=DB";
+        .$entity_id
+        ."&amount=". $payment?->package?->total
+        ."&currency=SAR"
+        ."&paymentType=DB".
+        "&merchantTransactionId=".$payment->id.
+        "&customer.email=".$payment?->student?->email.
+        "&billing.street1=".$payment?->student?->city .
+        "&billing.city=".$payment?->student?->city .
+        "&billing.state=".$payment?->student?->city  .
+        "&billing.country="."SA".
+        "&billing.postcode="."".
+        "&customer.givenName=".$payment?->student?->name.
+        "&customer.surname="."";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -88,6 +98,7 @@ class PaymentController extends Controller
         if (curl_errno($ch)) {
             return curl_error($ch);
         }
+
         curl_close($ch);
 
         return $responseData;

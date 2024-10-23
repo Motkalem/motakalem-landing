@@ -10,6 +10,7 @@ class StoreRecurringPaymentData
     public function handle($package, $payment, $student, $data)
     {
         $url = env('HYPERPAY_URL')."/checkouts";
+
         $data = [
             'entityId' => env('ENTITY_ID'),
             'amount' => $package->installment_value,
@@ -19,8 +20,17 @@ class StoreRecurringPaymentData
             'standingInstruction.type' => 'UNSCHEDULED',
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
+
+            'testMode'=> 'EXTERNAL',
             'merchantTransactionId' => $payment->id,
-            'testMode'=> 'EXTERNAL'
+            "customer.email"=>$payment?->student?->email,
+            "billing.street1"=>$payment?->student?->city ,
+            "billing.city"=>$payment?->student?->city ,
+            "billing.state"=>$payment?->student?->city  ,
+            "billing.country"=>"SA",
+            "billing.postcode"=>"",
+            "customer.givenName"=>$payment?->student?->name,
+            "customer.surname"=>""
         ];
 
         $ch = curl_init($url);

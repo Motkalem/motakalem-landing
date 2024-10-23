@@ -66,8 +66,13 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
         }
     }
 
+    /**
+     * @param $installment_payment
+     * @return bool
+     */
     public function hasSuccessfulWebhookNotificationThisMonth($installment_payment): bool
     {
+
         return $installment_payment->hyperpayWebHooksNotifications()
             ->whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
@@ -80,28 +85,27 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
      */
     protected function checkResult($notification): void
     {
-
         $payload = $notification->payload;
 
         $resultCode = data_get($payload, 'result.code');
 
-
         if ($resultCode !== '000.000.000') {
+
             Log::warning("Recurring payment failed, will retry tomorrow for installment ID:
                  {$notification->installment_payment_id}");
 
             $this->release(86400); // 86400 seconds = 24 hours
 
-        } else {
-
-        }
-
+        } else {}
     }
 
+    /**
+     * @param $notification
+     * @return void
+     */
     protected function notifyAdmin($notification): void
     {
         try {
-
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
             foreach ($adminEmails as $adminEmail) {
                 Notification::route('mail', $adminEmail)
@@ -111,7 +115,10 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
             }
 
         } catch (\Exception $e) {
+
             Log::error($e->getMessage());
         }
     }
+
+    #TODO notify the client if the transaction failed
 }
