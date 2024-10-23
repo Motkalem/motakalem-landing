@@ -35,8 +35,8 @@ class PaymentController extends Controller
         }
         try {
             if ($payment->package?->payment_type == Package::ONE_TIME) {
-                $responseData = $this->createCheckoutId($payment?->package?->total);
 
+                $responseData = $this->createCheckoutId($payment?->package?->total);
             }
         } catch (\Throwable $th) {
 
@@ -44,19 +44,22 @@ class PaymentController extends Controller
         }
 
         $paymentId = data_get(json_decode($responseData), "id");
-
         return view('payments.one-time-pay', compact('payment', 'paymentId'));
     }
 
-    public function createCheckoutId($total_price)
+    /**
+     * @param $total_price
+     * @return bool|string
+     */
+    public function createCheckoutId($total_price): bool|string
     {
 
-        $entitiy_id = config('hyperpay.entity_id'); //visa or master
+        $entity_id = config('hyperpay.entity_id'); //visa or master
 
+        if(request()->payment_method == 'MADA')
+        {
 
-        if(request()->payment_method == 'MADA'){
-
-            $entitiy_id = env('ENTITY_ID_MADA'); //mada
+            $entity_id = env('ENTITY_ID_MADA'); //mada
         }
 
         $access_token = env('AUTH_TOKEN');
@@ -64,7 +67,7 @@ class PaymentController extends Controller
         $url = env('HYPERPAY_URL')."/checkouts";
 
         $data = 'entityId='
-        . $entitiy_id
+        . $entity_id
         . "&amount=". $total_price
         . "&currency=SAR"
         . "&paymentType=DB";
@@ -105,11 +108,11 @@ class PaymentController extends Controller
      */
     public function getStatus(): string|RedirectResponse
     {
-        $entitiy_id = config('hyperpay.entity_id');
+        $entity_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
 
         $url = env('HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
-        $url .= "?entityId=" . $entitiy_id;
+        $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

@@ -83,8 +83,6 @@ class CreditAction
             ];
         }
 
-
-
         $package = Package::query()->find($request->package_id);
 
         DB::commit();
@@ -95,14 +93,8 @@ class CreditAction
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
 
-            InstallmentPayment::query()->where('student_id', $student->id)
-                ->whereNull('registration_id')?->first()?->delete();
-
-            return $this->createScheduledPayment($student->id, $request->package_id,
-                $student, $request->all());
+            return $this->createScheduledPayment($student->id, $request->package_id,$student, $request->all());
         }
-
-
 
         if ($package->payment_type == Package::ONE_TIME) {
 
@@ -168,16 +160,16 @@ class CreditAction
      */
     protected function createScheduledPayment($stID, $pckID, $student, $data): JsonResponse
     {
+        InstallmentPayment::query()->where('student_id', $stID)
+            ->whereNull('registration_id')?->first()?->delete();
 
         $installmentPayment = InstallmentPayment::query()->firstOrcreate([
-
             'student_id' => $stID,
             'package_id' => $pckID,
         ], [
 
             'student_id' => $stID,
             'package_id' => $pckID,
-
         ]);
 
         if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
