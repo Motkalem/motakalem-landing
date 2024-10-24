@@ -36,14 +36,18 @@ class SendContractNotification extends Notification
      */
     public function toMail(mixed $notifiable): MailMessage
     {
+        $adminEmails = explode(',', env('ADMIN_EMAILS', 'default@example.com'));
 
         return (new MailMessage)
-            ->subject(  'عقد انضمام برنامج متكلم للتأتأه')
-            ->cc('Info@motkalem.com')
-            ->cc('Executive@squarement.sa')
-            ->view('emails.contract',
+            ->subject('عقد انضمام برنامج متكلم للتأتأه')
+            ->cc($adminEmails)
+            ->view(
+                'emails.contract',
                 [
-                    'data'=> $this->data,
-                ]);
+                    'data' => $this->data,
+                ]
+            );
+
+
     }
 }
