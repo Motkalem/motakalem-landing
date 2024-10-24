@@ -22,63 +22,58 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
      */
     public function handle(): void
     {
-
+        // Fetch all non-canceled installment payments
         $installmentPayments = InstallmentPayment::with('package')
             ->where('canceled', false)
             ->get();
 
         foreach ($installmentPayments as $installment) {
-
             $firstInstallmentDate = Carbon::parse($installment->first_installment_date);
-
             $currentDate = Carbon::now();
 
-            $monthsPassed = $firstInstallmentDate->diffInMonths($currentDate);
+            $minutesPassed = $firstInstallmentDate->diffInMinutes($currentDate);
 
-            $nextInstallmentDate = $firstInstallmentDate->addMonths($monthsPassed);
+            if ($minutesPassed % 5 == 0) {
+                $paidThisPeriod = HyperpayWebHooksNotification::query()
+                    ->where('installment_payment_id', $installment->id)
+                    ->where('created_at', '>=', Carbon::now()->subMinutes(5))
+                    ->where('payload->result->code', '000.000.000')
+                    ->exists();
 
-            $paidThisMonth = HyperpayWebHooksNotification::query()
-                ->where('installment_payment_id', $installment->id)
-                ->whereMonth('created_at', Carbon::now()->month)
-                ->whereYear('created_at', Carbon::now()->year)
-                ->where('payload->result->code', '000.000.000')
-                ->exists();
+                Log::info('installment payment', [json_encode($paidThisPeriod)]);
 
-            Log::info('installment payment', [json_encode($paidThisMonth)] );
+                if (!$paidThisPeriod) {
+                    $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
-            if ($installment->package && $currentDate->greaterThanOrEqualTo($nextInstallmentDate) && !$paidThisMonth) {
+                    $notification = HyperpayWebHooksNotification::query()->create([
+                        'title' => data_get($response, 'result.description'),
+                        'installment_payment_id' => $installment->id,
+                        'type' => 'execute recurring payment',
+                        'payload' => $response,
+                        'log' => $response,
+                    ]);
 
-                 $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
-
-                $notification = HyperpayWebHooksNotification::query()->create([
-                    'title' => data_get($response, 'result.description'),
-                    'installment_payment_id' => $installment->id,
-                    'type' => 'execute recurring payment',
-                    'payload' => $response,
-                    'log' => $response,
-                ]);
-
-                $this->checkResult($notification?->load('installmentPayment.student'));
-
-                $this->notifyAdmin($notification);
+                    $this->checkResult($notification?->load('installmentPayment.student'));
+                    $this->notifyAdmin($notification);
+                }
             }
-
         }
     }
 
     /**
+     * Check if the webhook has a successful notification for this period (5 minutes window).
+     *
      * @param $installment_payment
      * @return bool
      */
-    public function hasSuccessfulWebhookNotificationThisMonth($installment_payment): bool
+    public function hasSuccessfulWebhookNotificationThisPeriod($installment_payment): bool
     {
-
         return $installment_payment->hyperpayWebHooksNotifications()
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->where('payload->result->code', '000.000.000') // Check if result.code matches the success code
+            ->where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->whereIn('payload->result->code', ['000.000.000', '000.100.110'])
             ->exists();
     }
+
     /**
      * @param $notification
      * @return void
@@ -86,17 +81,15 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
     protected function checkResult($notification): void
     {
         $payload = $notification->payload;
-
         $resultCode = data_get($payload, 'result.code');
 
-        if ($resultCode !== '000.000.000') {
-
-            Log::warning("Recurring payment failed, will retry tomorrow for installment ID:
+        // Handle failed recurring payments
+        if (!in_array($resultCode, ['000.000.000', '000.100.110'])) {
+            Log::warning("Recurring payment failed, will retry in 5 minutes for installment ID:
                  {$notification->installment_payment_id}");
 
-            $this->release(86400); // 86400 seconds = 24 hours
-
-        } else {}
+            $this->release(300); // Retry after 5 minutes
+        }
     }
 
     /**
@@ -109,13 +102,9 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
             foreach ($adminEmails as $adminEmail) {
                 Notification::route('mail', $adminEmail)
-                    ->notify(new  HyperPayNotification(
-                        $notification
-                    ));
+                    ->notify(new HyperPayNotification($notification));
             }
-
         } catch (\Exception $e) {
-
             Log::error($e->getMessage());
         }
     }
