@@ -178,8 +178,7 @@ class CreditAction
                     $installmentPayment?->package,
                     $installmentPayment,
                     $student,
-                    $data
-                );
+                    $data);
 
             if (data_get(data_get($response, 'result'), 'code') == '000.200.100') {
 
