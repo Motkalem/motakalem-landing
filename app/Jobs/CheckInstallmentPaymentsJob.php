@@ -31,7 +31,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
 
             $minutesData = $this->getNumberOfTwoMinutesPassed($installment);
-            Log::info("registration id $installment->registration_id");
+
             // Check if we are at a multiple of 2-minute intervals
             if ($minutesData['numberOfIntervals'] % 2 == 0) {
 
