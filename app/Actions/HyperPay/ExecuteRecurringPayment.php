@@ -17,7 +17,8 @@ class ExecuteRecurringPayment
 
         $installment = InstallmentPayment::where('registration_id', $registrationId)->first();
 
-        Log::info("registration id from excute action $registrationId");
+        Log::info("registration id from execute action $registrationId");
+        Log::info("amount is  $installment->package?->installment_value");
 
         $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
 
