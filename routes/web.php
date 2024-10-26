@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', TestAction::class);
+//Route::get('test', TestAction::class);
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
     ->name('checkout.index');
