@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Actions\HyperPay;
 
-use App\Actions\HyperPay\ExecuteRecurringPayment;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
 use App\Notifications\Admin\HyperPayNotification;
 use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Lorisleiva\Actions\Concerns\AsAction;
 
-class CheckInstallmentPaymentsJob implements ShouldQueue
+class TestAction
 {
-    use Queueable, InteractsWithQueue;
+    use AsAction;
 
     /**
      * @return void
@@ -48,12 +45,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
                     $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
                     # store notification
-                    $notification = HyperpayWebHooksNotification::query()->create([
-                        'title' => data_get($response, 'result.description'),
-                        'installment_payment_id' => $installment->id,
-                        'type' => 'execute recurring payment',
-                        'payload' => $response,
-                        'log' => $response,]);
+                    $notification = HyperpayWebHooksNotification::query()->create(['title' => data_get($response, 'result.description'), 'installment_payment_id' => $installment->id, 'type' => 'execute recurring payment', 'payload' => $response, 'log' => $response,]);
 
                     $this->checkResult($notification?->load('installmentPayment.student'));
                     $this->notifyAdmin($notification);

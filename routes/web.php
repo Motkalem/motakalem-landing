@@ -2,6 +2,7 @@
 
 use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
+use App\Actions\HyperPay\TestAction;
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('test', TestAction::class);
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
     ->name('checkout.index');

@@ -70,14 +70,6 @@
             </table>
         </div>
     </div>
-    <div style="width: 75%; margin: auto; padding-top: 1rem;">
-        <h3>التفاصيل:</h3>
-        <pre style="background-color: #f5f5f5; padding: 1rem; border: 1px solid #ccc;
-         border-radius: 5px; max-height: 300px; overflow-y: auto;">
-        {{ json_encode($notification->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
-    </pre>
-    </div>
-
     <div style="width: 75%; margin: auto; padding-top: .8rem ;">
         <div style="font-weight: 600; color: #5e5e5e;">
             <span>زر موقعنا: </span>
