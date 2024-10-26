@@ -34,11 +34,11 @@
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم المعاملة: </td>
-                    <td>{{ $notification->payload['id'] }}</td>
+                    <td>{{ data_get($notification->payload,'id' )  }}</td>
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">قيمة المعاملة: </td>
-                    <td>{{ $notification->payload['amount'] }} ر.س</td>
+                    <td>{{  data_get($notification->payload,'amount')??0  }} ر.س</td>
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">طريقة الدفع: </td>
