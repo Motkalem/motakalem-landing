@@ -47,7 +47,7 @@ class CheckInstallmentPayments0Job implements ShouldQueue
 
             if ($installment->package && $currentDate->greaterThanOrEqualTo($nextInstallmentDate) && !$paidThisMonth) {
 
-                 $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+                 $response = ExecuteRecurringPayment::make()->handle($installment->registration_id, $installment);
 
                 $notification = HyperpayWebHooksNotification::query()->create([
                     'title' => data_get($response, 'result.description'),

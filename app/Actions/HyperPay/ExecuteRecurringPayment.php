@@ -10,19 +10,20 @@ class ExecuteRecurringPayment
 {
     use AsAction;
 
-    public function handle($registrationID = null)
+    public function handle($registrationID = null,$installment =null)
     {
-        $registrationId = $registrationID ?? request()->registrationId;
+        $registrationId = $registrationID != null ? $registrationID : request()->registrationId;
 
         $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
-            "&amount=5.00" .
+            "&amount=".$installment->package->installment_value .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT" .
-            "&shopperResultUrl=https://staging-front.motkalem.com";
+            "&shopperResultUrl=".env(env('VERSION_STATE').'FRONT_URL');
+
 
 
         $ch = curl_init();

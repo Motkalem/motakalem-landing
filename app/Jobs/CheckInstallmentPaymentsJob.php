@@ -45,7 +45,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
                 if ($successInstallments < $installment->package->number_of_months) {
 
-                    $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+                    $response = ExecuteRecurringPayment::make()->handle($installment->registration_id,$installment);
 
                     # store notification
                     $notification = HyperpayWebHooksNotification::query()->create([
