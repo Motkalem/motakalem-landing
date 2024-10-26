@@ -18,6 +18,7 @@ class ExecuteRecurringPayment
         $installment = InstallmentPayment::where('registration_id', $registrationId)->first();
 
         $amount = $installment->package?->installment_value;
+
         Log::info("registration id from execute action $registrationId");
         Log::info("amount is  $amount");
 
@@ -31,7 +32,6 @@ class ExecuteRecurringPayment
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT" .
             "&shopperResultUrl=".env(env('VERSION_STATE').'FRONT_URL');
-
 
 
         $ch = curl_init();
