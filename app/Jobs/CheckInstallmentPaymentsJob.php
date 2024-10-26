@@ -27,6 +27,9 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
         foreach ($installmentPayments as $installment) {
 
+            if ($installment->registration_id){
+
+
             $minutesData = $this->getNumberOfTwoMinutesPassed($installment);
             Log::info("registration id $installment->registration_id");
             // Check if we are at a multiple of 2-minute intervals
@@ -59,6 +62,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
                     $this->notifyAdmin($notification);
                     $this->notifyStudent($notification, $installment->student?->email);
                 }
+            }
             }
         }
     }
