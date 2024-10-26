@@ -15,7 +15,7 @@ class ExecuteRecurringPayment
     {
         $registrationId = $registrationID != null ? $registrationID : request()->registrationId;
 
-        Log::info("registration id $registrationId");
+        Log::info("registration id from excute action $registrationId");
         $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
             "&amount=".$installment->package->installment_value .
