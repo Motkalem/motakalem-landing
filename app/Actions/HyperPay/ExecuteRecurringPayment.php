@@ -11,14 +11,18 @@ class ExecuteRecurringPayment
 {
     use AsAction;
 
-    public function handle($registrationID = null,$installment =null)
+    public function handle($registrationID = null)
     {
         $registrationId = $registrationID != null ? $registrationID : request()->registrationId;
 
+        $installment = InstallmentPayment::where('registration_id', $registrationId)->first();
+
         Log::info("registration id from excute action $registrationId");
+
         $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
+
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
-            "&amount=".$installment->package->installment_value .
+            "&amount=".$installment->package?->installment_value .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
