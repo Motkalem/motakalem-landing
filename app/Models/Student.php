@@ -9,8 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Student extends Model
 {
-    use  Notifiable;
-//    use CrudTrait;
+    use  Notifiable, CrudTrait;
    protected $fillable = ['name', 'email','payment_type','total_payment_amount','age', 'is_paid','phone', 'city'];
 
    # payment types
