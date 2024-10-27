@@ -208,6 +208,7 @@ return [
         'slug'                  => ' ',
         'payment_type'                  => 'نوع الدفع',
         'clienttermsConsent'                  => 'الموافقة علي الشروط والاحكام',
+        'id_number'                  => 'رقم الهوية',
     ],
 
 ];

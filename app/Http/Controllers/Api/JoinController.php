@@ -19,6 +19,7 @@ class JoinController extends Controller
 
     public function store(JoinRequest $request)
     {
+
         $this->joinService->store($request->validated());
 
 
@@ -30,31 +31,20 @@ class JoinController extends Controller
         ]);
     }
 
-    public function sendContract(Request $request)
+    public function sendContract($clientOrderPay,$data)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'age' => 'required|integer',
-            'phone' => 'required|string',
-            'city' => 'required|string',
-            'id_number' => 'required|digits:10',
-            'id_end' => ['required', 'date', function ($attribute, $value, $fail) {
-                if (strtotime($value) <= strtotime(now())) {
-                    $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
-                }
-            }],
-            //'accept_terms' => 'required|boolean',
-        ]);
 
-        $contract = ParentContract::create(array_merge($validated,['accept_terms']));
+        $validated =  [
+            'email' => $clientOrderPay->email,
+            'name' => $clientOrderPay->name,
+            'age' => $clientOrderPay->age,
+            'phone' => $clientOrderPay->phone,
+            'city' => $clientOrderPay->city,
+            'id_number' => data_get($data,'id_number'),
+            'id_end' => data_get($data,'id_end'),
+        ];
 
-        /*$contract = ParentContract::firstOrCreate(
-            ['phone' => $validated['phone']],
-            $validated
-        );*/
-
-        return $contract;
+        return ParentContract::query()->create(array_merge($validated,['accept_terms'=>true]));
     }
 
 

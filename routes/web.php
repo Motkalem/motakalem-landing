@@ -3,7 +3,9 @@
  use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
 use App\Models\ParentContract;
+use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +20,13 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/test', function (){
 
+      $rows = ParentContract::latest()->take(4)->get();
 
-    $data = ParentContract::first();
-    return view('emails.contract', compact('data'));
+
+      foreach ($rows as $row) {
+            Notification::route('mail', 'Pmo@squarement.sa')
+                ->notify(new  SendContractNotification($row));
+      }
 });
 
 

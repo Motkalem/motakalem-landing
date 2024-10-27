@@ -30,12 +30,12 @@ class CreditAction
         return [
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => 'required|digits:10',
+            'phone' => 'required|digits:10|unique:students,phone', // Add unique rule for phone
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
             'payment_type' => 'nullable|in:' . implode(',', array_values(Student::$paymentTypes)),
-            'id_number' => 'required|digits:10',
+            'id_number' => 'required|digits:10|unique:parent_contracts,id_number',
             'id_end' => ['required', 'date', function ($attribute, $value, $fail) {
                 if (strtotime($value) <= strtotime(now())) {
                     $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
@@ -44,24 +44,13 @@ class CreditAction
         ];
     }
 
-    public function handle(ActionRequest $request): array
+    public function handle(ActionRequest $request)#: array
     {
-        DB::beginTransaction();
+//        DB::beginTransaction();
 
         try {
-            $request = request();
-            $contract = $this->joinController->sendContract($request);
-            if (!isset($contract)) {
-                DB::rollBack();
-                return [
-                    'status' => 0,
-                    'message' => 'حدث خطأ أثناء معالجة العقد',
-                ];
-            }
 
-            $clientOrderPay = Student::query()->firstOrCreate([
-                'phone' => $request->phone,
-            ], [
+            $clientOrderPay = Student::query()->create( [
                 'name' => $request->name,
                 'email' => $request->email,
                 'age' => $request->age,
@@ -70,6 +59,16 @@ class CreditAction
                 'payment_type' => $request->payment_type ?? 'one_time',
                 'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
             ]);
+
+             $contract = $this->joinController->sendContract($clientOrderPay, $request->all());
+
+            if (!isset($contract)) {
+                DB::rollBack();
+                return [
+                    'status' => 0,
+                    'message' => 'حدث خطأ أثناء معالجة العقد',
+                ];
+            }
 
             $token = GetAuthToken::make()->handle();
 
