@@ -4,8 +4,10 @@ namespace App\Actions\HyperPay;
 
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
+use App\Notifications\Admin\HyperPayNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
@@ -32,9 +34,10 @@ class RecurringCheckoutResultAction
 
        $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
-        $resultCode = data_get($webHookNotification->payload, 'result.code');
+       $this->notifyAdmin($webHookNotification);
+       $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
-        if ($response->successful() && in_array($resultCode, ['000.100.112','000.000.000'])) {
+        if ($response->successful() &&  $this->isSuccessfulNotification($webHookNotification)) {
 
             $registrationId = data_get($data, 'registrationId');
 
@@ -56,6 +59,18 @@ class RecurringCheckoutResultAction
     }
 
     /**
+     * @param $notification
+     * @return bool
+     */
+    protected function isSuccessfulNotification($notification): bool
+    {
+        $resultCode = data_get($notification->payload, 'result.code');
+        $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+
+        return preg_match($successPattern, $resultCode) === 1;
+    }
+
+    /**
      * @param $response
      * @param $installment
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
@@ -73,14 +88,34 @@ class RecurringCheckoutResultAction
     }
 
     /**
-     * @param $client
-     * @param $transaction
+     * @param $notification
      * @return void
      */
-    public function notifyClient($client, $transaction): void
+    protected function notifyAdmin($notification): void
     {
-        Notification::send($client,
-            new SuccessSubscriptionPaidNotification($client, $transaction));
-
+        try {
+            $adminEmails = explode(',', env('ADMIN_EMAILS'));
+            foreach ($adminEmails as $adminEmail) {
+                Notification::route('mail', $adminEmail)
+                    ->notify(new HyperPayNotification($notification));
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
+
+    /**
+     * @param $notification
+     * @param $email
+     * @return void
+     */
+    protected function notifyStudent($notification, $email): void
+    {
+        try {
+            Notification::route('mail', $email)->notify(new HyperPayNotification($notification));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
 }

@@ -37,7 +37,7 @@ class CreditAction
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => ['required', 'regex:/^(0\d{9}|966\d{9})$/'],
+            'phone' => ['required', 'regex:/^(0\d{9}|966\d{9})$/','unique:students,phone'],
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
