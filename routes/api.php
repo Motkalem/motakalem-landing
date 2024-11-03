@@ -1,10 +1,14 @@
 <?php
 
+use App\Actions\Api\General\GetPackages;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
+use App\Http\Controllers\Api\HyperPayWebHooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Actions\Paymob\CreditAction;
+use App\Actions\HyperPay\CreditAction;
+use App\Actions\HyperPay\ExecuteRecurringPayment;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +29,14 @@ Route::post('/join', [JoinController::class, 'store']);
 
 Route::post('/send-contract', [JoinController::class, 'sendContract']);
 
-
 Route::post('/contact-us', [ContactUsController::class, 'store']);
 
+
+Route::get('/packages', GetPackages::class);
+
+Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
+
+
 Route::post('/credit', CreditAction::class)->name('credit');
+Route::post('/excute-recurring',   ExecuteRecurringPayment::class);
+

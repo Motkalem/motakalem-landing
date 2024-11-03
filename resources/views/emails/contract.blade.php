@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
 
+        عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,7 +114,7 @@
                                                     <br/>
                                                     3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
                                                     <br/>
-                                                    4. تاريخ بدء الدورة: 23/10/2024.
+                                                    4. تاريخ بدء الدورة: {{ \Carbon\Carbon::parse($data->course?->starts_at)?->format('Y/n/j')  }} .
                                                     <br/>
                                                     5. تاريخ انتهاء الدورة: بنهاية الأشهر الأربعة.
                                                 </li>

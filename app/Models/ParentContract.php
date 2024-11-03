@@ -4,12 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ParentContract extends Model
 {
     use HasFactory;
 
-    protected $fillable =['name', 'age', 'phone' , 'city', 'email', 'id_number', 'id_end', 'accept_terms'];
+    protected $fillable =['name', 'age','course_id', 'phone' ,
+        'city', 'email', 'id_number', 'id_end', 'accept_terms'];
 
+
+    /**
+     * @return BelongsTo
+     */
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
+    }
 
 }

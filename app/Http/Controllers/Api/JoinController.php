@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Join\JoinRequest;
+use App\Models\Course;
 use App\Models\ParentContract;
 use App\Models\User;
 use App\Services\JoinService;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use App\Notifications\SendContractNotification;
 use \Illuminate\Support\Facades\Notification;
 use \Illuminate\Support\Facades\Log;
 class JoinController extends Controller
 {
+    use HelperTrait;
     public function __construct(private JoinService $joinService)
     {}
 
@@ -31,6 +34,7 @@ class JoinController extends Controller
         ]);
     }
 
+<<<<<<< HEAD
     public function sendContract($clientOrderPay,$data)
     {
 
@@ -45,6 +49,30 @@ class JoinController extends Controller
         ];
 
         return ParentContract::query()->create(array_merge($validated,['accept_terms'=>true]));
+=======
+    public function sendContract($student)
+    {
+        $validated =  [
+            'email' => $student->email,
+            'name' =>  $student->name,
+            'age' =>  $student->age,
+            'phone' =>  $student->phone,
+            'city' => $student->city,
+            'id_number' =>  $student->id_number,
+            'id_end' => $student->id_end,
+            //'accept_terms' => 'required|boolean',
+        ];
+
+        $activeCourse = Course::query()->where('active', 1)->first();
+
+         $contract = ParentContract::firstOrCreate(
+            ['phone' =>  $student->phone],
+            $validated
+        );
+
+         $this->notifyClient($contract);
+        return $contract;
+>>>>>>> remove-old-dashboard
     }
 
 
@@ -52,6 +80,8 @@ class JoinController extends Controller
     public function notifyClient( $row): void
     {
         try {
+            $row = $row->load('course');
+
             Notification::route('mail', $row->email)
             ->notify(new  SendContractNotification($row));
         }
@@ -59,7 +89,5 @@ class JoinController extends Controller
 
             Log::error($e->getMessage());
         }
-
-
     }
 }
