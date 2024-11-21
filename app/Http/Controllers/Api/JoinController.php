@@ -34,22 +34,7 @@ class JoinController extends Controller
         ]);
     }
 
-<<<<<<< HEAD
-    public function sendContract($clientOrderPay,$data)
-    {
 
-        $validated =  [
-            'email' => $clientOrderPay->email,
-            'name' => $clientOrderPay->name,
-            'age' => $clientOrderPay->age,
-            'phone' => $clientOrderPay->phone,
-            'city' => $clientOrderPay->city,
-            'id_number' => data_get($data,'id_number'),
-            'id_end' => data_get($data,'id_end'),
-        ];
-
-        return ParentContract::query()->create(array_merge($validated,['accept_terms'=>true]));
-=======
     public function sendContract($student)
     {
         $validated =  [
@@ -72,7 +57,6 @@ class JoinController extends Controller
 
          $this->notifyClient($contract);
         return $contract;
->>>>>>> remove-old-dashboard
     }
 
 

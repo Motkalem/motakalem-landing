@@ -208,9 +208,7 @@ return [
         'slug'                  => ' ',
         'payment_type'                  => 'نوع الدفع',
         'clienttermsConsent'                  => 'الموافقة علي الشروط والاحكام',
-<<<<<<< HEAD
         'id_number'                  => 'رقم الهوية',
-=======
         'installment_value' => 'قيمة القسط',
         'number_of_months' => 'عدد الشهور',
         'is_active' => 'الحالة',
@@ -219,7 +217,6 @@ return [
         'payment_url' => 'رابط الدفع',
         'total_payment_amount'=> 'اجمالي المبلغ المدفوع',
         'total'=> 'الإجمالي',
->>>>>>> remove-old-dashboard
     ],
 
 ];
