@@ -98,9 +98,10 @@ class RecurringCheckoutResultAction
     {
         try {
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
+
             foreach ($adminEmails as $adminEmail) {
-                Notification::route('mail', $adminEmail)
-                    ->notify(new HyperPayNotification($notification));
+
+                Notification::route('mail', $adminEmail) ->notify(new HyperPayNotification($notification));
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -115,8 +116,10 @@ class RecurringCheckoutResultAction
     protected function notifyStudent($notification, $email): void
     {
         try {
+
             Notification::route('mail', $email)->notify(new HyperPayNotification($notification));
         } catch (\Exception $e) {
+
             Log::error($e->getMessage());
         }
     }
