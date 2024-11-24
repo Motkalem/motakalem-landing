@@ -42,7 +42,7 @@ class HyperPayNotification extends Notification
     {
 
         return (new MailMessage)
-            ->subject(  'إشعار جديد - HyperPay'.'('.$this->notification?->id.')')
+            ->subject(  'إشعار جديد - HyperPay'.'('. data_get($this->notification->payload,'id' ) .')')
             ->view('emails.admin.hyperpay-notification-email',
                 [
                     'notification'=> $this->notification,
