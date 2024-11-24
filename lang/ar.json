@@ -70,7 +70,8 @@
     "transaction pending": "معاملة معلقة",
     "One time Payments": "مدفوعات لمرة واحده",
     "init recurring payment": "بدأ عملية التقسيط",
-    "installments payments": "المدفوعات المجدولة"
-
+    "installments payments": "المدفوعات المجدولة",
+    "Request successfully processed in 'Merchant in Connector Test Mode'": "تمت المعاملة بنجاح !",
+    "registration does not exist'": "رقم التسجيل غير معروف !"
 
 }

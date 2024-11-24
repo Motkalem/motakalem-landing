@@ -29,7 +29,7 @@
             <hr />
             <table>
                 <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">وصف النتيجة: </td>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">الوصف  : </td>
                     <td>{{ __(data_get($notification->payload,'result.description')??' ') }}</td>
                 </tr>
                 <tr>
