@@ -34,7 +34,7 @@ Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::get('/packages', GetPackages::class);
 
-Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
+//Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
 
 
 Route::post('/credit', CreditAction::class)->name('credit');
