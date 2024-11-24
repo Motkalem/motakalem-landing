@@ -138,8 +138,10 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
         try {
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
             foreach ($adminEmails as $adminEmail) {
-                Notification::route('mail', $adminEmail)
-                    ->notify(new HyperPayNotification($notification));
+
+                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+
+                Notification::route('mail', $adminEmail)->notify(new HyperPayNotification($notification, $result));
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -156,7 +158,9 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
     protected function notifyStudent($notification, $email): void
     {
         try {
-            Notification::route('mail', $email)->notify(new HyperPayNotification($notification));
+            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+
+            Notification::route('mail', $email)->notify(new HyperPayNotification($notification, $result));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }

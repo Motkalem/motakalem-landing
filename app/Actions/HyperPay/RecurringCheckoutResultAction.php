@@ -101,7 +101,9 @@ class RecurringCheckoutResultAction
 
             foreach ($adminEmails as $adminEmail) {
 
-                Notification::route('mail', $adminEmail) ->notify(new HyperPayNotification($notification));
+                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+
+                Notification::route('mail', $adminEmail)->notify(new HyperPayNotification($notification, $result));
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -117,7 +119,9 @@ class RecurringCheckoutResultAction
     {
         try {
 
-            Notification::route('mail', $email)->notify(new HyperPayNotification($notification));
+            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+
+            Notification::route('mail', $email)->notify(new HyperPayNotification($notification, $result));
         } catch (\Exception $e) {
 
             Log::error($e->getMessage());

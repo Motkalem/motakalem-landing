@@ -9,16 +9,18 @@ use Illuminate\Notifications\Notification;
 class HyperPayNotification extends Notification
 {
     protected   $notification;
+    protected   $result;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($notification)
+    public function __construct($notification, $result='')
     {
 
         $this->notification = $notification;
+        $this->result = $result;
     }
 
     /**
@@ -46,6 +48,7 @@ class HyperPayNotification extends Notification
             ->view('emails.admin.hyperpay-notification-email',
                 [
                     'notification'=> $this->notification,
+                    'result'=> $this->result,
                 ]);
     }
 }
