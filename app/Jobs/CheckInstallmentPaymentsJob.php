@@ -47,12 +47,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
                     continue;
                 }
 
-                // Run deduction only on the first day of the month
-//                if (Carbon::now()->day === 1) {
-                if (1) {
-
-                    $this->attemptPaymentDeduction($installment);
-                }
+                $this->attemptPaymentDeduction($installment);
             }
         }
     }
@@ -77,7 +72,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
 
             // Retry after 24 hours if it fails
 //            $this->release(86400); // Retry after 24 hours (1 day)
-            $this->release(5);
+            $this->release(300);
 
             $this->notifyStudent($notification, $installment->student?->email);
             $this->notifyAdmin($notification);
