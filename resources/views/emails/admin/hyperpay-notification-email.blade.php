@@ -30,7 +30,7 @@
             <table>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">الوصف  : </td>
-                    <td>{{ __(data_get($notification->payload,'result.description')
+                    <td>{{  data_get($notification->payload,'result.description')
                      == "Request successfully processed in 'Merchant in Connector Test Mode'" ? "تمت المعاملة بنجاح !" : "فشلت العملية !"  }}</td>
                 </tr>
                 <tr>
