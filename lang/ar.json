@@ -72,6 +72,7 @@
     "init recurring payment": "بدأ عملية التقسيط",
     "installments payments": "المدفوعات المجدولة",
     "Request successfully processed in 'Merchant in Connector Test Mode'": "تمت المعاملة بنجاح !",
-    "registration does not exist'": "رقم التسجيل غير معروف !"
+    "registration does not exist": "رقم التسجيل غير معروف !",
+    "The phone number already exists.": "رقم الهاتف مسجل من قبل !"
 
 }

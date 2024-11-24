@@ -2,10 +2,14 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Notifications\Admin\HyperPayNotification;
+use App\Notifications\SentPaymentUrlNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Lorisleiva\Actions\ActionRequest;
 use App\Http\Controllers\Api\JoinController;
 use App\Models\InstallmentPayment;
@@ -15,6 +19,8 @@ use App\Models\Student;
 use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+
 
 class CreditAction
 {
@@ -37,7 +43,7 @@ class CreditAction
             'package_id' => 'required|exists:packages,id',
             'name' => 'required|string',
             'age' => 'required|numeric|min:10|max:100',
-            'phone' => ['required', 'regex:/^(0\d{9}|966\d{9})$/','unique:students,phone'],
+            'phone' => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:students,phone'],
             'email' => 'required|email',
             'city' => 'required|string',
             'clienttermsConsent' => 'required|boolean',
@@ -56,6 +62,17 @@ class CreditAction
     public function handle(ActionRequest $request)
     {
 
+        $normalizedPhone = preg_replace('/^0/', '+966', request()->phone); // Convert starting `0` to `+966`
+
+        if (Student::query()->where('phone', $normalizedPhone)->exists()) {
+
+            $this->checkPaymentProblem($normalizedPhone);
+
+            throw ValidationException::withMessages([
+                'phone' => __('The phone number already exists.'),
+            ]);
+        }
+
         DB::beginTransaction();
 
         // try {
@@ -64,15 +81,16 @@ class CreditAction
 
         $student = Student::query()->firstOrCreate([
             'phone' => $phone,
-        ], [
-            'name' => $request->name,
-            'email' => $request->email,
-            'age' => $request->age,
-            'phone' => $phone,
-            'city' => $request->city,
-            'payment_type' => $request->payment_type ?? Package::ONE_TIME,
-            'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
-        ]);
+        ],
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+                'age' => $request->age,
+                'phone' => $phone,
+                'city' => $request->city,
+                'payment_type' => $request->payment_type ?? Package::ONE_TIME,
+                'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
+            ]);
         $contract = $this->joinController->sendContract($student);
 
         if (!isset($contract)) {
@@ -93,7 +111,7 @@ class CreditAction
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
 
-            return $this->createScheduledPayment($student->id, $request->package_id,$student, $request->all());
+            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
 
         if ($package->payment_type == Package::ONE_TIME) {
@@ -121,6 +139,55 @@ class CreditAction
         }
 
         return response()->json($response, 200);
+    }
+
+    /**
+     * @param $phone
+     * @return void
+     */
+    public function checkPaymentProblem($phone) #: void
+    {
+        $student = Student::query()->where('phone', $phone)->first();
+        if (is_null($student?->package_id) && $student->payment) {
+            try {
+
+
+                Notification::route('mail', $student->email)
+                    ->notify(new SentPaymentUrlNotification($student,$student->payment?->payment_url));
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+        }
+
+
+        if (is_null($student?->package_id) && $student->installmentPayment) {
+
+            try {
+
+
+                  $response = StoreRecurringPaymentData::make()
+                    ->handle(
+                        $student->installmentPayment?->package,
+                        $student->installmentPayment,
+                        $student,
+                       $student?->toArray()??[]);
+
+
+                    if (data_get($response,'id')){
+
+                      $payment_url =  route('recurring.checkout', data_get($response, 'id'))
+                        . '?paymentId=' .  $student->installmentPayment?->id;
+
+                        Notification::route('mail', $student->email)
+                            ->notify(new SentPaymentUrlNotification($student,$payment_url) );
+                    }
+
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+        }
     }
 
     /**
@@ -186,11 +253,11 @@ class CreditAction
                     'status' => 1,
                     'message' => 'successfully created checkout',
                     'payload' => [
-                    'payment_token' => '#',
-                    'hyperpay_payment' => route('recurring.checkout', data_get($response, 'id'))
-                        .'?paymentId='.$installmentPayment->id,
-                        'data'=> $response
-                ],
+                        'payment_token' => '#',
+                        'hyperpay_payment' => route('recurring.checkout', data_get($response, 'id'))
+                            . '?paymentId=' . $installmentPayment->id,
+                        'data' => $response
+                    ],
                 ];
             } else {
 
