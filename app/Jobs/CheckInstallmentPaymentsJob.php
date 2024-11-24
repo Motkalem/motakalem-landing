@@ -15,7 +15,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
-class CheckInstallmentPaymentsJob implements ShouldQueue
+class CheckInstallmentsPaymentsJob implements ShouldQueue
 {
     use Queueable, InteractsWithQueue;
 
