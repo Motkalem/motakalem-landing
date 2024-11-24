@@ -19,20 +19,18 @@ class ExecuteRecurringPayment
 
         $amount = $installment->package?->installment_value;
 
-        Log::info("registration id from execute action $registrationId");
-        Log::info("amount is  $amount");
+        Log::info("Registration ID  $registrationId");
 
         $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
 
         $data = "entityId=" . env('RECURRING_ENTITY_ID') .
-            "&amount=".$installment->package?->installment_value .
+            "&amount=".$amount .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
             "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT" .
             "&shopperResultUrl=".env(env('VERSION_STATE').'FRONT_URL');
-
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

@@ -5,7 +5,8 @@ namespace App\Actions\HyperPay;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
 use App\Notifications\Admin\HyperPayNotification;
-use App\Notifications\SuccessSubscriptionPaidNotification;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -32,10 +33,11 @@ class RecurringCheckoutResultAction
 
         $installmentPayment = InstallmentPayment::query()->with('student')->find($request->paymentId);
 
-       $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
+        $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
-       $this->notifyAdmin($webHookNotification);
-       $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
+        $this->notifyAdmin($webHookNotification);
+
+        $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
         if ($response->successful() &&  $this->isSuccessfulNotification($webHookNotification)) {
 
@@ -45,13 +47,14 @@ class RecurringCheckoutResultAction
                 'registration_id' => $registrationId,
                 'first_installment_date' => now()
             ]);
+
             $installmentPayment->student?->update([
+
                 'package_id'=> $installmentPayment->package_id,
                 'is_paid'=> 1,
             ]);
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
-
         } else {
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
@@ -73,9 +76,9 @@ class RecurringCheckoutResultAction
     /**
      * @param $response
      * @param $installment
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return Builder|Model
      */
-    public function createWebHookNotification($response, $installment)
+    public function createWebHookNotification($response, $installment): Model|Builder
     {
 
       return HyperpayWebHooksNotification::query()->create([
