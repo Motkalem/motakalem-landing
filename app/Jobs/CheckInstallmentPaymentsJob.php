@@ -62,6 +62,8 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
     {
         # Attempt to deduct the payment
         $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+
+        Log::info('registration ID :', ['ID' =>$installment->registration_id ]);
         $notification = $this->storeNotification($response, $installment);
 
         // Check the result and act accordingly
