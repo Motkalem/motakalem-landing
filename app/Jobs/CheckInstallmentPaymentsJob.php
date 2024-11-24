@@ -73,8 +73,6 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
             // Retry after 24 hours if it fails
 //            $this->release(86400); // Retry after 24 hours (1 day)
             $this->release(300);
-
-            $this->notifyStudent($notification, $installment->student?->email);
             $this->notifyAdmin($notification);
         }
     }
