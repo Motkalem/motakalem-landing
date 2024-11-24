@@ -23,7 +23,7 @@
         <div style="background-color: #D9D9D9;padding: 2rem;">
             <div style="text-align: center;">
                  <div>
-                    <p style="font-size: 1.2rem; font-weight: 600;"> إشعار بوابة الدفع (Hyperpay) </p>
+                    <p style="font-size: 1.2rem; font-weight: 600;"> متكلم: إشعار بعملية دفع جديدة عبر هايبر باي </p>
                 </div>
             </div>
             <hr />
