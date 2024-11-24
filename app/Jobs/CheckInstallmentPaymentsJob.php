@@ -43,7 +43,7 @@ class CheckInstallmentPaymentsJob implements ShouldQueue
                 $successInstallments = $successfulNotifications->count();
 
                 # If all installments are complete, skip
-                if ($successInstallments >= $installment->package->number_of_months) {
+                if ($successInstallments <= $installment->package->number_of_months) {
                     continue;
                 }
 
