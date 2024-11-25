@@ -36,7 +36,6 @@ Route::get('/packages', GetPackages::class);
 
 Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
 
-
 Route::post('/credit', CreditAction::class)->name('credit');
 Route::post('/excute-recurring',   ExecuteRecurringPayment::class);
 

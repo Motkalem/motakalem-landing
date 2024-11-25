@@ -31,11 +31,6 @@
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">الوصف  : </td>
                     <td>{{  $result  }}</td>
-
-                </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم المعاملة: </td>
-                    <td>{{ data_get($notification->payload,'id' )  }}</td>
                 </tr>
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">قيمة المعاملة: </td>
@@ -46,18 +41,12 @@
                     <td>التقسيط</td>
                 </tr>
                 <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">العملة: </td>
-                    <td>{{ __('SAR')  }}</td>
-                </tr>
-
-                <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">  اسم الطالب: </td>
                     <td>{{ data_get($notification, 'installmentPayment.student.name')}}</td>
                 </tr>
 
-
                 <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">البريد الإلكتروني للزبون: </td>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">البريد الإلكتروني للطالب: </td>
                     <td>{{ data_get($notification, 'installmentPayment.student.email') }}</td>
                 </tr>
                 <tr>
@@ -67,6 +56,10 @@
                 <tr>
                     <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">تاريخ ووقت العملية: </td>
                     <td>{{ data_get($notification->payload,'timestamp')   }}</td>
+                </tr>
+                <tr>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم المعاملة: </td>
+                    <td>{{ data_get($notification->payload,'id' )  }}</td>
                 </tr>
             </table>
         </div>
