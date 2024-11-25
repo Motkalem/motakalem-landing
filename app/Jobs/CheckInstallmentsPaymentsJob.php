@@ -64,7 +64,6 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
 
-
         $notification = $this->storeNotification($response, $installment);
 
         // Check the result and act accordingly
