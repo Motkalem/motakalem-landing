@@ -63,20 +63,15 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         # Attempt to deduct the payment
         $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
 
-
         $notification = $this->storeNotification($response, $installment);
 
         // Check the result and act accordingly
         if ($this->isSuccessfulNotification($notification)) {
 
-            $this->notifyStudent($notification, $installment->student?->email);
-            $this->notifyAdmin($notification);
         } else {
 
-            // Retry after 24 hours if it fails
 //            $this->release(86400); // Retry after 24 hours (1 day)
 //            $this->release(300);
-            $this->notifyAdmin($notification);
         }
     }
 
@@ -104,7 +99,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $resultCode = data_get($notification->payload, 'result.code');
         $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
 
-        return  preg_match($successPattern, $resultCode) === 1  ;
+        return  preg_match($successPattern, $resultCode) === 1;
     }
 
     /**
@@ -123,45 +118,5 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
             'payload' => $response,
             'log' => $response,
         ]);
-    }
-
-
-    /**
-     * Notify the admin via email.
-     *
-     * @param $notification
-     * @return void
-     */
-    protected function notifyAdmin($notification): void
-    {
-        try {
-            $adminEmails = explode(',', env('ADMIN_EMAILS'));
-            foreach ($adminEmails as $adminEmail) {
-
-                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
-
-                Notification::route('mail', $adminEmail)->notify(new HyperPayNotification($notification, $result));
-            }
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
-    }
-
-    /**
-     * Notify the student via email.
-     *
-     * @param $notification
-     * @param $email
-     * @return void
-     */
-    protected function notifyStudent($notification, $email): void
-    {
-        try {
-            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
-
-            Notification::route('mail', $email)->notify(new HyperPayNotification($notification, $result));
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
     }
 }

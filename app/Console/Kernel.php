@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\CheckInstallmentsPaymentsJob;
+use App\Jobs\SendTransactionsNotificationsJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
     {
         Log::info('run from kernel', ['text' => 'hello from kernel']);
         $schedule->job(new CheckInstallmentsPaymentsJob())->everyTwoMinutes()->withoutOverlapping();
+        $schedule->job(new SendTransactionsNotificationsJob())->everyTwoMinutes();
     }
 
     /**

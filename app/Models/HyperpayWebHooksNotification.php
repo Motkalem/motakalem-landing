@@ -9,7 +9,8 @@ class HyperpayWebHooksNotification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'installment_payment_id', 'type', 'log', 'action', 'payload'];
+    protected $fillable = ['student_notified','admin_notified','title', 'installment_payment_id',
+        'type', 'log', 'action', 'payload'];
 
     protected $casts = [
         'action' => 'array',

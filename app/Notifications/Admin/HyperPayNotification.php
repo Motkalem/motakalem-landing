@@ -3,11 +3,14 @@
 namespace App\Notifications\Admin;
 
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class HyperPayNotification extends Notification
+class HyperPayNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
     protected   $notification;
     protected   $result;
 
