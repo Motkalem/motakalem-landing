@@ -15,9 +15,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
-class SendTransactionsNotificationsJob # implements ShouldQueue
+class SendTransactionsNotificationsJob   implements ShouldQueue
 {
-//    use Queueable, InteractsWithQueue;
+    use Queueable, InteractsWithQueue;
 
     /**
      * @return void
