@@ -49,9 +49,6 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
 
                 $this->notifyStudent($notification, $notification->installmentPayment?->student?->email);
                 $this->notifyAdmin($notification);
-            }else {
-                $this->notifyAdmin($notification);
-
             }
         }
     }
