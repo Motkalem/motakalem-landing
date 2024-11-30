@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Package extends Model
 {
@@ -24,4 +25,6 @@ class Package extends Model
 
         return $this->hasMany(Payment::class);
     }
+
+
 }

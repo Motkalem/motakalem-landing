@@ -34,9 +34,14 @@ class JoinController extends Controller
         ]);
     }
 
-
-    public function sendContract($student)
+    /**
+     * @param $student
+     * @param $package_id
+     * @return mixed
+     */
+    public function sendContract($student, $package_id)
     {
+
         $validated =  [
             'email' => $student->email,
             'name' =>  $student->name,
@@ -50,23 +55,32 @@ class JoinController extends Controller
 
         $activeCourse = Course::query()->where('active', 1)->first();
 
-         $contract = ParentContract::firstOrCreate(
-            ['phone' =>  $student->phone],
-            $validated
-        );
+        $data = array_merge($validated, ['package_id' =>  $package_id,] );
+         $contract = ParentContract::query()->firstOrCreate(
+            [
+                'phone' =>  $student->phone,
+            ],
+             $data );
 
-         $this->notifyClient($contract);
+        $contract = $contract->load('package');
+
+        $this->notifyClient($contract);
+
         return $contract;
     }
 
-
+    /**
+     * @param $row
+     * @return void
+     */
     public function notifyClient( $row): void
     {
         try {
-            $row = $row->load('course');
 
-            Notification::route('mail', $row->email)
-            ->notify(new  SendContractNotification($row));
+            $row = $row->load('course');
+            $row = $row->load('package');
+
+            Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
         }
         catch (\Exception $e) {
 

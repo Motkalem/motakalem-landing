@@ -149,8 +149,9 @@ class StudentsController extends AdminBaseController
         try {
             $contract = ParentContract::query()->with('course')->create(array_merge($contractData, ['accept_terms']));
 
-            Notification::route('mail', $contract->email)
-                ->notify(new SendContractNotification($contract));
+            $contract = $contract->load('package');
+
+            Notification::route('mail', $contract->email)->notify(new SendContractNotification($contract));
 
             // Return a success response
             return response()->json([

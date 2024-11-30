@@ -1,7 +1,3 @@
-@php
-
-$price = $course?->price??0
-@endphp
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -125,30 +121,17 @@ $price = $course?->price??0
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الثاني: التكلفة وجدول السداد:
                                                     <br/>
-
-                                                    1. التكلفة الإجمالية للبرنامج
-                                                    @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
-                                                        {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
-                                                    @else
-                                                        {!! '<span style="font-weight: bold;">' . ($data->package?->number_of_months * $data->package?->installment_value) . '</span>' !!}
-                                                    @endif
-                                                    ريال سعودي.
-
-                                                    @if($data->package?->payment_type !== \App\Models\Package::ONE_TIME)
-                                                        <br/>
-                                                        2. جدول السداد: يتم دفع الأقساط على النحو التالي:
-                                                        <br/>
-                                                        @for ($i = 0; $i < $data->package?->number_of_months; $i++)
-                                                            ◦ القسط {{ $i + 1 }}: {{ $data->package?->installment_value }} ريال
-                                                            @if($i == 0)
-                                                                يُدفع عند الاشتراك.
-                                                            @else
-                                                                يُدفع بعد {{ $i }} {{ $i == 1 ? 'شهر' : 'أشهر' }} من تاريخ بدء البرنامج.
-                                                            @endif
-                                                            <br/>
-                                                        @endfor
-                                                    @endif
-
+                                                    1. التكلفة الإجمالية للبرنامج: 10,000 ريال سعودي.
+                                                    <br/>
+                                                    2. جدول السداد: يتم دفع الأقساط على النحو التالي:
+                                                    <br/>
+                                                    ◦ يتم الاشتراك بعد دفع القسط الأول وقيمته 2500 ريال.
+                                                    <br/>
+                                                    ◦ القسط الثاني: 2500 ريال، يُدفع بعد شهر من تاريخ بدء البرنامج.
+                                                    <br/>
+                                                    ◦ القسط الثالث: 2500 ريال، يُدفع بعد شهرين من تاريخ بدء البرنامج.
+                                                    <br/>
+                                                    ◦ القسط الرابع: 2500 ريال، يُدفع بعد ثلاثة أشهر من تاريخ بدء البرنامج.
                                                 </li>
 
 

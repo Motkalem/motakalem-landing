@@ -5,6 +5,7 @@ use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\HyperPay\TestAction;
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
+use App\Models\Course;
 use App\Models\ParentContract;
 use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
@@ -26,8 +27,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
 
-    $data = ParentContract::query()->first();
-    $course = \App\Models\Course::query()->where('active', 1)->first();
+    $data = ParentContract::query()->with('package')->first();
+
+    $course = Course::query()->where('active', 1)->first();
+
     return view('emails.contract0', get_defined_vars());
 });
 
@@ -35,7 +38,6 @@ Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
     ->name('checkout.index');
 
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
-
 
 Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);

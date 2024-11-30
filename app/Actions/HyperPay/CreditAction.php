@@ -59,6 +59,11 @@ class CreditAction
         return $rules;
     }
 
+    /**
+     * @param ActionRequest $request
+     * @return array|JsonResponse
+     * @throws ValidationException
+     */
     public function handle(ActionRequest $request)
     {
 
@@ -91,7 +96,9 @@ class CreditAction
                 'payment_type' => $request->payment_type ?? Package::ONE_TIME,
                 'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
             ]);
-        $contract = $this->joinController->sendContract($student);
+
+
+        $contract = $this->joinController->sendContract($student, $request->package_id);
 
         if (!isset($contract)) {
             DB::rollBack();
@@ -107,7 +114,6 @@ class CreditAction
 
         if ($package->payment_type == Package::ONE_TIME) {
 
-
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
 
@@ -122,7 +128,6 @@ class CreditAction
                 'payload' => [
                     'payment_token' => '#',
                     'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
-
                 ],
             ];
 
@@ -151,7 +156,6 @@ class CreditAction
         if (is_null($student?->package_id) && $student->payment) {
             try {
 
-
                 Notification::route('mail', $student->email)
                     ->notify(new SentPaymentUrlNotification($student,$student->payment?->payment_url));
             } catch (\Exception $e) {
@@ -164,8 +168,6 @@ class CreditAction
         if (is_null($student?->package_id) && $student->installmentPayment) {
 
             try {
-
-
                   $response = StoreRecurringPaymentData::make()
                     ->handle(
                         $student->installmentPayment?->package,
