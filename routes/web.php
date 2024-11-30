@@ -25,14 +25,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', function () {
-
-    $data = ParentContract::query()->with('package')->first();
-
-    $course = Course::query()->where('active', 1)->first();
-
-    return view('emails.contract0', get_defined_vars());
-});
+//Route::get('test', function () {
+//
+//    $data = ParentContract::query()->with('package')->first();
+//
+//    $course = Course::query()->where('active', 1)->first();
+//
+//    return view('emails.contract0', get_defined_vars());
+//});
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
     ->name('checkout.index');
