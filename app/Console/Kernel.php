@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         Log::info('run from kernel', ['text' => 'hello from kernel']);
-        $schedule->job(new CheckInstallmentsPaymentsJob())->everyFiveMinutes();
+        $schedule->job(new CheckInstallmentsPaymentsJob())->everyThirtyMinutes();
         $schedule->job(new SendTransactionsNotificationsJob())->everyTwoMinutes();
     }
 
