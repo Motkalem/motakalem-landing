@@ -68,10 +68,10 @@
                                     عرض
                                 </a>
 
-                                <a href="{{ route('dashboard.payments.edit', $payment->id) }}"
-                                   class="px-2 btn btn-info btn-sm">
-                                    تعديل
-                                </a>
+{{--                                <a href="{{ route('dashboard.payments.edit', $payment->id) }}"--}}
+{{--                                   class="px-2 btn btn-info btn-sm">--}}
+{{--                                    تعديل--}}
+{{--                                </a>--}}
                             </td>
                         </tr>
                     @endforeach
