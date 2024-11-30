@@ -19,7 +19,7 @@
                     <th>الإسم</th>
                     <th>البريد الإلكتروني</th>
                     <th>العمر</th>
-                    <th>مدفوع</th>
+                    <th>الباقة</th>
                     <th>الهاتف</th>
                     <th>المدينة</th>
                     <th class="text-center">الإجراءات</th>
@@ -31,7 +31,7 @@
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->age }}</td>
-                    <td>{{ $student->is_paid ? 'نعم' : 'لا' }}</td>
+                    <td>{{ $student->package?->name ??'لايوجد' }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->city }}</td>
                     <td class="text-center">

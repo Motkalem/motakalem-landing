@@ -134,6 +134,7 @@ class StudentsController extends AdminBaseController
     public function sendContract($id)
     {
         $student = Student::query()->findOrFail($id);
+
         $contractData = [
             'email' => $student->email,
             'name' => $student->name,

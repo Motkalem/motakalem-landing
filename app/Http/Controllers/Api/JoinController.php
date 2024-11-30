@@ -60,7 +60,6 @@ class JoinController extends Controller
     }
 
 
-
     public function notifyClient( $row): void
     {
         try {

@@ -24,7 +24,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test', \App\Actions\TestSendTransactionsNotificationsJob::class);
+Route::get('test', function () {
+
+    $data = ParentContract::query()->first();
+    $course = \App\Models\Course::query()->where('active', 1)->first();
+    return view('emails.contract0', get_defined_vars());
+});
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
     ->name('checkout.index');

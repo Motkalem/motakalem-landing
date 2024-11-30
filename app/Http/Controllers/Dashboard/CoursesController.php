@@ -29,7 +29,6 @@ class CoursesController extends AdminBaseController
             'name' => 'required|string|max:255',
             'starts_at' => 'required|date',
             'ends_at' => 'nullable|date|after:starts_at',
-            'price' => 'required|numeric|min:0',
             'active' => 'nullable',
         ]);
         $validatedData = array_merge($validatedData, ['active'=> data_get($validatedData,'active') ? 1 : 0]);
@@ -60,12 +59,11 @@ class CoursesController extends AdminBaseController
             'name' => 'required|string',
             'starts_at' => 'required|date',
             'ends_at' => 'nullable|date',
-            'price' => 'required|numeric',
         ]);
 
         $course = Course::find($id);
-        $course->update($request->all());
-        return response()->json(['success' => 'Course updated successfully.']);
+        $course->update(array_merge($request->all(), ['active'=> data_get($course,'active') ? 1 : 0]));
+        return back()->with(['success' => 'Course updated successfully.']);
     }
 
     public function show($id)
@@ -73,7 +71,6 @@ class CoursesController extends AdminBaseController
         $title = 'العقود';
 
         $course = Course::with('contracts')->find($id);
-
         return view('admin.courses.show', compact('course', 'title'));
     }
 
