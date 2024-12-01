@@ -33,9 +33,7 @@
 </div>
 
 <footer class="app-footer sticky-footer">
-    <div class="text-muted ml-auto mr-auto">
-        صنع بيد <a target="_blank" rel="noopener" href="squarement.sa">Squarement</a>.
-    </div>
+
 </footer>
 
 
