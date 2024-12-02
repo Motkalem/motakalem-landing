@@ -55,7 +55,7 @@ class JoinController extends Controller
 
         $activeCourse = Course::query()->where('active', 1)->first();
 
-        $data = array_merge($validated, ['package_id' =>  $package_id,] );
+        $data = array_merge($validated, ['package_id' =>  $package_id,'course_id'=>$activeCourse->id] );
          $contract = ParentContract::query()->firstOrCreate(
             [
                 'phone' =>  $student->phone,

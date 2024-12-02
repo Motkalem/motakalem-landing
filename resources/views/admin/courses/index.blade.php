@@ -8,7 +8,7 @@
     <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
         <div class="col-md-12">
             <div class="mx-4 text-end">
-                <a class="px-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCourseModal">
+                <a class="px-4 btn btn-primary" href="{{route('dashboard.courses.create')}}">
                     + إنشاء
                 </a>
             </div>
@@ -30,8 +30,9 @@
                     @foreach($courses as $course)
                         <tr>
                             <td><a href="{{route('dashboard.courses.show', $course->id)}}">{{ $course->name }} </a></td>
-                            <td>{{ $course->starts_at  }}</td>
-                            <td>{{ $course->ends_at  }}</td>
+                            <td>{{ $course->starts_at->toDateString() }}</td>
+                            <td>{{ $course->ends_at ? $course->ends_at->toDateString() : '' }}</td>
+
                             <td> {{ $course->contracts?->count() }}</td>
                             <td>
                                 @if($course->active)
@@ -42,13 +43,9 @@
                             </td>
 
                             <td class="text-center project-actions ">
-                                <button class="px-4 btn btn-primary btn-sm edit-course-button" data-id="{{ $course->id }}"
-                                        data-name="{{ $course->name }}"
-                                        data-starts_at="{{ $course->starts_at }}"
-                                        data-ends_at="{{ $course->ends_at }}"
-                                        data-active="{{ $course->active }}" data-bs-toggle="modal" data-bs-target="#editCourseModal">
+                                <a class="px-4 btn btn-primary btn-sm" href="{{route('dashboard.courses.edit', $course->id)}}">
                                     تعديل
-                                </button>
+                                </a>
 
                                 <button class="px-4 btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $course->id }}">
                                     حذف
@@ -109,44 +106,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCourseModalLabel">تعديل الدورة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editCourseForm" method="POST" action="">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label for="edit-name" class="form-label">اسم الدورة</label>
-                            <input type="text" class="form-control" id="edit-name" name="name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-starts_at" class="form-label">تاريخ البدء</label>
-                            <input type="date" class="form-control" id="edit-starts_at" name="starts_at">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-ends_at" class="form-label">تاريخ الانتهاء (اختياري)</label>
-                            <input type="date" class="form-control" id="edit-ends_at" name="ends_at">
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="edit-active" name="active">
-                            <label class="form-check-label" for="edit-active">نشط</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-primary" form="editCourseForm">تحديث</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -224,27 +183,7 @@
                    });
                });
 
-
-
-
-               $(document).on('click', '.edit-course-button', function() {
-                   const courseId = $(this).data('id');
-                   const courseName = $(this).data('name');
-                   const startsAt = new Date($(this).data('starts_at')).toISOString().slice(0, 10);
-                   const endsAt = $(this).data('ends_at') ? new Date($(this).data('ends_at')).toISOString().slice(0, 10) : '';
-
-                   const isActive = $(this).data('active');
-
-                   $('#editCourseForm').attr('action', `{{ url('dashboard/courses') }}/${courseId}`);
-                   $('#edit-name').val(courseName);
-                   $('#edit-starts_at').val(startsAt);
-                   $('#edit-ends_at').val(endsAt);
-                   $('#edit-active').prop('checked', isActive == 1);
-               });
-
            });
-
-
        </script>
     @endpush
 @endsection

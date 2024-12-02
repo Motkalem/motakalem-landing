@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Classes\Helper;
 use App\Models\Course;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,18 +15,27 @@ use Illuminate\Http\Request;
 class CoursesController extends AdminBaseController
 {
     // Display a listing of the courses
-    public function index()
+    public function index(): Factory|View|Application
     {
         $title = 'الدورات';
-        $courses = Course::orderBy('id','desc')->get();
+        $courses = Course::orderBy('active','desc')->get();
         return view('admin.courses.index', compact('courses', 'title'));
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @return Application|Factory|View
      */
-    public function store(Request $request)
+    public function create(): Factory|View|Application
+    {
+        $title = 'إنشاء الدورة';
+        return view('admin.courses.createEdit', compact('title'));
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -39,21 +51,26 @@ class CoursesController extends AdminBaseController
                 ->update(['active' => 0]);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Course created successfully!',
-            'course' => $course
-        ]);
+        return to_route('dashboard.courses.index')->with(['success' => 'Course updated successfully.']);
     }
 
-    public function edit($id)
+    /**
+     * @param $id
+     * @return Application|Factory|View
+     */
+    public function edit($id): Factory|View|Application
     {
-        $course = Course::find($id);
+        $course = Course::query()->findOrFail($id);
 
-        return response()->json($course);
+       return view('admin.courses.createEdit', compact('course'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string',
@@ -62,10 +79,18 @@ class CoursesController extends AdminBaseController
         ]);
 
         $course = Course::find($id);
-        $course->update(array_merge($request->all(), ['active'=> data_get($course,'active') ? 1 : 0]));
-        return back()->with(['success' => 'Course updated successfully.']);
+        $course->update(array_merge($request->all(), ['active'=> $request->active ? 1 : 0]));
+
+         Course::query()->where('id', '!=',$id)->update(['active'=> 0]);
+
+         return to_route('dashboard.courses.index')->with(['success' => 'Course updated successfully.']);
+
     }
 
+    /**
+     * @param $id
+     * @return Application|Factory|View
+     */
     public function show($id)
     {
         $title = 'العقود';

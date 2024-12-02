@@ -11,17 +11,21 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'starts_at', 'active','ends_at', 'price'
+        'name', 'starts_at', 'active', 'ends_at', 'price'
     ];
 
+    protected $casts = [
 
+        'starts_at' => 'date',
+        'ends_at' => 'date',
+    ];
 
     /**
      * @return HasMany
      */
 
-     public function contracts(): HasMany
-     {
-         return $this->hasMany(ParentContract::class);
-     }
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(ParentContract::class);
+    }
 }
