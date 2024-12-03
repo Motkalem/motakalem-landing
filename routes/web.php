@@ -42,7 +42,7 @@ Route::get('/terms_privacy', [MainController::class,'terms'])->name('terms_priva
 
 
 
-Route::get('hash/{password}',function($password){
+Route::get('hash/{password}',function($password) {
 
     return Hash::make($password);
 });
