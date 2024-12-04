@@ -10,3 +10,5 @@
 
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('client-pay-order') }}"><i class="nav-icon la la-user-alt"></i> {{\App\CPU\Mhelper::t('students')}} </a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction') }}"><i class="nav-icon la la-dollar"></i>{{\App\CPU\Mhelper::t('Transactions')}} </a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon la la-dollar"></i>
+        {{\App\CPU\Mhelper::t('Settings')}} </a></li>

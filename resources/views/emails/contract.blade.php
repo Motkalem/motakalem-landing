@@ -118,20 +118,23 @@
                                                     <br/>
                                                     5. تاريخ انتهاء الدورة: بنهاية الأشهر الأربعة.
                                                 </li>
+                                                @php
+                                                  $installments =  \Backpack\Settings\app\Models\Setting::select(['key', 'value'])->get()
+                                                @endphp
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الثاني: التكلفة وجدول السداد:
                                                     <br/>
-                                                    1. التكلفة الإجمالية للبرنامج: 9,400 ريال سعودي.
+                                                    1. التكلفة الإجمالية للبرنامج: {{$installments->where('key', 'total')->first()?->value??9400}} ريال سعودي.
                                                     <br/>
                                                     2. جدول السداد: يتم دفع الأقساط على النحو التالي:
                                                     <br/>
-                                                    ◦ يتم الاشتراك بعد دفع القسط الأول وقيمته 1900 ريال.
+                                                    ◦ يتم الاشتراك بعد دفع القسط الأول وقيمته {{$installments->where('key', 'first_installment')->first()?->value??1900}} ريال.
                                                     <br/>
-                                                    ◦ القسط الثاني: 2500 ريال، يُدفع بعد شهر من تاريخ بدء البرنامج.
+                                                    ◦ القسط الثاني: {{$installments->where('key', 'second_installment')->first()?->value??2500}} ريال، يُدفع بعد شهر من تاريخ بدء البرنامج.
                                                     <br/>
-                                                    ◦ القسط الثالث: 2500 ريال، يُدفع بعد شهرين من تاريخ بدء البرنامج.
+                                                    ◦ القسط الثالث: {{$installments->where('key', 'third_installment')->first()?->value??2500}} ريال، يُدفع بعد شهرين من تاريخ بدء البرنامج.
                                                     <br/>
-                                                    ◦ القسط الرابع: 2500 ريال، يُدفع بعد ثلاثة أشهر من تاريخ بدء البرنامج.
+                                                    ◦ القسط الرابع: {{$installments->where('key', 'fourth_installment')->first()?->value??2500}} ريال، يُدفع بعد ثلاثة أشهر من تاريخ بدء البرنامج.
                                                 </li>
 
 

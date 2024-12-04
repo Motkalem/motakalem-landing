@@ -20,13 +20,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/test', function (){
 
-      $rows = ParentContract::latest()->take(4)->get();
+      $data  = ParentContract::latest()->take(4)->first();
 
 
-      foreach ($rows as $row) {
-            Notification::route('mail', 'Pmo@squarement.sa')
-                ->notify(new  SendContractNotification($row));
-      }
+
+    return view('emails.contract', compact('data'));
+
 });
 
 
