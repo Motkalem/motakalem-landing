@@ -9,6 +9,7 @@ use App\Models\ParentContract;
 use App\Models\User;
 use App\Services\JoinService;
 use App\Traits\HelperTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Notifications\SendContractNotification;
 use \Illuminate\Support\Facades\Notification;
@@ -54,6 +55,16 @@ class JoinController extends Controller
         ];
 
         $activeCourse = Course::query()->where('active', 1)->first();
+
+        if($activeCourse == null){
+
+            $activeCourse = Course::query()->create([
+                'name'=> "Default Course",
+                'active'=> 1,
+                'starts_at'=> Carbon::now()->addDay(),
+                'ends_at'=> Carbon::now()->addMonths(4),
+            ]);
+        }
 
         $data = array_merge($validated, ['package_id' =>  $package_id,'course_id'=>$activeCourse->id] );
          $contract = ParentContract::query()->firstOrCreate(
