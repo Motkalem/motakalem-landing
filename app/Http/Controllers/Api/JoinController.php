@@ -55,7 +55,7 @@ class JoinController extends Controller
         ];
 
 
-        $package = Package::query()->findOrFail($package_id);
+        $package = Package::query()->find($package_id);
 
 
         $data = array_merge($validated,
