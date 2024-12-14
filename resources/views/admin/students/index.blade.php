@@ -6,7 +6,10 @@
 
 @section('content')
 <div class="p-20 bgc-white bd">
-    <h6 class="c-grey-900">قائمة الطلاب</h6>
+    <h6 class="c-grey-900">
+        قائمة الطلاب
+        ({{$studentsCount}})
+    </h6>
     <div class="mx-4 text-end">
         <a class="px-4 btn btn-primary" href="{{ route('dashboard.students.create') }}">
             إضافة طالب جديد

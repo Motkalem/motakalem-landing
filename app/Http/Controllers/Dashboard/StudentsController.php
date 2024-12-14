@@ -22,8 +22,10 @@ class StudentsController extends AdminBaseController
     {
         $title = 'الطلاب';
         $students = Student::orderBy('id', 'desc')->paginate(12);
+        $studentsCount = Student::query()->count();
+
         return view('admin.students.index',
-         compact('students','title'));
+         compact('students','title', 'studentsCount'));
     }
 
     /**
