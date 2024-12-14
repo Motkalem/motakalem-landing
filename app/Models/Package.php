@@ -9,7 +9,7 @@ class Package extends Model
 {
     protected $fillable = ['name','is_active',
                             'number_of_months','payment_type',
-                            'installment_value', 'total'];
+                            'installment_value', 'total', 'starts_date', 'ends_date',];
 
     protected $casts = [
          'is_active'=>'boolean'

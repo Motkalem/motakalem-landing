@@ -5,7 +5,6 @@ use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\HyperPay\TestAction;
 use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\MainController;
-use App\Models\Course;
 use App\Models\ParentContract;
 use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;

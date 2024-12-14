@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Join\JoinRequest;
-use App\Models\Course;
+use App\Models\Package;
 use App\Models\ParentContract;
 use App\Models\User;
 use App\Services\JoinService;
@@ -54,19 +54,17 @@ class JoinController extends Controller
             //'accept_terms' => 'required|boolean',
         ];
 
-        $activeCourse = Course::query()->where('active', 1)->first();
 
-        if($activeCourse == null){
+        $package = Package::query()->findOrFail($package_id);
 
-            $activeCourse = Course::query()->create([
-                'name'=> "Default Course",
-                'active'=> 1,
-                'starts_at'=> Carbon::now()->addDay(),
-                'ends_at'=> Carbon::now()->addMonths(4),
-            ]);
-        }
 
-        $data = array_merge($validated, ['package_id' =>  $package_id,'course_id'=>$activeCourse->id] );
+        $data = array_merge($validated,
+            [
+                'package_id' =>  $package_id,
+                'package_starts_date' =>  $package?->starts_date,
+                'package_ends_date' =>  $package?->ends_date,
+            ]
+        );
          $contract = ParentContract::query()->firstOrCreate(
             [
                 'phone' =>  $student->phone,
@@ -88,7 +86,6 @@ class JoinController extends Controller
     {
         try {
 
-            $row = $row->load('course');
             $row = $row->load('package');
 
             Notification::route('mail', $row->email)->notify(new SendContractNotification($row));

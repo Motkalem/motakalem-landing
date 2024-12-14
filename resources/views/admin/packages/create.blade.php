@@ -95,6 +95,34 @@
                         </div>
                     </div>
 
+
+                    <!-- Start Date -->
+                    <div class="mb-3 row"   >
+                        <label for="starts_at" class="form-label col-sm-2 col-form-label">تاريخ البدأ</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control @error('starts_date') is-invalid @enderror" id="starts_date"
+                                   name="starts_date" value="{{ old('starts_date', $package->starts_date ?? '') }}"
+                                   placeholder=" تاريخ البدأ">
+
+                            @error('starts_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- End Date -->
+                    <div class="mb-3 row">
+                        <label for="starts_at" class="form-label col-sm-2 col-form-label">تاريخ الإنتهاء</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control @error('ends_date') is-invalid @enderror" id="ends_date"
+                                   name="ends_date"  value="{{ old('ends_date', $package->ends_date ?? '') }}"
+                                   placeholder=" تاريخ الإنتهاء">
+                            @error('ends_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="mb-3 row">
                         <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>
                         <div class="col-sm-10">

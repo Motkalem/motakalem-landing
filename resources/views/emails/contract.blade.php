@@ -143,11 +143,11 @@
                                                     3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
                                                     <br/>
                                                     4. تاريخ بدء
-                                                    الدورة: {{ Carbon::parse($data->course?->starts_at)?->format('Y/n/j')  }}
+                                                    الدورة: {{ Carbon::parse($data->package?->starts_at)?->format('Y/n/j')  }}
                                                     .
                                                     <br/>
                                                     5. تاريخ انتهاء
-                                                    الدورة: {{ Carbon::parse($data->course?->ends_at)?->format('Y/n/j')  }}
+                                                    الدورة: {{ Carbon::parse($data->package?->ends_at)?->format('Y/n/j')  }}
                                                     .
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">

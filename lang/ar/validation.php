@@ -217,8 +217,8 @@ return [
         'payment_url' => 'رابط الدفع',
         'total_payment_amount'=> 'اجمالي المبلغ المدفوع',
         'total'=> 'الإجمالي',
-        'starts_at'=> 'تاريخ البدأ',
-        'ends_at'=> ' تاريخ الانتهاء',
+        'starts_date'=> 'تاريخ البدأ',
+        'ends_date'=> ' تاريخ الانتهاء',
     ],
 
 ];

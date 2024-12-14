@@ -11,16 +11,7 @@ class ParentContract extends Model
     use HasFactory;
 
     protected $fillable =['name','package_id', 'age','course_id', 'phone' ,
-        'city', 'email', 'id_number', 'id_end', 'accept_terms'];
-
-
-    /**
-     * @return BelongsTo
-     */
-    public function course(): BelongsTo
-    {
-        return $this->belongsTo(Course::class);
-    }
+        'city', 'email', 'id_number', 'id_end', 'accept_terms', 'package_starts_date', 'package_ends_date'];
 
     /**
      * @return BelongsTo

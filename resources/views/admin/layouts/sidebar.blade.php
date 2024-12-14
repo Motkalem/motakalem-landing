@@ -108,16 +108,6 @@
             </li>
 
             <li class="nav-item mT-10
-            {{ Request::routeIs('dashboard.courses.index') ? 'bg-light m-3' : '' }}">
-                <a class="sidebar-link" href="{{ route('dashboard.courses.index') }}">
-                    <span class="icon-holder">
-                        <i class="c-indigo-500 ti-credit-card"></i>
-                    </span>
-                    <span class="title"> الدورات </span>
-                </a>
-            </li>
-
-            <li class="nav-item mT-10
             {{ Request::routeIs('dashboard.contact-messages.index') ? 'bg-light m-3' : '' }}">
                 <a class="sidebar-link" href="{{ route('dashboard.contact-messages.index') }}">
                     <span class="icon-holder">
