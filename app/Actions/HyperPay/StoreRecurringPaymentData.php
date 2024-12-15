@@ -20,6 +20,28 @@ class StoreRecurringPaymentData
             'standingInstruction.type' => 'UNSCHEDULED',
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
+            'merchantTransactionId' => $payment->id,
+            "customer.email"=>$payment?->student?->email,
+            "billing.street1"=>$payment?->student?->city ,
+            "billing.city"=>$payment?->student?->city ,
+            "billing.state"=>$payment?->student?->city  ,
+            "billing.country"=>"SA",
+            "billing.postcode"=>"",
+            "customer.givenName"=>$payment?->student?->name,
+            "customer.surname"=>""
+        ];
+
+        if (env('VERSION_STATE') == 'STAGING_'){
+
+        $data = [
+            'entityId' => env('ENTITY_ID'),
+            'amount' => $package->installment_value,
+            'currency' => 'SAR',
+            'paymentType' => 'DB',
+            'createRegistration' => 'true',
+            'standingInstruction.type' => 'UNSCHEDULED',
+            'standingInstruction.mode' => 'INITIAL',
+            'standingInstruction.source' => 'CIT',
 
             'testMode'=> 'EXTERNAL',
             'merchantTransactionId' => $payment->id,
@@ -32,6 +54,7 @@ class StoreRecurringPaymentData
             "customer.givenName"=>$payment?->student?->name,
             "customer.surname"=>""
         ];
+        }
 
         $ch = curl_init($url);
 
