@@ -13,6 +13,7 @@
                     <tr>
                         <th>اسم الطالب</th>
                         <th>اسم الباقة</th>
+                        <th class="text-center"> مكتملة الأقساط  </th>
                         <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -22,6 +23,17 @@
                     <tr>
                         <td>{{ $installmentPayment->student?->name }}</td>
                         <td>{{ $installmentPayment->package?->name }}</td>
+                        <td class="text-center">
+                            @if( $installmentPayment->is_completed)
+                                <span class="fw-bold text-success">
+                                  مكتملة
+                               </span>
+                            @else
+                                <span class="fw-bold text-danger">
+                                غير مكتملة
+                               </span>
+                            @endif
+                        </td>
                         <td class="text-center project-actions">
                             <a href="{{ route('dashboard.installment-payments.show', $installmentPayment->id) }}" class="px-4 btn btn-info btn-sm">
                                  عرض
