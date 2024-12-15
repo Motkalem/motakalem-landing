@@ -99,15 +99,14 @@ class PackagesController extends AdminBaseController
             $package->installment_value =null;
             $package->total = $request->total;
         }else {
+            $package->number_of_months = $package->payments->count() ? $package->number_of_months : $request->number_of_months;
 
-            $package->number_of_months = $request->number_of_months;
             $package->installment_value = $request->installment_value;
             $package->total = null;
         }
 
         $package->is_active = $request->is_active == 'on' ? true : false;
         $package->name = $request->name;
-        $package->payment_type = $request->payment_type;
         $package->starts_date = $request->starts_date;
         $package->ends_date = $request->ends_date;
 
