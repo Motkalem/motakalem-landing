@@ -30,6 +30,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         // Retrieve all uncanceled installment payments
         $installmentPayments = InstallmentPayment::with('package')
             ->where('canceled', false)
+            ->where('is_completed', false)
             ->get();
 
         foreach ($installmentPayments as $installment) {
