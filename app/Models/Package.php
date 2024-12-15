@@ -27,4 +27,12 @@ class Package extends Model
     }
 
 
+
+    public function installmentPayments()
+    {
+
+        return $this->hasMany(InstallmentPayment::class);
+    }
+
+
 }
