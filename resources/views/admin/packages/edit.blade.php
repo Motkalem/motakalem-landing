@@ -76,7 +76,7 @@
                                            value="{{ old('total', $package->total ?? '') }}"
                                            placeholder="إجمالي المبلغ">
                                     @error('total')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
