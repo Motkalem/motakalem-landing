@@ -13,6 +13,7 @@ class InstallmentPayment extends Model
         'registration_id',
         'payment_id',
         'canceled',
+        'is_completed',
         'first_installment_date',
     ];
 

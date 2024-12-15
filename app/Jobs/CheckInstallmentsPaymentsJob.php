@@ -45,6 +45,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
                 # If all installments are complete, skip
                 if ($successInstallments >= $installment->package->number_of_months) {
 
+                    $installment->update(['is_completed' => true]);
                     continue;
                 }
 

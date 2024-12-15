@@ -108,7 +108,7 @@
                                     <input type="number"
                                            class="form-control @error('number_of_months') is-invalid @enderror"
                                            id="number_of_months"
-                                           @if($package->payments->count() || $package->installmentPayments->count()) disabled  @endif
+                                           @if($package->installmentPayments->count()) disabled  @endif
                                            name="number_of_months"
                                            value="{{ old('number_of_months', $package->number_of_months ?? '') }}"
                                            placeholder="عدد الشهور">
