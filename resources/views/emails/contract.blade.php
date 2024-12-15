@@ -97,7 +97,7 @@
                                                 ‎أولاً: شركة متكلم الطبية، وعنوانها: جدة، حي الورود. سجل تجاري رقم:
                                                 4030511477
                                                 <br/>
-                                                ‎البريد الألكتروني: info@motkalem.com
+                                                ‎البريد الألكتروني: info@motkalem.sa
                                             </p>
                                         </td>
                                     </tr>
@@ -289,7 +289,7 @@
                                                 للمزيد من المعلومات، يمكنكم زيارة موقعنا على الرابط التالي:
                                                 <br/>
                                                 <br/>
-                                                <a href="https://motkalem.com/"
+                                                <a href="https://motkalem.sa/"
                                                    style="font-family:Cairo,Geneva,sans-serif">https://motkalem.sa/</a>
                                             </p>
                                         </td>
@@ -316,9 +316,9 @@
                                                 <tr>
                                                     <td align="center"
                                                         style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
-                                                        <a href="https://motkalem.com/"
+                                                        <a href="https://motkalem.sa/"
                                                            style="color:rgb(38,38,38);font-family:Cairo,Geneva,sans-serif;text-decoration:none;font-weight:bold"
-                                                           target="_blank">www.motkalem.com</a>
+                                                           target="_blank">motkalem.sa</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -330,9 +330,9 @@
                                                 <tr>
                                                     <td align="center"
                                                         style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
-                                                        <a href="mailto:info@motkalem.com"
+                                                        <a href="mailto:info@motkalem.sa"
                                                            style="color:rgb(38,38,38);font-family:Cairo,Geneva,sans-serif;text-decoration:none"
-                                                           target="_blank">info@motkalem.com</a>
+                                                           target="_blank">info@motkalem.sa</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>

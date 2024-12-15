@@ -14,7 +14,7 @@
 <body style="direction: rtl; font-family: 'Poppins', sans-serif;">
 <div style="width: 75%; margin: auto; border: 1px solid #06A996; border-radius: 10px; overflow: hidden;">
     <div style="background-color: #06A996; text-align: center; padding: 1rem;">
-        <img src="https://dev.motkalem.com/images/email/logo.png" alt="شعار متكلم" style="width: 150px;">
+        <img src="https://admin.motkalem.sa/images/email/logo.png" alt="شعار متكلم" style="width: 150px;">
     </div>
     <div style="background-color: #F7F7F7; padding: 2rem;">
         <h2 style="text-align: center; color: #333; font-size: 1.5rem; margin-bottom: 1rem;">  مرحبا {{$student->name}} </h2>
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div style="background-color: #EFEFEF; padding: 1rem; text-align: center; font-size: 0.9rem; color: #666;">
-        <p>زوروا موقعنا: <a href="https://motkalem.com/" target="_blank" style="color: #06A996; text-decoration: none;">motkalem.com</a></p>
+        <p>زوروا موقعنا: <a href="https://motkalem.sa/" target="_blank" style="color: #06A996; text-decoration: none;">motkalem.sa</a></p>
         <p>رقم التسجيل الضريبي: ۳۱۲۰۱۱٤۹۰۱۰۰۰۳</p>
         <p>رقم السجل التجاري: ٤۰۳۰٥۱۱٤۷۷</p>
     </div>

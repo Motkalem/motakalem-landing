@@ -19,12 +19,12 @@
     <div style="width: 75%; margin: auto; border: .2px solid #06A996">
         <div style="background-color: #06A996; padding: .2rem; text-align: center;">
 
-            <img style="width: 10rem; margin-top: .5rem; margin-bottom: 1rem;" src="https://dev.motkalem.com/images/email/logo.png"
+            <img style="width: 10rem; margin-top: .5rem; margin-bottom: 1rem;" src="https://admin.motkalem.sa/images/email/logo.png"
                  alt="motkalem word beside the a yellow logo">
         </div>
         <div style="background-color: #D9D9D9;padding: 2rem;">
             <div style="text-align: center;">
-                <img style="width: 4rem;" src="https://dev.motkalem.com/images/email/checkmark.png" alt="checkmark in green">
+                <img style="width: 4rem;" src="https://admin.motkalem.sa/images/email/checkmark.png" alt="checkmark in green">
                 <div>
                     <p style="font-size: 1.2rem; font-weight: 600;">  تم التسجيل بالبرنامج  </p>
                 </div>
@@ -76,7 +76,7 @@
     <div style="width: 75%; margin: auto; padding-top: .8rem ;">
         <div style="font-weight: 600; color: #5e5e5e;">
             <span>زر موقعنا: </span>
-            <a style="font-weight: normal;" href="https://motkalem.com/" target="_blank">motkalem.com</a>
+            <a style="font-weight: normal;" href="https://motkalem.sa/" target="_blank">motkalem.sa</a>
         </div>
         <div style="color: #5e5e5e; font-weight: 600;">
             <div style="display: flex; justify-content: right; align-items: center; margin-left: 1rem;">
