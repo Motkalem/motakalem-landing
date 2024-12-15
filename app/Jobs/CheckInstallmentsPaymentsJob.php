@@ -70,10 +70,10 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         // Check the result and act accordingly
         if ($this->isSuccessfulNotification($notification)) {
 
+            // do nothing
         } else {
 
-//            $this->release(86400); // Retry after 24 hours (1 day)
-//            $this->release(300);
+            $this->release(60); // Retry after 24 hours (1 day)
         }
     }
 
