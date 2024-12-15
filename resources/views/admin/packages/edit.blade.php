@@ -115,6 +115,13 @@
                                     @error('number_of_months')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+
+                                    @if($package->installmentPayments->count())
+                                        <input type="hidden"
+                                               id="number_of_months"
+                                               name="number_of_months"
+                                               value="{{ $package->number_of_months  }}" >
+                                    @endif
                                 </div>
                             </div>
                         @endif
