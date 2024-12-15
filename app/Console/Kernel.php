@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(new CheckInstallmentsPaymentsJob())->everyTwoMinutes();
-        $schedule->job(new SendTransactionsNotificationsJob())->everyTwoMinutes();
+        $schedule->job(new CheckInstallmentsPaymentsJob())->monthly();
+        $schedule->job(new SendTransactionsNotificationsJob())->monthly();
     }
 
     /**
