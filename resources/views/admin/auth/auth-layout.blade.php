@@ -37,9 +37,6 @@
 </footer>
 
 
-<script type="text/javascript"
-        src="http://127.0.0.1:8000/packages/backpack/base/js/bundle.js?v=5.6.1@1b67f8efdbaa48842e0d31995068b44b8fc5c66d">
 
-</script>
 </body>
 </html>
