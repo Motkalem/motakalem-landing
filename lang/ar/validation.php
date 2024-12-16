@@ -219,6 +219,7 @@ return [
         'total'=> 'الإجمالي',
         'starts_date'=> 'تاريخ البدأ',
         'ends_date'=> ' تاريخ الانتهاء',
+        "consultation_type_id"=> "نوع الإستشارة"
     ],
 
 ];

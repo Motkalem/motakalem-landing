@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\Dashboard\ConsultantsController;
 use App\Http\Controllers\Dashboard\ContactUsMessagesController;
 use App\Http\Controllers\Dashboard\DashboardAuthController;
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 // --------------------------
 
 
-
 Route::group(['middleware' => 'guest:dashboard'], function () {
     Route::get('dashboard/login', [DashboardAuthController::class, 'showLoginForm'])->name('dashboard.login');
     Route::post('dashboard/login', [DashboardAuthController::class, 'login'])->name('dashboard.login.submit');
@@ -28,30 +28,32 @@ Route::group(['middleware' => 'guest:dashboard'], function () {
     Route::post('dashboard/reset-password', [DashboardAuthController::class, 'resetPassword'])->name('dashboard.password.update');
 });
 
-Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'dashboard.'], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' => 'dashboard.'], function () {
 
-        Route::get('panel', [DashboardController::class,'index'])->name('index');
+    Route::get('panel', [DashboardController::class, 'index'])->name('index');
 
-        Route::resource('packages', PackagesController::class);
+    Route::resource('packages', PackagesController::class);
 
-        Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
+    Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
 
-        Route::resource('payments', PaymentsController::class);
-        Route::resource('transactions', TransactionsController::class);
+    Route::resource('payments', PaymentsController::class);
+    Route::resource('transactions', TransactionsController::class);
 
-        Route::resource('students', StudentsController::class);
-        Route::resource('installment-payments', InstallmentPaymentsController::class);
-        Route::resource('contact-messages', ContactUsMessagesController::class);
+    Route::resource('students', StudentsController::class);
+    Route::resource('installment-payments', InstallmentPaymentsController::class);
+    Route::resource('contact-messages', ContactUsMessagesController::class);
 
-        Route::get('profile', [ProfileController::class,'edit'])->name('profile.edit');
-        Route::post('profile/update', [ProfileController::class,'update'])->name('profile.update');
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-        Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
+    Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
 
-        Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
-            ->name('send-contract');
+    Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
+        ->name('send-contract');
 
     Route::resource('consultant-types', ConsultantsController::class);
+
+    Route::resource('consultant-patients', ConsultantPatientsController::class);
 
 });
 
