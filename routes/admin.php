@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\Dashboard\ConsultantsController;
 use App\Http\Controllers\Dashboard\ContactUsMessagesController;
 use App\Http\Controllers\Dashboard\DashboardAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -32,6 +33,7 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
         Route::get('panel', [DashboardController::class,'index'])->name('index');
 
         Route::resource('packages', PackagesController::class);
+
         Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
 
         Route::resource('payments', PaymentsController::class);
@@ -48,6 +50,8 @@ Route::group(['prefix'=> 'dashboard','middleware' => 'auth:dashboard','as'=>'das
 
         Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
             ->name('send-contract');
+
+    Route::resource('consultant-types', ConsultantsController::class);
 
 });
 
