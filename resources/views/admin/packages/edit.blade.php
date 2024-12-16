@@ -117,6 +117,7 @@
                                     @enderror
 
                                     @if($package->installmentPayments->count())
+
                                         <input type="hidden"
                                                id="number_of_months"
                                                name="number_of_months"
