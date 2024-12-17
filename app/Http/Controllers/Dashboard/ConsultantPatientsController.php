@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Classes\HyperpayNotificationProcessor;
+use App\Http\Support\SMS;
 use App\Models\ConsultantPatient;
 use App\Models\ConsultantType;
 use App\Models\Package;
@@ -27,7 +28,8 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function index()
     {
-        $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
+
+         $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
         $consultantPatientsCount = ConsultantPatient::query()->count();
         $title = 'قائمة المرضى';
 
@@ -110,12 +112,16 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $consultantPatient = ConsultantPatient::findOrFail($id);
 
-        // Generate the payment link (replace with your actual logic to create a payment URL)
-        return $paymentLink = $this->generatePaymentLink($consultantPatient);
+        $paymentLink = $this->generatePaymentLink($consultantPatient);
 
+        $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
-        return Redirect::to($paymentLink)->with('success', 'تم إرسال رابط الدفع بنجاح');
+        (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
+
+        return redirect()->route('dashboard.consultant-patients.index')
+            ->with('success',  'تم إرسال رابط الدفع بنجاح');
     }
+
 
     /**
      * @param ConsultantPatient $consultantPatient
@@ -130,7 +136,6 @@ class ConsultantPatientsController extends AdminBaseController
 
         return $patientPaymentUrl;
     }
-
 
     public function getPayPage()
     {
@@ -209,16 +214,6 @@ class ConsultantPatientsController extends AdminBaseController
     }
 
     /**
-     * @param Request $request
-     * @return Factory|View|Application
-     */
-    public function processResponse(Request $request): Factory|View|Application
-    {
-
-        return view('payments.one-time-pay');
-    }
-
-    /**
      * @return string|RedirectResponse
      */
     public function getStatus() #: string|RedirectResponse
@@ -255,7 +250,7 @@ class ConsultantPatientsController extends AdminBaseController
             'title' => $title
         ]);
 
-        $consultationPatient = ConsultantPatient::query()->find(request()->pid);
+        $consultationPatient = ConsultantPatient::query()->with('consultationType')->find(request()->pid);
 
         if (data_get($transactionData, 'id') == null) {
 
@@ -267,12 +262,47 @@ class ConsultantPatientsController extends AdminBaseController
         if ($this->isSuccessfulNotification($transactionData) ) {
 
             $this->markPaymentAsCompleted($consultationPatient);
+            $invoicetLink = route('checkout.consultation.invoice', $consultationPatient->id);
 
-            return \view('');
+            $msg = 'شكرا تمت عملية الدفع : ' . $invoicetLink;
+
+            (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+
+          return $this->getInvoice($consultationPatient->id);
         } else {
 
-
+            echo "<h2 style='text-align: center; color: red;padding-top: 20px'> !  لم تنجح عملية الدفع </h2>";
+            echo "<a href='https://motkalem.sa' style='text-align: center; padding-top: 20px;display: block'> الرئيسية ! </a>";
         }
+    }
+
+    /**
+     * @param $consultationPatient
+     * @return Application|Factory|View
+     */
+    protected function getInvoice($id)
+    {
+        $consultationPatient = ConsultantPatient::find($id);
+
+        return \view('payments.consultation-pay-thank-you',compact( 'consultationPatient'));
+    }
+
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    protected function sendInvoice($id)
+    {
+        $consultationPatient = ConsultantPatient::find($id);
+
+        $invoicetLink = route('checkout.send-sms-invoice-link', $consultationPatient->id);
+
+         $msg = 'شكرا تمت عملية الدفع : ' . $invoicetLink;
+
+        (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+
+        return redirect()->route('dashboard.consultant-patients.index')
+            ->with('success',  'تم إرسال رابط الفاتورة بنجاح');
     }
 
     /**

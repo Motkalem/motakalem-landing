@@ -10,7 +10,6 @@ class ConsultantPatient extends Model
 {
     use HasFactory;
 
-
     protected $fillable = ['consultation_type_id', 'name', 'age', 'gender',
         'mobile', 'city', 'transaction_data','is_paid'];
 

@@ -22,13 +22,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
 
-Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
-    ->name('checkout.consultation.index');
-
+Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])->name('checkout.consultation.index');
 Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus']);
+Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'getInvoice'])
+    ->name('checkout.send-sms-invoice-link');
+
+Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoiceLink'])
+    ->name('checkout.consultation.send-invoice');;
 
 Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);

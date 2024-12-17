@@ -25,9 +25,9 @@ class SMS
 
     public function __construct() {
 
-        $this->userName  = "Square";
-        $this->apiKey    = "57fc4447c3abff7c17ba80d89a89a84e01df1ea428fcd03e17f85af41dfebfe5";
-        $this->sender    = "Laser";
+        $this->userName  = "motkalem";
+        $this->apiKey    = "fe923e18d7093a982a3c6008c7f90139fae6cfda627fbb997deb2282ce6e2727";
+        $this->sender    = "Motkalem";
         $this->origin = $this->getRequestOrigin();
     }
 

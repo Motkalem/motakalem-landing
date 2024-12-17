@@ -29,6 +29,7 @@
                         <th>نوع الاستشارة</th>
                         <th class="text-center"> المعاملات   </th>
                         <th class="text-center"> الدفع  </th>
+                        <th class="text-center"> الفاتورة  </th>
                         <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                     </thead>
@@ -54,23 +55,30 @@
 
                             </td>
                             <td class="text-center">
-                                <button
-                                    disabled
-                                    class="px-4 btn btn-success bg-success btn-sm show-transactions"
-                                    data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#">
-                                     عرض
+                                <button class="px-4 btn btn-success bg-success btn-sm text-white show-transactions"
+                                        data-transactions='@json($consultantPatient->transactions)'
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#transactionsModal">
+                                    عرض
                                 </button>
                             </td>
 
                              <td class="text-center">
                                 <button
-                                    class="px-4 btn btn-warning bg-warning btn-sm send-payment-link"
+                                    class="px-4 btn btn-success bg-black btn-sm text-white send-payment-link"
                                     data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#confirmationModal">
-                                    إرسال رابط الدفع
+                                      رابط
+                                </button>
+                            </td>
+                            <td class="text-center">
+                                <button
+                                    class="px-4 btn btn-success bg-black btn-sm text-white send-invoice-link"
+                                    data-href="{{route('dashboard.re-send-sms-invoice-link', $consultantPatient->id)}}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#invoiceConfirmationModal">
+                                    رابط
                                 </button>
                             </td>
                             <td class="text-right project-actions">
@@ -85,6 +93,22 @@
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Transactions Modal -->
+    <div class="modal fade" id="transactionsModal" tabindex="-1" aria-labelledby="transactionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionsModalLabel">المعاملات</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="transactionsList" class="list-group"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -104,6 +128,25 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <a id="confirmSendPaymentLink" href="#" class="btn btn-warning">تأكيد</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="invoiceConfirmationModal" tabindex="-1" aria-labelledby="invoiceConfirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="invoiceConfirmationModalLabel">تأكيد إرسال رابط الفاتورة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    هل أنت متأكد أنك تريد إرسال رابط الفاتورة لهذا المريض؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <a id="invoiceConfirmSendPaymentLink" href="#" class="btn btn-warning">تأكيد</a>
                 </div>
             </div>
         </div>
@@ -152,7 +195,41 @@
                     var confirmButton = document.getElementById('confirmSendPaymentLink');
                     confirmButton.href = paymentLink;
                 });
+
+                // Invoice link confirmation
+                var invoiceConfirmationModal = document.getElementById('invoiceConfirmationModal');
+                invoiceConfirmationModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var paymentLink = button.getAttribute('data-href');
+                    var confirmButton = document.getElementById('invoiceConfirmSendPaymentLink');
+                    confirmButton.href = paymentLink;
+                });
             });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const transactionsModal = document.getElementById('transactionsModal');
+                const transactionsList = document.getElementById('transactionsList');
+
+                transactionsModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const transactions = JSON.parse(button.getAttribute('data-transactions'));
+                    transactionsList.innerHTML = '';
+
+                    for (const [title, transaction] of Object.entries(transactions)) {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('list-group-item');
+                        listItem.innerHTML = `
+                    <strong>${title}</strong><br>
+                    <strong>المعرف:</strong> ${transaction.ndc || 'N/A'}<br>
+                    <strong>المبلغ:</strong> ${transaction.amount || 'N/A'} ${transaction.currency || ''}<br>
+                    <strong>النتيجة:</strong> ${transaction.result?.description || 'N/A'}<br>
+                    <strong>التاريخ:</strong> ${transaction.timestamp || 'N/A'}
+                `;
+                        transactionsList.appendChild(listItem);
+                    }
+                });
+            });
+
         </script>
     @endpush
 @endsection

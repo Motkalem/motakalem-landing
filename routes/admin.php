@@ -58,6 +58,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::get('consultant-patients/send-link/{id}', [ConsultantPatientsController::class, 'sendPaymentLink'])
         ->name('send-sms-payment-link');
 
+    Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoice'])
+        ->name('re-send-sms-invoice-link');
+
 });
 
 Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
