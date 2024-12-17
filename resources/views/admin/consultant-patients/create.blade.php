@@ -34,7 +34,7 @@
                                     <option value="" disabled selected>اختر نوع الإستشارة</option>
                                     @foreach($consultationTypes as $type)
                                         <option value="{{ $type->id }}" {{ old('consultation_type_id', $consultantPatient->consultation_type_id ?? '') == $type->id ? 'selected' : '' }}>
-                                            {{ $type->name }}
+                                            {{ $type->name }} ( {{$type->price .''.__('SAR')}} )
                                         </option>
                                     @endforeach
                                 </select>

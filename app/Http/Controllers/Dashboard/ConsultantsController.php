@@ -82,8 +82,7 @@ class ConsultantsController extends AdminBaseController
      */
     public function destroy($id)#: RedirectResponse
     {
-
-        $consultantType = ConsultantType::with('consultantPatients')->findOrFail($id);
+      $consultantType = ConsultantType::with('consultantPatients')->findOrFail($id);
 
       $result =  Helper::tryDelete($consultantType);
 
@@ -93,7 +92,6 @@ class ConsultantsController extends AdminBaseController
       } else {
           notify()->error('لا يمكن الحذف .');
       }
-
 
         return redirect()->route('dashboard.consultant-types.index')->with('success', 'Consultant type deleted successfully.');
     }

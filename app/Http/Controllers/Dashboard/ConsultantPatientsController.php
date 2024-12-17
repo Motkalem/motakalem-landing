@@ -32,9 +32,8 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function index()
     {
-//       return    ConsultantPatient::query()->first();
 
-         $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
+        $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
         $consultantPatientsCount = ConsultantPatient::query()->count();
         $title = 'قائمة المرضى';
 
