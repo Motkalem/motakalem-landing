@@ -26,11 +26,12 @@
                         <th>الجنس</th>
                         <th>الهاتف</th>
                         <th>المدينة</th>
-                        <th>نوع الاستشارة</th>
+                        <th>  الاستشارة</th>
+                        <th> حالة الدفع  </th>
                         <th class="text-center"> المعاملات   </th>
                         <th class="text-center"> الدفع  </th>
                         <th class="text-center"> الفاتورة  </th>
-                        <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
+                        <th style="  class="text-center">{{ __('Actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,9 +55,21 @@
                                 @endif
 
                             </td>
+
+                            <td class="text-center">
+                                @if($consultantPatient->is_paid)
+                                    <span class="text-success">
+                                        مدفوع
+                                    </span>
+                                @else
+                                    <span class="text-danger">
+                                        غير مدفوع
+                                    </span>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 <button class="px-4 btn btn-success bg-success btn-sm text-white show-transactions"
-                                        data-transactions='@json($consultantPatient->transactions)'
+                                        data-transactions='@json($consultantPatient->transaction_data)'
                                         data-bs-toggle="modal"
                                         data-bs-target="#transactionsModal">
                                     عرض
