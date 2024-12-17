@@ -26,7 +26,7 @@ class SMS
     public function __construct() {
 
         $this->userName  = "motkalem";
-        $this->apiKey    = "fe923e18d7093a982a3c6008c7f90139fae6cfda627fbb997deb2282ce6e2727";
+        $this->apiKey    = "f826bc3e116699ffc69a2e3a0c208a0a70632aedcdb77dc637daa77e9866b53c";
         $this->sender    = "Motkalem";
         $this->origin = $this->getRequestOrigin();
     }
@@ -56,13 +56,13 @@ class SMS
     }
 
     public function build($priority = true) {
-        if(env('SEND_SMS') == true /*&& $this->origin === 'customer'*/) {
-            if ($priority) {
+//        if(env('SEND_SMS') == true /*&& $this->origin === 'customer'*/) {
+//            if ($priority) {
                 return Http::get($this->vendorUrl . $this->getFields())->json();
-            } else {
-                SendSMSJob::dispatch($this->vendorUrl, $this->getFields());
-            }
-        }
+//            } else {
+//                SendSMSJob::dispatch($this->vendorUrl, $this->getFields());
+//            }
+//        }
     }
 
     public function getRequestOrigin() {

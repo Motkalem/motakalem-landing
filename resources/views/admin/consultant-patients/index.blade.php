@@ -31,7 +31,7 @@
                         <th class="text-center"> المعاملات   </th>
                         <th class="text-center"> الدفع  </th>
                         <th class="text-center"> الفاتورة  </th>
-                        <th style="  class="text-center">{{ __('Actions') }}</th>
+                        <th  class="text-center">{{ __('Actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <a id="confirmSendPaymentLink" href="#" class="btn btn-warning">تأكيد</a>
+                    <a id="confirmSendPaymentLink" href="#" class="btn bg-black btn-black"> تأكيد </a>
                 </div>
             </div>
         </div>
