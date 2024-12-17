@@ -262,7 +262,8 @@ class ConsultantPatientsController extends AdminBaseController
         if ($this->isSuccessfulNotification($transactionData) ) {
 
             $this->markPaymentAsCompleted($consultationPatient);
-            $invoicetLink = route('checkout.consultation.invoice', $consultationPatient->id);
+
+            $invoicetLink = route('checkout.send-sms-invoice-link', $consultationPatient->id);
 
             $msg = 'شكرا تمت عملية الدفع : ' . $invoicetLink;
 
