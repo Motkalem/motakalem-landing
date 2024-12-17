@@ -117,7 +117,7 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $consultantPatient = ConsultantPatient::findOrFail($id);
 
-        $paymentLink = $this->generatePaymentLink($consultantPatient);
+         $paymentLink = $this->generatePaymentLink($consultantPatient);
 
         $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
