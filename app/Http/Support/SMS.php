@@ -24,10 +24,14 @@ class SMS
     protected $origin        = "";
 
     public function __construct() {
+//
+//        $this->userName  = "motkalem";
+//        $this->apiKey    = "f826bc3e116699ffc69a2e3a0c208a0a70632aedcdb77dc637daa77e9866b53c";
+//        $this->sender    = "Motkalem";
 
-        $this->userName  = "motkalem";
-        $this->apiKey    = "f826bc3e116699ffc69a2e3a0c208a0a70632aedcdb77dc637daa77e9866b53c";
-        $this->sender    = "Motkalem";
+        $this->userName  = "Square";
+        $this->apiKey    = "57fc4447c3abff7c17ba80d89a89a84e01df1ea428fcd03e17f85af41dfebfe5";
+        $this->sender    = "Laser";
         $this->origin = $this->getRequestOrigin();
     }
 
