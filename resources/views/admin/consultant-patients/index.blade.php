@@ -27,7 +27,8 @@
                         <th>الهاتف</th>
                         <th>المدينة</th>
                         <th>نوع الاستشارة</th>
-                        <th> السعر  </th>
+                        <th class="text-center"> المعاملات   </th>
+                        <th class="text-center"> الدفع  </th>
                         <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
                     </thead>
@@ -39,8 +40,39 @@
                             <td>{{ $consultantPatient->gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
                             <td>{{ $consultantPatient->mobile }}</td>
                             <td>{{ $consultantPatient->city }}</td>
-                            <td>{{ $consultantPatient->consultationType->name ?? 'غير محدد' }}</td>
-                            <td>{{ $consultantPatient->consultationType->price  }} @lang('SAR')</td>
+                            <td>
+                                @if($consultantPatient->consultationType->name)
+
+                                   <a href="{{route('dashboard.consultant-types.edit', $consultantPatient->consultationType?->id)}}">
+
+                                    {{ $consultantPatient->consultationType->name   }} ({{ $consultantPatient->consultationType->price  }} @lang('SAR'))
+                                   </a>
+
+                                @else
+                                     غير محدد
+                                @endif
+
+                            </td>
+                            <td class="text-center">
+                                <button
+                                    disabled
+                                    class="px-4 btn btn-success bg-success btn-sm show-transactions"
+                                    data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#">
+                                     عرض
+                                </button>
+                            </td>
+
+                             <td class="text-center">
+                                <button
+                                    class="px-4 btn btn-warning bg-warning btn-sm send-payment-link"
+                                    data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmationModal">
+                                    إرسال رابط الدفع
+                                </button>
+                            </td>
                             <td class="text-right project-actions">
                                 <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
                                     تعديل
@@ -53,6 +85,26 @@
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">تأكيد إرسال رابط الدفع</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    هل أنت متأكد أنك تريد إرسال رابط الدفع لهذا المريض؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <a id="confirmSendPaymentLink" href="#" class="btn btn-warning">تأكيد</a>
+                </div>
             </div>
         </div>
     </div>
@@ -83,12 +135,22 @@
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                // Delete confirmation
                 var statusModal = document.getElementById('statusModal');
                 statusModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var consultantPatientId = button.getAttribute('data-id');
                     var form = document.getElementById('deleteForm');
                     form.action = "{{ route('dashboard.consultant-patients.destroy', ':id') }}".replace(':id', consultantPatientId);
+                });
+
+                // Payment link confirmation
+                var confirmationModal = document.getElementById('confirmationModal');
+                confirmationModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var paymentLink = button.getAttribute('data-href');
+                    var confirmButton = document.getElementById('confirmSendPaymentLink');
+                    confirmButton.href = paymentLink;
                 });
             });
         </script>

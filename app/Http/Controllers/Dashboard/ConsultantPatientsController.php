@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\HyperpayNotificationProcessor;
 use App\Models\ConsultantPatient;
 use App\Models\ConsultantType;
+use App\Models\Package;
+use App\Models\Payment;
+use App\Models\Transaction;
+use App\Traits\HelperTrait;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ConsultantPatientsController extends AdminBaseController
 {
+    use HelperTrait;
+
+    /**
+     * @return Application|Factory|View
+     */
     public function index()
     {
         $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
@@ -29,7 +45,7 @@ class ConsultantPatientsController extends AdminBaseController
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $data = $request->validate([
             'consultation_type_id' => 'required|exists:consultant_types,id',
             'name' => 'required|string|max:255',
             'age' => 'required|integer|min:0',
@@ -38,7 +54,11 @@ class ConsultantPatientsController extends AdminBaseController
             'city' => 'required|string|max:255',
         ]);
 
-        ConsultantPatient::create($request->only(['consultation_type_id', 'name', 'age', 'gender', 'mobile', 'city']));
+        $formattedMobile = $this->formatMobile($request->input('mobile'));
+
+        $data = array_merge($data, ['mobile' => $formattedMobile]);
+
+        ConsultantPatient::query()->create($data);
 
         notify()->success('تم إضافة المريض بنجاح.');
 
@@ -84,4 +104,215 @@ class ConsultantPatientsController extends AdminBaseController
 
         return redirect()->route('dashboard.consultant-patients.index')->with('success', 'Patient deleted successfully.');
     }
+
+
+    public function sendPaymentLink($id)
+    {
+        $consultantPatient = ConsultantPatient::findOrFail($id);
+
+        // Generate the payment link (replace with your actual logic to create a payment URL)
+        return $paymentLink = $this->generatePaymentLink($consultantPatient);
+
+
+        return Redirect::to($paymentLink)->with('success', 'تم إرسال رابط الدفع بنجاح');
+    }
+
+    /**
+     * @param ConsultantPatient $consultantPatient
+     * @return string
+     */
+    private function generatePaymentLink(ConsultantPatient $consultantPatient)
+    {
+
+        $patientPaymentUrl = route('checkout.consultation.index')
+            . '?pid=' . $consultantPatient->id;
+
+
+        return $patientPaymentUrl;
+    }
+
+
+    public function getPayPage()
+    {
+
+        $consultantPatient = ConsultantPatient::query()->findOrFail(request()->pid);
+
+        $responseData = null;
+
+        try {
+
+            $responseData = $this->createCheckoutId($consultantPatient);
+
+        } catch (\Throwable $th) {
+
+            throw $th;
+        }
+
+        $paymentId = data_get(json_decode($responseData), "id");
+
+        return view('payments.consultation-pay', compact('consultantPatient', 'paymentId'));
+    }
+
+    /**
+     * @param $payment
+     * @return bool|string
+     */
+    public function createCheckoutId($consultationPatient): bool|string
+    {
+
+        $entity_id = config('hyperpay.entity_id');
+
+        if (request()->payment_method == 'MADA') {
+
+            $entity_id = env('ENTITY_ID_MADA'); //mada
+        }
+
+        $access_token = env('AUTH_TOKEN');
+
+        $url = env('HYPERPAY_URL') . "/checkouts";
+
+        $data = 'entityId='
+            . $entity_id
+            . "&amount=" . $consultationPatient->consultationType?->price
+            . "&currency=SAR"
+            . "&paymentType=DB" .
+            "&merchantTransactionId=" . $consultationPatient->id .
+            "&customer.email=" . $consultationPatient?->email .
+            "&billing.street1=" . $consultationPatient?->city .
+            "&billing.city=" . $consultationPatient?->city .
+            "&billing.state=" . $consultationPatient?->city .
+            "&billing.country=" . "SA" .
+            "&billing.postcode=" . "" .
+            "&customer.givenName=" . $consultationPatient?->name .
+            "&customer.surname=" . "";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array('Authorization:Bearer ' . $access_token)
+        );
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if (curl_errno($ch)) {
+            return curl_error($ch);
+        }
+
+        curl_close($ch);
+
+        return $responseData;
+    }
+
+    /**
+     * @param Request $request
+     * @return Factory|View|Application
+     */
+    public function processResponse(Request $request): Factory|View|Application
+    {
+
+        return view('payments.one-time-pay');
+    }
+
+    /**
+     * @return string|RedirectResponse
+     */
+    public function getStatus() #: string|RedirectResponse
+    {
+        $entity_id = config('hyperpay.entity_id');
+        $access_token = config('hyperpay.access_token');
+
+        $url = env('HYPERPAY_URL') . "/checkouts/" . $_GET['id'] . "/payment";
+        $url .= "?entityId=" . $entity_id;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if (curl_errno($ch)) {
+
+            return curl_error($ch);
+        }
+        curl_close($ch);
+
+        $response = $responseData;
+
+        $res = new HyperpayNotificationProcessor($response);
+
+        $title = $res->processNotification();
+
+        $data = (array)json_decode($responseData);
+
+         $transactionData = array_merge($data, [
+            'patient_id' => request()->studentId,
+            'title' => $title
+        ]);
+
+        $consultationPatient = ConsultantPatient::query()->find(request()->pid);
+
+        if (data_get($transactionData, 'id') == null) {
+
+
+        }
+
+        $this->createTransactions($consultationPatient, $title,$transactionData);
+
+        if ($this->isSuccessfulNotification($transactionData) ) {
+
+            $this->markPaymentAsCompleted($consultationPatient);
+
+            return \view('');
+        } else {
+
+
+        }
+    }
+
+    /**
+     * @param $notification
+     * @return bool
+     */
+    protected function isSuccessfulNotification($notification): bool
+    {
+        $resultCode = data_get($notification['result'], 'code');
+        $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+
+        return  preg_match($successPattern, $resultCode) === 1;
+    }
+
+    /**
+     * @param $consultationPatient
+     * @param $data
+     * @return mixed
+     */
+    public function createTransactions($consultationPatient, $title, $data): mixed
+    {
+
+        $data = array_merge($consultationPatient->transaction_data??[],[$title=> $data]);
+
+        return $consultationPatient->update(['transaction_data' =>  $data]);
+    }
+
+    /**
+     * @param $consultationPayment
+     * @return mixed
+     */
+    private function markPaymentAsCompleted($consultationPayment): mixed
+    {
+
+        $consultationPayment->update(['is_paid' => true]);
+
+        return $consultationPayment->update([
+
+            'is_paid' => true,
+        ]);
+    }
 }
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\Helper;
 use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\ConsultantType;
 use Illuminate\Http\RedirectResponse;
@@ -75,13 +76,24 @@ class ConsultantsController extends AdminBaseController
         return redirect()->route('dashboard.consultant-types.index')->with('success', 'Consultant type updated successfully.');
     }
 
-    public function destroy($id): RedirectResponse
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function destroy($id)#: RedirectResponse
     {
-        $consultantType = ConsultantType::findOrFail($id);
 
-        $consultantType->delete();
+        $consultantType = ConsultantType::with('consultantPatients')->findOrFail($id);
+
+      $result =  Helper::tryDelete($consultantType);
+
+      if($result){
 
         notify()->success('تم حذف نوع الاستشارة.');
+      } else {
+          notify()->error('لا يمكن الحذف .');
+      }
+
 
         return redirect()->route('dashboard.consultant-types.index')->with('success', 'Consultant type deleted successfully.');
     }
