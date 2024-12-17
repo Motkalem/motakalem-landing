@@ -282,7 +282,7 @@ class ConsultantPatientsController extends AdminBaseController
      */
     protected function getInvoice($id)
     {
-        $consultationPatient = ConsultantPatient::where('is_paid', 1)->firstOrfail($id);
+        $consultationPatient = ConsultantPatient::where('is_paid', 1)->where('id', $id)->firstOrfail();
 
         return \view('payments.consultation-pay-thank-you',compact( 'consultationPatient'));
     }
