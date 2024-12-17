@@ -133,7 +133,6 @@ class ConsultantPatientsController extends AdminBaseController
         $patientPaymentUrl = route('checkout.consultation.index')
             . '?pid=' . $consultantPatient->id;
 
-
         return $patientPaymentUrl;
     }
 

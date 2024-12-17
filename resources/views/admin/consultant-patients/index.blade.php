@@ -86,6 +86,7 @@
                                 </button>
                             </td>
                             <td class="text-center">
+                                @if($consultantPatient->is_paid)
                                 <button
                                     class="px-4 btn btn-success bg-black btn-sm text-white send-invoice-link"
                                     data-href="{{route('dashboard.re-send-sms-invoice-link', $consultantPatient->id)}}"
@@ -93,6 +94,16 @@
                                     data-bs-target="#invoiceConfirmationModal">
                                     رابط
                                 </button>
+
+                                @else
+                                    <button
+                                        disabled
+                                        class="px-4 btn btn-success bg-black btn-sm text-white"
+                                         data-bs-toggle="modal">
+                                        رابط
+                                    </button>
+                                @endif
+
                             </td>
                             <td class="text-right project-actions">
                                 <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
@@ -159,7 +170,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <a id="invoiceConfirmSendPaymentLink" href="#" class="btn btn-warning">تأكيد</a>
+                    <a id="invoiceConfirmSendPaymentLink" href="#" class="btn bg-black btn-black">تأكيد</a>
                 </div>
             </div>
         </div>
