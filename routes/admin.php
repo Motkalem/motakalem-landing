@@ -65,3 +65,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
 
 Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
     ->name('dashboard.cancel-schedule');
+
+
+Route::get('/', function (){
+
+    return to_route('dashboard.login');
+});
+
