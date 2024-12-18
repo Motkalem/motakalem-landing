@@ -77,13 +77,17 @@
                             </td>
 
                              <td class="text-center">
-                                <button
-                                    class="px-4 btn btn-success bg-black btn-sm text-white send-payment-link"
-                                    data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmationModal">
-                                      رابط
-                                </button>
+                                 @if($consultantPatient->is_paid)
+                                        تم الدفع !
+                                     @else
+                                     <button
+                                         class="px-4 btn btn-success bg-black btn-sm text-white send-payment-link"
+                                         data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
+                                         data-bs-toggle="modal"
+                                         data-bs-target="#confirmationModal">
+                                         رابط
+                                     </button>
+                                 @endif
                             </td>
                             <td class="text-center">
                                 @if($consultantPatient->is_paid)
@@ -106,12 +110,17 @@
 
                             </td>
                             <td class="text-right project-actions">
-                                <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
-                                    تعديل
-                                </a>
-                                <button class="px-4 btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="{{ $consultantPatient->id }}">
-                                    حذف
-                                </button>
+                                @if($consultantPatient->is_paid)
+                                    ---
+                                    @else
+                                    <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
+                                        تعديل
+                                    </a>
+                                    <button class="px-4 btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="{{ $consultantPatient->id }}">
+                                        حذف
+                                    </button>
+
+                               @endif
                             </td>
                         </tr>
                     @endforeach
