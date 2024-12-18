@@ -122,7 +122,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
-//         (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
+         (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
 
         return redirect()->route('dashboard.consultant-patients.index')
             ->with('success',  'تم إرسال رابط الدفع بنجاح');
