@@ -279,7 +279,7 @@ class ConsultantPatientsController extends AdminBaseController
 
             $this->notifyAdmin($consultationPatient);
 
-//            (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+            (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
 
           return $this->getInvoice($consultationPatient->id);
         } else {
@@ -400,7 +400,7 @@ class ConsultantPatientsController extends AdminBaseController
 
          $msg = 'شكرا تمت عملية الدفع : ' . $invoicetLink;
 
-//        (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+        (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
 
         return redirect()->route('dashboard.consultant-patients.index')
             ->with('success',  'تم إرسال رابط الفاتورة بنجاح');
