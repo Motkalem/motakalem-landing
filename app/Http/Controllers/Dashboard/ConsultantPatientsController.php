@@ -44,7 +44,8 @@ class ConsultantPatientsController extends AdminBaseController
     public function create()
     {
         $title = 'إضافة مريض جديد';
-        $consultationTypes = ConsultantType::where('is_active', 1)->get();
+
+        $consultationTypes = ConsultantType::where('is_active',true)->get();
 
         return view('admin.consultant-patients.create', compact('title', 'consultationTypes'));
     }
