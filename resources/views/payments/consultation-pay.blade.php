@@ -14,7 +14,7 @@
 
             ستقوم بدفع مبلغ  {{$consultantPatient?->consultationType->price .' ' .__('SAR')}} ({{$consultantPatient?->consultationType?->name}})
         </h1>
-        <form action="{{'/consultation/checkout/result/'.$_GET['pid']}}" class="paymentWidgets"
+        <form action="{{route('checkout.consultation.status', $_GET['pid'])}}" class="paymentWidgets"
               data-brands="MADA VISA MASTER"></form>
     </body>
     </html>

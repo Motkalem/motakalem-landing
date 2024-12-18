@@ -29,7 +29,8 @@ Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::clas
 Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
     ->name('checkout.consultation.index');
 
-Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus']);
+Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])
+    ->name('checkout.consultation.status');
 
 Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'getInvoice'])
     ->name('checkout.send-sms-invoice-link');
