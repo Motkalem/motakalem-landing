@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -180,12 +181,17 @@ class ConsultantPatientsController extends AdminBaseController
 
         $url = env('HYPERPAY_URL') . "/checkouts";
 
+        $timestamp = Carbon::now()->timestamp;
+        $micro_time = microtime(true);
+
+        $unique_transaction_id = $consultationPatient->id .'-'.$timestamp . str_replace('.', '', $micro_time);
+
         $data = 'entityId='
             . $entity_id
             . "&amount=" . $consultationPatient->consultationType?->price
             . "&currency=SAR"
             . "&paymentType=DB" .
-            "&merchantTransactionId=" . $consultationPatient->id .
+            "&merchantTransactionId=" . $unique_transaction_id .
             "&customer.email=" . $consultationPatient?->email .
             "&billing.street1=" . $consultationPatient?->city .
             "&billing.city=" . $consultationPatient?->city .
