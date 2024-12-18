@@ -8,6 +8,12 @@
 <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
     <div class="col-md-12">
         <div class="p-20 mt-4 bgc-white bd">
+            <form action="{{URL::current()}}">
+                <div class="pb-4 w-25 d-flex align-items-center">
+                    <input type="search" name="search" value="{{data_get($_GET,'search')}}" class="form-control" id="search" placeholder="بحث"/>
+                    <button class="btn btn-primary btn-sm mx-2">بحث</button>
+                </div>
+            </form>
             <table class="table table-striped table-class">
                 <thead>
                     <tr>

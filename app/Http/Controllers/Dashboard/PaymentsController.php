@@ -20,7 +20,18 @@ class PaymentsController extends AdminBaseController
     {
         $title = __('One time Payments');
 
-        $payments = Payment::with(['student', 'package', 'transactions'])->orderBy('id', 'desc')->paginate(12);
+        $search = request()->query('search');
+
+        $query = Payment::query();
+
+        if ($search) {
+            $query->whereHas('student', function ($query) use ($search) {
+
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $payments =$query->with(['student', 'package', 'transactions'])->orderBy('id', 'desc')->paginate(12);
 
         return view(
             'admin.payments.index',

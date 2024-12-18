@@ -13,7 +13,16 @@ class ConsultantsController extends AdminBaseController
 {
     public function index()
     {
-        $consultantTypes = ConsultantType::query()->orderBy('id', 'desc')->paginate(12);
+
+        $search = request()->query('search');
+
+        $query = ConsultantType::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $consultantTypes = $query->orderBy('id', 'desc')->paginate(12);
         $consultantTypesCount = ConsultantType::query()->count();
         $title = 'أنواع الإستشارات';
 

@@ -15,7 +15,17 @@ class ContactUsMessagesController extends AdminBaseController
     {
         $title = 'رسائل إتصل بنا';
 
-        $contactMessages = ContactUs::query()->orderBy('id', 'desc')
+        $search = request()->query('search');
+
+        $query = ContactUs::query();
+
+        if ($search) {
+
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'LIKE', "%{$search}%");
+        }
+
+        $contactMessages = $query->orderBy('id', 'desc')
             ->paginate(12);
 
         return view(

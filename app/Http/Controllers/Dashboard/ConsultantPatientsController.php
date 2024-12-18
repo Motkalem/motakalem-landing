@@ -31,16 +31,24 @@ class ConsultantPatientsController extends AdminBaseController
     /**
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search'); // Get the 'search' parameter from the URL query string
 
-        $consultantPatients = ConsultantPatient::query()->orderBy('id', 'desc')->paginate(12);
-        $consultantPatientsCount = ConsultantPatient::query()->count();
+        $query = ConsultantPatient::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('mobile', 'LIKE', "%{$search}%");
+        }
+
+        $consultantPatients = $query->orderBy('id', 'desc')->paginate(12);
+        $consultantPatientsCount = $query->count();
         $title = 'قائمة المرضى';
 
-        return view('admin.consultant-patients.index', compact('consultantPatients',
-            'title', 'consultantPatientsCount'));
+        return view('admin.consultant-patients.index', compact('consultantPatients', 'title', 'consultantPatientsCount', 'search'));
     }
+
 
     public function create()
     {
@@ -231,7 +239,7 @@ class ConsultantPatientsController extends AdminBaseController
         $entity_id = config('hyperpay.entity_id');
         $access_token = config('hyperpay.access_token');
 
-        $url = env('HYPERPAY_URL') . "/checkouts/" . $_GET['id'] . "/payment";
+        $url = env('HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
