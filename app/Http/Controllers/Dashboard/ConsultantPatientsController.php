@@ -16,6 +16,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class ConsultantPatientsController extends AdminBaseController
 {
@@ -59,7 +61,12 @@ class ConsultantPatientsController extends AdminBaseController
         return view('admin.consultant-patients.create', compact('title', 'consultationTypes'));
     }
 
-    public function store(Request $request): RedirectResponse
+    /**
+     * @param Request $request
+     * @return JsonResponse|RedirectResponse
+     * @throws ValidationException
+     */
+    public function store(Request $request): JsonResponse|RedirectResponse
     {
         $data = $request->validate([
             'consultation_type_id' => 'required|exists:consultant_types,id',
@@ -74,7 +81,16 @@ class ConsultantPatientsController extends AdminBaseController
 
         $data = array_merge($data, ['mobile' => $formattedMobile]);
 
-        ConsultantPatient::query()->create($data);
+        $patient = ConsultantPatient::query()->create($data);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient created successfully.',
+                'data' => $patient,
+                'payment_url' => $this->generatePaymentLink($patient),
+            ], 201);
+        }
 
         notify()->success('تم إضافة المريض بنجاح.');
 
@@ -126,7 +142,7 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $consultantPatient = ConsultantPatient::findOrFail($id);
 
-       return  $paymentLink = $this->generatePaymentLink($consultantPatient);
+        $paymentLink = $this->generatePaymentLink($consultantPatient);
 
         $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
