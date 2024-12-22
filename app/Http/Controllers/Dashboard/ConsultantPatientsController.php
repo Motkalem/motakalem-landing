@@ -126,11 +126,11 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $consultantPatient = ConsultantPatient::findOrFail($id);
 
-         $paymentLink = $this->generatePaymentLink($consultantPatient);
+       return  $paymentLink = $this->generatePaymentLink($consultantPatient);
 
         $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
-         (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
+//         (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
 
         return redirect()->route('dashboard.consultant-patients.index')
             ->with('success',  'تم إرسال رابط الدفع بنجاح');
@@ -287,7 +287,7 @@ class ConsultantPatientsController extends AdminBaseController
 
             $this->notifyAdmin($consultationPatient);
 
-            (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+//            (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
 
           return $this->getInvoice($consultationPatient->id);
         } else {
@@ -391,9 +391,21 @@ class ConsultantPatientsController extends AdminBaseController
      */
     protected function getInvoice($id)
     {
-        $consultationPatient = ConsultantPatient::where('is_paid', 1)->where('id', $id)->firstOrfail();
+         $consultationPatient = ConsultantPatient::where('is_paid', 1)->where('id', $id)->firstOrfail();
 
-        return \view('payments.consultation-pay-thank-you',compact( 'consultationPatient'));
+
+
+        $data =  $consultationPatient->transaction_data ;
+
+        $timestamp = '';
+        foreach ($data as $key => $details) {
+            $time = data_get($details, 'timestamp');
+            $timestamp =  $time;
+            break;
+        }
+
+
+        return \view('payments.consultation-pay-thank-you',compact( 'consultationPatient', 'timestamp'));
     }
 
     /**
@@ -408,7 +420,7 @@ class ConsultantPatientsController extends AdminBaseController
 
          $msg = 'شكرا تمت عملية الدفع : ' . $invoicetLink;
 
-        (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
+//        (new SMS())->setPhone($consultationPatient->mobile)->SetMessage($msg)->build();
 
         return redirect()->route('dashboard.consultant-patients.index')
             ->with('success',  'تم إرسال رابط الفاتورة بنجاح');

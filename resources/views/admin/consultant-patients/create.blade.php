@@ -39,7 +39,8 @@
                                     @endforeach
                                 </select>
                                 @error('consultation_type_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>

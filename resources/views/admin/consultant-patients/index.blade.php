@@ -33,6 +33,7 @@
                     <thead>
                     <tr>
                         <th>اسم المريض</th>
+                        <th>المصدر</th>
                         <th>العمر</th>
                         <th>الجنس</th>
                         <th>الهاتف</th>
@@ -49,6 +50,7 @@
                     @foreach($consultantPatients as $consultantPatient)
                         <tr>
                             <td>{{ $consultantPatient->name }}</td>
+                            <td>{{ __($consultantPatient->source) }}</td>
                             <td>{{ $consultantPatient->age }}</td>
                             <td>{{ $consultantPatient->gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
                             <td>{{ $consultantPatient->mobile }}</td>
