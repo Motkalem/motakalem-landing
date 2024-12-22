@@ -47,7 +47,8 @@
         }
 
         .invoice-details {
-            margin-bottom: 30px;
+            margin-bottom:50px;
+
 
         }
 
@@ -171,7 +172,7 @@
 
             <!-- Invoice Details -->
             <div class="invoice-details">
-                <table>
+                <table >
                     <tr>
                         <th style="text-align: start; font-weight: normal"> رقم الفاتورة  </th>
                         <td style="text-align: start">{{ $consultationPatient?->id }}</td>
@@ -217,12 +218,12 @@
                             {{ \Carbon\Carbon::parse($timestamp)->translatedFormat('d M Y, h:i A') }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <th style="text-align: start;font-weight: bold"> الإجمالي </th>
-                        <td style="text-align: start">{{  $consultationPatient?->consultationType->price }}   @lang('SAR')</td>
+                        <td style="text-align: start; ">{{  $consultationPatient?->consultationType->price }}   @lang('SAR')</td>
                     </tr>
                     <tr>
-                        <td style="text-align: start;font-weight: normal">
+                        <td style="text-align: start;font-weight: normal;">
 
                         </td>
                     </tr>
@@ -230,8 +231,7 @@
             </div>
 
         </div>
-        <app-footer _ngcontent-ng-c277388621="" _nghost-ng-c3011216936="">
-            <section _ngcontent-ng-c3011216936="" class="first_footer py-3">
+            <section _ngcontent-ng-c3011216936="" class="first_footer py-3" style="margin-top: 62px">
                 <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
                     <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
 
@@ -273,7 +273,6 @@
                     </div>
                 </div>
             </footer>
-        </app-footer>
     </div>
 
 

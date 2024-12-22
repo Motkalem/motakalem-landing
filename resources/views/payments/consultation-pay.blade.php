@@ -17,9 +17,6 @@
     src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
-
-
-<app-root _nghost-ng-c277388621="" ng-version="16.2.12">
     <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
         <div _ngcontent-ng-c2170032471="" class="nav-test">
             <nav _ngcontent-ng-c2170032471="" id="nav"
@@ -74,9 +71,9 @@
         </div>
     </app-navbar>
 
-    <div _ngcontent-ng-c277388621="" class="routing">
+    <div class="routing">
 
-        <div style="height: 400px;padding:30px; margin-bottom:30px; direction: ltr ">
+        <div style="height: 650px;padding:30px;  margin-bottom:30px; direction: ltr ">
             <h1 class="text-center" style="text-align: center">
                 ستقوم بدفع مبلغ {{$consultantPatient?->consultationType->price .' ' .__('SAR')}}
                 ({{$consultantPatient?->consultationType?->name}})
@@ -87,7 +84,6 @@
         </div>
 
 
-        <app-footer _ngcontent-ng-c277388621="" _nghost-ng-c3011216936="">
             <section _ngcontent-ng-c3011216936="" class="first_footer py-3">
                 <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
                     <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
@@ -129,7 +125,5 @@
                     </div>
                 </div>
             </footer>
-        </app-footer>
-</app-root>
 </body>
 </html>
