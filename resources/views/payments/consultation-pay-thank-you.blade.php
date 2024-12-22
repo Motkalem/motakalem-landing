@@ -58,7 +58,7 @@
         }
 
         .invoice-details th, .invoice-details td {
-            padding: 2px;
+            padding: 1px;
             padding-left: 5px;
             padding-right: 5px;
             text-align: left;
@@ -165,7 +165,8 @@
         <div style="height: 400px;padding:30px; margin-bottom:30px ">
             <!-- Invoice Header -->
             <div class="invoice-header">
-                <h2>شكراً لاستخدام خدمات متكلم</h2>
+                <h2> الفاتورة </h2>
+                <sm>شكراً لاستخدامكم خدمات متكلم</sm>
             </div>
 
             <!-- Invoice Details -->
@@ -219,6 +220,11 @@
                     <tr>
                         <th style="text-align: start;font-weight: bold"> الإجمالي </th>
                         <td style="text-align: start">{{  $consultationPatient?->consultationType->price }}   @lang('SAR')</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: start;font-weight: normal">
+
+                        </td>
                     </tr>
                 </table>
             </div>
