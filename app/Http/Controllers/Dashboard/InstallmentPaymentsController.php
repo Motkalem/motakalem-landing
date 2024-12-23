@@ -24,15 +24,17 @@ class InstallmentPaymentsController extends AdminBaseController
             });
         }
 
-        $installmentPayments = $query->with(['student', 'package'])->orderBy('id', 'desc')->paginate(12);
+         $installmentPayments = $query->with(['student', 'package', 'hyperpayWebHooksNotifications'])
+            ->orderBy('id', 'desc')->paginate(12);
+
+
 
         return view(
          'admin.installmentPayments.index',
             compact(
                 'installmentPayments',
                 'title',
-            )
-        );
+            ));
     }
 
 
@@ -45,4 +47,6 @@ class InstallmentPaymentsController extends AdminBaseController
         return view('admin.installmentPayments.show',
          compact('installmentPayment','title'));
     }
+
+
 }

@@ -2,6 +2,24 @@
 
 @push('styles')
     <link href="{{ asset('admin/table.css') }}" rel="stylesheet" />
+
+    <style>
+        .progress-circle {
+            width: 50px;
+            height: 50px;
+            background: conic-gradient(
+                #4caf50 calc(var(--progress) * 1%),
+                #e0e0e0 calc(var(--progress) * 1%)
+            );
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -19,6 +37,8 @@
                     <tr>
                         <th>اسم الطالب</th>
                         <th>اسم الباقة</th>
+                        <th> الأقساط  </th>
+                        <th> تاريخ اول قسط  </th>
                         <th class="text-center"> مكتملة الأقساط  </th>
                         <th style="width: 30%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
@@ -29,6 +49,15 @@
                     <tr>
                         <td>{{ $installmentPayment->student?->name }}</td>
                         <td>{{ $installmentPayment->package?->name }}</td>
+                        <td>
+                            <div class="progress-circle text-white"  style="--progress:
+                            {{($installmentPayment->successful_notifications   / $installmentPayment->package?->number_of_months) * 100}};">
+
+                                {{ $installmentPayment->successful_notifications  .'/'. $installmentPayment->package?->number_of_months }}
+                            </div>
+                        </td>
+                        <td>{{ $installmentPayment->first_installment_date }}</td>
+
                         <td class="text-center">
                             @if( $installmentPayment->is_completed)
                                 <span class="fw-bold text-success">
