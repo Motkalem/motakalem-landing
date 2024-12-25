@@ -7,7 +7,9 @@ use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
+use App\Notifications\Admin\HyperPayNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');

@@ -70,20 +70,24 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $data = $request->validate([
             'consultation_type_id' => 'required|exists:consultant_types,id',
-            'name' => 'required|string|max:255',
-            'age' => 'required|integer|min:0',
-            'gender' => 'required|in:male,female',
             'mobile' => 'required|string|max:15',
-            'city' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'age' => 'nullable|integer|min:0',
+            'gender' => 'nullable|in:male,female',
+            'city' => 'nullable|string|max:255',
         ]);
 
         $formattedMobile = $this->formatMobile($request->input('mobile'));
 
         $data = array_merge($data, ['mobile' => $formattedMobile]);
 
+        if ($request->expectsJson())
+            $data = array_merge($data, ['source'=> 'campaign']);
+
         $patient = ConsultantPatient::query()->create($data);
 
         if ($request->expectsJson()) {
+
             return response()->json([
                 'success' => true,
                 'message' => 'Patient created successfully.',
