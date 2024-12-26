@@ -32,16 +32,15 @@
                 <table class="table table-striped table-class">
                     <thead>
                     <tr>
-                        <th>اسم المريض</th>
-                        <th>المصدر</th>
-                        <th>العمر</th>
-                        <th>الجنس</th>
-                        <th>الهاتف</th>
-                        <th>المدينة</th>
-                        <th> الاستشارة</th>
-                        <th> حالة الدفع</th>
+                        <th class="text-start">الاسم  </th>
+                        <th class="text-center">المصدر</th>
+                        <th class="text-center">العمر</th>
+                        <th class="text-center">الجنس</th>
+                        <th class="text-center">هاتف</th>
+                        <th class="text-center">المدينة</th>
+                        <th class="text-center"> الإستشارة</th>
+                        <th class="text-center"> حالة الدفع  </th>
                         <th class="text-center"> المعاملات</th>
-                        <th class="text-center"> الدفع</th>
                         <th class="text-center"> الفاتورة</th>
                         <th class="text-center">{{ __('Actions') }}</th>
                     </tr>
@@ -49,13 +48,13 @@
                     <tbody>
                     @foreach($consultantPatients as $consultantPatient)
                         <tr>
-                            <td>{{ $consultantPatient->name }}</td>
-                            <td>{{ __($consultantPatient->source) }}</td>
-                            <td>{{ $consultantPatient->age }}</td>
-                            <td>{{ $consultantPatient->gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
-                            <td>{{ $consultantPatient->mobile }}</td>
-                            <td>{{ $consultantPatient->city }}</td>
-                            <td>
+                            <td class="text-center">{{ $consultantPatient->name }}</td>
+                            <td class="text-center">{{ __($consultantPatient->source) }}</td>
+                            <td class="text-center">{{ $consultantPatient->age??'---' }}</td>
+                            <td class="text-center">{{ $consultantPatient->gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
+                            <td class="text-center">{{ $consultantPatient->mobile }}</td>
+                            <td class="text-center">{{ $consultantPatient->city??'---' }}</td>
+                            <td class="text-center">
                                 @if($consultantPatient->consultationType->name)
 
                                     <a href="{{route('dashboard.consultant-types.edit', $consultantPatient->consultationType?->id)}}">
@@ -67,22 +66,24 @@
                                 @else
                                     غير محدد
                                 @endif
-
                             </td>
-
                             <td class="text-center">
                                 @if($consultantPatient->is_paid)
-                                    <span class="text-success">
-                                        مدفوع
+                                    <span class="text-success" title=" تم الدفع !">
+                                        <i class="fa fa-check-circle text-success"> </i>
                                     </span>
                                 @else
-                                    <span class="text-danger">
-                                        غير مدفوع
-                                    </span>
+                                    <button
+                                        class="px-2 btn btn-success bg-black btn-sm text-white send-payment-link"
+                                        data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmationModal">
+                                        ارسل الرابط
+                                    </button>
                                 @endif
                             </td>
                             <td class="text-center">
-                                <button class="px-4 btn btn-success bg-success btn-sm text-white show-transactions"
+                                <button class="px-2 btn btn-success bg-success btn-sm text-white show-transactions"
                                         data-transactions='@json($consultantPatient->transaction_data)'
                                         data-bs-toggle="modal"
                                         data-bs-target="#transactionsModal">
@@ -90,23 +91,11 @@
                                 </button>
                             </td>
 
-                            <td class="text-center">
-                                @if($consultantPatient->is_paid)
-                                    تم الدفع !
-                                @else
-                                    <button
-                                        class="px-4 btn btn-success bg-black btn-sm text-white send-payment-link"
-                                        data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#confirmationModal">
-                                        رابط
-                                    </button>
-                                @endif
-                            </td>
+
                             <td class="text-center">
                                 @if($consultantPatient->is_paid)
                                     <button
-                                        class="px-4 btn btn-success bg-black btn-sm text-white send-invoice-link"
+                                        class="px-2 btn btn-success bg-black btn-sm text-white send-invoice-link"
                                         data-href="{{route('dashboard.re-send-sms-invoice-link', $consultantPatient->id)}}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#invoiceConfirmationModal">
@@ -116,7 +105,7 @@
                                 @else
                                     <button
                                         disabled
-                                        class="px-4 btn btn-success bg-black btn-sm text-white"
+                                        class="px-2 btn btn-success bg-black btn-sm text-white"
                                         data-bs-toggle="modal">
                                         رابط
                                     </button>
@@ -127,11 +116,11 @@
                                 @if($consultantPatient->is_paid)
                                     ---
                                 @else
-                                    <a class="px-4 btn btn-info btn-sm"
+                                    <a class="px-2 btn btn-info btn-sm"
                                        href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
                                         تعديل
                                     </a>
-                                    <button class="px-4 btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    <button class="px-2 btn btn-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#statusModal" data-id="{{ $consultantPatient->id }}">
                                         حذف
                                     </button>
