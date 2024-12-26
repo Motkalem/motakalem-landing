@@ -90,7 +90,7 @@ class ConsultantPatientsController extends AdminBaseController
 
             return response()->json([
                 'success' => true,
-                'message' => 'Patient created successfully.',
+                'message' => __('Registered successfully.'),
                 'data' => $patient,
                 'payment_url' => $this->generatePaymentLink($patient),
             ], 201);
