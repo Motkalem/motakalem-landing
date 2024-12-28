@@ -115,7 +115,6 @@
                                     @error('number_of_months')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-
                                     @if($package->installmentPayments->count())
 
                                         <input type="hidden"
@@ -136,7 +135,8 @@
                                        placeholder=" تاريخ البدأ">
 
                                 @error('starts_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
+
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>

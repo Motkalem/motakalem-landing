@@ -73,6 +73,10 @@
     "installments payments": "المدفوعات المجدولة",
     "Request successfully processed in 'Merchant in Connector Test Mode'": "تمت المعاملة بنجاح !",
     "registration does not exist": "رقم التسجيل غير معروف !",
-    "The phone number already exists.": "رقم الهاتف مسجل من قبل !"
+    "The phone number already exists.": "رقم الهاتف مسجل من قبل !",
+    "dashboard": "لوحة التحكم",
+    "campaign": "حملة",
+    "Registered successfully.": "تم التسجيل"
+
 
 }

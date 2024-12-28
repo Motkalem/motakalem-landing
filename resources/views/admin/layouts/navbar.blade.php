@@ -2,8 +2,8 @@
     <div class="header-container">
         <ul class="nav-left">
             <li><a id="sidebar-toggle" class="sidebar-toggle" href="javascript:void(0);"><i class="ti-menu"></i></a></li>
-            <li class="search-box"><a class="search-toggle no-pdd-right" href="javascript:void(0);"><i class="search-icon ti-search pdd-right-10"></i> <i class="search-icon-close ti-close pdd-right-10"></i></a></li>
-            <li class="search-input"><input class="form-control" type="text" placeholder="جست‌وجو..."></li>
+
+            @yield('search')
         </ul>
         <ul class="nav-right">
             {{-- <li class="notifications dropdown"><span class="counter bgc-red">۳</span> <a href class="dropdown-toggle no-after" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-bell"></i></a>

@@ -21,7 +21,17 @@ class StudentsController extends AdminBaseController
     public function index()
     {
         $title = 'الطلاب';
-        $students = Student::orderBy('id', 'desc')->paginate(12);
+
+        $search = request()->query('search');
+
+        $query = Student::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('phone', 'LIKE', "%{$search}%");
+        }
+
+        $students =$query->orderBy('id', 'desc')->paginate(12);
         $studentsCount = Student::query()->count();
 
         return view('admin.students.index',

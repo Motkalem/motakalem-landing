@@ -116,6 +116,27 @@
                     <span class="title">رسائل إتصل بنا</span>
                 </a>
             </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.consultant-types.index') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.consultant-types.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-bag"></i>
+                    </span>
+                    <span class="title">أنواع الإستشارات </span>
+                </a>
+            </li>
+
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.consultant-patients.index') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.consultant-patients.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-comments-smiley"></i>
+                    </span>
+                    <span class="title">مرضي الإستشارات </span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>

@@ -9,6 +9,12 @@
     <h6 class="c-grey-900">رسائل إتصل بنا  </h6>
     <div class="mx-4 text-end">
     <div class="mT-30">
+        <form action="{{URL::current()}}">
+            <div class="pb-4 w-25 d-flex align-items-center">
+                <input type="search" name="search" value="{{data_get($_GET,'search')}}" class="form-control" id="search" placeholder="بحث"/>
+                <button class="btn btn-primary btn-sm mx-2">بحث</button>
+            </div>
+        </form>
         <table class="table table-striped table-class">
             <thead>
                 <tr>

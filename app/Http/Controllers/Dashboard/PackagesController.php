@@ -15,7 +15,16 @@ class PackagesController extends AdminBaseController
     public function index()
     {
 
-        $packages = Package::query()->orderBy('id', 'desc')->paginate(12);
+        $search = request()->query('search');
+
+        $query = Package::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $packages = $query->orderBy('id', 'desc')->paginate(12);
+
         $title= 'الباقات';
 
         $packagesCount = Package::query()->count();

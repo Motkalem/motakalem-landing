@@ -13,6 +13,7 @@
                         <div>
                             <input type="text" class="form-control" name="email" value="{{ old('email') }}" id="email">
                             @error('email')
+
                                  <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>

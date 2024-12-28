@@ -4,13 +4,12 @@ use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\HyperPay\TestAction;
 use App\Actions\Paymob\callbackAction;
+use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\MainController;
-use App\Models\ParentContract;
-use App\Notifications\SendContractNotification;
-use App\Notifications\SuccessSubscriptionPaidNotification;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\PaymentController;
+use App\Notifications\Admin\HyperPayNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,10 +24,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')
-    ->name('checkout.index');
 
+Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
+
+Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
+    ->name('checkout.consultation.index');
+
+Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])
+    ->name('checkout.consultation.status');
+
+Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'getInvoice'])
+    ->name('checkout.send-sms-invoice-link');
+
+Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoiceLink'])
+    ->name('checkout.consultation.send-invoice');;
 
 Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
