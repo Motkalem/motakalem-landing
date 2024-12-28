@@ -267,7 +267,7 @@
                             <div _ngcontent-ng-c3011216936="" class="d-flex flex-column mt-2"><a
                                         _ngcontent-ng-c3011216936="" href="mailto:“info@motkalem.com”"
                                         class="text-decoration-underline">info@motkalem.sa</a></div>
-                            <sm class="text-white text-sm-center">&copy; {{ date('Y') }} متكلم - جميع الحقوق محفوظة</sm>
+                            <sm class="text-white text-sm-center">&copy; {{ '2025' }} متكلم - جميع الحقوق محفوظة</sm>
                         </div>
 
                     </div>

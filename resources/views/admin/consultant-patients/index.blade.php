@@ -114,7 +114,13 @@
                             </td>
                             <td class="text-right project-actions">
                                 @if($consultantPatient->is_paid)
-                                    ---
+                                    <a class="px-2 btn btn-info btn-sm opacity-50"
+                                       href="#?" style="cursor: not-allowed">
+                                        تعديل
+                                    </a>
+                                    <button disabled class="px-2 btn btn-danger btn-sm"  style="cursor: not-allowed">
+                                        حذف
+                                    </button>
                                 @else
                                     <a class="px-2 btn btn-info btn-sm"
                                        href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
