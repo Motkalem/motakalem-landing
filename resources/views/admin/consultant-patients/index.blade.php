@@ -118,9 +118,9 @@
                                        href="#?" style="cursor: not-allowed">
                                         تعديل
                                     </a>
-                                    <button disabled class="px-2 btn btn-danger btn-sm"  style="cursor: not-allowed">
+                                    <a href="#?"  class="px-2 btn btn-danger btn-sm opacity-50"  style="cursor: not-allowed">
                                         حذف
-                                    </button>
+                                    </a>
                                 @else
                                     <a class="px-2 btn btn-info btn-sm"
                                        href="{{ route('dashboard.consultant-patients.edit', $consultantPatient->id) }}">
