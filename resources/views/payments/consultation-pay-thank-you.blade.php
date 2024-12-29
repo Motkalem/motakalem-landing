@@ -215,7 +215,7 @@
                     <tr>
                         <th style="text-align: start;font-weight: normal">وقت وتاريخ الدفع</th>
                         <td style="text-align: start">
-                            {{ \Carbon\Carbon::parse($timestamp)->translatedFormat('d M Y, h:i A') }}
+                            {{ \Carbon\Carbon::parse($consultationPatient->updated_at)->translatedFormat('d M Y, h:i A') }}
                         </td>
                     </tr>
                     <tr >
