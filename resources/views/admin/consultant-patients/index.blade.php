@@ -39,7 +39,8 @@
                         <th class="text-center">هاتف</th>
                         <th class="text-center">المدينة</th>
                         <th class="text-center"> الإستشارة</th>
-                        <th class="text-center"> حالة الدفع  </th>
+                        <th class="text-center">  الحالة    </th>
+                        <th class="text-center"> رابط الدفع  </th>
                         <th class="text-center"> المعاملات</th>
                         <th class="text-center"> الفاتورة</th>
                         <th class="text-center">{{ __('Actions') }}</th>
@@ -51,7 +52,19 @@
                             <td class="text-center">{{ $consultantPatient->name }}</td>
                             <td class="text-center">{{ __($consultantPatient->source) }}</td>
                             <td class="text-center">{{ $consultantPatient->age??'---' }}</td>
-                            <td class="text-center">{{ $consultantPatient->gender === 'male' ? 'ذكر' : 'أنثى' }}</td>
+                            <td class="text-center">
+                                @if($consultantPatient->gender)
+
+                                    @if($consultantPatient->gender == 'male')
+                                        ذكر
+
+                                    @else
+                                        أنثى
+                                    @endif
+                                @else
+                                   ---
+                                @endif
+                            </td>
                             <td class="text-center">{{ $consultantPatient->mobile }}</td>
                             <td class="text-center">{{ $consultantPatient->city??'---' }}</td>
                             <td class="text-center">
@@ -65,6 +78,17 @@
 
                                 @else
                                     غير محدد
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($consultantPatient->is_paid)
+                                    <span class="text-success" title=" تم الدفع !">
+                                        <i class="fa fa-check-circle text-success"> </i>
+                                    </span>
+                                @else
+                                    <span class="text-success" title=" لم يتم الدفع !">
+                                        <i class="fa fa-close text-danger"> </i>
+                                    </span>
                                 @endif
                             </td>
                             <td class="text-center">
