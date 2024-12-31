@@ -39,7 +39,7 @@
                         <th class="text-center">هاتف</th>
                         <th class="text-center">المدينة</th>
                         <th class="text-center"> الإستشارة</th>
-                        <th class="text-center">  الحالة    </th>
+                        <th class="text-center"> حالة الدفع </th>
                         <th class="text-center"> رابط الدفع  </th>
                         <th class="text-center"> المعاملات</th>
                         <th class="text-center"> الفاتورة</th>
@@ -82,8 +82,8 @@
                             </td>
                             <td class="text-center">
                                 @if($consultantPatient->is_paid)
-                                    <span class="text-success" title=" تم الدفع !">
-                                        <i class="fa fa-check-circle text-success"> </i>
+                                    <span class="text-success" title="">
+                                       تم الدفع !
                                     </span>
                                 @else
                                     <span class="text-success" title=" لم يتم الدفع !">
@@ -92,19 +92,15 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if($consultantPatient->is_paid)
-                                    <span class="text-success" title=" تم الدفع !">
-                                        <i class="fa fa-check-circle text-success"> </i>
-                                    </span>
-                                @else
+
                                     <button
                                         class="px-2 btn btn-success bg-black btn-sm text-white send-payment-link"
                                         data-href="{{route('dashboard.send-sms-payment-link', $consultantPatient->id)}}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#confirmationModal">
-                                        ارسل الرابط
+                                        ارسل
                                     </button>
-                                @endif
+
                             </td>
                             <td class="text-center">
                                 <button class="px-2 btn btn-success bg-success btn-sm text-white show-transactions"
