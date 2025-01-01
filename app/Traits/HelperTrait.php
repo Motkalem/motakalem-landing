@@ -20,7 +20,6 @@ trait HelperTrait
             return $mobile;
         }
 
-        dd($mobile);
 
 
         if (strlen($mobile) == 10) {

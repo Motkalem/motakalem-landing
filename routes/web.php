@@ -44,7 +44,9 @@ Route::get('checkout-recurring/{checkoutId}',   RecurringCheckoutAction::class)-
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 
 Route::get('/callback', callbackAction::class)->name('callback');
-Route::get('/', [MainController::class, 'index'])->name('home');
+
+Route::get('/home', [MainController::class, 'index'])->name('home');
+
 Route::get('/join', [MainController::class, 'join'])->name('join');
 Route::post('/join', [MainController::class, 'sendEmail'])->name('sendEmail');
 Route::get('/thankyou', [MainController::class, 'thankyouPage'])->name('thankyou');
