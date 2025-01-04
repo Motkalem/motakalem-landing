@@ -35,7 +35,6 @@ class CreditAction
         $this->joinController = $joinController;
     }
 
-
     public function rules(): array
     {
 
