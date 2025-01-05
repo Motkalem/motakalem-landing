@@ -85,11 +85,14 @@ class CreditAction
         $request = request();
         $phone = $this->formatMobile($request->phone);
 
+
+        $name = $request->first_name.' '.$request->middle_name.' '.$request->last_name;
+
         $student = Student::query()->firstOrCreate([
             'phone' => $phone,
         ],
             [
-                'name' => $request->name,
+                'name' => $name,
                 'email' => $request->email,
                 'age' => $request->age,
                 'phone' => $phone,
