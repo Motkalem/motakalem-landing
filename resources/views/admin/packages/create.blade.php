@@ -72,6 +72,18 @@
 
                     <!-- Installment Value -->
                     <div class="mb-3 row py-2 px-2" id="installment_value_container" style="display: none;">
+                        <!-- Number of Months -->
+                        <div class="mb-3 row" id="number_of_months_container" style="display: none;">
+                            <label for="number_of_months" class="form-label col-sm-2 col-form-label">عدد الشهور</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control @error('number_of_months') is-invalid @enderror" id="number_of_months"
+                                       name="number_of_months" value="{{ old('number_of_months', $package->number_of_months ?? '') }}"
+                                       placeholder="عدد الشهور">
+                                @error('number_of_months')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                         <label for="first_inst" class="form-label col-sm-2 col-form-label">  القسط الاول</label>
                         <div class="col-sm-10 mb-2">
@@ -128,18 +140,6 @@
 
 
 
-                    <!-- Number of Months -->
-                    <div class="mb-3 row" id="number_of_months_container" style="display: none;">
-                        <label for="number_of_months" class="form-label col-sm-2 col-form-label">عدد الشهور</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control @error('number_of_months') is-invalid @enderror" id="number_of_months"
-                             name="number_of_months" value="{{ old('number_of_months', $package->number_of_months ?? '') }}"
-                              placeholder="عدد الشهور">
-                            @error('number_of_months')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
 
 
                     <!-- Start Date -->
