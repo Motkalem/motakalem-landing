@@ -35,7 +35,7 @@
                         <th>نوع الدفع</th>
                         <th>الحالة</th>
                         <th>عدد الشهور</th>
-                        <th>القسط الشهري</th>
+                        <th>القسط الاول</th>
                         <th>الإجمالي</th>
                         <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
@@ -59,7 +59,7 @@
                             </td>
                             <td class="text-center project_progress">
                             <span>
-                            {{$package->installment_value == null ? '---' : $package->installment_value.' '.__('SAR') }}</span>
+                            {{$package->first_inst == null ? '---' : $package->first_inst.' '.__('SAR') }}</span>
                             </td>
 
                             <td class="text-center project_progress ">
