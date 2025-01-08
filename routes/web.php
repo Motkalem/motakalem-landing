@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
 

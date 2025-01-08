@@ -45,17 +45,27 @@ class PackagesController extends AdminBaseController
             'name' => 'required|string|max:255|unique:packages,name',
             'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
-            'installment_value' => 'nullable|numeric|min:0|required_if:total,null',
+
+            'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'second_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
 
             'starts_date' => 'required|date|before:ends_date',
             'ends_date' => 'required|date|after:starts_date',
-
             'is_active' => 'sometimes',
         ]);
 
         $package = new Package([
             'number_of_months' => $request->number_of_months,
-            'installment_value' => $request->installment_value,
+
+            'first_inst' => $request->first_inst??0,
+            'second_inst' => $request->second_inst??0,
+            'third_inst' => $request->third_inst??0,
+            'fourth_inst' => $request->fourth_inst??0,
+            'fifth_inst' => $request->fifth_inst??0,
+
             'is_active' => $request->is_active == 'on' ? true : false,
             'name' => $request->name,
             'total' => $request->total,
@@ -72,12 +82,11 @@ class PackagesController extends AdminBaseController
 
     public function edit($id)
     {
-
         $title= 'تحديث الباقة';
+
         $package = Package::findOrFail($id);
 
-        return view('admin.packages.edit',
-         compact('package','title'));
+        return view('admin.packages.edit', compact('package','title'));
     }
 
     /**
@@ -85,13 +94,19 @@ class PackagesController extends AdminBaseController
      * @param $id
      * @return RedirectResponse
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id) : RedirectResponse
     {
 
         $request->validate([
             'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
-            'installment_value' => 'nullable|numeric|min:0|required_if:total,null',
+
+            'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'second_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
+
             'is_active' => 'sometimes',
             'starts_date' => 'required|date|before:ends_date',
             'ends_date' => 'required|date|after:starts_date',
@@ -108,10 +123,16 @@ class PackagesController extends AdminBaseController
             $package->installment_value =null;
             $package->total = $request->total;
         }else {
-            $package->number_of_months = $package->payments->count() ? $package->number_of_months : $request->number_of_months;
 
-            $package->installment_value = $request->installment_value;
-            $package->total = null;
+           $package->number_of_months = $package->payments->count() ? $package->number_of_months : $request->number_of_months;
+
+           $package->first_inst = $request->first_inst??0;
+           $package->second_inst = $request->second_inst??0;
+           $package->third_inst = $request->third_inst??0;
+           $package->fourth_inst = $request->fourth_inst??0;
+           $package->fifth_inst = $request->fifth_inst??0;
+
+           $package->total = null;
         }
 
         $package->is_active = $request->is_active == 'on' ? true : false;

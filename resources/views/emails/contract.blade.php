@@ -158,52 +158,36 @@
                                                     @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
                                                         {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
                                                     @else
-                                                        {!! '<span style="font-weight: bold;">' . ($data->package?->number_of_months * $data->package?->installment_value) . '</span>' !!}
+                                                        {!! '<span style="font-weight: bold;">'
+                                            . ( $data->package?->first_inst + $data->package?->second_inst
+                                                + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                     @endif
                                                     ريال سعودي.
 
-                                                    @if($data->package?->payment_type !== \App\Models\Package::ONE_TIME)
+                                                    @if($data->package?->payment_type === 'installments')
                                                         <br/>
                                                         2. جدول السداد: يتم دفع الأقساط على النحو التالي:
                                                         <br/>
-                                                        @for ($i = 0; $i < $data->package?->number_of_months; $i++)
-                                                            ◦ القسط
-                                                            @if ($i == 0)
-                                                                الأول
-                                                            @elseif ($i == 1)
-
-                                                                الثاني
-                                                            @elseif ($i == 2)
-                                                                الثالث
-                                                            @elseif ($i == 3)
-                                                               الرابع
-                                                            @elseif ($i == 4)
-                                                                الخامس
-                                                            @elseif ($i == 5)
-                                                               السادس
-                                                            @elseif ($i == 7)
-                                                               السابع
+                                                        @php
+                                                            $installments = [
+                                                                'الأول' => $data->package?->first_inst,
+                                                                'الثاني' => $data->package?->second_inst,
+                                                                'الثالث' => $data->package?->third_inst,
+                                                                'الرابع' => $data->package?->fourth_inst,
+                                                                'الخامس' => $data->package?->fifth_inst,
+                                                            ];
+                                                        @endphp
+                                                        @foreach ($installments as $key => $value)
+                                                            @if ($value > 0)
+                                                                ◦ القسط {{ $key }}: {{ $value }} ريال
+                                                                @if ($loop->first)
+                                                                    يُدفع عند الاشتراك.
+                                                                @else
+                                                                    يُدفع قبل بدء المرحلة {{ $key }}.
+                                                                @endif
+                                                                <br/>
                                                             @endif
-                                                            : {{ $data->package?->installment_value }} ريال
-                                                            @if($i == 0)
-                                                                يُدفع عند الاشتراك.
-
-                                                            @elseif ($i == 1)
-
-                                                                يدفع قبل بدأ المرحلة الثانية
-                                                            @elseif ($i == 2)
-                                                                يدفع في المرحلة الثالثة
-                                                            @elseif ($i == 3)
-                                                                يدفع في المرحلة الرابعة
-                                                            @elseif ($i == 4)
-                                                                يدفع في المرحلة الخامسة
-                                                            @elseif ($i == 5)
-                                                                يدفع في المرحلة السادسة
-                                                            @elseif ($i == 7)
-                                                                يدفع في المرحلة السابعة
-                                                            @endif
-                                                            <br/>
-                                                        @endfor
+                                                        @endforeach
                                                     @endif
 
                                                 </li>

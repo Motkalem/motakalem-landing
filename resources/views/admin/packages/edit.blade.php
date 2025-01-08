@@ -83,25 +83,7 @@
                         @endif
 
                         @if($package->payment_type == Package::INSTALLMENTS)
-                            <!-- Installment Value -->
-                            <div class="mb-3 row" id="installment_value_container"  >
-                                <label for="installment_value" class="form-label col-sm-2 col-form-label">قيمة
-                                    القسط</label>
-                                <div class="col-sm-10">
-                                    <input type="number"
-                                           class="form-control @error('installment_value') is-invalid @enderror"
-                                           id="installment_value" name="installment_value"
-                                           value="{{ old('installment_value', $package->installment_value ?? '') }}"
-                                           placeholder="قيمة القسط">
-                                    @error('installment_value')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
 
-
-
-                            <!-- Number of Months -->
                             <div class="mb-3 row" id="number_of_months_container" >
                                 <label for="number_of_months" class="form-label col-sm-2 col-form-label">عدد الشهور</label>
                                 <div class="col-sm-10">
@@ -124,6 +106,67 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <!-- Installment Value -->
+                            <div class="mb-3 row py-2 px-2" id="installment_value_container">
+
+                                <label for="first_inst" class="form-label col-sm-2 col-form-label">  القسط الاول</label>
+                                <div class="col-sm-10 mb-2">
+                                    <input type="number" class="form-control @error('first_inst') is-invalid @enderror"
+                                           id="first_inst" name="first_inst"
+                                           value="{{ old('first_inst', $package->first_inst ?? '') }}" placeholder=" القسط الاول  ">
+                                    @error('first_inst')
+
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <label for="second_inst" class="form-label col-sm-2 col-form-label ">  القسط الثاني</label>
+                                <div class="col-sm-10  mb-2">
+                                    <input type="number" class="form-control @error('second_inst') is-invalid @enderror"
+                                           id="second_inst" name="second_inst"
+                                           value="{{ old('second_inst', $package->second_inst ?? '') }}" placeholder=" القسط الثاني  ">
+                                    @error('second_inst')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <label for="third_inst" class="form-label col-sm-2 col-form-label ">  القسط الثالث</label>
+                                <div class="col-sm-10  mb-2">
+                                    <input type="number" class="form-control @error('third_inst') is-invalid @enderror"
+                                           id="third_inst" name="third_inst"
+                                           value="{{ old('third_inst', $package->third_inst ?? '') }}" placeholder=" القسط الثالث  ">
+                                    @error('third_inst')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <label for="fourth_inst" class="form-label col-sm-2 col-form-label ">  القسط الرابع</label>
+                                <div class="col-sm-10  mb-2">
+                                    <input type="number" class="form-control @error('fourth_inst') is-invalid @enderror"
+                                           id="fourth_inst" name="fourth_inst"
+                                           value="{{ old('fourth_inst', $package->fourth_inst ?? '') }}" placeholder=" القسط الرابع">
+                                    @error('fourth_inst')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <label for="fifth_inst" class="form-label col-sm-2 col-form-label ">  القسط الخامس</label>
+                                <div class="col-sm-10  mb-2">
+                                    <input type="number" class="form-control @error('fifth_inst') is-invalid @enderror"
+                                           id="fifth_inst" name="fifth_inst"
+                                           value="{{ old('fifth_inst', $package->fifth_inst ?? '') }}" placeholder=" القسط الخامس">
+                                    @error('fifth_inst')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Number of Months -->
+
                         @endif
                         <!-- Start Date -->
                         <div class="mb-3 row">
