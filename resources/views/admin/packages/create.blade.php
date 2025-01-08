@@ -77,7 +77,7 @@
                         <div class="col-sm-10 mb-2">
                             <input type="number" class="form-control @error('first_inst') is-invalid @enderror"
                             id="first_inst" name="first_inst"
-                             value="{{ old('first_inst', $package->first_inst ?? '') }}" placeholder=" القسط الاول  ">
+                             value="{{ old('first_inst', $package->first_inst ?? 0) }}" placeholder=" القسط الاول  ">
                              @error('first_inst')
 
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -88,7 +88,7 @@
                         <div class="col-sm-10  mb-2">
                             <input type="number" class="form-control @error('second_inst') is-invalid @enderror"
                             id="second_inst" name="second_inst"
-                             value="{{ old('second_inst', $package->second_inst ?? '') }}" placeholder=" القسط الثاني  ">
+                             value="{{ old('second_inst', $package->second_inst ?? 0) }}" placeholder=" القسط الثاني  ">
                              @error('second_inst')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -98,7 +98,7 @@
                         <div class="col-sm-10  mb-2">
                             <input type="number" class="form-control @error('third_inst') is-invalid @enderror"
                             id="third_inst" name="third_inst"
-                             value="{{ old('third_inst', $package->third_inst ?? '') }}" placeholder=" القسط الثالث  ">
+                             value="{{ old('third_inst', $package->third_inst ?? 0) }}" placeholder=" القسط الثالث  ">
                              @error('third_inst')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -108,7 +108,7 @@
                         <div class="col-sm-10  mb-2">
                             <input type="number" class="form-control @error('fourth_inst') is-invalid @enderror"
                                    id="fourth_inst" name="fourth_inst"
-                                   value="{{ old('fourth_inst', $package->fourth_inst ?? '') }}" placeholder=" القسط الرابع">
+                                   value="{{ old('fourth_inst', $package->fourth_inst ?? 0) }}" placeholder=" القسط الرابع">
                             @error('fourth_inst')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -118,7 +118,7 @@
                         <div class="col-sm-10  mb-2">
                             <input type="number" class="form-control @error('fifth_inst') is-invalid @enderror"
                                    id="fifth_inst" name="fifth_inst"
-                                   value="{{ old('fifth_inst', $package->fifth_inst ?? '') }}" placeholder=" القسط الخامس">
+                                   value="{{ old('fifth_inst', $package->fifth_inst ?? 0) }}" placeholder=" القسط الخامس">
                             @error('fifth_inst')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
