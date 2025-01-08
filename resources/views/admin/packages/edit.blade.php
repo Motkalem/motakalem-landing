@@ -141,26 +141,29 @@
                                     @enderror
                                 </div>
 
+                                @if( $package->number_of_months > 3)
                                 <label for="fourth_inst" class="form-label col-sm-2 col-form-label ">  القسط الرابع</label>
                                 <div class="col-sm-10  mb-2">
                                     <input type="number" class="form-control @error('fourth_inst') is-invalid @enderror"
                                            id="fourth_inst" name="fourth_inst"
-                                           value="{{ old('fourth_inst', $package->fourth_inst ?? '') }}" placeholder=" القسط الرابع">
+                                           value="{{ old('fourth_inst', $package->fourth_inst ?? 0) }}" placeholder=" القسط الرابع">
                                     @error('fourth_inst')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                @endif
 
+                                @if( $package->number_of_months > 4)
                                 <label for="fifth_inst" class="form-label col-sm-2 col-form-label ">  القسط الخامس</label>
                                 <div class="col-sm-10  mb-2">
                                     <input type="number" class="form-control @error('fifth_inst') is-invalid @enderror"
                                            id="fifth_inst" name="fifth_inst"
-                                           value="{{ old('fifth_inst', $package->fifth_inst ?? '') }}" placeholder=" القسط الخامس">
+                                           value="{{ old('fifth_inst', $package->fifth_inst ?? 0) }}" placeholder=" القسط الخامس">
                                     @error('fifth_inst')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
+                                @endif
                             </div>
 
 
