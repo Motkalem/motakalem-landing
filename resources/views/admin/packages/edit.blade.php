@@ -152,15 +152,15 @@
                                     @enderror
                                 </div>
 
-
-
                                 <label for="fifth_inst" class="form-label col-sm-2 col-form-label ">  القسط الخامس</label>
-                                <div class="col-sm-10  mb-2">
+                                <div class="col-sm-10 mb-2">
+
                                     <input type="number" class="form-control @error('fifth_inst') is-invalid @enderror"
                                            id="fifth_inst" name="fifth_inst"
                                            value="{{ old('fifth_inst', $package->fifth_inst ?? 0) }}" placeholder=" القسط الخامس">
+
                                     @error('fifth_inst')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 

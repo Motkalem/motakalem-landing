@@ -200,9 +200,9 @@ class ConsultantPatientsController extends AdminBaseController
 
         $entity_id = config('hyperpay.entity_id');
 
-        if (request()->payment_method == 'MADA') {
+        if (request()->brand == 'mada') {
 
-            $entity_id = env('ENTITY_ID_MADA'); //mada
+            $entity_id = env('ENTITY_ID_MADA'); //MADA
         }
 
         $access_token = env('AUTH_TOKEN');
