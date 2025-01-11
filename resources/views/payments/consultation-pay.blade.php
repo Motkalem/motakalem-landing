@@ -178,8 +178,8 @@
                                     _ngcontent-ng-c3011216936="" href="https//motkalem.sa">الرئيسية</a>
                             </div>
                             <div _ngcontent-ng-c3011216936="" class="d-flex flex-column mt-2"><a
-                                    _ngcontent-ng-c3011216936="" href="mailto:“info@motkalem.com”"
-                                    class="text-decoration-underline">info@motkalem.com</a></div>
+                                    _ngcontent-ng-c3011216936="" href="mailto:“info@motkalem.sa”"
+                                    class="text-decoration-underline">info@motkalem.sa</a></div>
                         </div>
 
                     </div>
