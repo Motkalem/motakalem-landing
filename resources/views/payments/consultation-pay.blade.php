@@ -110,7 +110,7 @@
                     &emsp13;
                     <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'master'])) }}"
                        style="display: inline-block; text-decoration: none;">
-                        <img src="{{asset('images/brands/master.png')}}" style="padding-right: 5px; width: 150px;" alt="MasterCard" />
+                        <img src="{{asset('images/brands/master.png')}}" style="padding-right: 5px; width: 120px;" alt="MasterCard" />
                     </a>
                     &emsp13;
                     <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'mada'])) }}"
