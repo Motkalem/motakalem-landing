@@ -97,6 +97,15 @@
                 @else
                     <form action="{{route('checkout.consultation.status', $_GET['pid'])}}" class="paymentWidgets"
                           data-brands="VISA"></form>
+
+                    <div style="text-align: center;margin-top: 40px;">
+                        <a href="javascript:void(0);"
+                           class="payment-method-title"
+                           style="text-align: center; color: #d61313; "
+                           onclick="removeBrandParam()">
+                            تغيير وسيلة الدفع ؟
+                        </a>
+                    </div>
                 @endif
             @else
                 <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
