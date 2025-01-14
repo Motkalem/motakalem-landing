@@ -13,7 +13,7 @@ class StoreRecurringPaymentData
 
         $data = [
             'entityId' => env('ENTITY_ID'),
-            'amount' => $package->installment_value,
+            'amount' => $package->first_inst,
             'currency' => 'SAR',
             'paymentType' => 'DB',
             'createRegistration' => 'true',
@@ -35,7 +35,7 @@ class StoreRecurringPaymentData
 
         $data = [
             'entityId' => env('ENTITY_ID'),
-            'amount' => $package->installment_value,
+            'amount' => $package->first_inst,
             'currency' => 'SAR',
             'paymentType' => 'DB',
             'createRegistration' => 'true',

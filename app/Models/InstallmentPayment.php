@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InstallmentPayment extends Model
 {
@@ -28,6 +29,15 @@ class InstallmentPayment extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function installments(): HasMany
+    {
+        return $this->hasMany(Installment::class);
+    }
+
 
     public function hyperpayWebHooksNotifications()
     {

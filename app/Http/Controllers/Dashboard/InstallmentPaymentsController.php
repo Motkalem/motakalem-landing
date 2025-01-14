@@ -28,7 +28,6 @@ class InstallmentPaymentsController extends AdminBaseController
             ->orderBy('id', 'desc')->paginate(12);
 
 
-
         return view(
          'admin.installmentPayments.index',
             compact(
@@ -42,7 +41,7 @@ class InstallmentPaymentsController extends AdminBaseController
     {
         $title = 'عرض الدفعه ';
 
-        $installmentPayment = InstallmentPayment::findOrFail($id);
+        return    $installmentPayment = InstallmentPayment::findOrFail($id);
 
         return view('admin.installmentPayments.show',
          compact('installmentPayment','title'));

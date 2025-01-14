@@ -86,7 +86,7 @@ class CreditAction
         $phone = $this->formatMobile($request->phone);
 
 
-        $name = $request->first_name.' '.$request->middle_name.' '.$request->last_name;
+        $name = $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name;
 
         $student = Student::query()->firstOrCreate([
             'phone' => $phone,
@@ -161,7 +161,7 @@ class CreditAction
             try {
 
                 Notification::route('mail', $student->email)
-                    ->notify(new SentPaymentUrlNotification($student,$student->payment?->payment_url));
+                    ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }
@@ -172,22 +172,22 @@ class CreditAction
         if (is_null($student?->package_id) && $student->installmentPayment) {
 
             try {
-                  $response = StoreRecurringPaymentData::make()
+                $response = StoreRecurringPaymentData::make()
                     ->handle(
                         $student->installmentPayment?->package,
                         $student->installmentPayment,
                         $student,
-                       $student?->toArray()??[]);
+                        $student?->toArray() ?? []);
 
 
-                    if (data_get($response,'id')){
+                if (data_get($response, 'id')) {
 
-                      $payment_url =  route('recurring.checkout', data_get($response, 'id'))
-                        . '?paymentId=' .  $student->installmentPayment?->id;
+                    $payment_url = route('recurring.checkout', data_get($response, 'id'))
+                        . '?paymentId=' . $student->installmentPayment?->id;
 
-                        Notification::route('mail', $student->email)
-                            ->notify(new SentPaymentUrlNotification($student,$payment_url) );
-                    }
+                    Notification::route('mail', $student->email)
+                        ->notify(new SentPaymentUrlNotification($student, $payment_url));
+                }
 
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
@@ -245,6 +245,8 @@ class CreditAction
             'package_id' => $pckID,
         ]);
 
+        $this->createInstallments($installmentPayment);
+
         if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
             $response = StoreRecurringPaymentData::make()
                 ->handle(
@@ -282,6 +284,33 @@ class CreditAction
                 'payload' => [],
             ];
             return response()->json($response, 200);
+        }
+    }
+
+    /**
+     * @param $installmentPayment
+     * @return void
+     */
+    public function createInstallments($installmentPayment)
+    {
+        $package = $installmentPayment->package;
+
+        $installmentAmounts = [
+            $package->first_inst,
+            $package->second_inst,
+            $package->third_inst,
+            $package->fourth_inst,
+            $package->fifth_inst
+        ];
+
+        foreach ($installmentAmounts as $index => $amount) {
+            if ($amount > 0) {
+                $installmentPayment->installments()->create([
+                    'installment_amount' => $amount,
+                    'installment_date' => $index === 0 ? now() : now()->startOfMonth()->addMonths($index), // First installment is now
+                    'is_paid' => false
+                ]);
+            }
         }
     }
 }

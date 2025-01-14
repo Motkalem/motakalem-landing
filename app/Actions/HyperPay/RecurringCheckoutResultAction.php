@@ -35,11 +35,11 @@ class RecurringCheckoutResultAction
 
         $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
+        ## NOTIFICATION
         $this->notifyAdmin($webHookNotification);
-
         $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
-        if ($response->successful() &&  $this->isSuccessfulNotification($webHookNotification)) {
+        if ($response->successful() && $this->isSuccessfulNotification($webHookNotification)) {
 
             $registrationId = data_get($data, 'registrationId');
 
@@ -49,16 +49,28 @@ class RecurringCheckoutResultAction
             ]);
 
             $installmentPayment->student?->update([
-
-                'package_id'=> $installmentPayment->package_id,
-                'is_paid'=> 1,
+                'package_id' => $installmentPayment->package_id,
+                'is_paid' => 1,
             ]);
 
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
+            ## Mark first installment as paid
+            $this->markFirstInstallmentAsPaid($installmentPayment);
+
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
         } else {
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
 
         }
+    }
+
+    /**
+     * @param $installmentPayment
+     * @return null
+     */
+    public function markFirstInstallmentAsPaid($installmentPayment)
+    {
+        $firstInstallment = $installmentPayment->installments?->first();
+        return $firstInstallment?->update(['is_paid' => 1]);
     }
 
     /**
@@ -81,7 +93,7 @@ class RecurringCheckoutResultAction
     public function createWebHookNotification($response, $installment): Model|Builder
     {
 
-      return HyperpayWebHooksNotification::query()->create([
+        return HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
             'installment_payment_id' => $installment->id,
             'type' => 'init recurring payment',
@@ -101,10 +113,10 @@ class RecurringCheckoutResultAction
 
             foreach ($adminEmails as $adminEmail) {
 
-                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
                 Notification::route('mail', $adminEmail)->notify(new HyperPayNotification($notification, $result));
-                $notification->update(['admin_notified'=> 1]);
+                $notification->update(['admin_notified' => 1]);
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -120,11 +132,11 @@ class RecurringCheckoutResultAction
     {
         try {
 
-            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !" ;
+            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
             Notification::route('mail', $email)->notify(new HyperPayNotification($notification, $result));
 
-            $notification->update(['student_notified'=> 1]);
+            $notification->update(['student_notified' => 1]);
 
         } catch (\Exception $e) {
 
