@@ -43,7 +43,7 @@ class PackagesController extends AdminBaseController
     {
           $request->validate([
             'name' => 'required|string|max:255|unique:packages,name',
-            'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
+            'total' => 'nullable|numeric|min:0|required_without_all:first_inst,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
 
             'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
@@ -98,7 +98,7 @@ class PackagesController extends AdminBaseController
     {
 
         $request->validate([
-            'total' => 'nullable|numeric|min:0|required_without_all:installment_value,number_of_months',
+            'total' => 'nullable|numeric|min:0|required_without_all:first_inst,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
 
             'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
@@ -120,7 +120,7 @@ class PackagesController extends AdminBaseController
         {
 
             $package->number_of_months = null;
-            $package->installment_value =null;
+            $package->first_inst =null;
             $package->total = $request->total;
         }else {
 
