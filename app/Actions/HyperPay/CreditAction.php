@@ -88,6 +88,8 @@ class CreditAction
 
         $name = $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name;
 
+        $package = Package::query()->find( $request->package_id);
+
         $student = Student::query()->firstOrCreate([
             'phone' => $phone,
         ],
@@ -97,8 +99,8 @@ class CreditAction
                 'age' => $request->age,
                 'phone' => $phone,
                 'city' => $request->city,
-                'payment_type' => $request->payment_type ?? Package::ONE_TIME,
-                'total_payment_amount' => env('SUBSCRIPTION_AMOUNT', 12000),
+                'payment_type' => $package->payment_type,
+                'total_payment_amount' => $package->total,
             ]);
 
 

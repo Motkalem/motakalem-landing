@@ -164,9 +164,24 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">مقدار القسط</label>
+                    <label for="amount" class="form-label col-sm-4 col-form-label">  الإجمالي  </label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $installmentPayment->package?->installment_value . ' ' . __('SAR') }}</p>
+                        <p class="form-control-plaintext">
+                            {{
+                   ( $installmentPayment->package?->first_inst +
+                    $installmentPayment->package?->second_inst +
+                    $installmentPayment->package?->third_inst +
+                    $installmentPayment->package?->fourth_inst +
+                    $installmentPayment->package?->fifth_inst )
+
+                    . ' ' . __('SAR') }}</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="amount" class="form-label col-sm-4 col-form-label">القسط الاول  </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-plaintext">{{ $installmentPayment->package?->first_inst . ' ' . __('SAR') }}</p>
                     </div>
                 </div>
 

@@ -17,7 +17,6 @@ class RecurringCheckoutAction
     {
         $checkoutId = $request->checkoutId;
         $amount = InstallmentPayment::query()->findOrFail($request->paymentId)?->package?->first_inst;
-
         return view('payments.recurring-pay', compact('checkoutId', 'amount'));
     }
 }
