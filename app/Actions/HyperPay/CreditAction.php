@@ -100,7 +100,7 @@ class CreditAction
                 'phone' => $phone,
                 'city' => $request->city,
                 'payment_type' => $package->payment_type,
-                'total_payment_amount' => $package->total,
+                'total_payment_amount' => $package->total??0,
             ]);
 
 

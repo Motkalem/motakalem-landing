@@ -50,11 +50,23 @@
                         <td>{{ $installmentPayment->student?->name }}</td>
                         <td>{{ $installmentPayment->package?->name }}</td>
                         <td>
-                            <div class="progress-circle text-white"  style="--progress:
-                            {{($installmentPayment->successful_notifications   / $installmentPayment->package?->number_of_months) * 100}};">
+                            @if($installmentPayment->installments?->count())
 
-                                {{ $installmentPayment->successful_notifications  .'/'. $installmentPayment->package?->number_of_months }}
-                            </div>
+                                <div class="progress-circle text-white"  style="--progress:
+                            {{( $installmentPayment->installments()->where('is_paid', 1)->count()
+                            / $installmentPayment->installments?->count()) * 100}};">
+
+                                    {{ $installmentPayment->installments()->where('is_paid', 1)->count()
+                                .'/'. $installmentPayment->installments?->count() }}
+                                </div>
+
+                            @else
+                                <div class="progress-circle text-white"  style="--progress:
+                                 {{(0  / $installmentPayment->package?->number_of_months) * 100}};">
+
+                                    {{ 0  .'/'. $installmentPayment->package?->number_of_months }}
+                                </div>
+                            @endif
                         </td>
                         <td>{{ $installmentPayment->first_installment_date }}</td>
 

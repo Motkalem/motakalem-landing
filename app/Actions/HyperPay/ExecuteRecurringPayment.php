@@ -4,7 +4,6 @@ namespace App\Actions\HyperPay;
 
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
-use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class ExecuteRecurringPayment

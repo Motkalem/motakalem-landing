@@ -126,25 +126,25 @@
 
 
 <div class="container-fluid">
-    <div class="gap-2 row" >
-        <!-- Transaction Details Section -->
-        <div class="p-20 bgc-white bd">
-            <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
-            <div class="mx-4 text-end">
-                <a class="px-4 btn btn-info" href="{{ route('dashboard.installment-payments.index') }}">
-                    رجوع
-                </a>
-            </div>
-            <div class="mT-30">
-                <div class="mb-3 row">
-                    <label for="installmentPayment_id" class="form-label col-sm-4 col-form-label">رقم الدفعة</label>
+    <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
+    <div class="text-end mx-4 mb-3">
+        <a class="px-4 btn btn-info" href="{{ route('dashboard.installment-payments.index') }}">
+            رجوع
+        </a>
+    </div>
+    <div class="row">
+        <!-- First Column -->
+        <div class="col-12 col-md-5 p-4 bgc-white">
+
+            <div class="mT-30 border-l-4">
+                <div class="row mb-3">
+                    <label for="installmentPayment_id" class="col-sm-4 col-form-label">رقم الدفعة</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">{{ $installmentPayment->id }}</p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="client_pay_order_id" class="form-label col-sm-4 col-form-label">الطالب</label>
+                <div class="row mb-3">
+                    <label for="client_pay_order_id" class="col-sm-4 col-form-label">الطالب</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">
                             <a href="{{ route('dashboard.students.show', $installmentPayment?->student?->id) }}">
@@ -153,66 +153,130 @@
                         </p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="client_pay_order_id" class="form-label col-sm-4 col-form-label">رقم التسجيل (HyperPay)</label>
+                <div class="row mb-3">
+                    <label for="client_pay_order_id" class="col-sm-4 col-form-label">رقم التسجيل (HyperPay)</label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">
-                            {{ $installmentPayment?->registration_id }}
-                        </p>
+                        <p class="form-control-plaintext">{{ $installmentPayment?->registration_id }}</p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">  الإجمالي  </label>
+                <div class="row mb-3">
+                    <label for="amount" class="col-sm-4 col-form-label">الإجمالي</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">
                             {{
-                   ( $installmentPayment->package?->first_inst +
-                    $installmentPayment->package?->second_inst +
-                    $installmentPayment->package?->third_inst +
-                    $installmentPayment->package?->fourth_inst +
-                    $installmentPayment->package?->fifth_inst )
-
-                    . ' ' . __('SAR') }}</p>
+                                ($installmentPayment->package?->first_inst +
+                                 $installmentPayment->package?->second_inst +
+                                 $installmentPayment->package?->third_inst +
+                                 $installmentPayment->package?->fourth_inst +
+                                 $installmentPayment->package?->fifth_inst) . ' ' . __('SAR')
+                            }}
+                        </p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">القسط الاول  </label>
+                <div class="row mb-3">
+                    <label for="amount" class="col-sm-4 col-form-label">القسط الأول</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">{{ $installmentPayment->package?->first_inst . ' ' . __('SAR') }}</p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">تاريخ الاشتراك</label>
+                <div class="row mb-3">
+                    <label for="amount" class="col-sm-4 col-form-label">تاريخ الاشتراك</label>
                     <div class="col-sm-8">
                         <p class="text-bold">{{ $installmentPayment->created_at }}</p>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="amount" class="form-label col-sm-4 col-form-label">اخر تحديث</label>
+                <div class="row mb-3">
+                    <label for="amount" class="col-sm-4 col-form-label">آخر تحديث</label>
                     <div class="col-sm-8">
                         <p class="text-bold">{{ $installmentPayment->updated_at }}</p>
                     </div>
                 </div>
-
-{{--                @if($installmentPayment->canceled == 0 && $installmentPayment->payment_id)--}}
-{{--                        <div class="text-end">--}}
-{{--                            <button class="px-4 btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelSubscriptionModal"--}}
-{{--                             data-url="{{route('dashboard.cancel-schedule', $installmentPayment->payment_id)}}">--}}
-{{--                                إلغاء الاشتراك--}}
-{{--                            </button>--}}
-{{--                        </div>--}}
-{{--                    @else--}}
-{{--                        <p class="px-4 btn text-danger">--}}
-{{--                           تم إلغاء الإشتراك--}}
-{{--                        </p>--}}
-{{--                @endif--}}
             </div>
         </div>
+
+        <!-- Second Column -->
+        <div class="col-12 col-md-7 p-4 bgc-white">
+            <h6 class="c-grey-900 h3">الأقساط</h6>
+            <div class="mT-30">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">رقم القسط</th>
+                            <th class="text-center">المبلغ</th>
+                            <th class="text-center">تاريخ الاستحقاق</th>
+                            <th class="text-center">تاريخ الدفع</th>
+                            <th class="text-center">حالة الدفع</th>
+                            <th class="text-center">الإجراء</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($installmentPayment->installments as $installment)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $installment->id }}</td>
+                                <td class="text-center">{{ $installment->installment_amount . ' ' . __('SAR') }}</td>
+                                <td class="text-center">{{ $installment->installment_date }}</td>
+                                <td class="text-center">{{ $installment->paid_at ?? '---' }}</td>
+                                <td class="text-center">
+                                    @if ($installment->is_paid)
+                                        <span class="text-success">مدفوع</span>
+                                    @else
+                                        <span class="text-danger">غير مدفوع</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if (!$installment->is_paid)
+                                        <button type="button" class="btn btn-primary bg-success text-white border-0 btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmDeductionModal"
+                                                data-installment-id="{{ $installment->id }}">
+                                            خصم القسط
+                                        </button>
+                                    @else
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            تم الدفع
+                                        </button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmDeductionModal" tabindex="-1" aria-labelledby="confirmDeductionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeductionModalLabel">تأكيد خصم القسط</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        هل أنت متأكد أنك تريد خصم هذا القسط؟
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deductionForm" action="" method="POST">
+                            @csrf
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-danger bg-danger text-white">تأكيد</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class=" gap-1 row" >
+
+        <!-- Transaction Details Section -->
 
       <!-- Notification Log Section -->
         <div class="p-20 bd">
@@ -258,35 +322,52 @@
 
 
 <!-- Cancel Subscription Modal -->
-<div class="modal fade" id="cancelSubscriptionModal" tabindex="-1" aria-labelledby="cancelSubscriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelSubscriptionModalLabel">تأكيد إلغاء الاشتراك</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                هل أنت متأكد أنك تريد إلغاء الاشتراك؟
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-                <a href="#" class="btn btn-danger btn-confirm-cancel">تأكيد الإلغاء</a>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="cancelSubscriptionModal" tabindex="-1" aria-labelledby="cancelSubscriptionModalLabel" aria-hidden="true">--}}
+{{--    <div class="modal-dialog">--}}
+{{--        <div class="modal-content">--}}
+{{--            <div class="modal-header">--}}
+{{--                <h5 class="modal-title" id="cancelSubscriptionModalLabel">تأكيد إلغاء الاشتراك</h5>--}}
+{{--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--            </div>--}}
+{{--            <div class="modal-body">--}}
+{{--                هل أنت متأكد أنك تريد إلغاء الاشتراك؟--}}
+{{--            </div>--}}
+{{--            <div class="modal-footer">--}}
+{{--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>--}}
+{{--                <a href="#" class="btn btn-danger btn-confirm-cancel">تأكيد الإلغاء</a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 @endsection
 
 @push('scripts')
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var cancelSubscriptionModal = document.getElementById('cancelSubscriptionModal');
-            cancelSubscriptionModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var url = button.getAttribute('data-url');
-                var confirmCancelButton = cancelSubscriptionModal.querySelector('.btn-confirm-cancel');
-                confirmCancelButton.setAttribute('href', url);
-            });
+        // Script to handle modal action
+        const confirmDeductionModal = document.getElementById('confirmDeductionModal');
+        const deductionForm = document.getElementById('deductionForm');
+
+        confirmDeductionModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const installmentId = button.getAttribute('data-installment-id');
+
+            // Update the form action dynamically with the installment ID
+            const routeUrl = `{{ route('dashboard.deductInstallment', ':installmentId') }}`.replace(':installmentId', installmentId);
+            deductionForm.action = routeUrl;
         });
     </script>
+
+
+{{--    <script>--}}
+{{--        document.addEventListener('DOMContentLoaded', function() {--}}
+{{--            var cancelSubscriptionModal = document.getElementById('cancelSubscriptionModal');--}}
+{{--            cancelSubscriptionModal.addEventListener('show.bs.modal', function(event) {--}}
+{{--                var button = event.relatedTarget;--}}
+{{--                var url = button.getAttribute('data-url');--}}
+{{--                var confirmCancelButton = cancelSubscriptionModal.querySelector('.btn-confirm-cancel');--}}
+{{--                confirmCancelButton.setAttribute('href', url);--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 @endpush

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Installment extends Model
 {
 
-    protected $fillable = ['installment_payment_id', 'installment_amount', 'installment_date', 'is_paid'];
+    protected $fillable = ['installment_payment_id', 'installment_amount',
+        'installment_date','paid_at','admin_ip', 'is_paid'];
 
     /**
      * @return BelongsTo
