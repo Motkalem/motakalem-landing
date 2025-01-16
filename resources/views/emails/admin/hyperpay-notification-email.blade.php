@@ -54,13 +54,10 @@
                     <td>{{ data_get($notification, 'installmentPayment.student.phone') }}</td>
                 </tr>
                 <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">تاريخ ووقت العملية: </td>
+                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">تاريخ العملية: </td>
                     <td>{{ data_get($notification->payload,'timestamp')   }}</td>
                 </tr>
-                <tr>
-                    <td style="display: inline-block; margin-left:.6rem; font-weight: 600;">رقم المعاملة: </td>
-                    <td>{{ data_get($notification->payload,'id' )  }}</td>
-                </tr>
+
             </table>
         </div>
     </div>

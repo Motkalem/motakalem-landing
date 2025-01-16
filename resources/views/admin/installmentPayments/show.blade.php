@@ -279,11 +279,11 @@
         <!-- Transaction Details Section -->
 
       <!-- Notification Log Section -->
-        <div class="p-20 bd">
+        <div class="p-20 mt-4">
             <div class="mT-30">
                 <h6 class="c-grey-900 h3">سجل الإشعارات</h6>
                 <section class="mt-2 timeline_area section_padding_130">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
                                 <div class="apland-timeline-area">
