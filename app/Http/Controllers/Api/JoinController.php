@@ -14,11 +14,14 @@ use Illuminate\Http\Request;
 use App\Notifications\SendContractNotification;
 use \Illuminate\Support\Facades\Notification;
 use \Illuminate\Support\Facades\Log;
+
 class JoinController extends Controller
 {
     use HelperTrait;
+
     public function __construct(private JoinService $joinService)
-    {}
+    {
+    }
 
 
     public function store(JoinRequest $request)
@@ -40,14 +43,14 @@ class JoinController extends Controller
      * @param $package_id
      * @return mixed
      */
-    public function sendContract($student, $package_id, $data=null)
+    public function sendContract($student, $package_id, $data = null)
     {
 
-        $validated =  [
+        $validated = [
             'email' => $student->email,
-            'name' =>  $student->name,
-            'age' =>  $student->age,
-            'phone' =>  $student->phone,
+            'name' => $student->name,
+            'age' => $student->age,
+            'phone' => $student->phone,
             'city' => $student->city,
             'id_number' => data_get($data, 'id_number'),
             'id_end' => data_get($data, 'id_end'),
@@ -57,19 +60,15 @@ class JoinController extends Controller
 
         $package = Package::query()->find($package_id);
 
-
         $data = array_merge($validated,
             [
-                'package_id' =>  $package_id,
-                'package_starts_date' =>  $package?->starts_date,
-                'package_ends_date' =>  $package?->ends_date,
+                'package_id' => $package_id,
+                'package_starts_date' => $package?->starts_date,
+                'package_ends_date' => $package?->ends_date,
             ]
         );
-         $contract = ParentContract::query()->firstOrCreate(
-            [
-                'phone' =>  $student->phone,
-            ],
-             $data );
+
+        $contract = ParentContract::query()->firstOrCreate(['phone' => $student->phone,], $data);
 
         $contract = $contract->load('package');
 
@@ -82,15 +81,14 @@ class JoinController extends Controller
      * @param $row
      * @return void
      */
-    public function notifyClient( $row): void
+    public function notifyClient($row): void
     {
         try {
 
             $row = $row->load('package');
 
             Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
 
             Log::error($e->getMessage());
         }

@@ -154,12 +154,6 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="client_pay_order_id" class="col-sm-4 col-form-label">رقم التسجيل (HyperPay)</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $installmentPayment?->registration_id }}</p>
-                    </div>
-                </div>
-                <div class="row mb-3">
                     <label for="amount" class="col-sm-4 col-form-label">الإجمالي</label>
                     <div class="col-sm-8">
                         <p class="form-control-plaintext">

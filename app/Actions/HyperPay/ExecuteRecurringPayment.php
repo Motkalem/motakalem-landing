@@ -54,6 +54,11 @@ class ExecuteRecurringPayment
         return $response;
     }
 
+    /**
+     * @param $response
+     * @param $installment
+     * @return void
+     */
     public function storeNotification($response, $installment)
     {
         $notification = HyperpayWebHooksNotification::query()->create([

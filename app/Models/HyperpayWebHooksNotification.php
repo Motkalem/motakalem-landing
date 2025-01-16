@@ -9,7 +9,7 @@ class HyperpayWebHooksNotification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_notified','admin_notified','title', 'installment_payment_id',
+    protected $fillable = ['student_notified','admin_notified','title', 'installment_payment_id', 'installment_id',
         'type', 'log', 'action', 'payload'];
 
     protected $casts = [
@@ -21,5 +21,10 @@ class HyperpayWebHooksNotification extends Model
     public function installmentPayment()
     {
         return $this->belongsTo(InstallmentPayment::class);
+    }
+
+    public function installment()
+    {
+        return $this->belongsTo(Installment::class);
     }
 }

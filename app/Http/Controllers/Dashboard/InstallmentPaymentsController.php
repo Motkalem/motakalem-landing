@@ -96,10 +96,11 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $response = json_decode($responseData);
 
-        $this->storeNotification($response, $installmentPayment);
+        $this->storeNotification($response, $installmentPayment, $installment);
 
         // Check if the response indicates success
         if (isset($response->result) && in_array($response->result->code, ['000.100.110', '000.000.000'])) {
+
             $installment->update([
                 'is_paid' => true,
                 'paid_at' => now(),
@@ -124,11 +125,18 @@ class InstallmentPaymentsController extends AdminBaseController
         }
     }
 
-    public function storeNotification($response, $installment)
+    /**
+     * @param $response
+     * @param $installmentPayment
+     * @param $installment
+     * @return void
+     */
+    public function storeNotification($response, $installmentPayment, $installment): void
     {
         $notification = HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
-            'installment_payment_id' => $installment->id,
+            'installment_payment_id' => $installmentPayment->id,
+            'installment_id' => $installment->id,
             'type' => 'execute recurring payment',
             'payload' => $response,
             'log' => $response,

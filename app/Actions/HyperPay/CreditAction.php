@@ -103,9 +103,8 @@ class CreditAction
                 'total_payment_amount' => $package->total??0,
             ]);
 
-        $registerData = $request->all();
 
-        $contract = $this->joinController->sendContract($student, $request->package_id, $registerData);
+        $contract = $this->joinController->sendContract($student, $request->package_id);
 
         if (!isset($contract)) {
             DB::rollBack();
@@ -266,7 +265,7 @@ class CreditAction
                     'payload' => [
                         'payment_token' => '#',
                         'hyperpay_payment' => route('recurring.checkout', data_get($response, 'id'))
-                            . '?paymentId=' . $installmentPayment->id,
+                        . '?paymentId=' . $installmentPayment->id,
                         'data' => $response
                     ],
                 ];
