@@ -103,8 +103,8 @@ class CreditAction
                 'total_payment_amount' => $package->total,
             ]);
 
-
-        $contract = $this->joinController->sendContract($student, $request->package_id);
+        $registerData = $request->all();
+        $contract = $this->joinController->sendContract($student, $request->package_id,$registerData);
 
         if (!isset($contract)) {
             DB::rollBack();

@@ -40,7 +40,7 @@ class JoinController extends Controller
      * @param $package_id
      * @return mixed
      */
-    public function sendContract($student, $package_id)
+    public function sendContract($student, $package_id,$data=null)
     {
 
         $validated =  [
@@ -49,8 +49,8 @@ class JoinController extends Controller
             'age' =>  $student->age,
             'phone' =>  $student->phone,
             'city' => $student->city,
-            'id_number' =>  $student->id_number,
-            'id_end' => $student->id_end,
+            'id_number' => data_get($data, 'id_number'),
+            'id_end' =>  data_get($data, 'id_end'),
             //'accept_terms' => 'required|boolean',
         ];
 
