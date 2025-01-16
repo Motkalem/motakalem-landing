@@ -54,23 +54,27 @@ class RecurringCheckoutResultAction
             ]);
 
             ## Mark first installment as paid
-            $this->markFirstInstallmentAsPaid($installmentPayment);
+           $firstInstallment = $this->markFirstInstallmentAsPaid($installmentPayment);
 
-            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
+           $webHookNotification->update(['installment_id' => $firstInstallment->id]);
+
+           return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
         } else {
             return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
 
         }
+
     }
 
-    /**
-     * @param $installmentPayment
-     * @return null
-     */
+
     public function markFirstInstallmentAsPaid($installmentPayment)
     {
+
         $firstInstallment = $installmentPayment->installments?->first();
-        return $firstInstallment?->update(['is_paid' => 1]);
+
+        $firstInstallment?->update(['is_paid' => 1]);
+
+        return $firstInstallment;
     }
 
     /**
