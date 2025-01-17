@@ -2,120 +2,138 @@
 
 namespace App\Jobs;
 
-use App\Actions\HyperPay\ExecuteRecurringPayment;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
-use App\Notifications\Admin\HyperPayNotification;
-use Carbon\Carbon;
+use App\Models\Installment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Carbon;
 
 class CheckInstallmentsPaymentsJob implements ShouldQueue
 {
-    use Queueable, InteractsWithQueue;
-
-    public $tries = 0; # Unlimited retries
-    public $maxExceptions = 30; # Retry for up to 30 days
+    use Queueable;
 
     /**
+     * Handle the job.
+     *
      * @return void
      */
     public function handle(): void
     {
-        // Retrieve all uncanceled installment payments
-        $installmentPayments = InstallmentPayment::with('package')
-            ->where('canceled', false)
-            ->where('is_completed', false)
-            ->get();
+        // Get all unpaid installments for active installment payments
+        $installments = Installment::where('is_paid', false)
+            ->whereHas('installmentPayment', function ($query) {
+                $query->where('canceled', false)
+                    ->where('is_completed', false);
+            })->get();
 
-        foreach ($installmentPayments as $installment) {
-            if ($installment->registration_id) {
+        $currentDate = now();
 
-                $installmentNotifications = HyperpayWebHooksNotification::query()
-                    ->where('installment_payment_id', $installment->id)
-                    ->get();
-                # Get successful installments count
-                $successfulNotifications = $this->getSuccessfulNotifications($installmentNotifications);
-                $successInstallments = $successfulNotifications->count();
+        foreach ($installments as $installment) {
 
-                # If all installments are complete, skip
-                if ($successInstallments >= $installment->package->number_of_months) {
-
-                    $installment->update(['is_completed' => true]);
-                    continue;
-                }
-
-                $this->attemptPaymentDeduction($installment);
+            # Check if the installment date is within the current month
+            if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
+                $this->deductInstallment($installment);
             }
         }
     }
 
     /**
-     * Attempt to deduct payment and handle success or failure.
+     * Attempt to deduct payment for the installment.
      *
-     * @param InstallmentPayment $installment
+     * @param Installment $installment
+     * @return void
      */
-    protected function attemptPaymentDeduction(InstallmentPayment $installment): void
+    private function deductInstallment(Installment $installment): void
     {
-        # Attempt to deduct the payment
-        $response = ExecuteRecurringPayment::make()->handle($installment->registration_id);
+        $installmentPayment = $installment->installmentPayment;
 
-        $notification = $this->storeNotification($response, $installment);
+        if ($installment->is_paid) {
+            return;
+        }
 
-        // Check the result and act accordingly
-        if ($this->isSuccessfulNotification($notification)) {
+        $registrationID = $installmentPayment->registration_id;
+        $amount = $installment->installment_amount;
 
-            // do nothing
+        // Prepare Hyperpay API request
+        $url = env('HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
+        $data = http_build_query([
+            'entityId' => env('RECURRING_ENTITY_ID'),
+            'amount' => $amount,
+            'currency' => 'SAR',
+            'paymentType' => 'DB',
+            'standingInstruction.mode' => 'REPEATED',
+            'standingInstruction.type' => 'UNSCHEDULED',
+            'standingInstruction.source' => 'MIT',
+            'shopperResultUrl' => env(env('VERSION_STATE') . 'FRONT_URL'),
+        ]);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization:Bearer ' . env('AUTH_TOKEN'),
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // This should be true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $responseData = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            \Log::error('Payment processing error: ' . $error);
+            return;
+        }
+        curl_close($ch);
+
+        $response = json_decode($responseData);
+
+        $this->storeNotification($response, $installmentPayment, $installment);
+
+        if (isset($response->result) && $this->isSuccessfulResponse($response->result->code)) {
+            $installment->update([
+                'is_paid' => true,
+                'paid_at' => now(),
+                'admin_ip' => request()->ip(),
+            ]);
+
+            // Check if all installments are paid
+            if ($installmentPayment->installments()->where('is_paid', false)->doesntExist()) {
+                $installmentPayment->update(['is_completed' => true]);
+            }
         } else {
-
-            $this->release(60); // Retry after 24 hours (1 day)
+            $errorMessage = $response->result->description ?? 'Unknown error occurred.';
+            \Log::error('Payment failed: ' . $errorMessage);
         }
     }
 
     /**
-     * Filter for successful notifications.
+     * Check if the response indicates success.
      *
-     * @param $installmentNotifications
-     * @return mixed
-     */
-    public function getSuccessfulNotifications($installmentNotifications): mixed
-    {
-        return $installmentNotifications->filter(function ($notification) {
-            return $this->isSuccessfulNotification($notification);
-        });
-    }
-
-    /**
-     * Determine if the notification was successful.
-     *
-     * @param $notification
+     * @param string|null $resultCode
      * @return bool
      */
-    protected function isSuccessfulNotification($notification): bool
+    private function isSuccessfulResponse(?string $resultCode): bool
     {
-        $resultCode = data_get($notification->payload, 'result.code');
         $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
-
-        return  preg_match($successPattern, $resultCode) === 1;
+        return preg_match($successPattern, $resultCode) === 1;
     }
 
     /**
-     * Store the notification.
+     * Store the webhook notification.
      *
      * @param $response
-     * @param $installment
-     * @return Builder|Model
+     * @param InstallmentPayment $installmentPayment
+     * @param Installment $installment
+     * @return void
      */
-    public function storeNotification($response, $installment): Model|Builder
+    private function storeNotification($response, InstallmentPayment $installmentPayment, Installment $installment): void
     {
-        return HyperpayWebHooksNotification::query()->create([
+        HyperpayWebHooksNotification::create([
             'title' => data_get($response, 'result.description'),
-            'installment_payment_id' => $installment->id,
+            'installment_payment_id' => $installmentPayment->id,
             'type' => 'execute recurring payment',
             'payload' => $response,
             'log' => $response,
