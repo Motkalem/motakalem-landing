@@ -8,6 +8,7 @@ use App\Models\Installment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class CheckInstallmentsPaymentsJob implements ShouldQueue
 {
@@ -83,7 +84,8 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         if (curl_errno($ch)) {
             $error = curl_error($ch);
             curl_close($ch);
-            \Log::error('Payment processing error: ' . $error);
+
+            Log::error('Payment processing error: ' . $error);
             return;
         }
         curl_close($ch);
@@ -105,7 +107,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
             }
         } else {
             $errorMessage = $response->result->description ?? 'Unknown error occurred.';
-            \Log::error('Payment failed: ' . $errorMessage);
+            Log::error('Payment failed: ' . $errorMessage);
         }
     }
 

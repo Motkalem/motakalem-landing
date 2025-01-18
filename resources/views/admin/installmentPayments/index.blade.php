@@ -9,7 +9,7 @@
             height: 50px;
             background: conic-gradient(
                 #4caf50 calc(var(--progress) * 1%),
-                #e0e0e0 calc(var(--progress) * 1%)
+                #eaeaea calc(var(--progress) * 1%)
             );
             border-radius: 50%;
             display: flex;
