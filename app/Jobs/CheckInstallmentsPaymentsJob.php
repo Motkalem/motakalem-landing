@@ -37,8 +37,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 //                $this->deductInstallment($installment);
 //            }
 
-            if (now()->second === 0) {
-
+            if (now()->minute % 2 === 0) {
                 $this->deductInstallment($installment);
             }
         }
