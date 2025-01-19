@@ -44,7 +44,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 
             if (env('APP_ENV') != 'production') {
 
-                if (now()->minute % 5 === 0) {
+                if (now()->minute % 2 === 0) {
 
                     $this->deductInstallment($installment);
                     break;

@@ -46,8 +46,8 @@ class PackagesController extends AdminBaseController
             'total' => 'nullable|numeric|min:0|required_without_all:first_inst,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
 
-            'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
-            'second_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'first_inst' => 'required|numeric|min:5|required_if:total,null',
+            'second_inst' => 'required|numeric|min:5|required_if:total,null',
             'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
