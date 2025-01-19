@@ -33,25 +33,20 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         foreach ($installments as $installment) {
 
 
-            if (env('APP_ENV') == 'production') {
-
-                # Check if the installment date is within the current month
-                if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
-
-                    $this->deductInstallment($installment);
-                }
-            }
-
-
+//            if (env('APP_ENV') == 'production') {
+//
+//                # Check if the installment date is within the current month
+//                if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
+//
+//                    $this->deductInstallment($installment);
+//                }
+//            }
 
                 if (now()->minute % 2 === 0) {
 
                     $this->deductInstallment($installment);
                     break;
                 }
-
-
-
         }
     }
 
