@@ -56,6 +56,7 @@ class InstallmentPaymentsController extends AdminBaseController
 
         // Check if the installment is already paid
         if ($installment->is_paid) {
+
             notify()->error('هذا القسط مدفوع بالفعل.');
             return redirect()->back();
         }
@@ -98,8 +99,10 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $this->storeNotification($response, $installmentPayment, $installment);
 
+        $isSuccessful = $this->isSuccessfulResponse($response->result?->code);
+
         // Check if the response indicates success
-        if (isset($response->result) && in_array($response->result->code, ['000.100.110', '000.000.000'])) {
+        if (isset($response->result) &&  $isSuccessful) {
 
             $installment->update([
                 'is_paid' => true,
@@ -143,4 +146,10 @@ class InstallmentPaymentsController extends AdminBaseController
         ]);
     }
 
+
+    private function isSuccessfulResponse(?string $resultCode): bool
+    {
+        $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+        return preg_match($successPattern, $resultCode) === 1;
+    }
 }
