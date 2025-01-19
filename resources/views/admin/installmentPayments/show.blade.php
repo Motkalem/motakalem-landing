@@ -210,7 +210,7 @@
                         @foreach ($installmentPayment->installments as $installment)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $installment->admin_ip }}</td>
+                                <td class="text-center">{{ $installment->admin_ip??'---' }}</td>
                                 <td class="text-center">{{ $installment->id }}</td>
                                 <td class="text-center">{{ $installment->installment_amount . ' ' . __('SAR') }}</td>
                                 <td class="text-center">{{ $installment->installment_date }}</td>
