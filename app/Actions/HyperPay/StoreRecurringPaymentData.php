@@ -44,7 +44,7 @@ class StoreRecurringPaymentData
             'standingInstruction.source' => 'CIT',
 
             'testMode'=> 'EXTERNAL',
-            'merchantTransactionId' => $payment->id,
+            'merchantTransactionId' => $payment->id.'-'.microtime(),
             "customer.email"=>$payment?->student?->email,
             "billing.street1"=>$payment?->student?->city ,
             "billing.city"=>$payment?->student?->city ,

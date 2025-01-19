@@ -197,6 +197,7 @@
                         <thead>
                         <tr>
                             <th class="text-center">#</th>
+                            <th class="text-center"> قام بالدفع  </th>
                             <th class="text-center">رقم القسط</th>
                             <th class="text-center">المبلغ</th>
                             <th class="text-center">تاريخ الاستحقاق</th>
@@ -209,6 +210,7 @@
                         @foreach ($installmentPayment->installments as $installment)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $installment->admin_ip }}</td>
                                 <td class="text-center">{{ $installment->id }}</td>
                                 <td class="text-center">{{ $installment->installment_amount . ' ' . __('SAR') }}</td>
                                 <td class="text-center">{{ $installment->installment_date }}</td>
