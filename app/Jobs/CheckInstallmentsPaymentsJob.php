@@ -35,6 +35,8 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 
             if (env('APP_ENV') == 'production') {
 
+                Log::notice('printed from the job - '. now()  , );
+
                 # Check if the installment date is within the current month
                 if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
 
