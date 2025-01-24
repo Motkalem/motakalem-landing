@@ -57,7 +57,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 
         $registrationID = $installmentPayment->registration_id;
 
-        Log::notice('registrationID: ' . $registrationID);
+//        Log::notice('registrationID: ' . $registrationID);
 
         if($registrationID == null || $registrationID == '' || !$registrationID) {
 
