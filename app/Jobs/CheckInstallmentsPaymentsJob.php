@@ -35,17 +35,17 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 
             if (env('APP_ENV') == 'production') {
 
-                Log::notice('1 printed from the job - '. now()  , );
+                Log::notice('1 printed from the job - '. now()    );
 
                 # Check if the installment date is within the current month
                 if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
 
-                    Log::notice('2 printed from the job - '. now()  , );
+                    Log::notice('2 printed from the job - '. now()   );
 
                     $this->deductInstallment($installment);
                 }
             }
-            Log::notice('3 after if printed from the job - '. now()  , );
+            Log::notice('3 after if printed from the job - '. now()   );
         }
     }
 
@@ -98,7 +98,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
             Log::error('Payment processing error: ' . $error);
             return;
         }
-        Log::notice('4 after if printed from the job - '. now()  , );
+        Log::notice('4 after if printed from the job - '. now()   );
         curl_close($ch);
 
         $response = json_decode($responseData);
