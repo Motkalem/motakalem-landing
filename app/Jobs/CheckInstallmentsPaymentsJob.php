@@ -35,12 +35,8 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
 
             if (env('APP_ENV') == 'production') {
 
-                Log::notice('1 printed from the job - '. now()    );
-
                 # Check if the installment date is within the current month
                 if (Carbon::parse($installment->installment_date)->isSameMonth($currentDate)) {
-
-                    Log::notice('2 printed from the job - '. now()   );
 
                     $this->deductInstallment($installment);
                 }
@@ -59,12 +55,18 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
     {
         $installmentPayment = $installment->installmentPayment;
 
-        if ($installment->is_paid) {
-            Log::notice('5 inside check if ($installment->is_paid) { - '. now()   );
+        $registrationID = $installmentPayment->registration_id;
+
+        if($registrationID == null || $registrationID == '' || !$registrationID) {
+
             return;
         }
 
-        $registrationID = $installmentPayment->registration_id;
+        if ($installment->is_paid  ) {
+            return;
+        }
+
+
         $amount = $installment->installment_amount;
 
         // Prepare Hyperpay API request
@@ -99,7 +101,6 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
             Log::error('Payment processing error: ' . $error);
             return;
         }
-        Log::notice('4 after if printed from the job - '. now()   );
         curl_close($ch);
 
         $response = json_decode($responseData);
