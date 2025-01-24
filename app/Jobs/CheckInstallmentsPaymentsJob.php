@@ -45,7 +45,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
                     $this->deductInstallment($installment);
                 }
             }
-            Log::notice('3 after if printed from the job - '. now()   );
+
         }
     }
 
@@ -60,6 +60,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $installmentPayment = $installment->installmentPayment;
 
         if ($installment->is_paid) {
+            Log::notice('5 inside check if ($installment->is_paid) { - '. now()   );
             return;
         }
 
