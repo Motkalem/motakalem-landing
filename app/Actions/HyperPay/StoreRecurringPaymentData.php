@@ -7,12 +7,19 @@ use Lorisleiva\Actions\Concerns\AsAction;
 class StoreRecurringPaymentData
 {
     use AsAction;
-    public function handle($package, $payment, $student, $data)
+    public function handle($package, $payment, $paymentBrand=null)
     {
         $url = env('HYPERPAY_URL')."/checkouts";
 
+        $entity_id = config('hyperpay.entity_id'); //visa or master
+
+        if(request()->brand == 'MADA')
+        {
+            $entity_id = env('ENTITY_ID_MADA'); //mada
+        }
+
         $data = [
-            'entityId' => env('ENTITY_ID'),
+            'entityId' => $entity_id,
             'amount' => $package->first_inst,
             'currency' => 'SAR',
             'paymentType' => 'DB',
@@ -42,7 +49,6 @@ class StoreRecurringPaymentData
             'standingInstruction.type' => 'UNSCHEDULED',
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
-
             'testMode'=> 'EXTERNAL',
             'merchantTransactionId' => $payment->id.'-'.microtime(),
             "customer.email"=>$payment?->student?->email,

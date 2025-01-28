@@ -55,11 +55,19 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
     {
         $installmentPayment = $installment->installmentPayment;
 
-        if ($installment->is_paid) {
+        $registrationID = $installmentPayment->registration_id;
+
+//        Log::notice('registrationID: ' . $registrationID);
+
+        if($registrationID == null || $registrationID == '' || !$registrationID) {
+
             return;
         }
 
-        $registrationID = $installmentPayment->registration_id;
+        if ($installment->is_paid  ) {
+            return;
+        }
+
         $amount = $installment->installment_amount;
 
         // Prepare Hyperpay API request
@@ -82,18 +90,21 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // This should be true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // This should be true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $responseData = curl_exec($ch);
 
         if (curl_errno($ch)) {
+
             $error = curl_error($ch);
+
             curl_close($ch);
 
             Log::error('Payment processing error: ' . $error);
             return;
         }
+
         curl_close($ch);
 
         $response = json_decode($responseData);

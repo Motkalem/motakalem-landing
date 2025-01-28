@@ -141,14 +141,18 @@ class ConsultantPatientsController extends AdminBaseController
         return redirect()->route('dashboard.consultant-patients.index')->with('success', 'Patient deleted successfully.');
     }
 
-
-    public function sendPaymentLink($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function sendPaymentLink($id)#: RedirectResponse
     {
-        $consultantPatient = ConsultantPatient::findOrFail($id);
+
+        $consultantPatient = ConsultantPatient::query()->findOrFail($id);
 
         $paymentLink = $this->generatePaymentLink($consultantPatient);
 
-        $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
+            $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
 
          (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
 
@@ -179,6 +183,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         try {
 
+
             $responseData = $this->createCheckoutId($consultantPatient);
 
         } catch (\Throwable $th) {
@@ -186,7 +191,8 @@ class ConsultantPatientsController extends AdminBaseController
             throw $th;
         }
 
-        $paymentId = data_get(json_decode($responseData), "id");
+         $paymentId = data_get(json_decode($responseData), "id");
+
 
         return view('payments.consultation-pay', compact('consultantPatient', 'paymentId'));
     }
@@ -202,7 +208,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         if (request()->brand == 'mada') {
 
-            $entity_id = env('ENTITY_ID_MADA'); //MADA
+            $entity_id = env('ENTITY_ID_MADA');
         }
 
         $access_token = env('AUTH_TOKEN');
@@ -210,11 +216,12 @@ class ConsultantPatientsController extends AdminBaseController
         $url = env('HYPERPAY_URL') . "/checkouts";
 
         $timestamp = Carbon::now()->timestamp;
+
         $micro_time = microtime(true);
 
         $unique_transaction_id = $consultationPatient->id .'-'.$timestamp . str_replace('.', '', $micro_time);
 
-        $data = 'entityId='
+         $data = 'entityId='
             . $entity_id
             . "&amount=" . $consultationPatient->consultationType?->price
             . "&currency=SAR"
@@ -266,7 +273,7 @@ class ConsultantPatientsController extends AdminBaseController
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
