@@ -31,6 +31,7 @@ class CreditAction
 
     public function __construct(JoinService $joinService, JoinController $joinController)
     {
+
         $this->joinService = $joinService;
         $this->joinController = $joinController;
     }
@@ -85,7 +86,6 @@ class CreditAction
         $request = request();
         $phone = $this->formatMobile($request->phone);
 
-
         $name = $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name;
 
         $package = Package::query()->find( $request->package_id);
@@ -124,6 +124,7 @@ class CreditAction
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
 
+
             return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
 
@@ -139,6 +140,8 @@ class CreditAction
             ];
 
         } else {
+
+
 
             $response = [
                 'status' => 1,
@@ -165,12 +168,13 @@ class CreditAction
 
                 Notification::route('mail', $student->email)
                     ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
+
             } catch (\Exception $e) {
+
                 Log::error($e->getMessage());
             }
 
         }
-
 
         if (is_null($student?->package_id) && $student->installmentPayment) {
 
@@ -181,7 +185,6 @@ class CreditAction
                         $student->installmentPayment,
                         $student,
                         $student?->toArray() ?? []);
-
 
                 if (data_get($response, 'id')) {
 
@@ -234,7 +237,7 @@ class CreditAction
      * @param $data
      * @return JsonResponse
      */
-    protected function createScheduledPayment($stID, $pckID, $student, $data): JsonResponse
+    protected function createScheduledPayment($stID, $pckID): JsonResponse
     {
         InstallmentPayment::query()->where('student_id', $stID)
             ->whereNull('registration_id')?->first()?->delete();
@@ -251,33 +254,18 @@ class CreditAction
         $this->createInstallments($installmentPayment);
 
         if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
-            $response = StoreRecurringPaymentData::make()
-                ->handle(
-                    $installmentPayment?->package,
-                    $installmentPayment,
-                    $student,
-                    $data);
-
-            if (data_get(data_get($response, 'result'), 'code') == '000.200.100') {
 
                 $response = [
                     'status' => 1,
                     'message' => 'successfully created checkout',
+
                     'payload' => [
                         'payment_token' => '#',
-                        'hyperpay_payment' => route('recurring.checkout', data_get($response, 'id'))
-                        . '?paymentId=' . $installmentPayment->id,
-                        'data' => $response
+                        'hyperpay_payment' => route('recurring.checkout',
+                            [ 'paymentId'=>$installmentPayment->id,'stdId'=> $installmentPayment->student_id]),
                     ],
                 ];
-            } else {
 
-                $response = [
-                    'status' => 0,
-                    'message' => 'حدث خطأ',
-                    'payload' => $response,
-                ];
-            }
             return response()->json($response, 200);
         } else {
 

@@ -68,7 +68,6 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
             return;
         }
 
-
         $amount = $installment->installment_amount;
 
         // Prepare Hyperpay API request
@@ -97,12 +96,15 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $responseData = curl_exec($ch);
 
         if (curl_errno($ch)) {
+
             $error = curl_error($ch);
+
             curl_close($ch);
 
             Log::error('Payment processing error: ' . $error);
             return;
         }
+
         curl_close($ch);
 
         $response = json_decode($responseData);

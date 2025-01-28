@@ -13,8 +13,8 @@
 
     @include('payments.assets.consaltation-pay')
 </head>
-<script
-    src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
+
+<script src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
     <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
