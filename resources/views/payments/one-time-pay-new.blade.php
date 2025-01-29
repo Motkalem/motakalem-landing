@@ -134,11 +134,11 @@
                     </svg>
                 </a>
                 &emsp13;
-                <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'tabby'])) }}"
-                   style="display: inline-block; text-decoration: none;">
-                    <img src="{{asset('images/brands/tabby.svg')}}"
-                         style="padding-right: 5px; width: 140px;" alt="tabby" />
-                </a>
+{{--                <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'tabby'])) }}"--}}
+{{--                   style="display: inline-block; text-decoration: none;">--}}
+{{--                    <img src="{{asset('images/brands/tabby.svg')}}"--}}
+{{--                         style="padding-right: 5px; width: 140px;" alt="tabby" />--}}
+{{--                </a>--}}
             </div>
             <style>
                 .payment-options a:hover {
