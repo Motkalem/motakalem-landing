@@ -26,6 +26,7 @@
             <thead>
                 <tr>
                     <th>الإسم</th>
+                    <th>الرقم التعريفي</th>
                     <th>البريد الإلكتروني</th>
                     <th>العمر</th>
                     <th>الباقة</th>
@@ -38,6 +39,7 @@
                 @foreach($students as $student)
                 <tr>
                     <td>{{ $student->name }}</td>
+                    <td class="text-center">{{ $student->parentContract?->id_number??'-' }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->age }}</td>
                     <td>{{ $student->package?->name ??'لايوجد' }}</td>
