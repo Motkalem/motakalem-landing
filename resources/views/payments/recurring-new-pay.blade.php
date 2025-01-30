@@ -90,7 +90,7 @@
                     <div style="text-align: center;margin-top: 40px;">
                         <a href="javascript:void(0);"
                            class="payment-method-title"
-                           style="text-align: center; color: #d61313; "
+                           style="text-align: center;color: #ffc107;  "
                            onclick="removeBrandParam()">
                             تغيير وسيلة الدفع ؟
                         </a>
@@ -100,10 +100,10 @@
                 <form action="/recurring/result/{{ request()->paymentId }}" class="paymentWidgets"
                       data-brands="VISA"></form>
 
-                <div style="text-align: center;margin-top: 40px;">
+                <div style="text-align: center;margin-top: 40px;color: #ffc107; ">
                     <a href="javascript:void(0);"
                        class="payment-method-title"
-                       style="text-align: center; color: #d61313; "
+                       style="text-align: center; color: #ffc107;   "
                        onclick="removeBrandParam()">
                         تغيير وسيلة الدفع ؟
                     </a>
@@ -144,7 +144,7 @@
     </div>
 
 
-    <section  class="first_footer py-3">
+    <section  class="first_footer py-3" style="background: #34474f">
         <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
             <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
                 <div _ngcontent-ng-c3011216936=""
@@ -163,7 +163,10 @@
             </div>
         </div>
     </section>
-    <footer _ngcontent-ng-c3011216936="">
+    <footer _ngcontent-ng-c3011216936="" style="position: absolute;
+    width: 100%;
+    bottom: 0;">
+
         <div _ngcontent-ng-c3011216936="" class="container">
             <div _ngcontent-ng-c3011216936="" class="row justify-content-center align-items-center">
                 <div _ngcontent-ng-c3011216936="" class="col-md-2 text-center"><a _ngcontent-ng-c3011216936=""

@@ -17,7 +17,7 @@
 
 <script src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
 
-<body class="mat-typography arabic" cz-shortcut-listen="true">
+<body class="mat-typography arabic" cz-shortcut-listen="true" style="height: 100vh">
 
 <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
 
@@ -87,10 +87,10 @@
                 <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'}}"
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
 
-                <div style="text-align: center;margin-top: 40px;">
+                <div style="text-align: center;margin-top: 40px;color: #ffc107;">
                     <a href="javascript:void(0);"
                        class="payment-method-title"
-                       style="text-align: center; color: #d61313; "
+                       style="text-align: center;  color: #ffc107; "
                        onclick="removeBrandParam()">
                         تغيير وسيلة الدفع ؟
                     </a>
@@ -100,10 +100,10 @@
                 <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'}}" class="paymentWidgets"
                       data-brands="VISA"></form>
 
-                <div style="text-align: center;margin-top: 40px;">
+                <div style="text-align: center;margin-top: 40px; color: #ffc107;">
                     <a href="javascript:void(0);"
                        class="payment-method-title"
-                       style="text-align: center; color: #d61313; "
+                       style="text-align: center;  color: #ffc107; "
                        onclick="removeBrandParam()">
                         تغيير وسيلة الدفع ؟
                     </a>
@@ -150,7 +150,7 @@
     </div>
 
 
-    <section  class="first_footer py-3">
+    <section  class="first_footer py-3" style="background: #34474f">
         <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
             <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
                 <div _ngcontent-ng-c3011216936=""
@@ -169,7 +169,10 @@
             </div>
         </div>
     </section>
-    <footer _ngcontent-ng-c3011216936="">
+    <footer _ngcontent-ng-c3011216936="" style="position: absolute;
+    width: 100%;
+    bottom: 0;">
+
         <div _ngcontent-ng-c3011216936="" class="container">
             <div _ngcontent-ng-c3011216936="" class="row justify-content-center align-items-center">
                 <div _ngcontent-ng-c3011216936="" class="col-md-2 text-center"><a _ngcontent-ng-c3011216936=""
