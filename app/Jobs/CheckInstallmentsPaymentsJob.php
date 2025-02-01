@@ -21,6 +21,8 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::notice('Running == CheckInstallmentsPaymentsJob');
+
         // Get all unpaid installments for active installment payments
         $installments = Installment::where('is_paid', false)
             ->whereHas('installmentPayment', function ($query) {

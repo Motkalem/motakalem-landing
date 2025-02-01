@@ -24,6 +24,8 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
      */
     public function handle()
     {
+        Log::notice('Running == SendTransactionsNotificationsJob');
+
         $installmentNotifications = HyperpayWebHooksNotification::query()
             ->select([
                 "id",
