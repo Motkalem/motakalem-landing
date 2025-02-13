@@ -164,8 +164,7 @@ class StudentsController extends AdminBaseController
 
             $contract = $contract->load('package');
 
-            //Notification::route('mail', $contract->email)->notify(new SendContractNotification($contract));
-            Notification::route('mail', 'dev@squarement.sa')->notify(new SendContractNotification($contract));
+            Notification::route('mail', $contract->email)->notify(new SendContractNotification($contract));
 
             // Return a success response
             return response()->json([
