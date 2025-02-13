@@ -169,7 +169,7 @@
                             // Handle errors
                             alert('حدث خطأ أثناء إرسال العقد: ' + error.message);
                         });
-                });
+                }, { once: true }); // This ensures the event fires only once.
             });
 
         </script>
