@@ -39,7 +39,7 @@ class SendContractNotification extends Notification
 
         return (new MailMessage)
             ->subject('عقد انضمام برنامج متكلم للتأتأه')
-            ->cc($adminEmails)
+            //->cc($adminEmails)
             ->view(
                 'emails.contract',
                 [

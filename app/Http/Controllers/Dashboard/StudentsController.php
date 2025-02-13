@@ -145,7 +145,7 @@ class StudentsController extends AdminBaseController
 
     public function sendContract($id)
     {
-        $student = Student::query()->findOrFail($id);
+        $student = Student::query()->with(['parentContract'])->findOrFail($id);
 
         $contractData = [
             'email' => $student->email,
@@ -153,8 +153,9 @@ class StudentsController extends AdminBaseController
             'age' => $student->age,
             'phone' => $student->phone,
             'city' => $student->city,
-            'id_number' => $student->id_number,
+            'id_number' => $student->id_number ?? $student->parentContract?->id_number,
             'id_end' => $student->id_end,
+            'package_id' => $student->package_id,
         ];
 
         // Create the contract and handle potential exceptions
@@ -163,7 +164,8 @@ class StudentsController extends AdminBaseController
 
             $contract = $contract->load('package');
 
-            Notification::route('mail', $contract->email)->notify(new SendContractNotification($contract));
+            //Notification::route('mail', $contract->email)->notify(new SendContractNotification($contract));
+            Notification::route('mail', 'dev@squarement.sa')->notify(new SendContractNotification($contract));
 
             // Return a success response
             return response()->json([
