@@ -148,7 +148,7 @@ class ConsultantPatientsController extends AdminBaseController
     public function sendPaymentLink($id)#: RedirectResponse
     {
 
-        $consultantPatient = ConsultantPatient::query()->findOrFail($id);
+        $consultantPatient = ConsultantPatient::query()->with('consultation_type')->findOrFail($id);
 
         $paymentLink = $this->generatePaymentLink($consultantPatient);
 
