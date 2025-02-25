@@ -43,4 +43,9 @@ class Student extends Model
         return $this->hasOne(InstallmentPayment::class);
     }
 
+    public function parentContract()
+    {
+        return $this->hasOne(ParentContract::class, 'phone', 'phone');
+    }
+
 }

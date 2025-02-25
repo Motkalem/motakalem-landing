@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Classes\Helper;
-use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Package;
-use App\Models\Student;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,7 +14,6 @@ class PackagesController extends AdminBaseController
 {
     public function index()
     {
-
         $search = request()->query('search');
 
         $query = Package::query();
@@ -32,6 +31,9 @@ class PackagesController extends AdminBaseController
         return view('admin.packages.index',   compact('packages','title', 'packagesCount'));
     }
 
+    /**
+     * @return Application|Factory|View
+     */
     public function create()
     {
         $title= 'إنشاء باقة';
@@ -41,21 +43,21 @@ class PackagesController extends AdminBaseController
 
     public function store(Request $request)
     {
+
           $request->validate([
             'name' => 'required|string|max:255|unique:packages,name',
             'total' => 'nullable|numeric|min:0|required_without_all:first_inst,number_of_months',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
-
-            'first_inst' => 'required|numeric|min:5|required_if:total,null',
-            'second_inst' => 'required|numeric|min:5|required_if:total,null',
+            'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
+            'second_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
-
             'starts_date' => 'required|date|before:ends_date',
             'ends_date' => 'required|date|after:starts_date',
-            'is_active' => 'sometimes',
+            'is_active' => 'nullable',
         ]);
+
 
         $package = new Package([
             'number_of_months' => $request->number_of_months,
@@ -106,7 +108,6 @@ class PackagesController extends AdminBaseController
             'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
-
             'is_active' => 'sometimes',
             'starts_date' => 'required|date|before:ends_date',
             'ends_date' => 'required|date|after:starts_date',

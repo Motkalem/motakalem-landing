@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 // Admin Routes
 // --------------------------
 
-
 Route::group(['middleware' => 'guest:dashboard'], function () {
     Route::get('dashboard/login', [DashboardAuthController::class, 'showLoginForm'])->name('dashboard.login');
     Route::post('dashboard/login', [DashboardAuthController::class, 'login'])->name('dashboard.login.submit');
