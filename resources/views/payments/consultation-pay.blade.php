@@ -118,7 +118,7 @@
 </app-navbar>
 
 <div class="routing">
-    <div style="padding-top:50px;  margin-bottom:0px; direction: ltr ">
+    <div style="padding-top:50px; padding-right: 15px ;margin-bottom:0px; direction: ltr;min-height: 500px ">
         <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;padding-left: 5px;padding-right: 5px">
             تكلفة
             {{$consultantPatient?->consultationType?->name}}
@@ -182,7 +182,7 @@
         @endif
     </div>
 
-    <div style="position: absolute; width: 100%; bottom: 0 ">
+    <div style="width: 100%; bottom: 0 ">
         <footer _ngcontent-ng-c3011216936="" style="padding:0px">
             <div _ngcontent-ng-c3011216936="" class="container">
                 <div _ngcontent-ng-c3011216936="" class="row justify-content-center align-items-center">
