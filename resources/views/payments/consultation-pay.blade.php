@@ -201,6 +201,7 @@
                     </div>
                 </div>
             </div>
+
         </footer>
         <section class="first_footer py-3" style="background: #34474f ; padding:0px">
             <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center" style="  padding:0px">
@@ -214,6 +215,7 @@
                 </div>
             </div>
         </section>
+    </div>
     </div>
     <script>
         function removeBrandParam() {
