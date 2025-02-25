@@ -36,6 +36,8 @@
             text-decoration: none;
             transition: all 0.3s ease;
             margin-top: 8px;
+            padding-left: 30px;
+            padding-right: 30px;
         }
 
         .payment-option img, .payment-option img {
@@ -44,7 +46,7 @@
         }
 
         .payment-option img, .payment-option svg {
-            width:80px;
+            width:50px;
             height: auto;
 
         }
@@ -119,7 +121,7 @@
     <div style="padding-top:50px;  margin-bottom:0px; direction: ltr ">
         <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
             تكلفة
-            ({{$consultantPatient?->consultationType?->name}})
+            {{$consultantPatient?->consultationType?->name}}
             {{$consultantPatient?->consultationType->price .' ' .__('SAR')}}
         </div>
 
