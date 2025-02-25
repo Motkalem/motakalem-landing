@@ -119,7 +119,7 @@
 
 <div class="routing">
     <div style="padding-top:50px;  margin-bottom:0px; direction: ltr ">
-        <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
+        <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;padding-left: 5px;padding-right: 5px">
             تكلفة
             {{$consultantPatient?->consultationType?->name}}
             {{$consultantPatient?->consultationType->price .' ' .__('SAR')}}
