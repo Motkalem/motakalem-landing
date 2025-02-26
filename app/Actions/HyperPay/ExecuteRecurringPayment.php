@@ -18,9 +18,9 @@ class ExecuteRecurringPayment
 
         $amount = $installment->package?->first_inst;
 
-        $url = env('HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
+        $url = env('SNB_HYPERPAY_URL') . "/registrations/" . $registrationId . "/payments";
 
-        $data = "entityId=" . env('RECURRING_ENTITY_ID') .
+        $data = "entityId=" . env('SNB_RECURRING_ENTITY_ID') .
             "&amount=".$amount .
             "&currency=SAR" .
             "&paymentType=DB" .
@@ -32,7 +32,7 @@ class ExecuteRecurringPayment
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization:Bearer ' . env('AUTH_TOKEN')));
+            'Authorization:Bearer ' . env('SNB_AUTH_TOKEN')));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);// this should be set to true in production

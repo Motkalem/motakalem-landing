@@ -27,7 +27,7 @@ class RecurringCheckoutAction
 
          $amount = $installmentPayment?->package?->first_inst;
 
-        $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
+         $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
 
         $checkoutId = data_get($response, 'id');
 

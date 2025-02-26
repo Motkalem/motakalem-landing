@@ -37,7 +37,7 @@ class PaymentController extends Controller
 
             if ($payment->package?->payment_type == Package::ONE_TIME) {
 
-                $responseData = $this->createCheckoutId($payment);
+                 $responseData = $this->createCheckoutId($payment);
             }
         } catch (\Throwable $th) {
 
@@ -56,17 +56,17 @@ class PaymentController extends Controller
     public function createCheckoutId($payment): bool|string
     {
 
-        $entity_id = config('hyperpay.entity_id'); //visa or master
+        $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
 
         if(request()->brand == 'MADA')
         {
-            $entity_id = env('ENTITY_ID_MADA'); //mada
+            $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
 
-        $access_token = env('AUTH_TOKEN');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL')."/checkouts";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
         $data = 'entityId='
         .$entity_id
@@ -147,10 +147,10 @@ class PaymentController extends Controller
      */
     public function getStatus(): string|RedirectResponse
     {
-        $entity_id = config('hyperpay.entity_id');
-        $access_token = config('hyperpay.access_token');
+        $entity_id = env('SNB_ENTITY_ID');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
