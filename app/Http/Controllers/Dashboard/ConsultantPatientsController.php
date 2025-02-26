@@ -150,14 +150,14 @@ class ConsultantPatientsController extends AdminBaseController
 
         $msg = 'عزيزي المراجع،
 
-لحجز موعدك وتأكيده في مركز متكلم الطبي للسمعيات، يرجى استخدام الرابط التالي لإتمام عملية الدفع:
+لحجز موعدك في مركز متكلم الطبي للسمعيات وتأكيده، يرجى إتمام الدفع عبر الرابط:
 
 ' . $paymentLink . '
 
-لأي استفسارات، لا تتردد في التواصل معنا
-نسعد بخدمتك';
+للاستفسار، نحن بخدمتك';
 
-         (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
+
+        (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
 
         return redirect()->route('dashboard.consultant-patients.index')
             ->with('success',  'تم إرسال رابط الدفع بنجاح');
