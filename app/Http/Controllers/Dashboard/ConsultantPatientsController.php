@@ -148,7 +148,14 @@ class ConsultantPatientsController extends AdminBaseController
 
         $paymentLink = $this->generatePaymentLink($consultantPatient);
 
-        $msg = 'عزيزي العميل، يرجى استخدام الرابط التالي لدفع تكلفة الاستشارة: ' . $paymentLink;
+        $msg = 'عزيزي المراجع،
+
+لحجز موعدك وتأكيده في مركز متكلم الطبي للسمعيات، يرجى استخدام الرابط التالي لإتمام عملية الدفع:
+
+' . $paymentLink . '
+
+لأي استفسارات، لا تتردد في التواصل معنا
+نسعد بخدمتك';
 
          (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
 
