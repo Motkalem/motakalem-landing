@@ -219,7 +219,7 @@ class PaymentController extends Controller
             'transaction_id' => data_get($data, 'id'),
             'student_id' => data_get($data, 'student_id'),
             'payment_id' => data_get($data, 'payment_id'),
-            'amount' => data_get($data, 'amount'),
+            'amount' => data_get($data, 'amount')??0.0,
             'success' =>
            in_array(data_get(data_get($data, 'result'), 'code'),
                ['000.100.110','000.000.000'])  ? 'true' : 'false',
