@@ -14,8 +14,8 @@ class ContactUsController extends Controller
     public function store(ContactUsRequest $request)
     {
         ContactUs::create($request->validated());
-        
-        // $noReplayEmail = "info@motkalem.com";
+
+        // $noReplayEmail = "info@motkalem.sa";
         // Mail::to($noReplayEmail)->send(new ContactMail($request->all()));
 
         return response()->json([

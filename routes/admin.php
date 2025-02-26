@@ -1,0 +1,77 @@
+<?php
+
+use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\Dashboard\ConsultantPatientsController;
+use App\Http\Controllers\Dashboard\ConsultantsController;
+use App\Http\Controllers\Dashboard\ContactUsMessagesController;
+use App\Http\Controllers\Dashboard\DashboardAuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\InstallmentPaymentsController;
+use App\Http\Controllers\Dashboard\PackagesController;
+use App\Http\Controllers\Dashboard\PaymentsController;
+use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\StudentsController;
+use App\Http\Controllers\Dashboard\TransactionsController;
+use Illuminate\Support\Facades\Route;
+
+// --------------------------
+// Admin Routes
+// --------------------------
+
+Route::group(['middleware' => 'guest:dashboard'], function () {
+    Route::get('dashboard/login', [DashboardAuthController::class, 'showLoginForm'])->name('dashboard.login');
+    Route::post('dashboard/login', [DashboardAuthController::class, 'login'])->name('dashboard.login.submit');
+    Route::get('dashboard/forgot-password', [DashboardAuthController::class, 'showForgotPasswordForm'])->name('dashboard.password.request');
+    Route::post('dashboard/forgot-password', [DashboardAuthController::class, 'sendResetLink'])->name('dashboard.password.email');
+    Route::get('dashboard/reset-password/{token}', [DashboardAuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('dashboard/reset-password', [DashboardAuthController::class, 'resetPassword'])->name('dashboard.password.update');
+});
+
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' => 'dashboard.'], function () {
+
+    Route::get('panel', [DashboardController::class, 'index'])->name('index');
+
+    Route::resource('packages', PackagesController::class);
+
+    Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
+
+    Route::resource('payments', PaymentsController::class);
+    Route::resource('transactions', TransactionsController::class);
+
+    Route::resource('students', StudentsController::class);
+    Route::resource('installment-payments', InstallmentPaymentsController::class);
+
+    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])
+        ->name('deductInstallment');
+
+    Route::resource('contact-messages', ContactUsMessagesController::class);
+
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
+
+    Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
+        ->name('send-contract');
+
+    Route::resource('consultant-types', ConsultantsController::class);
+
+    Route::resource('consultant-patients', ConsultantPatientsController::class);
+
+    Route::get('consultant-patients/send-link/{id}', [ConsultantPatientsController::class, 'sendPaymentLink'])
+        ->name('send-sms-payment-link');
+
+    Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoice'])
+        ->name('re-send-sms-invoice-link');
+
+});
+
+Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
+    ->name('dashboard.cancel-schedule');
+
+
+Route::get('/', function (){
+
+    return to_route('dashboard.login');
+});
+

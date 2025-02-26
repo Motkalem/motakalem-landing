@@ -55,6 +55,28 @@
     "client ID": "رقم العميل",
     "paid status": "حالة الدفع  ",
     "created at": "تاريخ الإنشاء",
-    "Email" : "البريد الإلكتروني"
+    "Email" : "البريد الإلكتروني",
+    "Dashboard": "لوحة تحكم جديدة",
+    "packages": "الباقات",
+    "Actions": "الإجراءات",
+    "Payments": "المدفوعات",
+    "Transactions": "المعاملات المالية",
+    "Show": "عرض",
+    "SAR": "ريال",
+    "Students":"الطلاب",
+    "Deleted successfully":"تم الحذف",
+    "Can not deleted": "لايمكن حذفه",
+    "execute recurring payment": "خصم القسط الشهري",
+    "transaction pending": "معاملة معلقة",
+    "One time Payments": "مدفوعات لمرة واحده",
+    "init recurring payment": "بدأ عملية التقسيط",
+    "installments payments": "المدفوعات المجدولة",
+    "Request successfully processed in 'Merchant in Connector Test Mode'": "تمت المعاملة بنجاح !",
+    "registration does not exist": "رقم التسجيل غير معروف !",
+    "The phone number already exists.": "رقم الهاتف مسجل من قبل !",
+    "dashboard": "لوحة التحكم",
+    "campaign": "حملة",
+    "Registered successfully.": "تم التسجيل"
+
 
 }

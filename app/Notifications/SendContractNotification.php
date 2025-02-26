@@ -14,8 +14,7 @@ class SendContractNotification extends Notification
      *
      * @return void
      */
-    public function __construct(public $data)
-    {}
+    public function __construct(public $data) {}
 
     /**
      * Get the notification's delivery channels.
@@ -47,7 +46,6 @@ class SendContractNotification extends Notification
                     'data' => $this->data,
                 ]
             );
-
 
     }
 }
