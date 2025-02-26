@@ -204,14 +204,17 @@
 
         </footer>
         <section class="first_footer py-3" style="background: #34474f ; padding:0px">
-            <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center" style="  padding:0px">
-                <div _ngcontent-ng-c3011216936="" class="row justify-content-center  mb-0" style="  padding:0px">
-                    <div _ngcontent-ng-c3011216936="" class="col-md-4 text-center align-self-center mt-1 border-left" style="  padding:0px">
-                        <p _ngcontent-ng-c3011216936="" class="text-white"  style="  padding:0;line-height: unset;font-size: 12px"> رقم السجل التجاري : 4030511477 </p>
+            <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center"  >
+                <div class="row justify-content-center  mb-0" style=" ">
+
+                    <div  class="col-md-4 text-center align-self-center mt-1 border-left"  >
+                        <div  class="text-white"  style=" line-height: unset;font-size: 12px"> رقم السجل التجاري : 4030511477 </div>
                     </div>
-                    <div _ngcontent-ng-c3011216936="" class="col-md-4 text-center align-self-center mt-1 border-left" style="  padding:0px">
-                        <p _ngcontent-ng-c3011216936="" class="text-white" style="  padding:0;line-height: unset;font-size: 12px">  رقم التسجيل الضريبي : 312011490100003  </p>
+                    <div  class="col-md-4 text-center align-self-center mt-1 border-left" >
+                        <div   class="text-white" style="   line-height: unset;font-size: 12px">  رقم التسجيل الضريبي : 312011490100003
+                        </div>
                     </div>
+
                 </div>
             </div>
         </section>
