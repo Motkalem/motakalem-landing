@@ -204,16 +204,16 @@ class ConsultantPatientsController extends AdminBaseController
     public function createCheckoutId($consultationPatient): bool|string
     {
 
-        $entity_id = config('hyperpay.entity_id');
+        $entity_id = env('RYD_ENTITY_ID');
 
         if (request()->brand == 'mada') {
 
-            $entity_id = env('ENTITY_ID_MADA');
+            $entity_id = env('RYD_ENTITY_ID_MADA');
         }
 
-        $access_token = env('AUTH_TOKEN');
+        $access_token = env('RYD_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL') . "/checkouts";
+        $url = env('RYD_HYPERPAY_URL') . "/checkouts";
 
         $timestamp = Carbon::now()->timestamp;
 
@@ -263,10 +263,10 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function getStatus() #: string|RedirectResponse
     {
-        $entity_id = config('hyperpay.entity_id');
-        $access_token = config('hyperpay.access_token');
+        $entity_id = env('RYD_ENTITY_ID');
+        $access_token = env('RYD_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
+        $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();

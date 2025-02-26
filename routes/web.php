@@ -27,6 +27,9 @@ Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->nam
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
 
 
+
+# CONSULTATION PAYMENT CYCLE
+
 Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
     ->name('checkout.consultation.index');
 Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])
