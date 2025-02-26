@@ -208,11 +208,11 @@
                 <div class="row justify-content-center  mb-0" style=" ">
 
                     <div  class="col-md-4 text-center align-self-center mt-1 border-left"  >
-                        <div  class="text-white"  style=" line-height: unset;font-size: 12px"> رقم السجل التجاري : 4030511477 </div>
+                        <p  class="text-white"  style=" line-height: unset;font-size: 12px"> رقم السجل التجاري : 4030511477 </p>
                     </div>
                     <div  class="col-md-4 text-center align-self-center mt-1 border-left" >
-                        <div   class="text-white" style="   line-height: unset;font-size: 12px">  رقم التسجيل الضريبي : 312011490100003
-                        </div>
+                        <p   class="text-white" style="   line-height: unset;font-size: 12px">  رقم التسجيل الضريبي : 312011490100003
+                        </p>
                     </div>
 
                 </div>
