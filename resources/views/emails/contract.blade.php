@@ -122,6 +122,7 @@
                                                     الطرف الثاني: {{data_get($data, 'name')}}, رقم
                                                     الهوية: {{data_get($data, 'id_number')}}, تاريخ انتهاء
                                                     الهوية: {{data_get($data, 'id_end')}}. (يشار إليه لاحقاً بـ
+                                                    رقم جوال: {{ data_get($data, 'phone') }}.
                                                     "العميل").
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">

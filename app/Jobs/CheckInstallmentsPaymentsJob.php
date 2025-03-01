@@ -73,9 +73,9 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $amount = $installment->installment_amount;
 
         // Prepare Hyperpay API request
-        $url = env('HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
+        $url = env('SNB_HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
         $data = http_build_query([
-            'entityId' => env('RECURRING_ENTITY_ID'),
+            'entityId' => env('SNB_RECURRING_ENTITY_ID'),
             'amount' => $amount,
             'currency' => 'SAR',
             'paymentType' => 'DB',
@@ -88,11 +88,11 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization:Bearer ' . env('AUTH_TOKEN'),
+            'Authorization:Bearer ' . env('SNB_AUTH_TOKEN'),
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // This should be true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // This should be true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $responseData = curl_exec($ch);

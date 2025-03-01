@@ -218,7 +218,6 @@ class ConsultantPatientsController extends AdminBaseController
         $url = env('RYD_HYPERPAY_URL') . "/checkouts";
 
         $timestamp = Carbon::now()->timestamp;
-
         $micro_time = microtime(true);
 
         $unique_transaction_id = $consultationPatient->id .'-'.$timestamp . str_replace('.', '', $micro_time);
