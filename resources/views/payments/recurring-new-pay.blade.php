@@ -18,7 +18,7 @@
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
 
-<app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
+  <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
 
     <div _ngcontent-ng-c2170032471="" class="nav-test">
         <nav _ngcontent-ng-c2170032471="" id="nav"
@@ -87,14 +87,14 @@
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}">
                 </form>
 
-                <div style="text-align: center;margin-top: 40px;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center;color: #ffc107;  "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
-                </div>
+                    <div style="text-align: center;margin-top: 40px;">
+                        <a href="javascript:void(0);"
+                           class="payment-method-title"
+                           style="text-align: center;color: #ffc107;  "
+                           onclick="removeBrandParam()">
+                            تغيير وسيلة الدفع ؟
+                        </a>
+                    </div>
             @else
 
                 <form action="/recurring/result/{{ request()->paymentId }}" class="paymentWidgets"

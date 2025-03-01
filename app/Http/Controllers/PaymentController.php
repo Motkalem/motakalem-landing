@@ -55,17 +55,17 @@ class PaymentController extends Controller
     public function createCheckoutId($payment): bool|string
     {
 
-        $entity_id = config('hyperpay.entity_id'); //visa or master
+        $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
         if(request()->payment_method == 'MADA')
         {
 
-            $entity_id = env('ENTITY_ID_MADA'); //mada
+            $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
 
-        $access_token = env('AUTH_TOKEN');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL')."/checkouts";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
         $data = 'entityId='
         .$entity_id
@@ -119,17 +119,17 @@ class PaymentController extends Controller
      */
     public function getStatus(): string|RedirectResponse
     {
-        $entity_id = config('hyperpay.entity_id');
-        $access_token = config('hyperpay.access_token');
+        $entity_id = env('SNB_ENTITY_ID');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {

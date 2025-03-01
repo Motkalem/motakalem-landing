@@ -25,7 +25,7 @@ class RecurringCheckoutResultAction
     public function handle(ActionRequest $request)#: JsonResponse|int
     {
 
-        $url = env('HYPERPAY_WIDGET_URL') . $request->resourcePath;
+        $url = env('SNB_HYPERPAY_WIDGET_URL') . $request->resourcePath;
 
         $response = Http::withoutVerifying()->get($url);
 
