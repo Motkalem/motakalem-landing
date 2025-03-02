@@ -65,9 +65,9 @@ class InstallmentPaymentsController extends AdminBaseController
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
 
-        $url = env('HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
+        $url = env('SNB_HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
 
-        $data = "entityId=" . env('RECURRING_ENTITY_ID') .
+        $data = "entityId=" . env('SNB_RECURRING_ENTITY_ID') .
             "&amount=" . $amount .
             "&currency=SAR" .
             "&paymentType=DB" .
@@ -79,11 +79,11 @@ class InstallmentPaymentsController extends AdminBaseController
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization:Bearer ' . env('AUTH_TOKEN'),
+            'Authorization:Bearer ' . env('SNB_AUTH_TOKEN'),
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // this should be set to true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // this should be set to true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
 

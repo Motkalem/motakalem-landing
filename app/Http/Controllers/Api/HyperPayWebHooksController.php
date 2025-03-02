@@ -52,7 +52,7 @@ class HyperPayWebHooksController extends Controller
 
     private function decryptPayload($encryptedPayload, $iv, $authTag)
     {
-        $key = hex2bin(env('DECRYPT_KEY'));
+        $key = hex2bin(env('SNB_DECRYPT_KEY'));
 
         return openssl_decrypt(
             $encryptedPayload,
