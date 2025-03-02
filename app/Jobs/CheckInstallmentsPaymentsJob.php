@@ -92,7 +92,7 @@ class CheckInstallmentsPaymentsJob implements ShouldQueue
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // This should be true in production
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER')); // This should be true in production
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $responseData = curl_exec($ch);
