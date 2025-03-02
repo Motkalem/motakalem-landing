@@ -263,8 +263,8 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function getStatus() #: string|RedirectResponse
     {
-        $entity_id = config('hyperpay.entity_id');
-        $access_token = config('hyperpay.access_token');
+        $entity_id =  env('RYD_ENTITY_ID_MADA');
+        $access_token = env('RYD_AUTH_TOKEN');
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;
