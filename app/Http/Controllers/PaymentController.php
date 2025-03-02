@@ -37,7 +37,7 @@ class PaymentController extends Controller
 
             if ($payment->package?->payment_type == Package::ONE_TIME) {
 
-                $responseData = $this->createCheckoutId($payment);
+                 $responseData = $this->createCheckoutId($payment);
             }
         } catch (\Throwable $th) {
 
@@ -45,7 +45,8 @@ class PaymentController extends Controller
         }
 
         $paymentId = data_get(json_decode($responseData), "id");
-        return view('payments.one-time-pay', compact('payment', 'paymentId'));
+
+        return view('payments.one-time-pay-new', compact('payment', 'paymentId'));
     }
 
     /**
@@ -57,9 +58,9 @@ class PaymentController extends Controller
 
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
-        if(request()->payment_method == 'MADA')
-        {
 
+        if(request()->brand == 'MADA')
+        {
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
 
@@ -81,6 +82,33 @@ class PaymentController extends Controller
         "&billing.postcode="."".
         "&customer.givenName=".$payment?->student?->name.
         "&customer.surname="."";
+
+        if(request()->brand == 'tabby')
+        {
+             $data = 'entityId='
+                .$entity_id
+                ."&amount=". $payment?->package?->total
+                ."&currency=SAR"
+                ."&paymentType=DB"
+                ."&paymentBrand=TABBY".
+                "&merchantTransactionId=".$payment->id.
+                "&customer.email=".$payment?->student?->email.
+                "&billing.street1=".$payment?->student?->city .
+                "&billing.city=".$payment?->student?->city .
+                "&billing.state=".$payment?->student?->city  .
+                "&billing.country="."SA".
+                "&billing.postcode="."".
+                "&customer.givenName=".$payment?->student?->name.
+                "&customer.surname="."".
+                "&customer.mobile=" . '966550274677' .
+                "&cart.items[0].name=item1".
+                "&cart.items[0].sku=15478".
+                "&cart.items[0].price=".$payment?->package?->total.
+                "&cart.items[0].quantity=1".
+                "&cart.items[0].description=test1".
+                "&cart.items[0].productUrl=http://url1.com";
+
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -129,13 +157,15 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
+
         if (curl_errno($ch)) {
 
             return curl_error($ch);
         }
+
         curl_close($ch);
 
        $response  = $responseData;
@@ -189,7 +219,7 @@ class PaymentController extends Controller
             'transaction_id' => data_get($data, 'id'),
             'student_id' => data_get($data, 'student_id'),
             'payment_id' => data_get($data, 'payment_id'),
-            'amount' => data_get($data, 'amount'),
+            'amount' => data_get($data, 'amount')??0.0,
             'success' =>
            in_array(data_get(data_get($data, 'result'), 'code'),
                ['000.100.110','000.000.000'])  ? 'true' : 'false',

@@ -173,8 +173,8 @@ class PaymentsController extends AdminBaseController
     public function createCheckoutId($total_price)
     {
 
-        $entitiy_id = config('hyperpay.entity_id');
-        $access_token = config('hyperpay.access_token');
+        $entitiy_id = env('SNB_ENTITY_ID');
+        $access_token = env('SNB_AUTH_TOKEN');
 
         $url = "https://eu-prod.oppwa.com/v1/checkouts";
         $data = 'entityId=' . $entitiy_id . "&amount=" . $total_price . "&currency=SAR" . "&paymentType=DB";
@@ -189,7 +189,7 @@ class PaymentsController extends AdminBaseController
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
