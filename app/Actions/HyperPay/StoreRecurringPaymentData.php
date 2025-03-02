@@ -50,7 +50,7 @@ class StoreRecurringPaymentData
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
 
-            'testMode'=> 'EXTERNAL',
+//            'testMode'=> 'EXTERNAL',
             'merchantTransactionId' => $payment->id.'-'.microtime(),
             "customer.email"=>$payment?->student?->email,
             "billing.street1"=>$payment?->student?->city ,
