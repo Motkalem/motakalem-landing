@@ -50,4 +50,5 @@
   'transactions' => 'المعاملات المالية',
   'client ID' => 'Client ID',
   'Email' => 'Email',
+  'Settings' => 'Settings',
 );
