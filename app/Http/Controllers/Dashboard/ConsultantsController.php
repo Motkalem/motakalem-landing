@@ -41,11 +41,13 @@ class ConsultantsController extends AdminBaseController
         $request->validate([
             'name' => 'required|string|max:255|unique:consultant_types,name',
             'price' => 'required|numeric|min:0',
+            'message' => 'required|string',
         ]);
 
         ConsultantType::create([
             'name' => $request->name,
             'price' => $request->price,
+            'message' => $request->message,
             'is_active' => $request->is_active ? 1 : 0,
         ]);
 
@@ -71,11 +73,13 @@ class ConsultantsController extends AdminBaseController
                 'required', 'string', 'max:255', Rule::unique('consultant_types', 'name')->ignore($id),
             ],
             'price' => 'required|numeric|min:0',
+            'message' => 'required|string',
         ]);
 
         $consultantType->update([
             'name' => $request->name,
             'price' => $request->price,
+            'message' => $request->message,
             'is_active' => $request->is_active ? 1 : 0,
 
         ]);

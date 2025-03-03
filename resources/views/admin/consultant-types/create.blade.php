@@ -46,13 +46,32 @@
                                        value="{{ old('price', $consultantType->price ?? '') }}"
                                        class="form-control @error('price') is-invalid @enderror"
                                         id="price" name="price" placeholder="السعر" />
-
-
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
+
+                        <!-- Description Field -->
+                        <div class="mb-3 row">
+                            <label for="description" class="form-label col-sm-2 col-form-label"> الرسالة </label>
+                            <div class="col-sm-10">
+        <textarea rows="8"
+                  class="form-control @error('message') is-invalid @enderror"
+                  name="message" placeholder="اكتب رسالتك هنا...">@unless(isset($consultantType))‏عزيزي {patient_name}،
+            لحجز موعدك في مركز متكلم، يرجى تأكيد الحجز لباقة {package_name} بسعر {package_price} من خلال الرابط التالي:
+            🔗 {payment_link}
+            للاستفسار، تواصل معنا.
+            تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
+
+                                @error('message')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
 
                         <!-- Active Status -->
                         <div class="mb-3 row">
