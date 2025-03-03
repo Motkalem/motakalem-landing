@@ -64,6 +64,12 @@
             للاستفسار، تواصل معنا.
             تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
 
+                                <small class="form-text text-muted">
+                                    يمكن استخدام المتغيرات التالية تلقائيًا في الرسالة، ويجب عدم حذف أي منها لضمان عمل الرسالة بشكل صحيح:<br>
+                                    <strong>{patient_name}</strong> اسم المراجع، <strong>{package_name}</strong> اسم الباقة،
+                                    <strong>{package_price}</strong> سعر الباقة، <strong>{payment_link}</strong> رابط الدفع.
+                                </small>
+
                                 @error('message')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
