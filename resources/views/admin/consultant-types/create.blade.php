@@ -21,7 +21,7 @@
                     </a>
                 </div>
                 <div class="mT-30">
-                    <form method="POST" action="{{ isset($consultantType) ? route('dashboard.consultant-types.update', $consultantType->id) : route('dashboard.consultant-types.store') }}">
+                    <form id="createConsultationType" method="POST" action="{{ isset($consultantType) ? route('dashboard.consultant-types.update', $consultantType->id) : route('dashboard.consultant-types.store') }}">
                         @csrf
                         @isset($consultantType)
                             @method('PUT')
@@ -57,15 +57,14 @@
                             <label for="description" class="form-label col-sm-2 col-form-label"> الرسالة </label>
                             <div class="col-sm-10">
                                 <div class="mb-3 row">
-                                    <label for="description" class="form-label col-sm-2 col-form-label"> الرسالة </label>
-                                    <div class="col-sm-10">
-        <textarea rows="8"
-                  class="form-control @error('message') is-invalid @enderror"
-                  name="message" placeholder="اكتب رسالتك هنا...">@unless(isset($consultantType))‏عزيزي {patient_name}،
-            لحجز موعدك في مركز متكلم، يرجى تأكيد الحجز لباقة {package_name} بسعر {package_price} ريال من خلال الرابط التالي:
-            🔗 {payment_link}
-            للاستفسار، تواصل معنا.
-            تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
+                                     <div class="col-sm-10">
+                    <textarea rows="8"
+                              class="form-control @error('message') is-invalid @enderror"
+                              name="message" placeholder="اكتب رسالتك هنا...">@unless(isset($consultantType))‏عزيزي {patient_name}،
+                        لحجز موعدك في مركز متكلم، يرجى تأكيد الحجز لباقة {package_name} بسعر {package_price} ريال من خلال الرابط التالي:
+                        🔗 {payment_link}
+                        للاستفسار، تواصل معنا.
+                        تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
 
                                         <small class="form-text" style="color: #6c757d; font-style: italic;">
                                             يمكن استخدام المتغيرات التالية تلقائيًا في الرسالة، <br>
@@ -79,36 +78,36 @@
                                     </div>
                                 </div>
 
-
-
-
-
                         <!-- Active Status -->
-                        <div class="mb-3 row">
-                            <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>
-                            <div class="col-sm-10">
-                                <div class="form-check">
-                                    <input class="form-check-input @error('is_active') is-invalid @enderror" type="checkbox" id="is_active" name="is_active" {{ old('is_active', $consultantType->is_active ?? false) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_active">إضغط للتنشيط</label>
-                                    @error('is_active')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="mb-3 row">
-                            <div class="col-sm-10 offset-sm-2">
-                                <button type="submit" class="btn btn-primary btn-color">
-                                    @isset($consultantType)
-                                        تحديث نوع الإستشارة
-                                    @else
-                                        إنشاء نوع الإستشارة
-                                    @endisset
-                                </button>
-                            </div>
-                        </div>
+
+
                     </form>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="is_active"  class="form-label col-sm-2 col-form-label">نشط</label>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input form="createConsultationType" class="form-check-input @error('is_active') is-invalid @enderror" type="checkbox" id="is_active" name="is_active" {{ old('is_active', $consultantType->is_active ?? false) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="is_active">إضغط للتنشيط</label>
+                        @error('is_active')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" form="createConsultationType" class="btn btn-primary btn-color">
+                        @isset($consultantType)
+                            تحديث نوع الإستشارة
+                        @else
+                            إنشاء نوع الإستشارة
+                        @endisset
+                    </button>
                 </div>
             </div>
         </div>
