@@ -59,7 +59,7 @@
         <textarea rows="8"
                   class="form-control @error('message') is-invalid @enderror"
                   name="message" placeholder="اكتب رسالتك هنا...">@unless(isset($consultantType))‏عزيزي {patient_name}،
-            لحجز موعدك في مركز متكلم، يرجى تأكيد الحجز لباقة {package_name} بسعر {package_price} من خلال الرابط التالي:
+            لحجز موعدك في مركز متكلم، يرجى تأكيد الحجز لباقة {package_name} بسعر {package_price} ريال من خلال الرابط التالي:
             🔗 {payment_link}
             للاستفسار، تواصل معنا.
             تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
