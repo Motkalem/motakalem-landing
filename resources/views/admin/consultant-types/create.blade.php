@@ -56,6 +56,9 @@
                         <div class="mb-3 row">
                             <label for="description" class="form-label col-sm-2 col-form-label"> الرسالة </label>
                             <div class="col-sm-10">
+                                <div class="mb-3 row">
+                                    <label for="description" class="form-label col-sm-2 col-form-label"> الرسالة </label>
+                                    <div class="col-sm-10">
         <textarea rows="8"
                   class="form-control @error('message') is-invalid @enderror"
                   name="message" placeholder="اكتب رسالتك هنا...">@unless(isset($consultantType))‏عزيزي {patient_name}،
@@ -64,17 +67,18 @@
             للاستفسار، تواصل معنا.
             تحياتنا، فريق متكلم@else{{$consultantType->message}}@endunless</textarea>
 
-                                <small class="form-text   text-danger">
-                                    يمكن استخدام المتغيرات التالية تلقائيًا في الرسالة، ويجب عدم حذف أي منها لضمان عمل الرسالة بشكل صحيح:<br>
-                                    <strong>{patient_name}</strong> اسم المراجع، <strong>{package_name}</strong> اسم الباقة،
-                                    <strong>{package_price}</strong> سعر الباقة، <strong>{payment_link}</strong> رابط الدفع.
-                                </small>
+                                        <small class="form-text" style="color: #6c757d; font-style: italic;">
+                                            يمكن استخدام المتغيرات التالية تلقائيًا في الرسالة، <br>
+                                            <strong>{patient_name}</strong> اسم المراجع، <strong>{package_name}</strong> اسم الباقة،
+                                            <strong>{package_price}</strong> سعر الباقة، <strong>{payment_link}</strong> رابط الدفع.<br>
+                                         </small>
 
-                                @error('message')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                                        @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
 
 
 
