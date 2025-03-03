@@ -31,7 +31,7 @@
                         <div class="mb-3 row">
                             <label for="name" class="form-label col-sm-2 col-form-label">اسم نوع الإستشارة</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $consultantType->name ?? '') }}" placeholder="اسم نوع المستشار">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $consultantType->name ?? '') }}" placeholder="اسم نوع الإستشارة">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
