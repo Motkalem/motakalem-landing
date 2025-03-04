@@ -147,27 +147,25 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function sendPaymentLink($id)#: RedirectResponse
     {
-
         $consultantPatient = ConsultantPatient::query()->with('consultationType')->findOrFail($id);
-
         $paymentLink = $this->generatePaymentLink($consultantPatient);
 
-        $msg = 'عزيزي المراجع،
-
+        $msgTemplate = $consultantPatient->consultationType->message ?? 'عزيزي {patient_name}،
 لحجز موعدك في مركز متكلم الطبي للسمعيات وتأكيده، يرجى إتمام الدفع عبر الرابط:
-
-' . $paymentLink . '
-
+{payment_link}
 للاستفسار، نحن بخدمتك';
+        $msg = str_replace(
+            ['{patient_name}', '{package_name}', '{package_price}', '{payment_link}'],
+            [$consultantPatient->name, $consultantPatient->consultationType->name, $consultantPatient->consultationType->price, $paymentLink],
+            $msgTemplate
+        );
 
-
-        if(env('APP_ENV') == 'production') {
-
+        if (env('APP_ENV') == 'production') {
             (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
         }
 
         return redirect()->route('dashboard.consultant-patients.index')
-            ->with('success',  'تم إرسال رابط الدفع بنجاح');
+            ->with('success', 'تم إرسال رابط الدفع بنجاح');
     }
 
 
@@ -253,7 +251,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
@@ -280,7 +278,7 @@ class ConsultantPatientsController extends AdminBaseController
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {

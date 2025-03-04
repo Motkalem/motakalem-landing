@@ -10,7 +10,7 @@ class ConsultantType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'is_active'];
+    protected $fillable = ['name', 'price','message', 'is_active'];
 
 
     /**
