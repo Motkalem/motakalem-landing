@@ -57,6 +57,23 @@
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
+        @font-face {
+            font-family: 'SarRegular';
+            src: url('/fonts/font/sar-Regular.otf') format('opentype');
+        }
+
+        .riyal-symbol {
+            width: 1.6rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: 'SarRegular', sans-serif !important;
+            font-size: 1.6rem;
+            font-weight: 100 !important;
+        }
     </style>
 </head>
 
@@ -121,11 +138,13 @@
 
 
 <div class="routing">
-    <div style="padding-top:50px; padding-right: 15px ;margin-bottom:0px; direction: ltr;min-height: 500px ">
-        <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;padding-left: 5px;padding-right: 5px">
+    <div style="padding-top:50px; padding-right: 15px ;margin-bottom:0px; direction: rtl;min-height: 500px ">
+        <div class="payment-method-title"
+             style="text-align: center; font-size: 20px; font-weight: bold;
+              margin-bottom: 20px;padding-left: 5px;padding-right: 5px">
             تكلفة
             {{$consultantPatient?->consultationType?->name}}
-            {{$consultantPatient?->consultationType->price .' ' .__('SAR')}}
+            {{$consultantPatient?->consultationType->price .' '  }} <span class="riyal-symbol">R</span>
         </div>
 
         @if(data_get($_GET,'brand'))

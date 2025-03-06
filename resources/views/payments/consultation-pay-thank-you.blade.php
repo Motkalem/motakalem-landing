@@ -98,6 +98,23 @@
             border-bottom: unset !important;
             box-shadow: unset !important;
         }
+
+        @font-face {
+            font-family: 'SarRegular';
+            src: url('/fonts/font/sar-Regular.otf') format('opentype');
+        }
+
+        .riyal-symbol {
+            width: 1.6rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: 'SarRegular', sans-serif !important;
+            font-size: 1.3rem;
+            font-weight: 100 !important;
+        }
     </style>
 </head>
 <script
@@ -197,7 +214,8 @@
                         <th style="text-align: start;font-weight: normal">
                                 الضريبة 15%
                             </th>
-                        <td style="text-align: start">{{  $consultationPatient?->consultationType->price * .15  }} @lang('SAR')</td>
+                        <td style="text-align: start">{{  $consultationPatient?->consultationType->price * .15  }}
+                            <span class="riyal-symbol">R</span></td>
                     </tr>
                     <tr>
                         <th style="text-align: start;font-weight: normal">
