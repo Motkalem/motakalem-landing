@@ -197,12 +197,13 @@
                                                             @if ($value > 0)
                                                                 ◦ القسط {{ $key }}: {{ $value }}
 
-                                                            <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" />.
+                                                                <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" /> .
                                                                 @if ($loop->first)
                                                                     يُدفع عند الاشتراك.
                                                                 @else
                                                                     يُدفع قبل بدء المرحلة {{ $key }}.
                                                                 @endif
+
                                                                 <br/>
                                                             @endif
                                                         @endforeach
