@@ -178,7 +178,7 @@
                                             . ( $data->package?->first_inst + $data->package?->second_inst
                                                 + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                     @endif
-                                                    <span class="riyal-symbol">R</span>.
+                                                    <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" />.
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>
@@ -195,7 +195,9 @@
                                                         @endphp
                                                         @foreach ($installments as $key => $value)
                                                             @if ($value > 0)
-                                                                ◦ القسط {{ $key }}: {{ $value }}  <span class="riyal-symbol">R</span>
+                                                                ◦ القسط {{ $key }}: {{ $value }}
+
+                                                            <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" />.
                                                                 @if ($loop->first)
                                                                     يُدفع عند الاشتراك.
                                                                 @else
