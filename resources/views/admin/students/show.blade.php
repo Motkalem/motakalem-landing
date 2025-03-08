@@ -39,7 +39,7 @@
                     <label class="form-label col-sm-2 col-form-label"> الإجمالي  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->total   }} {{__('SAR')}}
+                            {{ $student->package?->total   }} <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <label class="form-label col-sm-2 col-form-label"> قيمة القسط  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->installment_value   }} {{__('SAR')}}
+                            {{ $student->package?->installment_value   }} <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>

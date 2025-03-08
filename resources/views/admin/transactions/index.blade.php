@@ -27,7 +27,7 @@
                   <td class="{{ $transaction->success =='true' ? 'text-success' : 'text-danger'}}">
                     {{ $transaction->success  =='true' ? 'نجاح' : 'فشل' }}
                 </td>
-                    <td>{{ $transaction->amount .' '. __('SAR')}}</td>
+                    <td>{{ $transaction->amount .' ' }} <span class="riyal-symbol">R</span></td>
                     <td class="text-center">
                         <a class="btn btn-info btn-sm" href="{{ route('dashboard.transactions.show', $transaction->id) }}">
                             {{__('Show')}}

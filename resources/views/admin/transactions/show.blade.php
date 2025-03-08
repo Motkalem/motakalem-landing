@@ -37,7 +37,7 @@
         <div class="mb-3 row">
             <label for="amount" class="form-label col-sm-2 col-form-label">المبلغ</label>
             <div class="col-sm-10">
-                <p class="form-control-plaintext">{{ $transaction->amount .' '.__('SAR') }}</p>
+                <p class="form-control-plaintext">{{ $transaction->amount .' '  }} <span class="riyal-symbol">R</span></p>
             </div>
         </div>
 
