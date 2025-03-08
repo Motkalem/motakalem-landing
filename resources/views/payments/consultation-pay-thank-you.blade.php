@@ -226,7 +226,7 @@
                         <td style="text-align: start">
                             {{  $consultationPatient?->consultationType->price - ($consultationPatient?->consultationType->price * .15) }}
 
-                            @lang('SAR')
+                            <span class="riyal-symbol">R</span>
 
                         </td>
                     </tr>
@@ -238,7 +238,7 @@
                     </tr>
                     <tr >
                         <th style="text-align: start;font-weight: bold"> الإجمالي </th>
-                        <td style="text-align: start; ">{{  $consultationPatient?->consultationType->price }}   @lang('SAR')</td>
+                        <td style="text-align: start; ">{{  $consultationPatient?->consultationType->price }}  <span class="riyal-symbol">R</span></td>
                     </tr>
                     <tr>
                         <td style="text-align: start;font-weight: normal;">
