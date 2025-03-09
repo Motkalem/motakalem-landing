@@ -2,10 +2,13 @@
 
 @push('styles')
     <link href="{{ asset('admin/table.css') }}" rel="stylesheet" />
+
+
 @endpush
 
 @section('content')
     <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
+
 
         <div class="col-md-12">
             <h3 class="text-bold">
@@ -59,12 +62,20 @@
                             </td>
                             <td class="text-center project_progress">
                             <span>
-                            {{$package->first_inst == null ? '---' : $package->first_inst.' '.__('SAR') }}</span>
+                            {{$package->first_inst == null ? '---' : $package->first_inst.' ' }}
+                                @if($package->first_inst)
+                                    <span class="riyal-symbol">R</span>
+                                @endif
+                            </span>
                             </td>
 
                             <td class="text-center project_progress ">
                             <span >
-                            {{$package->total == null ? '---' : $package->total.' '.__('SAR') }}</span>
+                            {{$package->total == null ? '---' : $package->total.' '}}
+                                @if($package->total)
+                                    <span class="riyal-symbol">R</span>
+                                @endif
+                            </span>
                             </td>
                             <td class="text-right project-actions">
                                 <a class="px-4 btn btn-info btn-sm" href="{{ route('dashboard.packages.edit', $package->id) }}">

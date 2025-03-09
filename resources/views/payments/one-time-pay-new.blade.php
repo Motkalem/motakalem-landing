@@ -58,6 +58,23 @@
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
+        @font-face {
+            font-family: 'SarRegular';
+            src: url('/fonts/font/sar-Regular.otf') format('opentype');
+        }
+
+        .riyal-symbol {
+            width: 1.6rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: 'SarRegular', sans-serif !important;
+            font-size: 2.3rem;
+            font-weight: 100 !important;
+        }
     </style>
 </head>
 
@@ -122,8 +139,9 @@
 
 <div class="routing">
 
-    <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: ltr ">
-        <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total . __('SAR')}}</h1>
+    <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: rtl ">
+        <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total }}
+            <span class="riyal-symbol">R</span> </h1>
 
         @if(data_get($_GET,'brand'))
 

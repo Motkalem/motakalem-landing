@@ -37,7 +37,7 @@
                     @foreach($consultantTypes as $consultantType)
                         <tr>
                             <td>{{ $consultantType->name }}</td>
-                            <td>{{ $consultantType->price }} {{ __('SAR') }}</td>
+                            <td>{{ $consultantType->price }}  <span class="riyal-symbol">R</span></td>
                             <td>
                                 @if($consultantType->is_active)
 

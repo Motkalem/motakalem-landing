@@ -73,7 +73,7 @@
                                     <a href="{{route('dashboard.consultant-types.edit', $consultantPatient->consultationType?->id)}}">
 
                                         {{ $consultantPatient->consultationType->name   }}
-                                        ({{ $consultantPatient->consultationType->price  }} @lang('SAR'))
+                                        ({{ $consultantPatient->consultationType->price  }}  <span class="riyal-symbol">R</span>)
                                     </a>
 
                                 @else

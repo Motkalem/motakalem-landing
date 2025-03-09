@@ -166,7 +166,7 @@
                 <div class="mb-3 row">
                     <label for="amount" class="form-label col-sm-4 col-form-label">المبلغ الكلي  </label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $payment->package?->total . ' ' . __('SAR') }}</p>
+                        <p class="form-control-plaintext">{{ $payment->package?->total . ' '  }}  <span class="riyal-symbol">R</span></p>
                     </div>
                 </div>
 

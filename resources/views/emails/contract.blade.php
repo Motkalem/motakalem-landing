@@ -1,4 +1,4 @@
-@php use Carbon\Carbon; @endphp
+ @php use Carbon\Carbon; @endphp
 
     <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -13,6 +13,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 
+    <style>
+        @font-face {
+            font-family: 'SarRegular';
+            src: url('/fonts/font/sar-Regular.otf') format('opentype');
+        }
+
+        .riyal-symbol {
+            width: 1.6rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: 'SarRegular', sans-serif !important;
+            font-size: 1.3rem;
+            font-weight: 100 !important;
+        }
+    </style>
 </head>
 <body style="margin:0px;padding:0px;min-width:100%;background-color:rgb(243,242,240)">
 <center style="width:100%;table-layout:fixed;background-color:rgb(243,242,240)">
@@ -160,7 +178,7 @@
                                             . ( $data->package?->first_inst + $data->package?->second_inst
                                                 + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                     @endif
-                                                    ريال سعودي.
+                                                    <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" />.
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>
@@ -177,12 +195,15 @@
                                                         @endphp
                                                         @foreach ($installments as $key => $value)
                                                             @if ($value > 0)
-                                                                ◦ القسط {{ $key }}: {{ $value }} ريال
+                                                                ◦ القسط {{ $key }}: {{ $value }}
+
+                                                                <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" /> .
                                                                 @if ($loop->first)
                                                                     يُدفع عند الاشتراك.
                                                                 @else
                                                                     يُدفع قبل بدء المرحلة {{ $key }}.
                                                                 @endif
+
                                                                 <br/>
                                                             @endif
                                                         @endforeach

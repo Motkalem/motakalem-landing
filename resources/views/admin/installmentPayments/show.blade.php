@@ -172,15 +172,16 @@
                                  $installmentPayment->package?->second_inst +
                                  $installmentPayment->package?->third_inst +
                                  $installmentPayment->package?->fourth_inst +
-                                 $installmentPayment->package?->fifth_inst) . ' ' . __('SAR')
+                                 $installmentPayment->package?->fifth_inst) . ' '
                             }}
+                            <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="amount" class="col-sm-4 col-form-label">القسط الأول</label>
                     <div class="col-sm-8">
-                        <p class="form-control-plaintext">{{ $installmentPayment->package?->first_inst . ' ' . __('SAR') }}</p>
+                        <p class="form-control-plaintext">{{ $installmentPayment->package?->first_inst . ' '   }}  <span class="riyal-symbol">R</span></p>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -222,7 +223,7 @@
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $installment->admin_ip??'---' }}</td>
                                 <td class="text-center">{{ $installment->id }}</td>
-                                <td class="text-center">{{ $installment->installment_amount . ' ' . __('SAR') }}</td>
+                                <td class="text-center">{{ $installment->installment_amount . ' '  }}  <span class="riyal-symbol">R</span></td>
                                 <td class="text-center">{{ $installment->installment_date }}</td>
                                 <td class="text-center">{{ $installment->paid_at ?? '---' }}</td>
                                 <td class="text-center">
