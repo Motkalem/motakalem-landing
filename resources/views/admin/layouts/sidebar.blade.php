@@ -73,7 +73,7 @@
              ? 'bg-light m-3' : '' }}">
                 <a class="sidebar-link" href="{{ route('dashboard.payments.index') }}">
                     <span class="icon-holder">
-                        <i class="c-indigo-500 ti-money"></i>
+                        <span class="riyal-symbol c-indigo-500 ">R</span>
                     </span>
                     <span class="title">{{ __('One time Payments') }}</span>
                 </a>
