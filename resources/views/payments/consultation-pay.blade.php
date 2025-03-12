@@ -75,16 +75,17 @@
             font-weight: 100 !important;
         }
     </style>
-
     <meta http-equiv="Content-Security-Policy"
           content="
-style-src 'self' https://eu-test.oppwa.com 'unsafe-inline' ;
-frame-src 'self' https://eu-test.oppwa.com;
-script-src 'self' https://eu-test.oppwa.com 'nonce-{{$nonce}}' ;
-connect-src 'self' https://eu-test.oppwa.com;
-img-src 'self' https://eu-test.oppwa.com;
+        style-src 'self' https://eu-test.oppwa.com 'unsafe-inline';
+        frame-src 'self' https://eu-test.oppwa.com;
+        script-src 'self' https://eu-test.oppwa.com 'nonce-{{$nonce}}';
+        connect-src 'self' https://eu-test.oppwa.com;
+        img-src 'self' https://eu-test.oppwa.com;
+        object-src 'none';
+        base-uri 'self';
 ">
-</head>
+
 
 <script nonce="{{$nonce}}">
     var wpwlOptions = {
