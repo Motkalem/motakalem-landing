@@ -86,6 +86,12 @@ img-src 'self' https://eu-test.oppwa.com;
 ">
 </head>
 
+<script nonce="{{$nonce}}">
+    var wpwlOptions = {
+        style:"plain"
+    }
+</script>
+
 <script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
         integrity="{{$integrity}}"
         crossorigin="anonymous"></script>
