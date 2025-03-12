@@ -80,7 +80,7 @@
           content="
 style-src 'self' https://eu-test.oppwa.com 'unsafe-inline' ;
 frame-src 'self' https://eu-test.oppwa.com;
-script-src 'self' https://eu-test.oppwa.com 'nonce-${{$nonce}}' ;
+script-src 'self' https://eu-test.oppwa.com 'nonce-{{$nonce}}' ;
 connect-src 'self' https://eu-test.oppwa.com;
 img-src 'self' https://eu-test.oppwa.com;
 ">
