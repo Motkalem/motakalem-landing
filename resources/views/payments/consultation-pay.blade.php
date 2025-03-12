@@ -75,9 +75,20 @@
             font-weight: 100 !important;
         }
     </style>
+
+    <meta http-equiv="Content-Security-Policy"
+          content="
+style-src 'self' https://eu-test.oppwa.com 'unsafe-inline' ;
+frame-src 'self' https://eu-test.oppwa.com;
+script-src 'self' https://eu-test.oppwa.com 'nonce-${{$nonce}}' ;
+connect-src 'self' https://eu-test.oppwa.com;
+img-src 'self' https://eu-test.oppwa.com;
+">
 </head>
 
-<script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
+<script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
+        integrity="{{$integrity}}"
+        crossorigin="anonymous"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
 <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
