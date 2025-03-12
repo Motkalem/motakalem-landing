@@ -83,8 +83,7 @@
         connect-src 'self' https://eu-test.oppwa.com;
         img-src 'self' https://eu-test.oppwa.com;
         object-src 'none';
-        base-uri 'self';
-">
+        base-uri 'self';">
 
 
 <script nonce="{{$nonce}}">
