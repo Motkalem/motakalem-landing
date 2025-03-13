@@ -202,7 +202,8 @@ class ConsultantPatientsController extends AdminBaseController
         $integrity = data_get(json_decode($responseData), "integrity");
         $nonce = bin2hex(random_bytes(16));
 
-        return view('payments.consultation-pay', compact('consultantPatient', 'paymentId','integrity', 'nonce'));
+        return view('payments.consultation-pay', compact('consultantPatient',
+            'paymentId','integrity', 'nonce'));
     }
 
     /**

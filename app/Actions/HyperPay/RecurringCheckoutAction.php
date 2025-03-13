@@ -31,6 +31,12 @@ class RecurringCheckoutAction
 
         $checkoutId = data_get($response, 'id');
 
-        return view('payments.recurring-new-pay', compact('checkoutId', 'amount'));
+
+          $integrity = data_get( $response , "integrity");
+
+        $nonce = bin2hex(random_bytes(16));
+
+        return view('payments.recurring-new-pay', compact('checkoutId',
+            'amount','integrity','nonce'));
     }
 }

@@ -77,11 +77,11 @@
     </style>
     <meta http-equiv="Content-Security-Policy"
           content="
-        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
-        frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
-        script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
-        connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
-        img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+        style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
+        frame-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+        script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
+        connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+        img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
         object-src 'none';
         base-uri 'self';">
 
