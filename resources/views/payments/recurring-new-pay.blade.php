@@ -90,7 +90,7 @@
 
     <script nonce="{{$nonce}}">
         var wpwlOptions = {
-            style:"plain"
+            // style:"plain"
         }
     </script>
 </head>
