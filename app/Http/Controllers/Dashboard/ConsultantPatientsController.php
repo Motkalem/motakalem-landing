@@ -213,27 +213,28 @@ class ConsultantPatientsController extends AdminBaseController
     public function createCheckoutId($consultationPatient): bool|string
     {
 
-        $entity_id =  env('RYD_ENTITY_ID');
+        $entity_id =  env('SNB_ENTITY_ID');
 
         if (request()->brand == 'mada') {
 
-            $entity_id = env('RYD_ENTITY_ID_MADA'); //MADA
+            $entity_id = env('SNB_ENTITY_ID_MADA'); //MADA
         }
 
-        $access_token = env('RYD_AUTH_TOKEN');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('RYD_HYPERPAY_URL') . "/checkouts";
+        $url = env('SNB_HYPERPAY_URL') . "/checkouts";
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
 
         $unique_transaction_id = $consultationPatient->id .'-'.$timestamp . str_replace('.', '', $micro_time);
 
+
         $data = 'entityId='
             . $entity_id
             . "&amount=" . $consultationPatient->consultationType?->price
-            . "&currency=SAR"
-            . "&paymentType=DB" .
+            ."&currency=SAR"
+            ."&paymentType=DB" .
             "&integrity=true".
             "&merchantTransactionId=" . $unique_transaction_id .
             "&customer.email=" . $consultationPatient?->email .
@@ -272,10 +273,10 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function getStatus() #: string|RedirectResponse
     {
-        $entity_id =  env('RYD_ENTITY_ID_MADA');
-        $access_token = env('RYD_AUTH_TOKEN');
+        $entity_id =  env('SNB_ENTITY_ID_MADA');
+        $access_token = env('SNB_AUTH_TOKEN');
 
-        $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
+        $url = env('SNB_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
