@@ -199,11 +199,11 @@ class ConsultantPatientsController extends AdminBaseController
         }
 
         $paymentId = data_get(json_decode($responseData), "id");
-        $integrity = data_get(json_decode($responseData), "integrity");
-        $nonce = bin2hex(random_bytes(16));
+        //$integrity = data_get(json_decode($responseData), "integrity");
+        //$nonce = bin2hex(random_bytes(16));
 
         return view('payments.consultation-pay', compact('consultantPatient',
-            'paymentId','integrity', 'nonce'));
+            'paymentId'/*,'integrity', 'nonce'*/));
     }
 
     /**
@@ -235,7 +235,7 @@ class ConsultantPatientsController extends AdminBaseController
             . "&amount=" . $consultationPatient->consultationType?->price
             ."&currency=SAR"
             ."&paymentType=DB" .
-            "&integrity=true".
+            //"&integrity=true".
             "&merchantTransactionId=" . $unique_transaction_id .
             "&customer.email=" . $consultationPatient?->email .
             "&billing.street1=" . $consultationPatient?->city .

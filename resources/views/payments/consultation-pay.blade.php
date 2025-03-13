@@ -75,7 +75,7 @@
             font-weight: 100 !important;
         }
     </style>
-    <meta http-equiv="Content-Security-Policy"
+    {{--<meta http-equiv="Content-Security-Policy"
           content="
         style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
         frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
@@ -90,11 +90,9 @@
     var wpwlOptions = {
         style:"plain"
     }
-</script>
+</script>--}}
 
-<script src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
-        integrity="{{$integrity}}"
-        crossorigin="anonymous"></script>
+<script src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
 <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
