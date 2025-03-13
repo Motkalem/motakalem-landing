@@ -164,7 +164,7 @@
 
         @if(data_get($_GET,'brand'))
             @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada'] ))
-                <form action="{{route('checkout.consultation.status', $_GET['pid'])}}" class="paymentWidgets"
+                <form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{data_get($_GET,'brand')}}" class="paymentWidgets"
                       data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
                 <div style="text-align: center;margin-top: 10px;">
                     <a href="javascript:void(0);"

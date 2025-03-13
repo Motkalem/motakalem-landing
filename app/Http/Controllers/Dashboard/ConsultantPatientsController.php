@@ -273,7 +273,14 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function getStatus() #: string|RedirectResponse
     {
-        $entity_id =  env('SNB_ENTITY_ID_MADA');
+
+        $entity_id =  env('SNB_ENTITY_ID');
+
+        if (request()->brand == 'mada') {
+
+            $entity_id = env('SNB_ENTITY_ID_MADA'); //MADA
+        }
+
         $access_token = env('SNB_AUTH_TOKEN');
 
         $url = env('SNB_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
