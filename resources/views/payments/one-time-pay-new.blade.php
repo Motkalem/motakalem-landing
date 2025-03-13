@@ -78,7 +78,28 @@
     </style>
 </head>
 
-<script src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
+<meta http-equiv="Content-Security-Policy"
+      content="
+        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
+        frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+        script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
+        connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+        img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+        object-src 'none';
+        base-uri 'self';">
+
+
+<script nonce="{{$nonce}}">
+    var wpwlOptions = {
+        // style:"plain"
+    }
+</script>
+
+
+
+<script src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
+        integrity="{{$integrity}}"
+        crossorigin="anonymous"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true" style="height: 100vh">
 

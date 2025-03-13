@@ -34,6 +34,7 @@ class StoreRecurringPaymentData
             "billing.state"=>$payment?->student?->city  ,
             "billing.country"=>"SA",
             "billing.postcode"=>"",
+            "integrity"=>"true",
             "customer.givenName"=>$payment?->student?->name,
             "customer.surname"=>""
         ];
@@ -58,6 +59,7 @@ class StoreRecurringPaymentData
             "billing.state"=>$payment?->student?->city  ,
             "billing.country"=>"SA",
             "billing.postcode"=>"",
+            "integrity"=>"true",
             "customer.givenName"=>$payment?->student?->name,
             "customer.surname"=>""
         ];

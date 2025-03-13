@@ -75,9 +75,27 @@
             font-weight: 100 !important;
         }
     </style>
-</head>
+     <meta http-equiv="Content-Security-Policy"
+          content="
+        style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
+        frame-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+        script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
+        connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+        img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+        object-src 'none';
+        base-uri 'self';">
 
-<script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
+
+<script nonce="{{$nonce}}">
+    var wpwlOptions = {
+        // style:"plain"
+    }
+</script>
+
+<script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
+        integrity="{{$integrity}}"
+        crossorigin="anonymous"
+></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
 <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
@@ -149,7 +167,7 @@
 
         @if(data_get($_GET,'brand'))
             @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada'] ))
-                <form action="{{route('checkout.consultation.status', $_GET['pid'])}}" class="paymentWidgets"
+                <form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{data_get($_GET,'brand')}}" class="paymentWidgets"
                       data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
                 <div style="text-align: center;margin-top: 10px;">
                     <a href="javascript:void(0);"
