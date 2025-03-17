@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -72,12 +73,17 @@ class PaymentController extends Controller
 
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
+        $timestamp = Carbon::now()->timestamp;
+        $micro_time = microtime(true);
+        $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
+        $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
+
         $data = 'entityId='
         .$entity_id
         ."&amount=". $payment?->package?->total
         ."&currency=SAR"
         ."&paymentType=DB".
-        "&merchantTransactionId=".$payment->id.
+        "&merchantTransactionId=".$unique_transaction_id.
         "&customer.email=".$payment?->student?->email.
         "&billing.street1=".$payment?->student?->city .
         "&billing.city=".$payment?->student?->city .
@@ -96,7 +102,7 @@ class PaymentController extends Controller
                 ."&currency=SAR"
                 ."&paymentType=DB"
                 ."&paymentBrand=TABBY".
-                "&merchantTransactionId=".$payment->id.
+                "&merchantTransactionId=".$unique_transaction_id.
                 "&customer.email=".$payment?->student?->email.
                 "&billing.street1=".$payment?->student?->city .
                 "&billing.city=".$payment?->student?->city .
