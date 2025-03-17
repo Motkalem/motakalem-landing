@@ -237,7 +237,7 @@
 
     @include('payments._inc.footer')
 
-    <script>
+    <script nonce="{{$nonce}}">
         function removeBrandParam() {
             // Get the current URL
             let url = new URL(window.location.href);
