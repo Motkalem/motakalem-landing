@@ -7,9 +7,23 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta http-equiv="Content-Security-Policy"
+          content="
+                       style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline' ;
+                       frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+                       script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}' ;
+                       connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+                       img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+                       ">
+    <script nonce="{{$nonce}}">
+        var wpwlOptions = {
+            style:"card",
+        }
+    </script>
+
     <link rel="icon" type="image/x-icon" href="./assets/img/motkalem-logo 1.png">
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous" nonce="{{$nonce}}"></script>
 
     @include('payments.assets.consaltation-pay')
     <style>
@@ -78,28 +92,12 @@
     </style>
 </head>
 
-<meta http-equiv="Content-Security-Policy"
-      content="
-        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
-        frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
-        script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
-        connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
-        img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
-        object-src 'none';
-        base-uri 'self';">
 
-
-<script nonce="{{$nonce}}">
-    var wpwlOptions = {
-        // style:"plain"
-    }
+<script
+    src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
+    integrity="{{$integrity}}"
+    crossorigin="anonymous">
 </script>
-
-
-
-<script src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
-        integrity="{{$integrity}}"
-        crossorigin="anonymous"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true" style="height: 100vh">
 
