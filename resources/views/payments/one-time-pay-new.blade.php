@@ -22,8 +22,6 @@
     </script>
 
     <link rel="icon" type="image/x-icon" href="./assets/img/motkalem-logo 1.png">
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous" nonce="{{$nonce}}"></script>
 
     @include('payments.assets.consaltation-pay')
     <style>
