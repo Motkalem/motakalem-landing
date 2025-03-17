@@ -21,8 +21,6 @@
         }
     </script>
 
-    <link rel="icon" type="image/x-icon" href="./assets/img/motkalem-logo 1.png">
-
     @include('payments.assets.consaltation-pay')
     <style>
 
