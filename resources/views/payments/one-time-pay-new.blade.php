@@ -93,7 +93,7 @@
     src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
     {{--integrity="{{$integrity}}"
     nonce="{{$nonce}}"--}}
-    crossorigin="anonymous">
+    {{--crossorigin="anonymous"--}}>
 </script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true" style="height: 100vh">

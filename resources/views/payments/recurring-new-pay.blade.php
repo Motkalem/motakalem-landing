@@ -77,7 +77,7 @@
         }
     </style>
 
-    <meta http-equiv="Content-Security-Policy"
+    {{--<meta http-equiv="Content-Security-Policy"
           content="
         style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
         frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
@@ -92,12 +92,12 @@
         var wpwlOptions = {
             // style:"plain"
         }
-    </script>
+    </script>--}}
 </head>
 
 <script src="{{ env('SNB_HYPERPAY_URL') }}/paymentWidgets.js?checkoutId={{ $checkoutId }}"
-        integrity="{{$integrity}}"
-        crossorigin="anonymous"></script>
+        {{--integrity="{{$integrity}}"--}}
+        {{--crossorigin="anonymous"--}}></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
 

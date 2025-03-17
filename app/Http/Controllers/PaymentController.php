@@ -114,7 +114,7 @@ class PaymentController extends Controller
                 "&customer.mobile=" . '966550274677' .
                 "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
-                 "&integrity=true".
+                 //"&integrity=true".
                 "&cart.items[0].price=".$payment?->package?->total.
                 "&cart.items[0].quantity=1".
                 "&cart.items[0].description=test1".

@@ -75,7 +75,7 @@
             font-weight: 100 !important;
         }
     </style>
-     <meta http-equiv="Content-Security-Policy"
+     {{--<meta http-equiv="Content-Security-Policy"
           content="
         style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
         frame-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
@@ -90,11 +90,11 @@
     var wpwlOptions = {
         // style:"plain"
     }
-</script>
+</script>--}}
 
 <script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
-        integrity="{{$integrity}}"
-        crossorigin="anonymous"
+        {{--integrity="{{$integrity}}"
+        crossorigin="anonymous"--}}
 ></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
