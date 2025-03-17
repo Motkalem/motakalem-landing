@@ -21,7 +21,7 @@
         }
     </script>
 
-    {{--@include('payments.assets.consaltation-pay')--}}
+    @include('payments.assets.consaltation-pay')
     <style>
 
         .payment-options-container {
