@@ -92,6 +92,7 @@
 <script
     src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
     integrity="{{$integrity}}"
+    nonce="{{$nonce}}"
     crossorigin="anonymous">
 </script>
 
