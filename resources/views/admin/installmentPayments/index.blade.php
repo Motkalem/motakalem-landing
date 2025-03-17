@@ -98,6 +98,7 @@
                 </tbody>
             </table>
         </div>
+        <div class="py-4"> {{$installmentPayments->links()}} </div>
     </div>
 </div>
 <div class="modal fade" id="confirmSendContractModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

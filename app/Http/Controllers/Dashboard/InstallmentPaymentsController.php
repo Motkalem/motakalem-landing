@@ -26,7 +26,7 @@ class InstallmentPaymentsController extends AdminBaseController
             }
 
          $installmentPayments = $query->with(['student', 'package', 'hyperpayWebHooksNotifications'])
-            ->orderBy('id', 'desc')->paginate(12);
+            ->orderBy('id', 'desc')->paginate(10);
 
 
         return view(
