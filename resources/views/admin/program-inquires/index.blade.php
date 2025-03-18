@@ -100,7 +100,7 @@
                         var button = event.relatedTarget;
                         var inquiryId = button.getAttribute('data-id');
                         var form = document.getElementById('deleteForm');
-                        form.action = "{{ route('dashboard.program-inquiries.destroy', ':id') }}".replace(':id', inquiryId);
+                        form.action = "{{ route('dashboard.program-inquires.destroy', ':id') }}".replace(':id', inquiryId);
                     });
                 });
 

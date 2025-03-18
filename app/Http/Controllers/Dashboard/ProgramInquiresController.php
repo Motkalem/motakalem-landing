@@ -27,7 +27,7 @@ class ProgramInquiresController extends AdminBaseController
             ->paginate(12);
 
         return view(
-            'admin.programInquiries.index',
+            'admin.program-inquires.index',
             compact(
                 'programInquiries',
                 'title',
@@ -39,7 +39,7 @@ class ProgramInquiresController extends AdminBaseController
     {
         $programInquiry = ProgramInquiry::query()->findOrFail($id);
         $programInquiry->delete();
-        return redirect()->route('dashboard.program-inquiries.index')
+        return redirect()->route('dashboard.program-inquires.index')
             ->with('success', 'تم حذف الاستفسار بنجاح');
     }
 }

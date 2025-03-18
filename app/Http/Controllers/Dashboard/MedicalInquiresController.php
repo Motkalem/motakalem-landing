@@ -27,7 +27,7 @@ class MedicalInquiresController extends AdminBaseController
             ->paginate(12);
 
         return view(
-            'admin.medicalInquiries.index',
+            'admin.medical-inquires.index',
             compact(
                 'medicalInquiries',
                 'title',
@@ -39,7 +39,7 @@ class MedicalInquiresController extends AdminBaseController
     {
         $medicalInquiry = MedicalInquiry::query()->findOrFail($id);
         $medicalInquiry->delete();
-        return redirect()->route('dashboard.medical-inquiries.index')
+        return redirect()->route('dashboard.medical-inquires.index')
             ->with('success', 'تم حذف الاستفسار بنجاح');
     }
 }

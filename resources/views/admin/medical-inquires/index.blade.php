@@ -19,6 +19,7 @@
                     <thead>
                     <tr>
                         <th class="text-center">الإسم</th>
+                        <th class="text-center">المصدر</th>
                         <th class="text-center">الجوال</th>
                         <th class="text-center">العمر</th>
                         <th class="text-center">الرسالة</th>
@@ -29,6 +30,7 @@
                     @foreach($medicalInquiries as $inquiry)
                         <tr>
                             <td>{{ $inquiry->name }}</td>
+                            <td>{{ $inquiry->source }}</td>
                             <td>{{ $inquiry->mobile_number }}</td>
                             <td>{{ $inquiry->age }}</td>
                             <td title="{{$inquiry->message}}">{{ \Illuminate\Support\Str::limit($inquiry->message , 50) }}</td>
@@ -100,7 +102,7 @@
                         var button = event.relatedTarget;
                         var inquiryId = button.getAttribute('data-id');
                         var form = document.getElementById('deleteForm');
-                        form.action = "{{ route('dashboard.medical-inquiries.destroy', ':id') }}".replace(':id', inquiryId);
+                        form.action = "{{ route('dashboard.medical-inquires.destroy', ':id') }}".replace(':id', inquiryId);
                     });
                 });
 
