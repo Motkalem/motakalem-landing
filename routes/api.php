@@ -4,6 +4,8 @@ use App\Actions\Api\General\GetPackages;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
 use App\Http\Controllers\Api\HyperPayWebHooksController;
+use App\Http\Controllers\Api\MedicalInquiresController;
+use App\Http\Controllers\Api\ProgramInquiresController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +34,6 @@ Route::post('/send-contract', [JoinController::class, 'sendContract']);
 
 Route::post('/contact-us', [ContactUsController::class, 'store']);
 
-
 Route::get('/packages', GetPackages::class);
 
 Route::post('/hyperpay/webhook', [HyperPayWebHooksController::class, 'store']);
@@ -42,4 +43,9 @@ Route::post('/credit', CreditAction::class)->name('credit');
 Route::post('/excute-recurring',   ExecuteRecurringPayment::class);
 
 Route::post('/register-patient',   [ConsultantPatientsController::class, 'store']);
+
+# MOTAKALEM PROGRAM INQUIRIES
+Route::post('/program-inquiry', [ProgramInquiresController::class, 'store']);
+Route::post('/medical-inquiry', [MedicalInquiresController::class, 'store']);
+
 
