@@ -2,6 +2,7 @@
 
 namespace App\Actions\HyperPay;
 
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreRecurringPaymentData
@@ -18,6 +19,11 @@ class StoreRecurringPaymentData
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
 
+        $timestamp = Carbon::now()->timestamp;
+        $micro_time = microtime(true);
+        $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
+        $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
+
         $data = [
             'entityId' => $entity_id,
             'amount' => $package->first_inst,
@@ -27,7 +33,7 @@ class StoreRecurringPaymentData
             'standingInstruction.type' => 'UNSCHEDULED',
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
-            'merchantTransactionId' => $payment->id,
+            'merchantTransactionId' => $unique_transaction_id,
             "customer.email"=>$payment?->student?->email,
             "billing.street1"=>$payment?->student?->city ,
             "billing.city"=>$payment?->student?->city ,
@@ -52,7 +58,7 @@ class StoreRecurringPaymentData
             'standingInstruction.source' => 'CIT',
 
 //            'testMode'=> 'EXTERNAL',
-            'merchantTransactionId' => $payment->id.'-'.microtime(),
+            'merchantTransactionId' => $unique_transaction_id,
             "customer.email"=>$payment?->student?->email,
             "billing.street1"=>$payment?->student?->city ,
             "billing.city"=>$payment?->student?->city ,
