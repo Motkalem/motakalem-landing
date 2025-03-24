@@ -7,10 +7,10 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{--<meta http-equiv="Content-Security-Policy"
+    <meta http-equiv="Content-Security-Policy"
           content="
                        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline' ;
-                       frame-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
+                       frame-src 'self' https://oppwa.com {{env('SNB_HYPERPAY_WIDGET_URL')}};
                        script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}' ;
                        connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
                        img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
@@ -19,7 +19,7 @@
         var wpwlOptions = {
             style:"card",
         }
-    </script>--}}
+    </script>
 
     @include('payments.assets.consaltation-pay')
     <style>
@@ -91,9 +91,8 @@
 
 <script
     src="{{env('SNB_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
-    {{--integrity="{{$integrity}}"
-    nonce="{{$nonce}}"--}}
-    {{--crossorigin="anonymous"--}}>
+    integrity="{{$integrity}}"
+    crossorigin="anonymous">
 </script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true" style="height: 100vh">
@@ -237,8 +236,8 @@
 
 
     @include('payments._inc.footer')
-
-    <script {{--nonce="{{$nonce}}"--}}>
+</div>
+    <script nonce="{{$nonce}}">
         function removeBrandParam() {
             // Get the current URL
             let url = new URL(window.location.href);
