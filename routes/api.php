@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Api\General\GetPackages;
+use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\JoinController;
 use App\Http\Controllers\Api\HyperPayWebHooksController;
@@ -43,6 +44,11 @@ Route::post('/credit', CreditAction::class)->name('credit');
 Route::post('/excute-recurring',   ExecuteRecurringPayment::class);
 
 Route::post('/register-patient',   [ConsultantPatientsController::class, 'store']);
+
+
+Route::post('/get-consultation-data',   [ConsultationController::class, 'getConsultationData']);
+Route::post('/register-hearing-consultation',   [ConsultationController::class, 'store']);
+
 
 # MOTAKALEM PROGRAM INQUIRIES
 Route::post('/program-inquiry', [ProgramInquiresController::class, 'store']);

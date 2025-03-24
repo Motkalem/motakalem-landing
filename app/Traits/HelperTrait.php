@@ -20,8 +20,6 @@ trait HelperTrait
             return $mobile;
         }
 
-
-
         if (strlen($mobile) == 10) {
             return "+966" . $mobile;
         }
