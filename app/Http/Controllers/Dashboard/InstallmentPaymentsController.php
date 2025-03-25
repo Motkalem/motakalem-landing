@@ -165,6 +165,6 @@ class InstallmentPaymentsController extends AdminBaseController
 
     public function riyadBankRegisterationIds()
     {
-        return ['8ac9a4a094ef66a50194f6a84ad26959'];
+        return ['8ac9a4a094ef66a50194f6a84ad26959', '8ac9a49f94ef2e92019500a0bbeb28ee'];
     }
 }
