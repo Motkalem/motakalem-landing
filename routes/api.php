@@ -45,7 +45,6 @@ Route::post('/excute-recurring',   ExecuteRecurringPayment::class);
 
 Route::post('/register-patient',   [ConsultantPatientsController::class, 'store']);
 
-
 Route::post('/get-consultation-data',   [ConsultationController::class, 'getConsultationData']);
 Route::post('/register-hearing-consultation',   [ConsultationController::class, 'store']);
 
