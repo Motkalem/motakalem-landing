@@ -189,7 +189,7 @@ class CreditAction
                 if (data_get($response, 'id')) {
 
                     $payment_url = route('recurring.checkout', [
-                        'paymentId' => data_get($response, 'id'),
+                        'paymentId' => $student->installmentPayment?->id,
                         'stdId' => $student->id
                     ]);
 
