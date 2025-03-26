@@ -42,7 +42,8 @@ Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::cl
 
 
 
-Route::get('checkout-recurring/{paymentId}/{stdId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
+Route::get('checkout-recurring/{paymentId}/{stdId}',
+    RecurringCheckoutAction::class)->name('recurring.checkout');
 
 
 
