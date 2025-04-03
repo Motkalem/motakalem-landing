@@ -30,7 +30,7 @@ class InstallmentPaymentsController extends AdminBaseController
 
 
         return view(
-            'admin.installmentPayments.index',
+            'admin.installment-payments.index',
             compact(
                 'installmentPayments',
                 'title',
@@ -44,7 +44,7 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $installmentPayment = InstallmentPayment::with('installments')->findOrFail($id);
 
-        return view('admin.installmentPayments.show',
+        return view('admin.installment-payments.show',
             compact('installmentPayment','title'));
     }
 
