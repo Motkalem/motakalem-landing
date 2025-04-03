@@ -7,9 +7,11 @@ use App\Http\Controllers\Dashboard\ContactUsMessagesController;
 use App\Http\Controllers\Dashboard\DashboardAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\InstallmentPaymentsController;
+use App\Http\Controllers\Dashboard\MedicalInquiresController;
 use App\Http\Controllers\Dashboard\PackagesController;
 use App\Http\Controllers\Dashboard\PaymentsController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\ProgramInquiresController;
 use App\Http\Controllers\Dashboard\StudentsController;
 use App\Http\Controllers\Dashboard\TransactionsController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +46,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])
         ->name('deductInstallment');
 
-    Route::resource('contact-messages', ContactUsMessagesController::class);
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -64,6 +65,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoice'])
         ->name('re-send-sms-invoice-link');
 
+    Route::resource('contact-messages', ContactUsMessagesController::class);
+
+
+    Route::resource('program-inquires', ProgramInquiresController::class);
+    Route::resource('medical-inquires', MedicalInquiresController::class);
 });
 
 Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
