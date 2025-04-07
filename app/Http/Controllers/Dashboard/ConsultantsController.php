@@ -13,21 +13,29 @@ class ConsultantsController extends AdminBaseController
 {
     public function index()
     {
-
         $search = request()->query('search');
 
-        $query = ConsultantType::query();
+        $query = ConsultantType::query()
+            ->withCount([
+                'consultantPatients as admin_registered' => function ($q) {
+                    $q->whereNull('source')->orWhere('source',   'dashboard');
+                },
+                'consultantPatients as campaign_registered' => function ($q) {
+                    $q->where('source', 'campaign');
+                },
+            ]);
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $consultantTypes = $query->orderBy('id', 'desc')->paginate(12);
-        $consultantTypesCount = ConsultantType::query()->count();
+        $consultantTypesCount = ConsultantType::count();
         $title = 'أنواع الإستشارات';
 
         return view('admin.consultant-types.index', compact('consultantTypes', 'title', 'consultantTypesCount'));
     }
+
 
     public function create()
     {

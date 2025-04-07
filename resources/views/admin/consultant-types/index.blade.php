@@ -29,6 +29,8 @@
                     <tr>
                         <th>اسم الاستشارة</th>
                         <th>السعر</th>
+                        <th class="text-center"> مسجل بواسطة الادمن </th>
+                        <th class="text-center"> مسجل من خلال حملة   </th>
                         <th>الحالة </th>
                         <th style="width: 20%" class="text-center">{{ __('Actions') }}</th>
                     </tr>
@@ -38,6 +40,13 @@
                         <tr>
                             <td>{{ $consultantType->name }}</td>
                             <td>{{ $consultantType->price }}  <span class="riyal-symbol">R</span></td>
+                            @php
+                                $formatCount = fn($count) => $count == 0 ? ' -' : "$count مستخدم";
+                            @endphp
+
+                            <td class="text-center">{{ $formatCount($consultantType->admin_registered) }}</td>
+                            <td class="text-center">{{ $formatCount($consultantType->campaign_registered) }}</td>
+
                             <td>
                                 @if($consultantType->is_active)
 
