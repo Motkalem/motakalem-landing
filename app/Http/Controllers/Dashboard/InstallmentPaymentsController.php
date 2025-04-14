@@ -19,18 +19,18 @@ class InstallmentPaymentsController extends AdminBaseController
         $query = InstallmentPayment::query()
             ->with('installments');
 
-            if ($search) {
-                $query->whereHas('student', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-            }
+        if ($search) {
+            $query->whereHas('student', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+        }
 
-         $installmentPayments = $query->with(['student', 'package', 'hyperpayWebHooksNotifications'])
+        $installmentPayments = $query->with(['student', 'package', 'hyperpayWebHooksNotifications'])
             ->orderBy('id', 'desc')->paginate(10);
 
 
         return view(
-         'admin.installmentPayments.index',
+            'admin.installment-payments.index',
             compact(
                 'installmentPayments',
                 'title',
@@ -42,10 +42,10 @@ class InstallmentPaymentsController extends AdminBaseController
     {
         $title = 'عرض الدفعه ';
 
-         $installmentPayment = InstallmentPayment::with('installments')->findOrFail($id);
+        $installmentPayment = InstallmentPayment::with('installments')->findOrFail($id);
 
-        return view('admin.installmentPayments.show',
-         compact('installmentPayment','title'));
+        return view('admin.installment-payments.show',
+            compact('installmentPayment','title'));
     }
 
     public function deductInstallment()
@@ -65,9 +65,19 @@ class InstallmentPaymentsController extends AdminBaseController
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
 
-        $url = env('SNB_HYPERPAY_URL') . "/registrations/" . $registrationID . "/payments";
+        $url = env('SNB_HYPERPAY_URL');
+        $recurring_entity_id = env('SNB_RECURRING_ENTITY_ID');
+        $auth_token = env('SNB_AUTH_TOKEN');
 
-        $data = "entityId=" . env('SNB_RECURRING_ENTITY_ID') .
+        if(in_array($registrationID, $this->riyadBankRegisterationIds())){
+            $url = env('RYD_HYPERPAY_URL');
+            $recurring_entity_id = env('RYD_RECURRING_ENTITY_ID');
+            $auth_token = env('RYD_AUTH_TOKEN');
+        }
+
+        $url = $url . "/registrations/" . $registrationID . "/payments";
+
+        $data = "entityId=" . $recurring_entity_id.
             "&amount=" . $amount .
             "&currency=SAR" .
             "&paymentType=DB" .
@@ -79,7 +89,7 @@ class InstallmentPaymentsController extends AdminBaseController
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization:Bearer ' . env('SNB_AUTH_TOKEN'),
+            'Authorization:Bearer ' . $auth_token,
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -151,5 +161,14 @@ class InstallmentPaymentsController extends AdminBaseController
     {
         $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
         return preg_match($successPattern, $resultCode) === 1;
+    }
+
+    public function riyadBankRegisterationIds()
+    {
+        return [
+            '8ac9a4a094ef66a50194f6a84ad26959', '8ac9a49f94ef2e92019500a0bbeb28ee',
+            '8ac9a4a394b200fa0194cd115ecf7c9c', '8acda4a594b683e90194c7f5b2644a46',
+            '8ac9a4a49469716801946a204afd7cfd'
+        ];
     }
 }

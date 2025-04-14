@@ -47,11 +47,11 @@ class PaymentController extends Controller
 
         $paymentId = data_get(json_decode($responseData), "id");
 
-        //$integrity = data_get(json_decode($responseData), "integrity");
+        $integrity = data_get(json_decode($responseData), "integrity");
         $nonce = bin2hex(random_bytes(16));
 
         return view('payments.one-time-pay-new', compact('payment', 'paymentId',
-            /*'integrity',*/ 'nonce'));
+            'integrity', 'nonce'));
     }
 
     /**
@@ -90,7 +90,7 @@ class PaymentController extends Controller
         "&billing.state=".$payment?->student?->city  .
         "&billing.country="."SA".
         "&billing.postcode="."".
-       //"&integrity=true".
+       "&integrity=true".
         "&customer.givenName=".$payment?->student?->name.
         "&customer.surname="."";
 
@@ -114,7 +114,7 @@ class PaymentController extends Controller
                 "&customer.mobile=" . '966550274677' .
                 "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
-                 //"&integrity=true".
+                 "&integrity=true".
                 "&cart.items[0].price=".$payment?->package?->total.
                 "&cart.items[0].quantity=1".
                 "&cart.items[0].description=test1".

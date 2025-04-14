@@ -137,6 +137,26 @@
                 </a>
             </li>
 
+            <li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.program-inquires.index') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.program-inquires.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-comments"></i>
+                    </span>
+                    <span class="title"> استفسارات البرامج</span>
+                </a>
+            </li>
+
+{{--            <li class="nav-item mT-10--}}
+{{--            {{ Request::routeIs('dashboard.medical-inquires.index') ? 'bg-light m-3' : '' }}">--}}
+{{--                <a class="sidebar-link" href="{{ route('dashboard.medical-inquires.index') }}">--}}
+{{--                    <span class="icon-holder">--}}
+{{--                        <i class="c-indigo-500 ti-support"></i>--}}
+{{--                    </span>--}}
+{{--                    <span class="title">استفسارات المركز الطبي</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+
         </ul>
     </div>
 </div>

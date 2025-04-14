@@ -7,8 +7,7 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="./assets/img/motkalem-logo 1.png">
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
     @include('payments.assets.consaltation-pay')
 
     <style>
@@ -75,26 +74,25 @@
             font-weight: 100 !important;
         }
     </style>
-     {{--<meta http-equiv="Content-Security-Policy"
+     <meta http-equiv="Content-Security-Policy"
           content="
-        style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
-        frame-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
-        script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
-        connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
-        img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
-        object-src 'none';
-        base-uri 'self';">
+                    style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
+                    frame-src 'self' https://oppwa.com {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
+                    connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    ">
 
 
 <script nonce="{{$nonce}}">
     var wpwlOptions = {
-        // style:"plain"
+        style:"card"
     }
-</script>--}}
+</script>
 
 <script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
-        {{--integrity="{{$integrity}}"
-        crossorigin="anonymous"--}}
+        integrity="{{$integrity}}"
+        crossorigin="anonymous"
 ></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
@@ -227,7 +225,7 @@
 
     @include('payments._inc.footer')
 </div>
-<script>
+<script nonce="{{$nonce}}">
     function removeBrandParam() {
         let url = new URL(window.location.href);
         url.searchParams.delete('brand');

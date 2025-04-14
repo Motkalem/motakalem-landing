@@ -175,7 +175,6 @@ class CreditAction
             }
 
         }
-
         if (is_null($student?->package_id) && $student->installmentPayment) {
 
             try {
@@ -186,10 +185,13 @@ class CreditAction
                         $student,
                         $student?->toArray() ?? []);
 
+
                 if (data_get($response, 'id')) {
 
-                    $payment_url = route('recurring.checkout', data_get($response, 'id'))
-                        . '?paymentId=' . $student->installmentPayment?->id;
+                    $payment_url = route('recurring.checkout', [
+                        'paymentId' => $student->installmentPayment?->id,
+                        'stdId' => $student->id
+                    ]);
 
                     Notification::route('mail', $student->email)
                         ->notify(new SentPaymentUrlNotification($student, $payment_url));

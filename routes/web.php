@@ -32,6 +32,7 @@ Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::clas
 
 Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
     ->name('checkout.consultation.index');
+
 Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])
     ->name('checkout.consultation.status');
 Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'getInvoice'])
@@ -42,7 +43,8 @@ Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::cl
 
 
 
-Route::get('checkout-recurring/{paymentId}/{stdId}',   RecurringCheckoutAction::class)->name('recurring.checkout');
+Route::get('checkout-recurring/{paymentId}/{stdId}',
+    RecurringCheckoutAction::class)->name('recurring.checkout');
 
 
 
