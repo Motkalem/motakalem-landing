@@ -18,6 +18,8 @@
                 <table class="table table-striped table-class">
                     <thead>
                     <tr>
+                        <th class="text-start">التاريخ  </th>
+
                         <th class="text-center">الإسم</th>
                         <th class="text-center">الجوال</th>
                         <th class="text-center">العمر</th>
@@ -28,6 +30,8 @@
                     <tbody>
                     @foreach($programInquiries as $inquiry)
                         <tr>
+                            <td class="text-center">{{ $inquiry->created_at?->toDateTimeString() }}</td>
+
                             <td>{{ $inquiry->name }}</td>
                             <td>{{ $inquiry->mobile_number }}</td>
                             <td>{{ $inquiry->age }}</td>
