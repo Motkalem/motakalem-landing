@@ -32,6 +32,7 @@
                 <table class="table table-striped table-class">
                     <thead>
                     <tr>
+                        <th class="text-start">التاريخ  </th>
                         <th class="text-start">الاسم  </th>
                         <th class="text-center">المصدر</th>
                         <th class="text-center">العمر</th>
@@ -49,6 +50,7 @@
                     <tbody>
                     @foreach($consultantPatients as $consultantPatient)
                         <tr>
+                            <td class="text-center">{{ $consultantPatient->created_at?->toDateTimeString() }}</td>
                             <td class="text-center">{{ $consultantPatient->name }}</td>
                             <td class="text-center">{{ __($consultantPatient->source) }}</td>
                             <td class="text-center">{{ $consultantPatient->age??'---' }}</td>
