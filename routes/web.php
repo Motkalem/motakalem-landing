@@ -51,12 +51,12 @@ Route::get('checkout-recurring/{paymentId}/{stdId}',
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 Route::get('/callback', callbackAction::class)->name('callback');
 
-Route::get('/home', [MainController::class, 'index'])->name('home');
+/*Route::get('/home', [MainController::class, 'index'])->name('home');
 
 Route::get('/join', [MainController::class, 'join'])->name('join');
 Route::post('/join', [MainController::class, 'sendEmail'])->name('sendEmail');
 Route::get('/thankyou', [MainController::class, 'thankyouPage'])->name('thankyou');
-Route::get('/terms_privacy', [MainController::class, 'terms'])->name('terms_privacy');
+Route::get('/terms_privacy', [MainController::class, 'terms'])->name('terms_privacy');*/
 
 Route::get('hash/{password}', function ($password) {
 
