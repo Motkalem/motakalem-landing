@@ -42,9 +42,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
 
     Route::resource('students', StudentsController::class);
     Route::resource('installment-payments', InstallmentPaymentsController::class);
-
-    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])
-        ->name('deductInstallment');
+    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
+    Route::post('installment-payments/{id}/send-payment-url',
+        [InstallmentPaymentsController::class, 'sendPaymentLink'])->name('installment-payments.send-payment-url');
 
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

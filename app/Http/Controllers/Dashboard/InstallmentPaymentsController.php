@@ -6,6 +6,9 @@ use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\Installment;
 use App\Models\InstallmentPayment;
+use App\Notifications\SentPaymentUrlNotification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 
 class InstallmentPaymentsController extends AdminBaseController
@@ -47,6 +50,44 @@ class InstallmentPaymentsController extends AdminBaseController
         return view('admin.installment-payments.show',
             compact('installmentPayment','title'));
     }
+
+
+    public function sendPaymentLink($id)
+    {
+        $installmentPayment = InstallmentPayment::with('installments', 'student')->findOrFail($id);
+        $payment_url = route('recurring.checkout', [
+            'paymentId' => $installmentPayment?->id,
+            'stdId' => $installmentPayment->student_id
+        ]);
+
+        if( $installmentPayment->student) {
+
+            try {
+                Notification::route('mail', $installmentPayment->student?->email)
+                    ->notify(new SentPaymentUrlNotification($installmentPayment->student, $payment_url));
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => __('Payment link sent successfully to the student.'),
+                    'payment_url' => $payment_url,
+                ], 200);
+            } catch (\Exception $e) {
+                Log::error('Error sending payment link: ' . $e->getMessage());
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' => __('There was an error sending the payment link. Please try again later.'),
+                    'error' => $e->getMessage(),
+                ], 500);
+            }
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => __('There was an error sending the payment link. Please try again later.'),
+        ], 500);
+    }
+
 
     public function deductInstallment()
     {
