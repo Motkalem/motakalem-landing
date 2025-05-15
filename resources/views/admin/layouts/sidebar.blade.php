@@ -21,6 +21,7 @@
             </div>
         </div>
         <ul class="sidebar-menu scrollable pos-r">
+
             <li class="nav-item mT-30 {{ Route::currentRouteName() == 'dashboard.index' ? 'bg-light m-3' : '' }}">
                 <a class="sidebar-link" href="{{ route('dashboard.index') }}">
                     <span class="icon-holder">
@@ -29,6 +30,10 @@
                     <span class="title">داشبورد</span>
                 </a>
             </li>
+
+            <li class="w-100 "> <hr class="w-100"/> </li>
+            <li class="nav-item px-3 text-uppercase fw-bold text-muted mt-3 mb-2">برنامج متكلم </li>
+
             <li class="nav-item mT-10
             {{ Request::routeIs('dashboard.students.index')
             ||
@@ -157,6 +162,7 @@
 {{--                </a>--}}
 {{--            </li>--}}
 
+           @include('admin.layouts._inc.motkalem_center')
         </ul>
     </div>
 </div>

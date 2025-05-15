@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\Dashboard\Center\CenterPackagesController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\Dashboard\ConsultantsController;
 use App\Http\Controllers\Dashboard\ContactUsMessagesController;
@@ -32,52 +33,41 @@ Route::group(['middleware' => 'guest:dashboard'], function () {
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' => 'dashboard.'], function () {
 
     Route::get('panel', [DashboardController::class, 'index'])->name('index');
-
     Route::resource('packages', PackagesController::class);
-
     Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
-
     Route::resource('payments', PaymentsController::class);
     Route::resource('transactions', TransactionsController::class);
-
     Route::resource('students', StudentsController::class);
     Route::resource('installment-payments', InstallmentPaymentsController::class);
 
-    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])
-        ->name('deductInstallment');
-
-
+    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::post('dashboard/logout', [DashboardAuthController::class, 'logout'])->name('logout');
-
-    Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])
-        ->name('send-contract');
+    Route::post('dashboard/contracts/{id}', [StudentsController::class, 'sendContract'])->name('send-contract');
 
     Route::resource('consultant-types', ConsultantsController::class);
-
     Route::resource('consultant-patients', ConsultantPatientsController::class);
 
-    Route::get('consultant-patients/send-link/{id}', [ConsultantPatientsController::class, 'sendPaymentLink'])
-        ->name('send-sms-payment-link');
-
-    Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoice'])
-        ->name('re-send-sms-invoice-link');
+    Route::get('consultant-patients/send-link/{id}', [ConsultantPatientsController::class, 'sendPaymentLink'])->name('send-sms-payment-link');
+    Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoice'])->name('re-send-sms-invoice-link');
 
     Route::resource('contact-messages', ContactUsMessagesController::class);
-
-
     Route::resource('program-inquires', ProgramInquiresController::class);
     Route::resource('medical-inquires', MedicalInquiresController::class);
+
+    # MOTAKALEM CENTER
+    Route::group(['prefix' => 'center', 'as' => 'center.'], function () {
+
+        Route::resource('center-packages', CenterPackagesController::class);
+        Route::post('center-packages/update-status/{id}', [CenterPackagesController::class, 'changeStatus'])
+            ->name('center-packages.status');
+
+    });
 });
 
-Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)
-    ->name('dashboard.cancel-schedule');
+Route::get('installment-payments/cancel/{id}', CancelRecurringPayment::class)->name('dashboard.cancel-schedule');
 
 
-Route::get('/', function (){
-
-    return to_route('dashboard.login');
-});
+Route::get('/', function (){return to_route('dashboard.login');});
 
