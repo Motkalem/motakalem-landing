@@ -4,28 +4,24 @@ namespace App\Models\Center;
 
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\Installment;
-use App\Models\MedicalInquiry;
-use App\Models\Package;
-use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CenterInstallmentPayment extends Model
 {
     protected $fillable = [
+
         'patient_id',
         'center_package_id',
         'registration_id',
-        'payment_id',
+//        'payment_id',
         'canceled',
         'is_completed',
     ];
 
-    protected $appends =['successful_notifications'];
 
-    public function Patient()
+    public function patient()
     {
-
         return $this->belongsTo(MedicalInquiry::class,'patient_id');
     }
 
@@ -37,28 +33,23 @@ class CenterInstallmentPayment extends Model
     /**
      * @return HasMany
      */
-    public function installments(): HasMany
+    public function centerInstallments(): HasMany
     {
-        return $this->hasMany(Installment::class);
+        return $this->hasMany(CenterInstallment::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function centerTransaction(): HasMany
+    {
+        return $this->hasMany(CenterTransaction::class);
     }
 
 
     public function hyperpayWebHooksNotifications()
     {
         return $this->hasMany(HyperpayWebHooksNotification::class);
-    }
-
-    public function getSuccessfulNotificationsAttribute()
-    {
-
-        $successNotifications = $this->hyperpayWebHooksNotifications()
-            ->get()
-            ->filter(function ($notification) {
-
-                return $this->isSuccessfulNotifications($notification)  ;
-            });
-
-        return $successNotifications->count();
     }
 
     protected function isSuccessfulNotifications($notification)

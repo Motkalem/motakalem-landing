@@ -14,3 +14,35 @@
         <span class="title">{{ __('Center packages') }}</span>
     </a>
 </li>
+
+<li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.center-patients.index')
+            ||
+             Request::routeIs('dashboard.center-patients.show')
+            ||
+             Request::routeIs('dashboard.center-patients.create')
+            ||
+             Request::routeIs('dashboard.center-patients.edit')
+
+             ? 'bg-light m-3' : '' }}">
+    <a class="sidebar-link" href="{{ route('dashboard.center.center-patients.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-user"></i>
+                    </span>
+        <span class="title">{{ __('Patients') }}</span>
+    </a>
+</li>
+
+<li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.center.center-payments.index')
+            ||
+             Request::routeIs('dashboard.center.center-payments.show')
+
+             ? 'bg-light m-3' : '' }}">
+    <a class="sidebar-link" href="{{ route('dashboard.center.center-payments.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-credit-card"></i>
+                    </span>
+        <span class="title">{{ __('center payments') }}</span>
+    </a>
+</li>

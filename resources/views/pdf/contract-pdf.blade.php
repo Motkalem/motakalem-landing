@@ -105,9 +105,13 @@
                                                 عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
                                             </p>
                                             <hr/>
+                                            @php
+                                                $createdAt = \Carbon\Carbon::parse(data_get($data, 'created_at'));
+                                            @endphp
+
                                             <p style="direction:rtl;line-height:30px;font-size:16px;text-align:right;font-family:Cairo,Geneva,sans-serif">
-                                                ‎انه في يوم {{ now()->translatedFormat('l') }}
-                                                الموافق {{ now()->format('Y/n/j') }}
+                                                ‎انه في يوم {{ $createdAt->translatedFormat('l') }}
+                                                الموافق {{ $createdAt->format('Y/n/j') }}
                                                 م .
                                                 <br/>
                                                 ‎تحرر هذا العقد بين كلاً من:
@@ -117,6 +121,7 @@
                                                 <br/>
                                                 ‎البريد الألكتروني: info@motkalem.sa
                                             </p>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -167,18 +172,20 @@
 
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
+                                                    @if($data->package?->total > 0 || $data->package?->first_inst > 0 )
                                                     البند الثاني: التكلفة وجدول السداد:
                                                     <br/>
 
-                                                    1. التكلفة الإجمالية للبرنامج
-                                                    @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
-                                                        {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
-                                                    @else
-                                                        {!! '<span style="font-weight: bold;">'
-                                            . ( $data->package?->first_inst + $data->package?->second_inst
-                                                + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
-                                                    @endif
+                                                        1. التكلفة الإجمالية للبرنامج
+                                                        @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                            {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
+                                                        @else
+                                                            {!! '<span style="font-weight: bold;">'
+                                                . ( $data->package?->first_inst + $data->package?->second_inst
+                                                    + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
+                                                        @endif
                                                     <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                    @endif
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>

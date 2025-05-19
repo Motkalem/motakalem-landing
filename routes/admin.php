@@ -1,7 +1,9 @@
 <?php
 
 use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\Dashboard\Center\CenterPaymentsController;
 use App\Http\Controllers\Dashboard\Center\CenterPackagesController;
+use App\Http\Controllers\Dashboard\Center\PatientsController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\Dashboard\ConsultantsController;
 use App\Http\Controllers\Dashboard\ContactUsMessagesController;
@@ -15,13 +17,17 @@ use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProgramInquiresController;
 use App\Http\Controllers\Dashboard\StudentsController;
 use App\Http\Controllers\Dashboard\TransactionsController;
+use App\Models\ParentContract;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 // --------------------------
 // Admin Routes
 // --------------------------
 
 Route::group(['middleware' => 'guest:dashboard'], function () {
+
     Route::get('dashboard/login', [DashboardAuthController::class, 'showLoginForm'])->name('dashboard.login');
     Route::post('dashboard/login', [DashboardAuthController::class, 'login'])->name('dashboard.login.submit');
     Route::get('dashboard/forgot-password', [DashboardAuthController::class, 'showForgotPasswordForm'])->name('dashboard.password.request');
@@ -38,6 +44,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::resource('payments', PaymentsController::class);
     Route::resource('transactions', TransactionsController::class);
     Route::resource('students', StudentsController::class);
+    Route::get('download-contract/{id}', [StudentsController::class,'downloadContract'])->name('download-contract');
+
     Route::resource('installment-payments', InstallmentPaymentsController::class);
 
     Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
@@ -57,11 +65,20 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::resource('medical-inquires', MedicalInquiresController::class);
 
     # MOTAKALEM CENTER
-    Route::group(['prefix' => 'center', 'as' => 'center.'], function () {
-
+    Route::group(['prefix' => 'center', 'as' => 'center.'], function ()
+    {
         Route::resource('center-packages', CenterPackagesController::class);
-        Route::post('center-packages/update-status/{id}', [CenterPackagesController::class, 'changeStatus'])
-            ->name('center-packages.status');
+        Route::post('center-packages/update-status/{id}', [CenterPackagesController::class, 'changeStatus'])->name('center-packages.status');
+
+        Route::resource('center-patients', PatientsController::class);
+        Route::resource('center-payments', CenterPaymentsController::class);
+
+        Route::post('installment-payments/{id}', [CenterPaymentsController::class, 'deductInstallment'])
+            ->name('deductInstallment');
+
+        Route::post('dashboard/send-pay-url/{id}', [CenterPaymentsController::class, 'sendPayUrl'])
+            ->name('send-pay-url');
+
 
     });
 });

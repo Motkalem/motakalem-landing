@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContactUs\ProgramInquiryRequest;
 use App\Models\ConsultantPatient;
 use App\Models\ConsultantType;
-use App\Models\ProgramInquiry;
 use App\Traits\HelperTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

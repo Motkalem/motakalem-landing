@@ -3,6 +3,7 @@
 use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Actions\Paymob\callbackAction;
+use App\Http\Controllers\Dashboard\Center\CenterPayController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
@@ -26,12 +27,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
 
+# CENTER RECURRING PAYMENTS
+Route::get('center-pay/{payid}/{patid}', [CenterPayController::class, 'getPayPage'])->name('center.recurring.checkout');
+Route::get('center/checkout-result/{payid}/{patid}/',  [CenterPayController::class,'getStatus']);
+
+//Route::get('center/checkout', [CenterPayController::class,'getPayPage'])->name('center.checkout.index');
+
 
 
 # CONSULTATION PAYMENT CYCLE
-
-Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])
-    ->name('checkout.consultation.index');
+Route::get('consultation/checkout',  [ConsultantPatientsController::class,'getPayPage'])->name('checkout.consultation.index');
 
 Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])
     ->name('checkout.consultation.status');
@@ -43,8 +48,7 @@ Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::cl
 
 
 
-Route::get('checkout-recurring/{paymentId}/{stdId}',
-    RecurringCheckoutAction::class)->name('recurring.checkout');
+Route::get('checkout-recurring/{paymentId}/{stdId}', RecurringCheckoutAction::class)->name('recurring.checkout');
 
 
 

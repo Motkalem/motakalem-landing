@@ -14,7 +14,7 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transations()
+    public function student()
     {
         return $this->belongsTo(Student::class);
     }

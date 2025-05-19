@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('center_installments', function (Blueprint $table) {
+        Schema::create('center_transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->unsignedBigInteger('center_installment_payment_id');
-            $table->decimal('installment_amount', 10, 2);
-            $table->date('installment_date');
-            $table->date('paid_at')->nullable() ;
-            $table->text('admin_ip')->nullable() ;
-            $table->boolean('is_paid')->default(false);
+            $table->decimal('amount', 20,2);
+            $table->string('success')->default('false');
+            $table->longText('data');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('center_installments');
+        Schema::dropIfExists('center_transactions');
     }
 };

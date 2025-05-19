@@ -4,7 +4,7 @@ namespace App\Models;
 
  use Illuminate\Database\Eloquent\Model;
 
-class ProgramInquiry extends Model
+ class ProgramInquiry extends Model
 {
 
     protected $fillable = ['source','name',
