@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('id_end_date')->nullable();
             $table->string('id_number')->nullable();
             $table->string('source')->nullable();
+            $table->string('city')->nullable();
             $table->timestamps();
         });
     }

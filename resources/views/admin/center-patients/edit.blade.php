@@ -67,7 +67,14 @@
                     </div>
                 </div>
 
-
+                <div class="mb-3 row">
+                    <label for="city" class="form-label col-sm-2 col-form-label">الإسم</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control @error('city') is-invalid @enderror"
+                               id="city" name="city" value="{{ old('city') }}" placeholder="المدينه">
+                        @error('city') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
                 <div class="mb-3 row">
                     <div class="col-sm-10 offset-sm-2">
                         <button type="submit" class="btn btn-primary">

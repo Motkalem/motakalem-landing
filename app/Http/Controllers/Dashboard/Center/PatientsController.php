@@ -62,6 +62,7 @@ class PatientsController extends AdminBaseController
             }],
             'age'               => 'required|integer|min:0',
             'center_package_id' => 'required|exists:center_packages,id',
+            'city'      => 'required|string',
         ]);
 
         $phone = $this->formatMobile($request->mobile_number);
@@ -108,7 +109,7 @@ class PatientsController extends AdminBaseController
             'id_number'    => 'nullable|string|max:50',
             'id_end_date'  => 'nullable|date',
             'age'          => 'required|integer|min:0|max:100',
-            'message'      => 'nullable|string',
+            'city'      => 'required|string',
         ]);
 
         $validated = array_merge($validated, [
