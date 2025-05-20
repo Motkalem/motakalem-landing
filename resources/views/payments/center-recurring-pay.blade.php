@@ -77,7 +77,7 @@
     <meta http-equiv="Content-Security-Policy"
           content="
                     style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
-                    frame-src 'self' https://oppwa.com {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    frame-src 'self'  {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
                     connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
