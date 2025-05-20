@@ -155,6 +155,26 @@
 <div class="routing">
 
     <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: rtl ">
+        @if (session('status') && session('message'))
+            <div
+                class="alert alert-dismissible fade show"
+                role="alert"
+                style="
+        padding: 15px;
+        border-radius: 6px;
+        font-weight: bold;
+        text-align: center;
+        width: 400px;
+        margin: auto;
+        color: {{ session('status') == 'fail' ? '#842029' : '#0f5132' }};
+        background-color: {{ session('status') == 'fail' ? '#f8d7da' : '#d1e7dd' }};
+        border: 1px solid {{ session('status') == 'fail' ? '#f5c2c7' : '#badbcc' }};
+      "
+            >
+                {{ session('message') }}
+            </div>
+        @endif
+
 
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$amount  }}
             <span class="riyal-symbol">R</span>
@@ -209,7 +229,7 @@
                         </a>
                     </div>
 
-                    <div>
+                    <div style="margin-bottom: -23px">
                         <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'visa'])) }}"
                            class="payment-option">
                             <img src="{{asset('images/brands/visa.png')}}" alt="Visa" />

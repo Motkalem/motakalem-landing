@@ -76,13 +76,16 @@ class CenterPayController extends Controller
 
         $transaction = $this->createTransactions($transactionData);
 
-        $centerInstallmentPayment = CenterInstallmentPayment::query()->find(request()->payid);
+        $centerInstallmentPayment = CenterInstallmentPayment::query()->with('centerInstallments')->find(request()->payid);
         $centerInstallmentPayment ->update(['registration_id'=> data_get($transactionData, 'registrationId')]);
 
         if( data_get($transactionData, 'id') ==  null)
         {
 
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
+            return redirect()
+                ->back()
+                ->with('status', 'fail')
+                ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
 
 
@@ -93,10 +96,14 @@ class CenterPayController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
+            return view('payments.center-recurring-pay', compact('centerInstallmentPayment'));
         } else {
 
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
+
+            return redirect()
+                ->back()
+                ->with('status', 'fail')
+                ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
     }
 
