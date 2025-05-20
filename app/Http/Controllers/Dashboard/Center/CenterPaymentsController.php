@@ -192,7 +192,7 @@ class CenterPaymentsController extends AdminBaseController
             return 'استجابة غير صالحة: لم يتم العثور على رمز النتيجة.';
         }
 
-        // Direct match with known Hyperpay codes
+        // Known result codes
         $knownCodes = [
             '000.100.110' => 'تمت معالجة الطلب بنجاح في "وضع الاختبار المتكامل للتاجر".',
             '800.100.161' => 'تم رفض المعاملة (عدد المحاولات غير الصحيحة تجاوز الحد المسموح به).',
@@ -206,20 +206,32 @@ class CenterPaymentsController extends AdminBaseController
             return $knownCodes[$resultCode];
         }
 
-        // Heuristic match for grouped codes
-        if (isSuccess($resultCode)) {
+        // Pattern-based heuristic evaluation
+        if (preg_match('/^000\.000\.|000\.100\.1|000\.[36]/', $resultCode)) {
             return 'تمت المعاملة بنجاح.';
-        } elseif (isPending($resultCode)) {
+        }
+
+        if (preg_match('/^000\.200\./', $resultCode)) {
             return 'المعاملة قيد الانتظار.';
-        } elseif (isUnderReview($resultCode)) {
+        }
+
+        if (preg_match('/^000\.400\.1/', $resultCode)) {
             return 'تمت المعاملة بنجاح ولكنها تحت المراجعة.';
-        } elseif (isRejection($resultCode)) {
+        }
+
+        if (preg_match('/^(800|900)\./', $resultCode)) {
             return 'تم رفض المعاملة.';
-        } elseif (isCommunicationError($resultCode)) {
+        }
+
+        if (preg_match('/^(100\.39|200\.3|300\.)/', $resultCode)) {
             return 'حدث خطأ في الاتصال مع بوابة الدفع.';
-        } elseif (isPaymentMethodError($resultCode)) {
+        }
+
+        if (preg_match('/^100\.1/', $resultCode)) {
             return 'حدث خطأ متعلق بطريقة الدفع.';
-        } elseif (isRiskNotification($resultCode)) {
+        }
+
+        if (preg_match('/^000\.400\.2/', $resultCode)) {
             return 'المعاملة تتضمن إشعار خطر أو تحت المراجعة.';
         }
 
