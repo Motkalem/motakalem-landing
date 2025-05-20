@@ -57,7 +57,7 @@ class GenerateCenterRecurringPaymentData
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
 
-//            'testMode'=> 'EXTERNAL',
+            'testMode'=> 'EXTERNAL',
 
             'merchantTransactionId' => $unique_transaction_id,
             "customer.email"=>$payment?->patient?->email,
