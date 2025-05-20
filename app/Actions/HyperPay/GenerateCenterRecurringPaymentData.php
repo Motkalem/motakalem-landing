@@ -59,14 +59,14 @@ class GenerateCenterRecurringPaymentData
             'testMode'=> 'EXTERNAL',
 
             'merchantTransactionId' => $unique_transaction_id,
-            "customer.email"=>$payment?->student?->email,
-            "billing.street1"=>$payment?->student?->city ,
-            "billing.city"=>$payment?->student?->city ,
-            "billing.state"=>$payment?->student?->city  ,
+            "customer.email"=>$payment?->patient?->email,
+            "billing.street1"=>$payment?->patient?->city ,
+            "billing.city"=>$payment?->patient?->city ,
+            "billing.state"=>$payment?->patient?->city  ,
             "billing.country"=>"SA",
             "billing.postcode"=>"",
             "integrity"=>"true",
-            "customer.givenName"=>$payment?->student?->name,
+            "customer.givenName"=>$payment?->patient?->name,
             "customer.surname"=>""
         ];
         }
