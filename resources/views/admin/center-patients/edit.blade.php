@@ -69,15 +69,6 @@
 
 
                 <div class="mb-3 row">
-                    <label for="message" class="form-label col-sm-2 col-form-label">ملاحظات</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control @error('message') is-invalid @enderror"
-                                  id="message" name="message" rows="3" placeholder="ملاحظات">{{ old('message', $patient->message) }}</textarea>
-                        @error('message') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <div class="col-sm-10 offset-sm-2">
                         <button type="submit" class="btn btn-primary">
                             تحديث بيانات المريض

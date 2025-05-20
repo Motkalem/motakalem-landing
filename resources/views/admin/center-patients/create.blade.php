@@ -66,14 +66,6 @@
                     </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <label for="message" class="form-label col-sm-2 col-form-label">ملاحظات</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control @error('message') is-invalid @enderror"
-                                  id="message" name="message" placeholder="ملاحظات">{{ old('message') }}</textarea>
-                        @error('message') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-                </div>
 
                 <div class="mb-3 row">
                     <label for="center_package_id" class="form-label col-sm-2 col-form-label">الباقة</label>

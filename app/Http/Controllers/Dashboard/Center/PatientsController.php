@@ -107,7 +107,7 @@ class PatientsController extends AdminBaseController
             'email'        => 'nullable|email|max:255',
             'id_number'    => 'nullable|string|max:50',
             'id_end_date'  => 'nullable|date',
-            'age'          => 'required|integer|min:0',
+            'age'          => 'required|integer|min:0|max:100',
             'message'      => 'nullable|string',
         ]);
 
