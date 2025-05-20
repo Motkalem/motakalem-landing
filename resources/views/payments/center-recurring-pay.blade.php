@@ -164,7 +164,6 @@
 
             @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada'] ))
 
-{{--                <form action="/recurring/result/{{ request()->paymentId }}"--}}
                 <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}"
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}">
                 </form>
@@ -238,13 +237,13 @@
 
     @include('payments._inc.footer')
 </div>
-{{--    <script nonce="{{$nonce}}">--}}
-{{--        function removeBrandParam() {--}}
-{{--            // Get the current URL--}}
-{{--            let url = new URL(window.location.href);--}}
-{{--            url.searchParams.delete('brand');--}}
-{{--            window.location.href = url.toString();--}}
-{{--        }--}}
-{{--    </script>--}}
+    <script nonce="{{$nonce}}">
+        function removeBrandParam() {
+            // Get the current URL
+            let url = new URL(window.location.href);
+            url.searchParams.delete('brand');
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>
