@@ -199,6 +199,7 @@ class CenterPaymentsController extends AdminBaseController
             '200.300.404' => 'خطأ في المعاملة: لم يتم العثور على جلسة الدفع - ربما تم خلط بين خوادم الاختبار/المباشر أو مر أكثر من 30 دقيقة.',
             '100.396.101' => 'تم إلغاء المعاملة من قبل المستخدم.',
             '000.200.000' => 'المعاملة قيد الانتظار.',
+            '100.100.101' => 'التسجيل غير صالح، ربما تم رفضه في البداية.',
         ];
 
         if (isset($knownCodes[$resultCode])) {
@@ -206,25 +207,24 @@ class CenterPaymentsController extends AdminBaseController
         }
 
         // Heuristic match for grouped codes
-        if ($resultCode === $this->registrationInvalidCode) {
-            return 'التسجيل غير صالح، ربما تم رفضه في البداية.';
-        } elseif ($this->isSuccess($resultCode)) {
+        if (isSuccess($resultCode)) {
             return 'تمت المعاملة بنجاح.';
-        } elseif ($this->isPending($resultCode)) {
+        } elseif (isPending($resultCode)) {
             return 'المعاملة قيد الانتظار.';
-        } elseif ($this->isUnderReview($resultCode)) {
+        } elseif (isUnderReview($resultCode)) {
             return 'تمت المعاملة بنجاح ولكنها تحت المراجعة.';
-        } elseif ($this->isRejection($resultCode)) {
+        } elseif (isRejection($resultCode)) {
             return 'تم رفض المعاملة.';
-        } elseif ($this->isCommunicationError($resultCode)) {
+        } elseif (isCommunicationError($resultCode)) {
             return 'حدث خطأ في الاتصال مع بوابة الدفع.';
-        } elseif ($this->isPaymentMethodError($resultCode)) {
+        } elseif (isPaymentMethodError($resultCode)) {
             return 'حدث خطأ متعلق بطريقة الدفع.';
-        } elseif ($this->isRiskNotification($resultCode)) {
+        } elseif (isRiskNotification($resultCode)) {
             return 'المعاملة تتضمن إشعار خطر أو تحت المراجعة.';
         }
 
         return 'رمز النتيجة غير معروف.';
     }
+
 
 }
