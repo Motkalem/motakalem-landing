@@ -29,6 +29,7 @@
                 <thead>
                 <tr>
                     <th>الاسم</th>
+                    <th>الباقة</th>
                     <th>رقم الهاتف</th>
                     <th> البريد الالكتروني </th>
                     <th>العمر</th>
@@ -40,6 +41,7 @@
                 @foreach($patients as $patient)
                     <tr>
                         <td>{{ $patient->name }}</td>
+                        <td>{{ $patient->centerInstallmentPayment?->centerPackage?->name }}</td>
                         <td>{{ $patient->mobile_number }}</td>
                         <td>{{ $patient->email }}</td>
                         <td>{{ $patient->age }}</td>

@@ -9,5 +9,11 @@ class CenterPatient extends Model
     protected $table = 'medical_inquiries';
     protected $fillable = ['source','name','mobile_number','email', 'id_number','id_end_date','age','message'];
 
+    const DASHBOARD='dashboard';
 
+    public function centerInstallmentPayment()
+    {
+
+        return $this->hasOne(CenterInstallmentPayment::class,'patient_id');
+    }
 }

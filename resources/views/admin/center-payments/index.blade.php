@@ -22,6 +22,7 @@
     </style>
 @endpush
 
+
 @section('content')
     <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
         <div class="col-md-12">
@@ -70,7 +71,7 @@
                                 @endif
                             </td>
 
-                            <td>{{ $installmentPayment->first_installment_date }}</td>
+                            <td>{{ $installmentPayment->centerInstallments?->first()?->installment_date }}</td>
 
                             <td class="text-center">
                                 @if( $installmentPayment->is_completed)
@@ -84,12 +85,13 @@
                                 @endif
                             </td>
                             <td class="text-center project-actions">
-                                <a href="#"
-                                   data-patient-id="{{ $installmentPayment->id }}"
-                                   class="px-2 btn btn-warning bgc-yellow-800 btn-sm send-contract-btn">
-                                    إرسال رابط الدفع
-                                </a>
-
+                              @if($installmentPayment->registration_id== null)
+                                    <a href="#"
+                                       data-patient-id="{{ $installmentPayment->id }}"
+                                       class="px-2 btn btn-warning bgc-yellow-800 btn-sm send-contract-btn">
+                                        إرسال رابط الدفع
+                                    </a>
+                                @endif
                                 <a href="{{ route('dashboard.center.center-payments.show', $installmentPayment->id) }}"
                                    class="px-4 btn btn-info btn-sm">
                                     عرض

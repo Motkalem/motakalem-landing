@@ -6,25 +6,16 @@ use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Center\CenterPackage;
 use App\Models\Center\CenterPatient;
-use App\Models\Center\MedicalInquiry;
-use App\Models\InstallmentPayment;
-use App\Models\Package;
-use App\Models\Student;
 use App\Notifications\Admin\CenterPaymentUrlNotification;
-use App\Notifications\SentPaymentUrlNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
-use Lorisleiva\Actions\ActionRequest;
 
 class PatientsController extends AdminBaseController
 {
@@ -60,7 +51,6 @@ class PatientsController extends AdminBaseController
     public function store(Request $request)#: RedirectResponse
     {
         $validated = $request->validate([
-            'source'            => 'nullable|string|max:255',
             'name'              => 'required|string|max:255',
             'mobile_number' => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:medical_inquiries,mobile_number'],
             'email' => 'required|email',
@@ -76,10 +66,13 @@ class PatientsController extends AdminBaseController
         ]);
 
         $phone = $this->formatMobile($request->mobile_number);
-        $validated = array_merge($validated, ['mobile_number' => $phone]);
-        $patient = CenterPatient::create($validated);
+        $validated = array_merge($validated, [
+            'mobile_number' => $phone,
+            'source' => CenterPatient::DASHBOARD,
+        ]);
+        $patient = CenterPatient::query()->create($validated);
 
-        $installmentPayment = CenterInstallmentPayment::create([
+        $installmentPayment = CenterInstallmentPayment::query()->create([
             'patient_id'        => $patient->id,
             'center_package_id' => $validated['center_package_id'],
             'canceled'          => false,
@@ -107,7 +100,6 @@ class PatientsController extends AdminBaseController
         $patient = CenterPatient::findOrFail($id);
 
         $validated = $request->validate([
-            'source'       => 'nullable|string|max:255',
             'name'         => 'required|string|max:255',
             'mobile_number'=> [
                 'required', 'string', 'max:15',
@@ -118,6 +110,10 @@ class PatientsController extends AdminBaseController
             'id_end_date'  => 'nullable|date',
             'age'          => 'required|integer|min:0',
             'message'      => 'nullable|string',
+        ]);
+
+        $validated = array_merge($validated, [
+           'source' => CenterPatient::DASHBOARD,
         ]);
 
         $patient->update($validated);

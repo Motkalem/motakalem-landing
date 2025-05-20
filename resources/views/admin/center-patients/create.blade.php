@@ -82,7 +82,7 @@
                             <option value="">-- اختر الباقة --</option>
                             @foreach($centerPackages as $package)
                                 <option value="{{ $package->id }}" {{ old('center_package_id') == $package->id ? 'selected' : '' }}>
-                                    {{ $package->name }} - {{ $package->mobile_number }}
+                                    {{ $package->name }}
                                 </option>
                             @endforeach
                         </select>
