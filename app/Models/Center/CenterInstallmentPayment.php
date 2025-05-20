@@ -22,7 +22,7 @@ class CenterInstallmentPayment extends Model
 
     public function patient()
     {
-        return $this->belongsTo(MedicalInquiry::class,'patient_id');
+        return $this->belongsTo(CenterPatient::class,'patient_id');
     }
 
     public function centerPackage()

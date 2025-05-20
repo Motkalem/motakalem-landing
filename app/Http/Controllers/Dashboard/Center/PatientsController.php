@@ -52,7 +52,7 @@ class PatientsController extends AdminBaseController
     {
         $validated = $request->validate([
             'name'              => 'required|string|max:255',
-            'mobile_number' => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:medical_inquiries,mobile_number'],
+            'mobile_number' => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:center_patients,mobile_number'],
             'email' => 'required|email',
             'id_number' => 'nullable|digits:10',
             'id_end_date' => ['nullable', 'date', function ($attribute, $value, $fail) {
@@ -61,7 +61,6 @@ class PatientsController extends AdminBaseController
                 }
             }],
             'age'               => 'required|integer|min:0',
-            'message'           => 'nullable|string',
             'center_package_id' => 'required|exists:center_packages,id',
         ]);
 
@@ -103,7 +102,7 @@ class PatientsController extends AdminBaseController
             'name'         => 'required|string|max:255',
             'mobile_number'=> [
                 'required', 'string', 'max:15',
-                Rule::unique('medical_inquiries', 'mobile_number')->ignore($id),
+                Rule::unique('center_patients', 'mobile_number')->ignore($id),
             ],
             'email'        => 'nullable|email|max:255',
             'id_number'    => 'nullable|string|max:50',

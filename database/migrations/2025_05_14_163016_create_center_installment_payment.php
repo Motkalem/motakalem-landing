@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('center_installment_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('medical_inquiries')->cascadeOnDelete();
+            $table->foreignId('patient_id')->constrained('center_patients')->cascadeOnDelete();
             $table->foreignId('center_package_id')->constrained()->cascadeOnDelete();
             $table->text('registration_id')->nullable();
             $table->boolean('canceled')->default(false);
