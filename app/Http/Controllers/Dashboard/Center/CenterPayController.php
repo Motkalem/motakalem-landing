@@ -3,28 +3,26 @@
 namespace App\Http\Controllers\Dashboard\Center;
 
 use App\Actions\HyperPay\GenerateCenterRecurringPaymentData;
-use App\Actions\HyperPay\StoreRecurringPaymentData;
 use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
 use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Center\CenterTransaction;
-use App\Models\Package;
-use App\Models\Payment;
-use App\Models\Transaction;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Http\RedirectResponse;
+use App\Traits\HelperTrait;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 
 class CenterPayController extends Controller
 {
+    use HelperTrait;
     public function getPayPage(ActionRequest $request)
     {
 
+        $payid = $this->decrypt($request->payid);
+        $patid = $this->decrypt($request->patid);
+
         $installmentPayment = CenterInstallmentPayment::query()
-            ->where('id',$request->payid )
-            ->where('patient_id',$request->patid )
+            ->where('id',$payid )
+            ->where('patient_id',$patid)
             ->firstOrFail();
 
          $amount = $installmentPayment?->centerPackage?->first_inst;
@@ -79,13 +77,18 @@ class CenterPayController extends Controller
 
         $transaction = $this->createTransactions($transactionData);
 
-        $centerInstallmentPayment = CenterInstallmentPayment::query()->with('centerInstallments')->find(request()->payid);
+        $decPayID = $this->decrypt(request()->payid);
+
+        $centerInstallmentPayment = CenterInstallmentPayment::query()
+            ->with('centerInstallments')->find($decPayID);
+
         $centerInstallmentPayment ->update(['registration_id'=> data_get($transactionData, 'registrationId')]);
 
         if( data_get($transactionData, 'id') ==  null)
         {
 
-            return redirect(route('center.recurring.checkout',['payid'=> request()->payid, 'patid'=> request()->patid]))
+            return redirect(route('center.recurring.checkout',
+                ['payid'=> $this->encrypt(request()->payid), 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
@@ -98,11 +101,11 @@ class CenterPayController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return to_route('center.thank.you', Crypt::encrypt($centerInstallmentPayment->id));
+            return to_route('center.thank.you', request()->payid);
         } else {
 
-
-            return redirect(route('center.recurring.checkout',['payid'=> request()->payid, 'patid'=> request()->patid] ))
+            return redirect(route('center.recurring.checkout',
+                ['payid'=>  request()->payid , 'patid'=>  request()->payid ] ))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
@@ -110,15 +113,10 @@ class CenterPayController extends Controller
 
     public function getThankYouPage($id)
     {
-        try {
 
-            $id = Crypt::decrypt($id);
-
-        } catch (DecryptException $e) {
-            abort(403, 'Invalid or tampered ID.');
-        }
-
-        $centerInstallmentPayment = CenterInstallmentPayment::query()->with('centerInstallments')->find($id);
+        $decID = $this->decrypt($id);
+        $centerInstallmentPayment = CenterInstallmentPayment::query()
+            ->with('centerInstallments')->find($decID);
 
         return view('payments.center-recurring-thank-you', compact('centerInstallmentPayment'));
     }
@@ -129,10 +127,12 @@ class CenterPayController extends Controller
      */
     public function createTransactions($data): mixed
     {
+        $decPayId = $this->decrypt(data_get($data, 'center_payment_id'));
+
         return  CenterTransaction::query()->create([
             'data' => $data,
             'title' => data_get($data, 'title'),
-            'center_installment_payment_id' => data_get($data, 'center_payment_id'),
+            'center_installment_payment_id' => $decPayId,
             'amount' => data_get($data, 'amount')??0.0,
             'success' =>
                 in_array(data_get(data_get($data, 'result'), 'code'),

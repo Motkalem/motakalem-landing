@@ -9,11 +9,14 @@ use App\Models\Center\CenterInstallment;
 use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Installment;
 use App\Notifications\Admin\CenterPaymentUrlNotification;
+use App\Traits\HelperTrait;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class CenterPaymentsController extends AdminBaseController
 {
+    use HelperTrait;
     public function index()
     {
         $title = 'المدفوعات المجدولة';
@@ -134,10 +137,12 @@ class CenterPaymentsController extends AdminBaseController
     public function createTransactions($data): mixed
     {
 
+       $decPayId = $this->decrypt(data_get($data, 'center_payment_id'));
+
         return CenterTransaction::query()->create([
             'data' => $data,
             'title' => data_get($data, 'title'),
-            'center_installment_payment_id' => data_get($data, 'center_payment_id'),
+            'center_installment_payment_id' => $decPayId,
             'amount' => data_get($data, 'amount') ?? 0.0,
             'success' => in_array(data_get(data_get($data, 'result'), 'code'),
                 ['000.100.110', '000.000.000']) ? 'true' : 'false',
@@ -154,8 +159,8 @@ class CenterPaymentsController extends AdminBaseController
         $centerInstallmentPayment = CenterInstallmentPayment::with('patient')->findOrFail($id);
 
         $url = route('center.recurring.checkout', [
-            'payid' => $centerInstallmentPayment->id,
-            'patid' => $centerInstallmentPayment->patient_id
+            'payid' => $this->encrypt($centerInstallmentPayment->id),
+            'patid' => $this->encrypt($centerInstallmentPayment->patient_id)
         ]);
 
         try {

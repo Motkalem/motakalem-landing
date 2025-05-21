@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
@@ -170,9 +171,12 @@ class PatientsController extends AdminBaseController
 
         $patient = $centerInstallmentPayment?->patient;
 
+        $payid =  $this->encrypt($centerInstallmentPayment->id);
+        $patid =  $this->encrypt($centerInstallmentPayment->patient_id);
+
         $url = route('center.recurring.checkout', [
-            'payid'=>$centerInstallmentPayment->id,
-            'patid'=> $centerInstallmentPayment->patient_id]);
+            'payid'=> $payid,
+            'patid'=> $patid]);
 
             try {
 
