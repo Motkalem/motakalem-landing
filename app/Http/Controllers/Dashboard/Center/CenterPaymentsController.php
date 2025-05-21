@@ -82,7 +82,7 @@ class CenterPaymentsController extends AdminBaseController
             CURLOPT_HTTPHEADER => ['Authorization:Bearer ' . $auth_token],
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $data,
-            CURLOPT_SSL_VERIFYPEER => env('SSL_VERIFYPEER', true),
+            CURLOPT_SSL_VERIFYPEER => env('SSL_VERIFYPEER', false),
             CURLOPT_RETURNTRANSFER => true
         ]);
 

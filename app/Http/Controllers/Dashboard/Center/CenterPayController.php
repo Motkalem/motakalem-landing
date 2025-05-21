@@ -39,6 +39,9 @@ class CenterPayController extends Controller
 
     public function getStatus() #: string|RedirectResponse
     {
+
+
+
         $entity_id = env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
 
@@ -82,8 +85,7 @@ class CenterPayController extends Controller
         if( data_get($transactionData, 'id') ==  null)
         {
 
-            return redirect()
-                ->back()
+            return redirect(route('center.recurring.checkout',['payid'=> request()->payid, 'patid'=> request()->patid]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
@@ -96,12 +98,11 @@ class CenterPayController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return view('payments.center-recurring-pay', compact('centerInstallmentPayment'));
+            return view('payments.center-recurring-thank-you', compact('centerInstallmentPayment'));
         } else {
 
 
-            return redirect()
-                ->back()
+            return redirect(route('center.recurring.checkout',['payid'=> request()->payid, 'patid'=> request()->patid] ))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }

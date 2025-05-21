@@ -30,7 +30,6 @@ Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::clas
 # CENTER RECURRING PAYMENTS
 Route::get('center-pay/{payid}/{patid}', [CenterPayController::class, 'getPayPage'])->name('center.recurring.checkout');
 Route::get('center/checkout-result/{payid}/{patid}/',  [CenterPayController::class,'getStatus']);
-Route::get('center/thank-you/{id}',  [CenterPayController::class,'getStatus']);
 
 //Route::get('center/checkout', [CenterPayController::class,'getPayPage'])->name('center.checkout.index');
 
