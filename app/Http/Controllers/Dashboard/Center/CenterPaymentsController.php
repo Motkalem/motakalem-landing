@@ -10,6 +10,7 @@ use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Installment;
 use App\Notifications\Admin\CenterPaymentUrlNotification;
 use App\Traits\HelperTrait;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -136,8 +137,7 @@ class CenterPaymentsController extends AdminBaseController
      */
     public function createTransactions($data): mixed
     {
-
-       $decPayId = $this->decrypt(data_get($data, 'center_payment_id'));
+       $decPayId = $this->decryptIfEncrypted(data_get($data, 'center_payment_id'));
 
         return CenterTransaction::query()->create([
             'data' => $data,
@@ -149,6 +149,16 @@ class CenterPaymentsController extends AdminBaseController
         ]);
     }
 
+    private function decryptIfEncrypted($value)
+    {
+        try {
+
+            return Crypt::decrypt($value);
+        } catch (DecryptException $e) {
+            // Not encrypted — return as-is
+            return $value;
+        }
+    }
     private function isSuccessfulResponse(?string $resultCode): bool
     {
         return preg_match('/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/', $resultCode) === 1;

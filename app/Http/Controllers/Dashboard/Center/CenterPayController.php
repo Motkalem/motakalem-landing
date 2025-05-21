@@ -25,6 +25,17 @@ class CenterPayController extends Controller
             ->where('patient_id',$patid)
             ->firstOrFail();
 
+        // Check if registration_id exists and first installment is paid
+        if (
+            $installmentPayment->registration_id &&
+            $installmentPayment->centerInstallments?->first()?->is_paid
+        ) {
+            return redirect()
+                ->route('center.invalid.url')
+                ->with('status', 'fail')
+                ->with('message', 'الرابط لم يعد صالحًا.');
+        }
+
          $amount = $installmentPayment?->centerPackage?->first_inst;
 
         $response = GenerateCenterRecurringPaymentData::make()->handle($installmentPayment?->centerPackage, $installmentPayment);
@@ -119,6 +130,12 @@ class CenterPayController extends Controller
             ->with('centerInstallments')->find($decID);
 
         return view('payments.center-recurring-thank-you', compact('centerInstallmentPayment'));
+    }
+
+
+    public function invalidUrl()
+    {
+        return view('payments.invalid-url');
     }
 
     /**
