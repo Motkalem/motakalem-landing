@@ -11,7 +11,9 @@ use App\Models\Center\CenterTransaction;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Transaction;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 
@@ -39,8 +41,6 @@ class CenterPayController extends Controller
 
     public function getStatus() #: string|RedirectResponse
     {
-
-
 
         $entity_id = env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
@@ -98,7 +98,7 @@ class CenterPayController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return view('payments.center-recurring-thank-you', compact('centerInstallmentPayment'));
+            return to_route('center.thank.you', Crypt::encrypt($centerInstallmentPayment->id));
         } else {
 
 
@@ -106,6 +106,21 @@ class CenterPayController extends Controller
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
+    }
+
+    public function getThankYouPage($id)
+    {
+        try {
+
+            $id = Crypt::decrypt($id);
+
+        } catch (DecryptException $e) {
+            abort(403, 'Invalid or tampered ID.');
+        }
+
+        $centerInstallmentPayment = CenterInstallmentPayment::query()->with('centerInstallments')->find($id);
+
+        return view('payments.center-recurring-thank-you', compact('centerInstallmentPayment'));
     }
 
     /**
