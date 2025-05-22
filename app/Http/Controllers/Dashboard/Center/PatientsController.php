@@ -96,7 +96,7 @@ class PatientsController extends AdminBaseController
         return view('admin.center-patients.edit', compact('patient', 'title'));
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)#: RedirectResponse
     {
         $patient = CenterPatient::findOrFail($id);
 
@@ -113,7 +113,7 @@ class PatientsController extends AdminBaseController
             'city'      => 'required|string',
         ]);
 
-        $validated = array_merge($validated, [
+          $validated = array_merge($validated, [
            'source' => CenterPatient::DASHBOARD,
         ]);
 
