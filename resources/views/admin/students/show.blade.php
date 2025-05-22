@@ -48,7 +48,7 @@
                     <label class="form-label col-sm-2 col-form-label"> قيمة القسط  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->installment_value   }} <span class="riyal-symbol">R</span>
+                            {{ $student->package?->first_inst   }} <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>
