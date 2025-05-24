@@ -17,12 +17,12 @@
             </div>
         </div>
 
-        @if( $student->package)
+        @if( $student->parentContract?->package)
             <div class="mb-3 row">
                 <label class="form-label col-sm-2 col-form-label">اسم الباقة</label>
                 <div class="col-sm-10">
                     <p class="form-control-plaintext">
-                        {{ $student->package?->name  }}
+                        {{ $student->parentContract?->package?->name  }}
                     </p>
                 </div>
             </div>
@@ -30,16 +30,16 @@
                 <label class="form-label col-sm-2 col-form-label">نوع الباقة</label>
                 <div class="col-sm-10">
                     <p class="form-control-plaintext ">
-                        {{ $student->package?->payment_type == 'one time' ? 'دفع لمرة واحدة' : 'اقساط'  }}
+                        {{ $student->parentContract?->package?->payment_type == 'one time' ? 'دفع لمرة واحدة' : 'اقساط'  }}
                     </p>
                 </div>
             </div>
-            @if($student->package?->payment_type == 'one time')
+            @if($student->parentContract?->package?->payment_type == 'one time')
                 <div class="mb-3 row">
                     <label class="form-label col-sm-2 col-form-label"> الإجمالي  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->total   }} <span class="riyal-symbol">R</span>
+                            {{ $student->parentContract?->package?->total   }} <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <label class="form-label col-sm-2 col-form-label"> قيمة القسط  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->first_inst   }} <span class="riyal-symbol">R</span>
+                            {{ $student->parentContract?->package?->first_inst   }} <span class="riyal-symbol">R</span>
                         </p>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <label class="form-label col-sm-2 col-form-label">   عدد الاقساط  </label>
                     <div class="col-sm-10">
                         <p class="form-control-plaintext ">
-                            {{ $student->package?->number_of_months   }}  شهر
+                            {{ $student->parentContract?->package?->number_of_months   }}  شهر
                         </p>
                     </div>
                 </div>

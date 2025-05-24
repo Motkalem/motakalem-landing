@@ -169,7 +169,6 @@
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الثاني: التكلفة وجدول السداد:
                                                     <br/>
-
                                                     1. التكلفة الإجمالية للبرنامج
                                                     @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
                                                         {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}

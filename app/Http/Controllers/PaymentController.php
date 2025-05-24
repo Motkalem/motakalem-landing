@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Classes\HyperpayNotificationProcessor;
 use App\Models\Package;
+use App\Models\ParentContract;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Notifications\Admin\NewSubscriptionNotification;
+use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -15,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 
@@ -256,10 +259,26 @@ class PaymentController extends Controller
                     'package_id'=> $payment?->package?->id,
                     'is_paid'=> true,
                 ]);
-
                 $this->notifyClient($payment->student, $transaction);
+                $this->sendContract($payment->student?->parentContract);
                 $this->notifyAdmin($payment->student, $transaction, 'one time');
             }
+        }
+    }
+
+    /**
+     * @param $row
+     * @return void
+     */
+    public function sendContract($row): void
+    {
+        try {
+
+            $row = $row->load('package');
+            Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
         }
     }
 
