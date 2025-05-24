@@ -109,15 +109,7 @@
             </div>
         </div>
 
-        @if($student->installmentPayment)
-        <div class="mb-3 row">
-            <div class="col-sm-10 offset-sm-2">
-                <a class="btn btn-primary" href="{{ route('dashboard.installment-payments.show', $student->installmentPayment->id) }}">
-                    بيانات الاشتراك
-                </a>
-            </div>
-        </div>
-        @elseif($student->payment)
+        @if($student->payment)
         <div class="mb-3 row">
             <div class="col-sm-10 offset-sm-2">
                 <a class="btn btn-primary" href="{{ route('dashboard.payments.show', $student->payment->id) }}">
@@ -126,6 +118,24 @@
             </div>
         </div>
         @endif
+
+        <div class="mb-3 row">
+            <div class="col-sm-10 offset-sm-2">
+                @if($student->installmentPayment)
+                    <a class="btn btn-primary" href="{{ route('dashboard.installment-payments.show', $student->installmentPayment->id) }}">
+                        بيانات الاشتراك
+                        <i class="fa fa-info"></i>
+                    </a>
+                @endif
+                @if($student->parentContract)
+                    <a class="btn btn-success" href="{{ route('dashboard.download-contract', $student->parentContract->id) }}">
+                        تحميل العقد
+                        <i class="fa fa-download"></i>
+                    </a>
+                @endif
+            </div>
+        </div>
+
     </div>
 </div>
 @endsection

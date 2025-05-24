@@ -48,6 +48,13 @@
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->city }}</td>
                     <td class="text-center">
+                        @if($student->parentContract)
+                            <a class="btn btn-success bg-success" target="_blank" href="{{ route('dashboard.download-contract',
+                                $student->parentContract?->id) }}">
+                                تحميل العقد
+                                <i class="fa fa-download"></i>
+                            </a>
+                        @endif
                         <a class="btn btn-primary btn-sm" href="{{ route('dashboard.students.show', $student->id) }}">
                             عرض
                         </a>

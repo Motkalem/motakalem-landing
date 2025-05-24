@@ -41,6 +41,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::resource('transactions', TransactionsController::class);
 
     Route::resource('students', StudentsController::class);
+    Route::get('download-contract/{id}', [StudentsController::class,'downloadContract'])->name('download-contract');
+
     Route::resource('installment-payments', InstallmentPaymentsController::class);
 
     Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])

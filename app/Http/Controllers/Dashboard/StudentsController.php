@@ -14,8 +14,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-
+use PDF;
 class StudentsController extends AdminBaseController
 {
     public function index()
@@ -182,4 +184,29 @@ class StudentsController extends AdminBaseController
         }
     }
 
+    public function downloadContract($id)
+    {
+
+        $contract = ParentContract::findOrFail($id);
+        $oldPdfBasePath = 'students/contract-' . $contract->id;
+
+        $existingFiles = Storage::disk('public')->files('students');
+
+        foreach ($existingFiles as $file) {
+            if (str_contains($file, $oldPdfBasePath)) {
+                Storage::disk('public')->delete($file);
+            }
+        }
+
+
+        $pdf = PDF::loadView('pdf.contract-pdf', ['data'=>$contract]);
+
+        $filename = 'contract-' . $contract->id  . '.pdf';
+
+        $pdfPath = 'students/' . $filename;
+
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        return Redirect::away(Storage::url($pdfPath));
+    }
 }
