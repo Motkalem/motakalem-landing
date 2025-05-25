@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use App\Notifications\SentPaymentUrlNotification;
 
 class PaymentController extends Controller
 {
@@ -202,7 +203,9 @@ class PaymentController extends Controller
 
        if( data_get($transactionData, 'id') ==  null)
        {
-
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+            Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
+            
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
        }
@@ -210,11 +213,15 @@ class PaymentController extends Controller
 
         $this->markPaymentAsCompleted($payment);
 
-
         if ($transaction->success == 'true') {
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
+
+            // Send payment URL via email on failure
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+            
+            Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
         }

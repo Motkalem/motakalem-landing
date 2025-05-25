@@ -72,7 +72,6 @@ class JoinController extends Controller
 
         $contract = $contract->load('package');
 
-
         return $contract;
     }
 

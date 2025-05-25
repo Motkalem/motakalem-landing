@@ -51,11 +51,7 @@ class CreditAction
             'clienttermsConsent' => 'required|boolean',
             'payment_type' => 'nullable|in:' . implode(',', array_values(Student::$paymentTypes)),
             'id_number' => 'required|digits:10',
-            'id_end' => ['required', 'date', function ($attribute, $value, $fail) {
-                if (strtotime($value) <= strtotime(now())) {
-                    $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
-                }
-            }],
+            'id_end' => ['nullable'],
         ];
 
         return $rules;
@@ -70,14 +66,13 @@ class CreditAction
     {
 
         $normalizedPhone = preg_replace('/^0/', '+966', request()->phone); // Convert starting `0` to `+966`
+        $normalizedPhone = preg_replace('/^966/', '+966', $normalizedPhone); // Also convert starting `966` to `+966`
+
+        #TODO CHECK IF THE USER PAY FOR THIS PACKAGE WITH THE SAME PHONE NUMBER (CHANGE THE JSON TO GIVE ALERT)
 
         if (Student::query()->where('phone', $normalizedPhone)->exists()) {
-
-            $this->checkPaymentProblem($normalizedPhone);
-
-            throw ValidationException::withMessages([
-                'phone' => __('The phone number already exists.'),
-            ]);
+            
+            return $this->checkPaymentProblem($normalizedPhone);
         }
 
         DB::beginTransaction();
@@ -88,20 +83,16 @@ class CreditAction
 
         $name = $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name;
 
-        $package = Package::query()->find( $request->package_id);
+        $package = Package::query()->find($request->package_id);
 
-        $student = Student::query()->firstOrCreate([
-            'phone' => $phone,
-        ],
-            [
-                'name' => $name,
-                'email' => $request->email,
-                'age' => $request->age,
-                'phone' => $phone,
-                'city' => $request->city,
-                'payment_type' => $package->payment_type,
-                'total_payment_amount' => $package->total??0,
-            ]);
+        $student = Student::query()->firstOrCreate(
+            ['phone' => $phone], 
+        [
+            'name' => $name, 'email' => $request->email, 
+            'age' => $request->age, 'phone' => $phone,
+            'city' => $request->city, 'payment_type' => $package->payment_type,
+            'total_payment_amount' => $package->total??0
+        ]);
 
         $data= request()->all();
 
@@ -119,11 +110,11 @@ class CreditAction
 
         DB::commit();
 
+
         if ($package->payment_type == Package::ONE_TIME) {
 
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
-
 
             return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
@@ -138,11 +129,7 @@ class CreditAction
                     'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
                 ],
             ];
-
         } else {
-
-
-
             $response = [
                 'status' => 1,
                 'message' => 'success generate hyperpay url',
@@ -158,50 +145,107 @@ class CreditAction
 
     /**
      * @param $phone
-     * @return void
+     * @return array
      */
-    public function checkPaymentProblem($phone) #: void
+    public function checkPaymentProblem($phone) #: array
     {
-        $student = Student::query()->where('phone', $phone)->first();
-        if (is_null($student?->package_id) && $student->payment) {
-            try {
+         $student = Student::query()
+            ->where('phone', $phone)
+            ->with(['parentContract.package', 'payment.transactions', 'installmentPayment'])
+            ->first();
 
-                Notification::route('mail', $student->email)
-                    ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
+        if (!$student || !$student->parentContract || !$student->parentContract->package) {
+            return [
+                'status' => 0,
+                'message' => 'Student or package not found'
+            ];
+        }
 
-            } catch (\Exception $e) {
+         $package = $student->parentContract->package;
 
-                Log::error($e->getMessage());
+         
+        if ($package->payment_type == Package::ONE_TIME) {
+            $payment = $student->payment;
+            
+        
+            if ($payment) {
+                $latestTransaction = $payment->transactions()->latest()->first();
+                
+              
+                if ($latestTransaction && $latestTransaction->success) {
+                    return [
+                        'status' => 0,
+                        'message' => 'User is already registered and has paid for this package'
+                    ];
+                }
             }
 
-        }
-        if (is_null($student?->package_id) && $student->installmentPayment) {
-
             try {
-                $response = StoreRecurringPaymentData::make()
-                    ->handle(
-                        $student->installmentPayment?->package,
-                        $student->installmentPayment,
-                        $student,
-                        $student?->toArray() ?? []);
+                Notification::route('mail', $student->email)
+                    ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
+                
+                return [
+                    'status' => 1,
+                    'message' => 'success generate hyperpay url',
+                    'payload' => [
+                        'payment_token' => '#',
+                        'hyperpay_payment' => $student->payment?->payment_url
+                    ]
+                ];  
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                return [
+                    'status' => 0,
+                    'message' => 'Error sending payment link'
+                ];
+            }
 
+        } else {
+            
+            $insP = $student->installmentPayment;
 
-                if (data_get($response, 'id')) {
-
+            if ($insP && 
+                $insP->registration_id && 
+                $insP->installments?->first()?->is_paid) {
+                 
+                return [
+                    'status' => 0,
+                    'message' => 'User is already registered and paid first installment for this package',
+                    'payload' => [
+                        'payment_token' => '#',
+                        'hyperpay_payment' =>''
+                    ]
+                ];
+            }
+       
+            try {
                     $payment_url = route('recurring.checkout', [
-                        'paymentId' => $student->installmentPayment?->id,
+                        'paymentId' => $insP?->id,
                         'stdId' => $student->id
                     ]);
 
-                    Notification::route('mail', $student->email)
-                        ->notify(new SentPaymentUrlNotification($student, $payment_url));
-                }
+                    Notification::route('mail', $student->email)->notify(new SentPaymentUrlNotification($student, $payment_url));
 
+                    return [
+                        'status' => 1,
+                        'message' => 'success generate hyperpay url and sent to your email',
+                        'payload' => [ 'payment_token' => '#',
+                            'hyperpay_payment' => $payment_url ]
+                    ];
+                
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
+                return [
+                    'status' => 0,
+                    'message' => 'Error setting up recurring payment'
+                ];
             }
-
         }
+
+        return [
+            'status' => 0,
+            'message' => 'Unable to process payment'
+        ];
     }
 
     /**
@@ -239,10 +283,9 @@ class CreditAction
      * @param $data
      * @return JsonResponse
      */
-    protected function createScheduledPayment($stID, $pckID): JsonResponse
+    protected function createScheduledPayment($stID, $pckID)
     {
-        InstallmentPayment::query()->where('student_id', $stID)
-            ->whereNull('registration_id')?->first()?->delete();
+       
 
         $installmentPayment = InstallmentPayment::query()->firstOrcreate([
             'student_id' => $stID,
@@ -255,29 +298,18 @@ class CreditAction
 
         $this->createInstallments($installmentPayment);
 
-        if ($installmentPayment->wasRecentlyCreated && ($installmentPayment->registration_id == null)) {
+ 
+        $response = [
+            'status' => 1,
+            'message' => 'successfully created checkout',
 
-                $response = [
-                    'status' => 1,
-                    'message' => 'successfully created checkout',
-
-                    'payload' => [
-                        'payment_token' => '#',
-                        'hyperpay_payment' => route('recurring.checkout',
-                            [ 'paymentId'=>$installmentPayment->id,'stdId'=> $installmentPayment->student_id]),
-                    ],
-                ];
-
-            return response()->json($response, 200);
-        } else {
-
-            $response = [
-                'status' => 0,
-                'message' => 'تم التسجيل بالباقة مسبقا',
-                'payload' => [],
-            ];
-            return response()->json($response, 200);
-        }
+            'payload' => [
+                'payment_token' => '#',
+                'hyperpay_payment' => route('recurring.checkout',
+                    [ 'paymentId'=>$installmentPayment->id,'stdId'=> $installmentPayment->student_id]),
+            ],
+        ];
+       
     }
 
     /**

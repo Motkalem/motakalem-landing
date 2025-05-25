@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Notifications\SentPaymentUrlNotification;
+
 
 class RecurringCheckoutResultAction
 {
@@ -62,10 +64,19 @@ class RecurringCheckoutResultAction
             $this->sendContract($installmentPayment?->student?->parentContract);
             $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
+            
            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
         } else {
-            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
 
+            $payment_url = route('recurring.checkout', [
+                'paymentId' => $installmentPayment?->id,
+                'stdId' => $installmentPayment?->student?->id
+            ]);
+            
+            Notification::route('mail', $installmentPayment?->student?->email)
+                ->notify(new SentPaymentUrlNotification($installmentPayment?->student, $payment_url));
+
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
         }
 
     }
@@ -87,7 +98,7 @@ class RecurringCheckoutResultAction
     public function markFirstInstallmentAsPaid($installmentPayment)
     {
 
-        $firstInstallment = $installmentPayment->installments?->first();
+         $firstInstallment = $installmentPayment->installments?->first();
 
         $firstInstallment?->update(['is_paid' => 1]);
 

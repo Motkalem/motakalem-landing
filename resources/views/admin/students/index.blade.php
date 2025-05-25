@@ -49,7 +49,7 @@
                     <td>{{ $student->city }}</td>
                     <td class="text-center">
                         @if($student->parentContract)
-                            <a class="btn btn-success bg-success" target="_blank" href="{{ route('dashboard.download-contract',
+                            <a class="btn btn-success bg-success btn-sm" target="_blank" href="{{ route('dashboard.download-contract',
                                 $student->parentContract?->id) }}">
                                 تحميل العقد
                                 <i class="fa fa-download"></i>

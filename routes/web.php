@@ -43,12 +43,9 @@ Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::cl
 
 
 
-Route::get('checkout-recurring/{paymentId}/{stdId}',
-    RecurringCheckoutAction::class)->name('recurring.checkout');
-
-
-
+Route::get('checkout-recurring/{paymentId}/{stdId}',RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
+
 Route::get('/callback', callbackAction::class)->name('callback');
 
 /*Route::get('/home', [MainController::class, 'index'])->name('home');
