@@ -128,7 +128,7 @@
 <div class="container-fluid">
     <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
     <div class="text-end mx-4 mb-3">
-        <a class="px-4 btn btn-info" href="{{ route('dashboard.installment-payments.index') }}">
+        <a class="px-4 btn btn-info" href="{{ route('dashboard.center.center-patients.index') }}">
             رجوع
         </a>
     </div>
