@@ -1,0 +1,69 @@
+@font-face {
+    font-family: "gzor";
+    src: url(gzor.ttf);
+}
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "gzor";
+    background-color: #19a895;
+}
+.registeration_back {
+    padding: 1rem;
+    position: relative;
+    background-size: cover;
+    background-position: center bottom;
+    background-image: url(imgs/BG-vector.png);
+}
+.registeration_done .logo {
+    display: block;
+    width: max-content;
+    margin: 2rem auto 3rem;
+}
+.registeration_done .logo img {
+    width: 250px;
+}
+.registeration_done .inner_box {
+    width: 50%;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 2px 2px 14px 2px #e0e7c5;
+
+}
+.registeration_done .inner_box img {
+    width: 125px;
+}
+.registeration_done .inner_box h1 {
+    font-size: 25px;
+    color: #134256;
+}
+.registeration_done .inner_box h1 span {
+    display: block;
+    font-size: 70px;
+    margin-top: -2rem;
+}
+.registeration_done .inner_box .visit {
+    display: block;
+    font-size: 20px;
+    color: #134256;
+    margin: 1rem auto;
+    width: max-content;
+    border-radius: 30px;
+    padding: 0.4rem 4rem;
+    text-decoration: none;
+    background-color: #ffda39;
+}
+@media (max-width: 992px) {
+    .registeration_done .inner_box {
+        width: 85%;
+    }
+}
+
+
+#policy {
+    background-color: #134256 !important;
+}

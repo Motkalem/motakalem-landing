@@ -1,0 +1,10 @@
+[01-Oct-2023 06:46:53 UTC] PHP Warning:  require(/home/squarestaging/motkalem-landing/vendor/autoload.php): Failed to open stream: No such file or directory in /home/squarestaging/motkalem-landing/artisan on line 18
+[01-Oct-2023 06:46:53 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/squarestaging/motkalem-landing/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/squarestaging/motkalem-landing/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /home/squarestaging/motkalem-landing/artisan on line 18
+[01-Oct-2023 06:47:02 UTC] PHP Warning:  require(/home/squarestaging/motkalem-landing/vendor/autoload.php): Failed to open stream: No such file or directory in /home/squarestaging/motkalem-landing/artisan on line 18
+[01-Oct-2023 06:47:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/squarestaging/motkalem-landing/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/squarestaging/motkalem-landing/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /home/squarestaging/motkalem-landing/artisan on line 18
