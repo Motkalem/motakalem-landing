@@ -131,30 +131,29 @@
 </div>
 <!-- Confirmation Modal -->
 
-
-<div id="confirmModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">تأكيد إرسال رابط الدفع</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="confirmModalLabel">تأكيد إرسال رابط الدفع</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+
             </div>
             <div class="modal-body">
                 <p>هل أنت متأكد أنك تريد إرسال رابط الدفع؟</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                 <button type="button" class="btn btn-primary" id="confirmSendPaymentLink">تأكيد</button>
             </div>
         </div>
     </div>
 </div>
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+
         $(document).ready(function () {
 
             // Variable to store the payment link ID to send later
@@ -173,7 +172,6 @@
             $('#confirmSendPaymentLink').on('click', function () {
                 if (paymentId !== null) {
                     const csrfToken = '{{ csrf_token() }}';
-                    // Send the POST request to the specified route with the payment ID
                     $.ajax({
                         url: '/dashboard/installment-payments/' + paymentId + '/send-payment-url', // your route URL
                         type: 'POST',
