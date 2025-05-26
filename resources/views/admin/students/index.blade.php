@@ -26,6 +26,7 @@
             <thead>
                 <tr>
                     <th>الإسم</th>
+                    <th>تاريخ التسجيل</th>
                     <th>الرقم التعريفي</th>
                     <th>البريد الإلكتروني</th>
                     <th>العمر</th>
@@ -39,13 +40,21 @@
                 @foreach($students as $student)
                 <tr>
                     <td>{{ $student->name }}</td>
+                    <td>{{ $student->created_at?->toDateString() }}</td>
                     <td class="text-center">{{ $student->parentContract?->id_number??'-' }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->age }}</td>
-                    <td>{{ $student->package?->name ??'لايوجد' }}</td>
+                    <td>{{ $student->parentContract?->package?->name ??'لايوجد' }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->city }}</td>
                     <td class="text-center">
+                        @if($student->parentContract)
+                            <a class="btn btn-success bg-success btn-sm" target="_blank" href="{{ route('dashboard.download-contract',
+                                $student->parentContract?->id) }}">
+                                تحميل العقد
+                                <i class="fa fa-download"></i>
+                            </a>
+                        @endif
                         <a class="btn btn-primary btn-sm" href="{{ route('dashboard.students.show', $student->id) }}">
                             عرض
                         </a>

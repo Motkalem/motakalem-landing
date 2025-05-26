@@ -72,25 +72,8 @@ class JoinController extends Controller
 
         $contract = $contract->load('package');
 
-        $this->notifyClient($contract);
-
         return $contract;
     }
 
-    /**
-     * @param $row
-     * @return void
-     */
-    public function notifyClient($row): void
-    {
-        try {
 
-            $row = $row->load('package');
-
-            Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
-        } catch (\Exception $e) {
-
-            Log::error($e->getMessage());
-        }
-    }
 }

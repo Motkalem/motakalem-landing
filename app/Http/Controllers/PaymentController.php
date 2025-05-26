@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Classes\HyperpayNotificationProcessor;
 use App\Models\Package;
+use App\Models\ParentContract;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Notifications\Admin\NewSubscriptionNotification;
+use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -15,8 +17,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use App\Notifications\SentPaymentUrlNotification;
 
 class PaymentController extends Controller
 {
@@ -199,7 +203,9 @@ class PaymentController extends Controller
 
        if( data_get($transactionData, 'id') ==  null)
        {
-
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+            Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
+            
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
        }
@@ -207,11 +213,15 @@ class PaymentController extends Controller
 
         $this->markPaymentAsCompleted($payment);
 
-
         if ($transaction->success == 'true') {
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
+
+            // Send payment URL via email on failure
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+            
+            Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
         }
@@ -256,10 +266,26 @@ class PaymentController extends Controller
                     'package_id'=> $payment?->package?->id,
                     'is_paid'=> true,
                 ]);
-
                 $this->notifyClient($payment->student, $transaction);
+                $this->sendContract($payment->student?->parentContract);
                 $this->notifyAdmin($payment->student, $transaction, 'one time');
             }
+        }
+    }
+
+    /**
+     * @param $row
+     * @return void
+     */
+    public function sendContract($row): void
+    {
+        try {
+
+            $row = $row->load('package');
+            Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
+        } catch (\Exception $e) {
+
+            Log::error($e->getMessage());
         }
     }
 

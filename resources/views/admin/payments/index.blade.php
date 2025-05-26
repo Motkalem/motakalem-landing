@@ -63,7 +63,13 @@
                                 @endif
                             </td>
                             <td class="text-center project-actions">
-
+                                @if($payment?->student?->parentContract)
+                                    <a class="btn bbg-primary bg-primary btn-sm" target="_blank" href="{{ route('dashboard.download-contract',
+                                            $payment?->student?->parentContract?->id) }}">
+                                        تحميل العقد
+                                        <i class="fa fa-download"></i>
+                                    </a>
+                                @endif
                                 <a href="#"
                                    data-student-id="{{ $payment->student_id }}"
                                    class="px-2 btn btn-warning bgc-yellow-800 btn-sm send-contract-btn">
