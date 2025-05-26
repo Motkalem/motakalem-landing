@@ -37,12 +37,6 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <label class="form-label col-sm-2 col-form-label">الرسالة</label>
-                <div class="col-sm-10">
-                    <p class="form-control-plaintext">{{ $patient->message }}</p>
-                </div>
-            </div>
 
             @php
                 $transactionData = json_decode($patient->transaction_data, true);
