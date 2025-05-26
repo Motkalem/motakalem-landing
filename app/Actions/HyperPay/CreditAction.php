@@ -128,30 +128,15 @@ class CreditAction
             return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
 
-        if ($package->payment_type == Package::ONE_TIME) {
-
-            $response = [
-                'status' => 1,
-                'message' => 'success generate hyperpay url',
-                'payload' => [
-                    'payment_token' => '#',
-                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
-                ],
-            ];
-
-        } else {
-
-
-
-            $response = [
-                'status' => 1,
-                'message' => 'success generate hyperpay url',
-                'payload' => [
-                    'payment_token' => '#',
-                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
-                ],
-            ];
-        }
+        $response = [
+            'status' => 1,
+            'message' => 'success generate hyperpay url',
+            'payload' => [
+                'payment_token' => '#',
+                'hyperpay_payment' => route('checkout.index')
+                    . '?pid=' . $payment?->id . '&sid=' . $student?->id,
+            ],
+        ];
 
         return response()->json($response, 200);
     }

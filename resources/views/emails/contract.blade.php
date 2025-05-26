@@ -178,7 +178,7 @@
                                             . ( $data->package?->first_inst + $data->package?->second_inst
                                                 + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                     @endif
-                                                    <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" />.
+                                                    <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>
@@ -197,7 +197,7 @@
                                                             @if ($value > 0)
                                                                 ◦ القسط {{ $key }}: {{ $value }}
 
-                                                                <img style="width:12px" src="{{asset('images/riyal-sym.svg.png')}}" /> .
+                                                                <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" /> .
                                                                 @if ($loop->first)
                                                                     يُدفع عند الاشتراك.
                                                                 @else

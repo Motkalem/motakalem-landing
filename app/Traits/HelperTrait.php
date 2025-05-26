@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,7 +45,34 @@ trait HelperTrait
         return $mobile;
     }
 
+    public function encrypt(string $str)
+    {
+       return Crypt::encrypt($str);
+    }
 
+    public function encryptString(string $str)
+    {
+        return Crypt::encryptString($str);
+    }
 
+    public function decrypt(  $str)
+    {
+        try {
+
+            return Crypt::decrypt($str);
+        } catch (DecryptException $e) {
+            abort(403, 'Invalid or tampered INFO.');
+        }
+    }
+
+    public function decryptString(  $str)
+    {
+        try {
+
+            return Crypt::decryptString($str);
+        } catch (DecryptException $e) {
+            abort(403, 'Invalid or tampered INFO.');
+        }
+    }
 
 }

@@ -220,7 +220,9 @@ return [
         'starts_date'=> 'تاريخ البدأ',
         'ends_date'=> ' تاريخ الانتهاء',
         "consultation_type_id"=> "نوع الإستشارة",
-        "middle_name"=> "اسم الاب"
+        "middle_name"=> "اسم الاب",
+        "center_package_id"=> "الباقه ",
+        "mobile_number"=> "رقم الهاتف"
     ],
 
 ];

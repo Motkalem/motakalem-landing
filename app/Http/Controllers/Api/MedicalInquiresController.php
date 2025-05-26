@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactUs\MedicalInquiryRequest;
-use App\Models\MedicalInquiry;
+use App\Models\Center\MedicalInquiry;
 
 class MedicalInquiresController extends Controller
 {
