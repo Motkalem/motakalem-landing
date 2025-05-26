@@ -216,7 +216,7 @@
                             <img src="{{asset('images/brands/visa.png')}}" alt="Visa" />
                         </a>
                     </div>
-                    &emsp13;
+                     
                     <div>
                         <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'master'])) }}"
                            class="payment-option">

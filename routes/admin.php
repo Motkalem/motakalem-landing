@@ -47,6 +47,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::get('download-contract/{id}', [StudentsController::class,'downloadContract'])->name('download-contract');
 
     Route::resource('installment-payments', InstallmentPaymentsController::class);
+    Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
+    Route::post('installment-payments/{id}/send-payment-url',
+        [InstallmentPaymentsController::class, 'sendPaymentLink'])->name('installment-payments.send-payment-url');
+
+
 
     Route::post('installment-payments/{id}', [InstallmentPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -71,7 +71,7 @@
                     <label for="city" class="form-label col-sm-2 col-form-label">المدينه</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control @error('city') is-invalid @enderror"
-                               id="city" name="city" value="{{ old('city') }}" placeholder="المدينه">
+                               id="city" name="city" value="{{ old('city',$patient->city) }}" placeholder="المدينه">
                         @error('city') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Actions\HyperPay;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
 use App\Notifications\Admin\HyperPayNotification;
+use App\Notifications\SendContractNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Notifications\SentPaymentUrlNotification;
+
 
 class RecurringCheckoutResultAction
 {
@@ -35,9 +38,6 @@ class RecurringCheckoutResultAction
 
         $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
-        ## NOTIFICATION
-        $this->notifyAdmin($webHookNotification);
-        $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
         if ($response->successful() && $this->isSuccessfulNotification($webHookNotification)) {
 
@@ -58,19 +58,47 @@ class RecurringCheckoutResultAction
 
            $webHookNotification->update(['installment_id' => $firstInstallment->id]);
 
+
+            ## NOTIFICATION
+            $this->notifyAdmin($webHookNotification);
+            $this->sendContract($installmentPayment?->student?->parentContract);
+            $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
+
+            
            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
         } else {
-            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
 
+            $payment_url = route('recurring.checkout', [
+                'paymentId' => $installmentPayment?->id,
+                'stdId' => $installmentPayment?->student?->id
+            ]);
+            
+            Notification::route('mail', $installmentPayment?->student?->email)
+                ->notify(new SentPaymentUrlNotification($installmentPayment?->student, $payment_url));
+
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
         }
 
     }
 
+    /**
+     * @param $row
+     * @return void
+     */
+    public function sendContract($row): void
+    {
+        try {
+            $row = $row->load('package');
+            Notification::route('mail', $row->email)->notify(new SendContractNotification($row));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
 
     public function markFirstInstallmentAsPaid($installmentPayment)
     {
 
-        $firstInstallment = $installmentPayment->installments?->first();
+         $firstInstallment = $installmentPayment->installments?->first();
 
         $firstInstallment?->update(['is_paid' => 1]);
 

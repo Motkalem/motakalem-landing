@@ -82,6 +82,13 @@
                             @endif
                         </td>
                         <td class="text-center project-actions">
+                            @if($installmentPayment?->student?->parentContract)
+                                <a class="btn bbg-primary bg-primary btn-sm" target="_blank" href="{{ route('dashboard.download-contract',
+                                            $installmentPayment?->student?->parentContract?->id) }}">
+                                    تحميل العقد
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            @endif
                             <a href="#"
                                data-student-id="{{ $installmentPayment->student_id }}"
                                class="px-2 btn btn-warning bgc-yellow-800 btn-sm send-contract-btn">
@@ -92,6 +99,10 @@
                                  عرض
                             </a>
 
+                           @if( $installmentPayment->installments()->where('is_paid', 1)->count() == 0)
+                                <button class="px-4 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
+
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -118,12 +129,76 @@
         </div>
     </div>
 </div>
+<!-- Confirmation Modal -->
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">تأكيد إرسال رابط الدفع</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد أنك تريد إرسال رابط الدفع؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="confirmSendPaymentLink">تأكيد</button>
+            </div>
+        </div>
+    </div>
+</div>
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
+
+            // Variable to store the payment link ID to send later
+            var paymentId = null;
+
+            // When clicking the send-payment-link button
+            $('.send-payment-link').on('click', function () {
+                // Get the ID from the button's data-id attribute
+                paymentId = $(this).data('id');
+
+                // Show the confirmation modal
+                $('#confirmModal').modal('show');
+            });
+
+            // When the user clicks the confirm button in the modal
+            $('#confirmSendPaymentLink').on('click', function () {
+                if (paymentId !== null) {
+                    const csrfToken = '{{ csrf_token() }}';
+                    $.ajax({
+                        url: '/dashboard/installment-payments/' + paymentId + '/send-payment-url', // your route URL
+                        type: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'), // CSRF token for Laravel
+                            id: paymentId
+                        },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function (response) {
+                            // Handle success (e.g., close modal and show a success message)
+                            $('#confirmModal').modal('hide');
+                            alert("{{__('Payment link sent successfully!')}}");
+                            // You can perform any other action on success
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error (e.g., show an error message)
+                            alert('An error occurred. Please try again.');
+                        }
+                    });
+                }
+            });
+
+
+
 
             let studentId;
 

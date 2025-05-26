@@ -24,6 +24,27 @@
             </div>
 
             <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label"> البريد الالكتروني  </label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext">{{ $patient->email }}</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label">   رقم الهوية  </label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext">{{ $patient->id_number }}</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="form-label col-sm-2 col-form-label">   تاريخ إنتهاء الهوية  </label>
+                <div class="col-sm-10">
+                    <p class="form-control-plaintext">{{ $patient->id_end_date }}</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
                 <label class="form-label col-sm-2 col-form-label">العمر</label>
                 <div class="col-sm-10">
                     <p class="form-control-plaintext">{{ $patient->age }}</p>
@@ -37,12 +58,6 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <label class="form-label col-sm-2 col-form-label">الرسالة</label>
-                <div class="col-sm-10">
-                    <p class="form-control-plaintext">{{ $patient->message }}</p>
-                </div>
-            </div>
 
             @php
                 $transactionData = json_decode($patient->transaction_data, true);

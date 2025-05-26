@@ -209,6 +209,4 @@ class StudentsController extends AdminBaseController
 
         return Redirect::away(Storage::url($pdfPath));
     }
-
-
 }

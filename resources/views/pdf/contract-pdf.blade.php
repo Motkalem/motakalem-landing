@@ -1,4 +1,4 @@
- @php use Carbon\Carbon; @endphp
+@php use Carbon\Carbon; @endphp
 
     <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -143,8 +143,7 @@
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     الطرف الثاني: {{data_get($data, 'name')}}, رقم
-                                                    الهوية: {{data_get($data, 'id_number')}}, تاريخ انتهاء
-                                                    الهوية: {{data_get($data, 'id_end')}}. (يشار إليه لاحقاً بـ
+                                                    الهوية: {{data_get($data, 'id_number')}},  . (يشار إليه لاحقاً بـ
                                                     رقم جوال: {{ data_get($data, 'phone') }}.
                                                     "العميل").
                                                 </li>
@@ -173,8 +172,8 @@
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     @if($data->package?->total > 0 || $data->package?->first_inst > 0 )
-                                                    البند الثاني: التكلفة وجدول السداد:
-                                                    <br/>
+                                                        البند الثاني: التكلفة وجدول السداد:
+                                                        <br/>
 
                                                         1. التكلفة الإجمالية للبرنامج
                                                         @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
@@ -184,7 +183,7 @@
                                                 . ( $data->package?->first_inst + $data->package?->second_inst
                                                     + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                         @endif
-                                                    <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                        <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
                                                     @endif
 
                                                     @if($data->package?->payment_type === 'installments')
