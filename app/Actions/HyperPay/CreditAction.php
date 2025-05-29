@@ -95,9 +95,8 @@ class CreditAction
         ]);
 
         $data= request()->all();
-
         $contract = $this->joinController->sendContract($student, $request->package_id, $data);
-
+        
         if (!isset($contract)) {
             DB::rollBack();
             return [
@@ -105,18 +104,19 @@ class CreditAction
                 'message' => 'حدث خطأ أثناء معالجة العقد',
             ];
         }
-
+        
         $package = Package::query()->find($request->package_id);
-
+        
         DB::commit();
-
-
+        
+        
         if ($package->payment_type == Package::ONE_TIME) {
-
+            
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
+        
 
-            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
+           return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
 
         if ($package->payment_type == Package::ONE_TIME) {
@@ -219,6 +219,7 @@ class CreditAction
             }
 
             try {
+             
                     $payment_url = route('recurring.checkout', [
                         'paymentId' => $insP?->id,
                         'stdId' => $student->id
@@ -286,20 +287,19 @@ class CreditAction
     protected function createScheduledPayment($stID, $pckID)
     {
 
-
         $installmentPayment = InstallmentPayment::query()->firstOrcreate([
             'student_id' => $stID,
             'package_id' => $pckID,
         ], [
-
+            
             'student_id' => $stID,
             'package_id' => $pckID,
         ]);
-
+        
         $this->createInstallments($installmentPayment);
 
 
-        $response = [
+       return $response = [
             'status' => 1,
             'message' => 'successfully created checkout',
 

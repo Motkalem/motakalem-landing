@@ -118,17 +118,13 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $url = $url . "/registrations/" . $registrationID . "/payments";
 
-        $data = "entityId=" . $recurring_entity_id .
+        $data = "entityId=" . $recurring_entity_id.
             "&amount=" . $amount .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
-            "&standingInstruction.type=RECURRING" .
+            "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT" .
-            "&standingInstruction.numberOfInstallments=99" .
-            "&standingInstruction.recurringType=STANDING_ORDER" .
-            "&customParameters[CardholderInitiatedTransactionID]=" . $installmentPayment->transaction_id .
-            "&customParameters[recurringPaymentAgreement]=" . $installmentPayment->agreement_id .
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
 
         $ch = curl_init();

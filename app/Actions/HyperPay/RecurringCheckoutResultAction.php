@@ -43,6 +43,7 @@ class RecurringCheckoutResultAction
 
             $registrationId = data_get($data, 'registrationId');
 
+            
             $installmentPayment?->update([
                 'registration_id' => $registrationId,
                 'first_installment_date' => now()

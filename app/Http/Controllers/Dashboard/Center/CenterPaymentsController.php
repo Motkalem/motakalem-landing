@@ -75,8 +75,12 @@ class CenterPaymentsController extends AdminBaseController
             'currency' => 'SAR',
             'paymentType' => 'DB',
             'standingInstruction.mode' => 'REPEATED',
-            'standingInstruction.type' => 'UNSCHEDULED',
-            'standingInstruction.source' => 'MIT',
+            'standingInstruction.source' => 'MIT', 
+            'standingInstruction.type' => 'RECURRING',
+            'standingInstruction.numberOfInstallments' => '99',
+            'standingInstruction.recurringType' => 'STANDING_ORDER',
+            'customParameters[CardholderInitiatedTransactionID]' => $installmentPayment->id,
+            'customParameters[recurringPaymentAgreement]' => $installmentPayment->id . '-' . time(),
             'shopperResultUrl' => env(env('VERSION_STATE') . 'FRONT_URL')
         ]);
 

@@ -211,7 +211,7 @@
                     </div>
 
                     <div>
-                        <a  style="margin-bottom: -23px" href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'visa'])) }}"
+                        <a  href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'visa'])) }}"
                            class="payment-option">
                             <img src="{{asset('images/brands/visa.png')}}" alt="Visa" />
                         </a>

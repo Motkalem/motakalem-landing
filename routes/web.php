@@ -2,7 +2,6 @@
 
 use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
-use App\Actions\Paymob\callbackAction;
 use App\Http\Controllers\Dashboard\Center\CenterPayController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\MainController;
@@ -54,7 +53,7 @@ Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::cl
 Route::get('checkout-recurring/{paymentId}/{stdId}',RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 
-Route::get('/callback', callbackAction::class)->name('callback');
+// Route::get('/callback', callbackAction::class)->name('callback');
 
 /*Route::get('/home', [MainController::class, 'index'])->name('home');
 

@@ -19,7 +19,7 @@ class RecurringCheckoutAction
      */
     public function handle(ActionRequest $request)
     {
-
+ 
          $installmentPayment = InstallmentPayment::query()
             ->where('id',$request->paymentId )
             ->where('student_id',$request->stdId )
