@@ -7,7 +7,7 @@
 
 
 @section('content')
-    <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
+    <div class="gap-20 row pos-r" style="position: relative;  ">
         <div class="col-md-12">
             <h3 class="text-bold">
                 المرضى
