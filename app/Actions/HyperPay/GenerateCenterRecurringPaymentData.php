@@ -23,6 +23,8 @@ class GenerateCenterRecurringPaymentData
         $micro_time = microtime(true);
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
+        $unique_agreement_id = $payment->id.'-'. $unique_transaction_id.rand(10,9999);
+
         $data = [
             'entityId' => $entity_id,
             'amount' => $package->first_inst,
@@ -30,14 +32,14 @@ class GenerateCenterRecurringPaymentData
             'paymentType' => 'DB',
             'createRegistration' => 'true',
             'standingInstruction.type' => 'RECURRING',
-            'standingInstruction.mode' => 'INITIAL', 
+            'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
             'standingInstruction.expiry' => '2030-12-31',
             'standingInstruction.frequency' => '0030', // 30 days between payments
             'standingInstruction.numberOfInstallments' => '99',
             'standingInstruction.recurringType' => 'SUBSCRIPTION', // Fixed amount
             'customParameters[paymentFrequency]' => 'OTHER',
-            'customParameters[recurringPaymentAgreement]' => $unique_transaction_id,
+            'customParameters[recurringPaymentAgreement]' => $unique_agreement_id,
             'merchantTransactionId' => $unique_transaction_id,
             "customer.email" => $payment?->patient?->email,
             "billing.street1" => $payment?->patient?->city,
@@ -45,7 +47,7 @@ class GenerateCenterRecurringPaymentData
             "billing.state" => $payment?->patient?->city,
             "billing.country" => "SA",
             "billing.postcode" => "",
-            "integrity" => "true", 
+            "integrity" => "true",
             "customer.givenName" => $payment?->patient?->name,
             "customer.surname" => ""
         ];
@@ -54,7 +56,7 @@ class GenerateCenterRecurringPaymentData
             $data = [
                 'entityId' => env('RYD_ENTITY_ID'),
                 'amount' => $package->first_inst,
-                'currency' => 'SAR', 
+                'currency' => 'SAR',
                 'paymentType' => 'DB',
                 'createRegistration' => 'true',
                 'standingInstruction.type' => 'RECURRING',
@@ -65,7 +67,7 @@ class GenerateCenterRecurringPaymentData
                 'standingInstruction.numberOfInstallments' => '99',
                 'standingInstruction.recurringType' => 'SUBSCRIPTION',
                 'customParameters[paymentFrequency]' => 'OTHER',
-                'customParameters[recurringPaymentAgreement]' => $unique_transaction_id,
+                'customParameters[recurringPaymentAgreement]' => $unique_agreement_id,
                 'merchantTransactionId' => $unique_transaction_id,
                 "customer.email" => $payment?->patient?->email,
                 "billing.street1" => $payment?->patient?->city,

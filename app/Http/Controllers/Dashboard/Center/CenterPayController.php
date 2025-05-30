@@ -7,7 +7,10 @@ use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
 use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Center\CenterTransaction;
+use App\Models\HyperpayWebHooksNotification;
 use App\Traits\HelperTrait;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Lorisleiva\Actions\ActionRequest;
 
@@ -95,15 +98,15 @@ class CenterPayController extends Controller
 
         $centerInstallmentPayment ->update(['registration_id'=> data_get($transactionData, 'registrationId')]);
 
+        $this->createWebHookNotification($data, $centerInstallmentPayment);
+
         if( data_get($transactionData, 'id') ==  null)
         {
-
             return redirect(route('center.recurring.checkout',
                 ['payid'=> $this->encrypt(request()->payid), 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
-
 
         if ($transaction->success == 'true') {
 
@@ -122,6 +125,17 @@ class CenterPayController extends Controller
         }
     }
 
+    public function createWebHookNotification($response, $installment): Model|Builder
+    {
+
+        return HyperpayWebHooksNotification::query()->create([
+            'title' => data_get($response, 'result.description'),
+            'center_installment_payment_id' => $installment->id,
+            'type' => 'init center recurring payment',
+            'payload' => $response,
+            'log' => $response,
+        ]);
+    }
     public function getThankYouPage($id)
     {
 

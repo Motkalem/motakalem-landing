@@ -10,7 +10,7 @@ use App\Notifications\Admin\HyperPayNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\InstallmentPayment;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,9 +22,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('test', function () {
+    $payment = InstallmentPayment::query()
+        ->with(['hyperpayWebHooksNotifications' => function($query) {
+            $query->where('type', 'init recurring payment');
+        }])
+        ->where('id', 95)
+        ->firstOrFail();
+
+    $notification = $payment->hyperpayWebHooksNotifications
+        ->filter(function($notification) {
+            $resultCode = data_get($notification->payload, 'result.code');
+            $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+            return $notification->type === 'init recurring payment' &&
+                   preg_match($successPattern, $resultCode) === 1;
+        }) ->first();
+
+    return [
+        'recurringPaymentAgreement' => data_get($notification, 'payload.customParameters.recurringPaymentAgreement'),
+        'merchantTransactionId' => data_get($notification, 'payload.merchantTransactionId')
+    ];
+});
+
 
 Route::get('checkout', 'App\Http\Controllers\PaymentController@getPayPage')->name('checkout.index');
 Route::get('checkout/result/{paymentId}/{studentId}/',  [PaymentController::class,'getStatus']);
+
 
 # CENTER RECURRING PAYMENTS
 Route::get('center-pay/{payid}/{patid}', [CenterPayController::class, 'getPayPage'])->name('center.recurring.checkout');
@@ -34,7 +57,6 @@ Route::get('center/thank-you/{payid}/',  [CenterPayController::class,'getThankYo
 Route::get('invalid-url',  [CenterPayController::class,'invalidUrl'])->name('center.invalid.url');
 
 //Route::get('center/checkout', [CenterPayController::class,'getPayPage'])->name('center.checkout.index');
-
 
 
 # CONSULTATION PAYMENT CYCLE
@@ -48,8 +70,7 @@ Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'
 Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoiceLink'])
     ->name('checkout.consultation.send-invoice');;
 
-
-
+# Program RECURRING PAYMENTS
 Route::get('checkout-recurring/{paymentId}/{stdId}',RecurringCheckoutAction::class)->name('recurring.checkout');
 Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
 

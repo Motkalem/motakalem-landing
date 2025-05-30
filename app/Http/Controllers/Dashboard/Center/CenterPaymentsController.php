@@ -11,6 +11,8 @@ use App\Models\Installment;
 use App\Notifications\Admin\CenterPaymentUrlNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -50,6 +52,7 @@ class CenterPaymentsController extends AdminBaseController
             ->findOrFail(request()->id);
 
         if ($installment->is_paid) {
+
             notify()->error('هذا القسط مدفوع بالفعل.');
             return redirect()->back();
         }
@@ -58,7 +61,13 @@ class CenterPaymentsController extends AdminBaseController
         $registrationID = $installmentPayment->registration_id ?? null;
         $amount = $installment->installment_amount;
 
-        if (!$registrationID) {
+        $notification = $this->getSuccessfulInitialNotification($installmentPayment);
+
+
+        $recurringPaymentAgreement = data_get($notification, 'payload.customParameters.recurringPaymentAgreement');
+        $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+
+         if (!$registrationID) {
             notify()->error('لا يوجد معرّف تسجيل.');
             return redirect()->back();
         }
@@ -75,12 +84,12 @@ class CenterPaymentsController extends AdminBaseController
             'currency' => 'SAR',
             'paymentType' => 'DB',
             'standingInstruction.mode' => 'REPEATED',
-            'standingInstruction.source' => 'MIT', 
+            'standingInstruction.source' => 'MIT',
             'standingInstruction.type' => 'RECURRING',
             'standingInstruction.numberOfInstallments' => '99',
             'standingInstruction.recurringType' => 'STANDING_ORDER',
-            'customParameters[CardholderInitiatedTransactionID]' => $installmentPayment->id,
-            'customParameters[recurringPaymentAgreement]' => $installmentPayment->id . '-' . time(),
+            'customParameters[CardholderInitiatedTransactionID]' => $merchantTransactionId,
+            'customParameters[recurringPaymentAgreement]' => $recurringPaymentAgreement,
             'shopperResultUrl' => env(env('VERSION_STATE') . 'FRONT_URL')
         ]);
 
@@ -106,6 +115,8 @@ class CenterPaymentsController extends AdminBaseController
         $response = json_decode($responseData);
         $data = (array)json_decode($responseData);
 
+
+       $this->createWebHookNotification((array)$response, $installmentPayment);
 
         $title = $this->processResponse($response);
         $data = array_merge($data, [
@@ -133,6 +144,32 @@ class CenterPaymentsController extends AdminBaseController
             notify()->error('فشل الدفع: ' . $errorMessage);
         }
         return redirect()->back();
+    }
+
+    public function createWebHookNotification($response, $installment): Model|Builder
+    {
+
+        return HyperpayWebHooksNotification::query()->create([
+            'title' => data_get($response, 'result.description'),
+            'center_installment_payment_id' => $installment->id,
+            'type' => 'execute center recurring payment',
+            'payload' => $response,
+            'log' => $response,
+        ]);
+    }
+
+    protected function getSuccessfulInitialNotification($installmentPayment)
+    {
+        return $installmentPayment->hyperpayWebHooksNotifications
+            ->filter(function($notification) {
+
+                $resultCode = data_get($notification->payload, 'result.code');
+                $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+
+                return $notification->type === 'init recurring payment' &&
+                       preg_match($successPattern, $resultCode) === 1;
+            })
+            ->first();
     }
 
     /**
