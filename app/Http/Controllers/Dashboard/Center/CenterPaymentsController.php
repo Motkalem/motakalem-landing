@@ -87,7 +87,7 @@ class CenterPaymentsController extends AdminBaseController
             'standingInstruction.source' => 'MIT',
             'standingInstruction.type' => 'RECURRING',
             'standingInstruction.numberOfInstallments' => '99',
-            'standingInstruction.recurringType' => 'STANDING_ORDER',
+            'standingInstruction.recurringType' => 'SUBSCRIPTION',
             'customParameters[CardholderInitiatedTransactionID]' => $merchantTransactionId,
             'customParameters[recurringPaymentAgreement]' => $recurringPaymentAgreement,
             'shopperResultUrl' => env(env('VERSION_STATE') . 'FRONT_URL')
