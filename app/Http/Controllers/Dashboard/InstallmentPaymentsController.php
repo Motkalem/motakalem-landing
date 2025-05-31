@@ -105,16 +105,8 @@ class InstallmentPaymentsController extends AdminBaseController
         $installmentPayment = $installment->installmentPayment;
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
-        $payment = InstallmentPayment::query()
-        ->with(['hyperpayWebHooksNotifications' => function($query) {
-            $query->where('type', 'init recurring payment');
-        }])
-        ->where('id', 95)
-        ->firstOrFail();
-
 
         $notification = $this->getSuccessfulInitialNotification($installmentPayment);
-
 
         $recurringPaymentAgreement = data_get($notification, 'payload.customParameters.recurringPaymentAgreement');
         $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
