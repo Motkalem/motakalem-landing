@@ -106,6 +106,11 @@ class InstallmentPaymentsController extends AdminBaseController
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
 
+        $notification = $this->getSuccessfulInitialNotification($installmentPayment);
+
+        $recurringPaymentAgreement = data_get($notification, 'payload.customParameters.recurringPaymentAgreement');
+        $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+
         $url = env('SNB_HYPERPAY_URL');
         $recurring_entity_id = env('SNB_RECURRING_ENTITY_ID');
         $auth_token = env('SNB_AUTH_TOKEN');
@@ -118,13 +123,17 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $url = $url . "/registrations/" . $registrationID . "/payments";
 
-        $data = "entityId=" . $recurring_entity_id.
+        $data = "entityId=" . $recurring_entity_id .
             "&amount=" . $amount .
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
-            "&standingInstruction.type=UNSCHEDULED" .
+            "&standingInstruction.type=RECURRING" .
             "&standingInstruction.source=MIT" .
+            "&standingInstruction.numberOfInstallments=99" .
+            "&standingInstruction.recurringType=SUBSCRIPTION" .
+            "&customParameters[CardholderInitiatedTransactionID]=" .  $merchantTransactionId .
+            "&customParameters[recurringPaymentAgreement]=" . $recurringPaymentAgreement .
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
 
         $ch = curl_init();
@@ -177,6 +186,22 @@ class InstallmentPaymentsController extends AdminBaseController
             notify()->error('فشل الدفع: ' . $errorMessage);
             return redirect()->back();
         }
+    }
+/**
+ * Get the successful initial notification for the installment payment
+ */
+    protected function getSuccessfulInitialNotification($installmentPayment)
+    {
+        return $installmentPayment->hyperpayWebHooksNotifications
+            ->filter(function($notification) {
+
+                $resultCode = data_get($notification->payload, 'result.code');
+                $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+
+                return $notification->type === 'init recurring payment' &&
+                       preg_match($successPattern, $resultCode) === 1;
+            })
+            ->first();
     }
 
     /**

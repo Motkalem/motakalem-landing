@@ -38,7 +38,6 @@ class RecurringCheckoutResultAction
 
         $webHookNotification = $this->createWebHookNotification($data, $installmentPayment);
 
-
         if ($response->successful() && $this->isSuccessfulNotification($webHookNotification)) {
 
             $registrationId = data_get($data, 'registrationId');
@@ -64,7 +63,7 @@ class RecurringCheckoutResultAction
             $this->sendContract($installmentPayment?->student?->parentContract);
             $this->notifyStudent($webHookNotification, $installmentPayment->student?->email);
 
-            
+
            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
         } else {
 
@@ -72,7 +71,7 @@ class RecurringCheckoutResultAction
                 'paymentId' => $installmentPayment?->id,
                 'stdId' => $installmentPayment?->student?->id
             ]);
-            
+
             Notification::route('mail', $installmentPayment?->student?->email)
                 ->notify(new SentPaymentUrlNotification($installmentPayment?->student, $payment_url));
 

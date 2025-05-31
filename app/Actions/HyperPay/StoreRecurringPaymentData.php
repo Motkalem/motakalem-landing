@@ -30,45 +30,55 @@ class StoreRecurringPaymentData
             'currency' => 'SAR',
             'paymentType' => 'DB',
             'createRegistration' => 'true',
-            'standingInstruction.type' => 'UNSCHEDULED',
+            'standingInstruction.type' => 'RECURRING',
             'standingInstruction.mode' => 'INITIAL',
             'standingInstruction.source' => 'CIT',
+            'standingInstruction.expiry' => \Carbon\Carbon::now()->addYear()->format('Y-m-d'),
+            'standingInstruction.frequency' => '0030', // 30 days between payments
+            'standingInstruction.numberOfInstallments' => '99',
+            'standingInstruction.recurringType' => 'SUBSCRIPTION', // For fixed amount
+            'customParameters[paymentFrequency]' => 'OTHER',
+            'customParameters[recurringPaymentAgreement]' => $unique_transaction_id.rand(1,2000),
             'merchantTransactionId' => $unique_transaction_id,
-            "customer.email"=>$payment?->student?->email,
-            "billing.street1"=>$payment?->student?->city ,
-            "billing.city"=>$payment?->student?->city ,
-            "billing.state"=>$payment?->student?->city  ,
-            "billing.country"=>"SA",
-            "billing.postcode"=>"",
-            "integrity"=>"true",
-            "customer.givenName"=>$payment?->student?->name,
-            "customer.surname"=>""
+            "customer.email" => $payment?->student?->email,
+            "billing.street1" => $payment?->student?->city,
+            "billing.city" => $payment?->student?->city,
+            "billing.state" => $payment?->student?->city,
+            "billing.country" => "SA",
+            "billing.postcode" => "",
+            "integrity" => "true",
+            "customer.givenName" => $payment?->student?->name,
+            "customer.surname" => ""
         ];
+
 
         if (env('VERSION_STATE') == 'STAGING_'){
-
-        $data = [
-            'entityId' => env('SNB_ENTITY_ID'),
-            'amount' => $package->first_inst,
-            'currency' => 'SAR',
-            'paymentType' => 'DB',
-            'createRegistration' => 'true',
-            'standingInstruction.type' => 'UNSCHEDULED',
-            'standingInstruction.mode' => 'INITIAL',
-            'standingInstruction.source' => 'CIT',
-
-//            'testMode'=> 'EXTERNAL',
-            'merchantTransactionId' => $unique_transaction_id,
-            "customer.email"=>$payment?->student?->email,
-            "billing.street1"=>$payment?->student?->city ,
-            "billing.city"=>$payment?->student?->city ,
-            "billing.state"=>$payment?->student?->city  ,
-            "billing.country"=>"SA",
-            "billing.postcode"=>"",
-            "integrity"=>"true",
-            "customer.givenName"=>$payment?->student?->name,
-            "customer.surname"=>""
-        ];
+            $data = [
+                'entityId' => env('SNB_ENTITY_ID'),
+                'amount' => $package->first_inst,
+                'currency' => 'SAR',
+                'paymentType' => 'DB',
+                'createRegistration' => 'true',
+                'standingInstruction.type' => 'RECURRING',
+                'standingInstruction.mode' => 'INITIAL',
+                'standingInstruction.source' => 'CIT',
+                'standingInstruction.expiry' => '2030-12-31',
+                'standingInstruction.frequency' => '0030', // 30 days between payments
+                'standingInstruction.numberOfInstallments' => '99',
+                'standingInstruction.recurringType' => 'SUBSCRIPTION', // For fixed amount
+                'customParameters[paymentFrequency]' => 'OTHER',
+                'customParameters[recurringPaymentAgreement]' => $unique_transaction_id.rand(1,2000),
+                'merchantTransactionId' => $unique_transaction_id,
+                "customer.email" => $payment?->student?->email,
+                "billing.street1" => $payment?->student?->city,
+                "billing.city" => $payment?->student?->city,
+                "billing.state" => $payment?->student?->city,
+                "billing.country" => "SA",
+                "billing.postcode" => "",
+                "integrity" => "true",
+                "customer.givenName" => $payment?->student?->name,
+                "customer.surname" => ""
+            ];
         }
 
         $ch = curl_init($url);

@@ -164,10 +164,7 @@
                                                     2. مدة البرنامج: أربعة أشهر.
                                                     <br/>
                                                     3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
-                                                    <br/>
-                                                    4. تاريخ بدء
-                                                    البرنامج الحضوري: {{ Carbon::parse($data->package?->starts_date)?->format('Y/n/j')  }}
-                                                    .
+
 
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
