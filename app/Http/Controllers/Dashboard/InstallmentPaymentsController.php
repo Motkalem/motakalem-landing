@@ -131,7 +131,7 @@ class InstallmentPaymentsController extends AdminBaseController
             "&standingInstruction.type=RECURRING" .
             "&standingInstruction.source=MIT" .
             "&standingInstruction.numberOfInstallments=99" .
-            "&standingInstruction.recurringType=STANDING_ORDER" .
+            "&standingInstruction.recurringType=SUBSCRIPTION" .
             "&customParameters[CardholderInitiatedTransactionID]=" .  $merchantTransactionId .
             "&customParameters[recurringPaymentAgreement]=" . $recurringPaymentAgreement .
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
