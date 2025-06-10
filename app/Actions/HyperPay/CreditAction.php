@@ -95,7 +95,6 @@ class CreditAction
         ]);
 
         $data= request()->all();
-
         $contract = $this->joinController->sendContract($student, $request->package_id, $data);
 
         if (!isset($contract)) {
@@ -116,14 +115,15 @@ class CreditAction
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
         } else {
 
-            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
+
+           return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         }
 
         if ($package->payment_type == Package::ONE_TIME) {
 
             $response = [
                 'status' => 1,
-                'message' => 'success generate hyperpay url',
+                'message' => __('success generate hyperpay url'),
                 'payload' => [
                     'payment_token' => '#',
                     'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
@@ -132,7 +132,7 @@ class CreditAction
         } else {
             $response = [
                 'status' => 1,
-                'message' => 'success generate hyperpay url',
+                'message' => __('success generate hyperpay url'),
                 'payload' => [
                     'payment_token' => '#',
                     'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id
@@ -157,7 +157,7 @@ class CreditAction
         if (!$student || !$student->parentContract || !$student->parentContract->package) {
             return [
                 'status' => 0,
-                'message' => 'Student or package not found'
+                'message' => __('Student or package not found')
             ];
         }
 
@@ -175,7 +175,7 @@ class CreditAction
                 if ($latestTransaction && $latestTransaction->success) {
                     return [
                         'status' => 0,
-                        'message' => 'User is already registered and has paid for this package'
+                        'message' => __('User is already registered and has paid for this package')
                     ];
                 }
             }
@@ -186,7 +186,7 @@ class CreditAction
 
                 return [
                     'status' => 1,
-                    'message' => 'success generate hyperpay url',
+                    'message' => __('success generate hyperpay url'),
                     'payload' => [
                         'payment_token' => '#',
                         'hyperpay_payment' => $student->payment?->payment_url
@@ -196,7 +196,7 @@ class CreditAction
                 Log::error($e->getMessage());
                 return [
                     'status' => 0,
-                    'message' => 'Error sending payment link'
+                    'message' => __('Error sending payment link')
                 ];
             }
 
@@ -210,7 +210,7 @@ class CreditAction
 
                 return [
                     'status' => 0,
-                    'message' => 'User is already registered and paid first installment for this package',
+                    'message' => __('User is already registered and paid first installment for this package'),
                     'payload' => [
                         'payment_token' => '#',
                         'hyperpay_payment' =>''
@@ -219,6 +219,7 @@ class CreditAction
             }
 
             try {
+
                     $payment_url = route('recurring.checkout', [
                         'paymentId' => $insP?->id,
                         'stdId' => $student->id
@@ -228,7 +229,7 @@ class CreditAction
 
                     return [
                         'status' => 1,
-                        'message' => 'success generate hyperpay url and sent to your email',
+                        'message' => __('success generate hyperpay url and sent to your email'),
                         'payload' => [ 'payment_token' => '#',
                             'hyperpay_payment' => $payment_url ]
                     ];
@@ -237,14 +238,14 @@ class CreditAction
                 Log::error($e->getMessage());
                 return [
                     'status' => 0,
-                    'message' => 'Error setting up recurring payment'
+                    'message' => __('Error setting up recurring payment')
                 ];
             }
         }
 
         return [
             'status' => 0,
-            'message' => 'Unable to process payment'
+            'message' => __('Unable to process payment')
         ];
     }
 
@@ -281,11 +282,10 @@ class CreditAction
      * @param $pckID
      * @param $student
      * @param $data
-     * @return JsonResponse
+     * @return array
      */
     protected function createScheduledPayment($stID, $pckID)
     {
-
 
         $installmentPayment = InstallmentPayment::query()->firstOrcreate([
             'student_id' => $stID,
@@ -299,9 +299,9 @@ class CreditAction
         $this->createInstallments($installmentPayment);
 
 
-        $response = [
+       return $response = [
             'status' => 1,
-            'message' => 'successfully created checkout',
+            'message' => __('successfully created checkout'),
 
             'payload' => [
                 'payment_token' => '#',
