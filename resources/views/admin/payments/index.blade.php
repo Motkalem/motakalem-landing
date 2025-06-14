@@ -90,6 +90,9 @@
                     @endforeach
                     </tbody>
                 </table>
+                <div class="pagination" style="margin-top: 20px;direction: rtl;">
+                    {{ $payments->links() }}
+                </div>
             </div>
         </div>
     </div>
