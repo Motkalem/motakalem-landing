@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Notifications\Admin\NewSubscriptionNotification;
 use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
+use App\Traits\HelperTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -24,6 +25,7 @@ use App\Notifications\SentPaymentUrlNotification;
 
 class PaymentController extends Controller
 {
+    use HelperTrait;
 
     public function getPayPage()
     {
@@ -82,49 +84,49 @@ class PaymentController extends Controller
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
 
-        $data = 'entityId='
-        .$entity_id
-        ."&amount=". $payment?->package?->total
-        ."&currency=SAR"
-        ."&paymentType=DB".
-        "&merchantTransactionId=".$unique_transaction_id.
+        /*$data = 'entityId='.$entity_id.
+            "&amount=". $payment?->package?->total.
+            "&currency=SAR".
+            "&paymentType=DB".
+            "&merchantTransactionId=".$unique_transaction_id.
+            "&customer.email=".$payment?->student?->email.
+            "&billing.street1=".$payment?->student?->city .
+            "&billing.city=".$payment?->student?->city .
+            "&billing.state=".$payment?->student?->city  .
+            "&billing.country="."SA".
+            "&billing.postcode="."22230".
+            "&integrity=true".
+            "&customer.givenName=".$payment?->student?->name.
+            "&customer.surname="."Doe";*/
+
+        $data = "entityId=".$entity_id .
+        "&amount=".$payment?->package?->total.
+        "&currency=SAR".
+        "&paymentType=DB".
+        "&integrity=true".
+        "&merchantTransactionId=".$unique_transaction_id .
         "&customer.email=".$payment?->student?->email.
         "&billing.street1=".$payment?->student?->city .
         "&billing.city=".$payment?->student?->city .
-        "&billing.state=".$payment?->student?->city  .
+        "&billing.state=".$payment?->student?->city .
         "&billing.country="."SA".
-        "&billing.postcode="."".
-       "&integrity=true".
+        "&billing.postcode="."22230".
         "&customer.givenName=".$payment?->student?->name.
-        "&customer.surname="."";
+        "&customer.surname=Doe" .
+        "&customer.mobile=" . $this->formatMobile($payment?->student?->phone);
 
         if(request()->brand == 'tabby')
         {
-             $data = 'entityId='
-                .$entity_id
-                ."&amount=". $payment?->package?->total
-                ."&currency=SAR"
-                ."&paymentType=DB"
-                ."&paymentBrand=TABBY".
-                "&merchantTransactionId=".$unique_transaction_id.
-                "&customer.email=".$payment?->student?->email.
-                "&billing.street1=".$payment?->student?->city .
-                "&billing.city=".$payment?->student?->city .
-                "&billing.state=".$payment?->student?->city  .
-                "&billing.country="."SA".
-                "&billing.postcode="."".
-                "&customer.givenName=".$payment?->student?->name.
-                "&customer.surname="."".
-                "&customer.mobile=" . '966550274677' .
+            $data .=
                 "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
-                 "&integrity=true".
                 "&cart.items[0].price=".$payment?->package?->total.
                 "&cart.items[0].quantity=1".
                 "&cart.items[0].description=test1".
                 "&cart.items[0].productUrl=http://url1.com";
 
         }
+        Log::notice('=== Create Checkout == ',[$data]);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -205,7 +207,7 @@ class PaymentController extends Controller
        {
             $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
             Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
-            
+
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
        }
@@ -220,7 +222,7 @@ class PaymentController extends Controller
 
             // Send payment URL via email on failure
             $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
-            
+
             Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
