@@ -221,7 +221,14 @@
                             <img src="{{asset('images/brands/master.png')}}" alt="MasterCard" />
                         </a>
                     </div>
-
+                    @if($payment?->package?->total <= 5000)
+                        <div>
+                            <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'tabby'])) }}"
+                               class="payment-option">
+                                <img src="{{asset('images/brands/tabby.svg')}}" alt="Tabby" />
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
             <style>
