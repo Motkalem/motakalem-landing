@@ -89,6 +89,9 @@
                     @endforeach
                     </tbody>
                 </table>
+                <div class="pagination" style="margin-top: 20px;direction: rtl;">
+                    {{ $packages->links() }}
+                </div>
             </div>
         </div>
     </div>
