@@ -139,10 +139,7 @@
                     </div>
 
 
-
-
-
-                    <!-- Start Date -->
+                    {{-- <!-- Start Date -->
                     <div class="mb-3 row"   >
                         <label for="starts_at" class="form-label col-sm-2 col-form-label">تاريخ البدأ</label>
                         <div class="col-sm-10">
@@ -167,7 +164,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="mb-3 row">
                         <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>
