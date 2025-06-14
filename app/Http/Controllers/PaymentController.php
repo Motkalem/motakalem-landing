@@ -76,8 +76,14 @@ class PaymentController extends Controller
         }
 
         $access_token = env('SNB_AUTH_TOKEN');
-
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
+
+        if(request()->brand == 'tabby'){
+            $entity_id = env('RYD_ENTITY_ID_MADA'); //mada
+            $access_token = env('RYD_AUTH_TOKEN');
+            $url = env('RYD_HYPERPAY_URL')."/checkouts";
+
+        }
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
