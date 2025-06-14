@@ -123,7 +123,7 @@ class PaymentController extends Controller
 
         if(request()->brand == 'tabby')
         {
-            $data .=
+            $data .="&paymentBrand=TABBY".
                 "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
                 "&cart.items[0].price=".$payment?->package?->total.
