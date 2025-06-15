@@ -11,7 +11,13 @@ class GetPackages
 
     public function handle()
     {
-        $packages = Package::where('is_active', 1)->get();
+        $packages = Package::where('is_active', 1)->get()
+        ->map(function ($package) {
+            if ($package->payment_type === Package::TABBY) {
+                $package->payment_type = Package::ONE_TIME;
+            }
+            return $package;
+        });
 
         $response = [
             'status' => 1,
