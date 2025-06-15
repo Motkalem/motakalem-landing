@@ -117,7 +117,7 @@ class PackagesController extends AdminBaseController
 
         $package = Package::query()->findOrFail($id);
 
-        if($package->payment_type == Package::ONE_TIME)
+        if($package->payment_type == Package::ONE_TIME || $package->payment_type == Package::TABBY)
         {
 
             $package->number_of_months = null;
