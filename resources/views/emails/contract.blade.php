@@ -209,7 +209,7 @@
                                                                 @else
                                                                     يُدفع قبل بدء المرحلة {{ $key }}.
                                                                 @endif
-
+                                                                
                                                                 <br/>
                                                             @endif
                                                         @endforeach
