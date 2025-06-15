@@ -27,9 +27,9 @@
            
         </p>
 
-        <p class="text-align:center">
+        <p style="text-align: center; color: #444; font-size: 1rem; margin-bottom: 1rem;">
             الهاتف:
-            <strong dir="ltr" style="display: inline-block; text-align: left;margin:auto">
+            <strong >
                 {{ $student->phone }}
             </strong>
         </p>
