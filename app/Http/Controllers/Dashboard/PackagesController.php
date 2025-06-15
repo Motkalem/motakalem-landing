@@ -53,8 +53,8 @@ class PackagesController extends AdminBaseController
             'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
-            'starts_date' => 'required|date|before:ends_date',
-            'ends_date' => 'required|date|after:starts_date',
+            'starts_date' => 'nullable|date|before:ends_date',
+            'ends_date' => 'nullable|date|after:starts_date',
             'is_active' => 'nullable',
         ]);
 
@@ -109,8 +109,8 @@ class PackagesController extends AdminBaseController
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'is_active' => 'sometimes',
-            'starts_date' => 'required|date|before:ends_date',
-            'ends_date' => 'required|date|after:starts_date',
+            'starts_date' => 'nullable|date|before:ends_date',
+            'ends_date' => 'nullable|date|after:starts_date',
             'name' => ['required','string','max:255', Rule::unique('packages', 'name')
             ->ignore($id)],
         ]);

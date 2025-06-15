@@ -20,6 +20,7 @@ use App\Services\JoinService;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use  App\Notifications\Admin\NotifyAdminWithTabbyNotification;
 
 
 class CreditAction
@@ -91,10 +92,12 @@ class CreditAction
             'name' => $name, 'email' => $request->email,
             'age' => $request->age, 'phone' => $phone,
             'city' => $request->city, 'payment_type' => $package->payment_type,
-            'total_payment_amount' => $package->total??0
+            'total_payment_amount' => $package->total??0,
+            'package_id' => $package->id
         ]);
 
         $data= request()->all();
+        
         $contract = $this->joinController->sendContract($student, $request->package_id, $data);
 
         if (!isset($contract)) {
@@ -113,12 +116,36 @@ class CreditAction
         if ($package->payment_type == Package::ONE_TIME) {
 
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
-        } else {
-
+        } elseif($package->payment_type == Package::INSTALLMENTS){
 
            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
-        }
+        } else { # then it is tabby
 
+            try {   
+
+                $adminEmails = explode(',', env('ADMIN_EMAILS'));
+                foreach ($adminEmails as $adminEmail) {
+
+                    Notification::route('mail', $adminEmail)->notify(new NotifyAdminWithTabbyNotification($student, ''));
+                }
+
+            } catch (\Exception $e) {
+
+                Log::error($e->getMessage());
+            }
+
+            $response = [
+                'status' => 1,
+                'message' => __('Your payment will be processed via Tabby. You will receive a payment link shortly.'),
+                'payload' => [
+                    'payment_token' => '#',
+                    'hyperpay_payment' => '',
+                ],
+            ];
+            
+            return response()->json($response, 200);
+        }
+        
         if ($package->payment_type == Package::ONE_TIME) {
 
             $response = [
@@ -200,7 +227,19 @@ class CreditAction
                 ];
             }
 
-        } else {
+        }elseif($package->payment_type == Package::TABBY){
+            
+            return [
+                'status' => 0,
+                'message' => __('You are already registered with a Tabby package.') . ' - '. $package->name,
+                'payload' => [
+                    'payment_token' => '#',
+                    'hyperpay_payment' => ''
+                ]
+            ];
+            
+
+        }else {
 
             $insP = $student->installmentPayment;
 

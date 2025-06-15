@@ -20,6 +20,7 @@ class Package extends Model
       # payment types
    const ONE_TIME = 'one time';
    const INSTALLMENTS = 'installments';
+   const TABBY = 'tabby';
 
 
     public function payments()
