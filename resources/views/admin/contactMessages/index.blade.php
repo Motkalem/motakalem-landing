@@ -15,10 +15,12 @@
                 <button class="btn btn-primary btn-sm mx-2">بحث</button>
             </div>
         </form>
-        <table class="table table-striped table-class">
+        <table class="table table-striped table-class text-start">
             <thead>
                 <tr>
+                    <th class="text-center">التاريخ</th>    
                     <th class="text-center">الإسم</th>
+                   
                     <th class="text-center">الجوال</th>
                     <th class="text-center">البريد الإلكتروني</th>
                     <th class="text-center">الرسالة</th>
@@ -28,7 +30,9 @@
             <tbody>
                 @foreach($contactMessages as $student)
                 <tr>
+                    <td>{{ $student->created_at?->toDateString() }}</td>
                     <td>{{ $student->name }}</td>
+                  
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->email }}</td>
                     <td title="{{$student->message}}">{{ \Illuminate\Support\Str::limit($student->message , 50) }}</td>
