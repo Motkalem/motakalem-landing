@@ -41,6 +41,13 @@
                                 {{ old('payment_type', $package->payment_type ?? '') == 'installments' ? 'checked' : '' }}>
                             <label class="form-check-label" for="installments">تقسيط</label>
                         </div>
+
+                        <div class=" form-check mx-4">
+                            <input class="form-check-input" required type="radio" name="payment_type" id="tabby" value="tabby"
+                                {{ old('payment_type', $package->payment_type ?? '') == 'tabby' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="tabby">تابي</label>
+                        </div>
+
                     </div>
                 </div>
                     <!-- Package Name Field -->
@@ -85,86 +92,34 @@
                             </div>
                         </div>
 
-                        <label for="first_inst" class="form-label col-sm-2 col-form-label">  القسط الاول</label>
+                        @php
+                        $installments = [
+                            'first_inst' => 'القسط الاول',
+                            'second_inst' => 'القسط الثاني',
+                            'third_inst' => 'القسط الثالث',
+                            'fourth_inst' => 'القسط الرابع',
+                            'fifth_inst' => 'القسط الخامس',
+                        ];
+                    @endphp
+                    
+                    @foreach ($installments as $name => $label)
+                        <label for="{{ $name }}" class="form-label col-sm-2 col-form-label">{{ $label }}</label>
                         <div class="col-sm-10 mb-2">
-                            <input type="number" class="form-control @error('first_inst') is-invalid @enderror"
-                            id="first_inst" name="first_inst"
-                             value="{{ old('first_inst', $package->first_inst ?? 0) }}" placeholder=" القسط الاول  ">
-                             @error('first_inst')
-
+                            <input type="number" 
+                                   class="form-control @error($name) is-invalid @enderror" 
+                                   id="{{ $name }}" 
+                                   name="{{ $name }}" 
+                                   value="{{ old($name, $package->$name ?? 0) }}" 
+                                   placeholder="{{ $label }}">
+                            @error($name)
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <label for="second_inst" class="form-label col-sm-2 col-form-label ">  القسط الثاني</label>
-                        <div class="col-sm-10  mb-2">
-                            <input type="number" class="form-control @error('second_inst') is-invalid @enderror"
-                            id="second_inst" name="second_inst"
-                             value="{{ old('second_inst', $package->second_inst ?? 0) }}" placeholder=" القسط الثاني  ">
-                             @error('second_inst')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <label for="third_inst" class="form-label col-sm-2 col-form-label ">  القسط الثالث</label>
-                        <div class="col-sm-10  mb-2">
-                            <input type="number" class="form-control @error('third_inst') is-invalid @enderror"
-                            id="third_inst" name="third_inst"
-                             value="{{ old('third_inst', $package->third_inst ?? 0) }}" placeholder=" القسط الثالث  ">
-                             @error('third_inst')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <label for="fourth_inst" class="form-label col-sm-2 col-form-label ">  القسط الرابع</label>
-                        <div class="col-sm-10  mb-2">
-                            <input type="number" class="form-control @error('fourth_inst') is-invalid @enderror"
-                                   id="fourth_inst" name="fourth_inst"
-                                   value="{{ old('fourth_inst', $package->fourth_inst ?? 0) }}" placeholder=" القسط الرابع">
-                            @error('fourth_inst')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <label for="fifth_inst" class="form-label col-sm-2 col-form-label ">  القسط الخامس</label>
-                        <div class="col-sm-10  mb-2">
-                            <input type="number" class="form-control @error('fifth_inst') is-invalid @enderror"
-                                   id="fifth_inst" name="fifth_inst"
-                                   value="{{ old('fifth_inst', $package->fifth_inst ?? 0) }}" placeholder=" القسط الخامس">
-                            @error('fifth_inst')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    @endforeach
+                    
 
                     </div>
-
-
-                    {{-- <!-- Start Date -->
-                    <div class="mb-3 row"   >
-                        <label for="starts_at" class="form-label col-sm-2 col-form-label">تاريخ البدأ</label>
-                        <div class="col-sm-10">
-                            <input type="date" class="form-control @error('starts_date') is-invalid @enderror" id="starts_date"
-                                   name="starts_date" value="{{ old('starts_date', $package->starts_date ?? '') }}"
-                                   placeholder=" تاريخ البدأ">
-
-                            @error('starts_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- End Date -->
-                    <div class="mb-3 row">
-                        <label for="starts_at" class="form-label col-sm-2 col-form-label">تاريخ الإنتهاء</label>
-                        <div class="col-sm-10">
-                            <input type="date" class="form-control @error('ends_date') is-invalid @enderror" id="ends_date"
-                                   name="ends_date"  value="{{ old('ends_date', $package->ends_date ?? '') }}"
-                                   placeholder=" تاريخ الإنتهاء">
-                            @error('ends_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div> --}}
+ 
 
                     <div class="mb-3 row">
                         <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>
@@ -203,6 +158,7 @@
     // Select the radio buttons
     const oneTimePaymentRadio = document.getElementById('one_time');
     const installmentsPaymentRadio = document.getElementById('installments');
+    const tabbyPaymentRadio = document.getElementById('tabby');
 
     // Function to toggle visibility of fields
     function togglePaymentFields() {
@@ -229,7 +185,13 @@
                 totalPaymentContainer.style.display = 'none';
                 installmentValueContainer.style.display = 'flex';
                 numberOfMonthsContainer.style.display = 'flex';
+
+            } else if (paymentType === 'tabby') {
+                totalPaymentContainer.style.display = 'flex';
+                installmentValueContainer.style.display = 'none';
+                numberOfMonthsContainer.style.display = 'none';
             }
+
         }
     }
 
@@ -238,7 +200,8 @@
         // Attach change event listeners to both radio buttons
         oneTimePaymentRadio.addEventListener('change', togglePaymentFields);
         installmentsPaymentRadio.addEventListener('change', togglePaymentFields);
-    }
+        tabbyPaymentRadio.addEventListener('change', togglePaymentFields);
+        }
 
     // Initialize the form based on the default selected payment type
     togglePaymentFields();

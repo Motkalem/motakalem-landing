@@ -29,12 +29,28 @@
                 <div class="mb-3 row">
                     <label class="form-label col-sm-2 col-form-label">نوع الباقة</label>
                     <div class="col-sm-10">
-                        <p class="form-control-plaintext ">
-                            {{ $student->parentContract?->package?->payment_type == 'one time' ? 'دفع لمرة واحدة' : 'اقساط'  }}
+                        <p class="form-control-plaintext">
+                            @php
+                                $paymentType = $student->parentContract?->package?->payment_type;
+                                $paymentMethod = $student->parentContract?->package?->payment_method;
+                            @endphp
+                    
+                            @if($paymentType === 'tabby')
+                               
+                                      عبر تاببي
+                                
+                            @elseif($paymentType === 'one time')
+                                دفع لمرة واحدة
+                            @elseif($paymentType === 'installments')
+                                أقساط
+                            @else
+                                غير محدد
+                            @endif
                         </p>
                     </div>
+                    
                 </div>
-                @if($student->parentContract?->package?->payment_type == 'one time')
+                @if($student->parentContract?->package?->payment_type == 'one time' || $student->parentContract?->package?->payment_type == 'tabby' )
                     <div class="mb-3 row">
                         <label class="form-label col-sm-2 col-form-label"> الإجمالي  </label>
                         <div class="col-sm-10">

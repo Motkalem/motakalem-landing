@@ -164,14 +164,27 @@
                                                     البند الثاني: التكلفة وجدول السداد:
                                                     <br/>
                                                      . التكلفة الإجمالية للبرنامج
-                                                    @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                    @if(($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                    ||
+                                                    ($data->package?->payment_type === \App\Models\Package::TABBY))
+
                                                         {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
+
+
+                                                        @if ($data->package?->payment_type == \App\Models\Package::TABBY)
+
+                                                            <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+
+                                                            {!! '<span style="font-weight: bold;">' .'('.__('Paid With Tabby').')' . '</span>' !!}
+                                                        @endif
                                                     @else
                                                         {!! '<span style="font-weight: bold;">'
-                                            . ( $data->package?->first_inst + $data->package?->second_inst
-                                                + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
-                                                    @endif
-                                                    <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                    . ( $data->package?->first_inst + $data->package?->second_inst
+                                                        + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
+                                                  
+                                                  <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+
+                                                  @endif
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>

@@ -147,6 +147,7 @@ class StudentsController extends AdminBaseController
 
     public function sendContract($id)
     {
+      
         $student = Student::query()->with(['parentContract'])->findOrFail($id);
 
         $contractData = [
@@ -162,6 +163,7 @@ class StudentsController extends AdminBaseController
 
         // Create the contract and handle potential exceptions
         try {
+         
             $contract = ParentContract::query()->with('course')->create(array_merge($contractData, ['accept_terms']));
 
             $contract = $contract->load('package');
@@ -209,4 +211,20 @@ class StudentsController extends AdminBaseController
 
         return Redirect::away(Storage::url($pdfPath));
     }
+
+    public function payManually($id)
+    {
+        $student = Student::findOrFail($id);
+    
+        // Update the student to mark as paid manually
+        $student->update([
+            'is_paid' => true,
+        ]);
+
+        $this->sendContract($id);
+        notify()->success('تم تأكيد الدفع اليدوي للطالب بنجاح.','نجاح');
+
+        return redirect()->back();
+    }
+    
 }

@@ -43,7 +43,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
     Route::post('packages/update-status/{id}', [PackagesController::class, 'changeStatus'])->name('packages.status');
     Route::resource('payments', PaymentsController::class);
     Route::resource('transactions', TransactionsController::class);
+
     Route::resource('students', StudentsController::class);
+    Route::post('students/{id}', [StudentsController::class, 'payManually'])->name('students.manual-pay');
+
     Route::get('download-contract/{id}', [StudentsController::class,'downloadContract'])->name('download-contract');
 
     Route::resource('installment-payments', InstallmentPaymentsController::class);

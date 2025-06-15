@@ -49,18 +49,38 @@
                     <td>{{ $student->city }}</td>
                     <td class="text-center">
                         @if($student->parentContract)
-                            <a class="btn btn-success bg-success btn-sm" target="_blank" href="{{ route('dashboard.download-contract',
+                            <a class="btn btn-success bg-success btn-sm"
+                             target="_blank" href="{{ route('dashboard.download-contract',
                                 $student->parentContract?->id) }}">
                                 تحميل العقد
                                 <i class="fa fa-download"></i>
                             </a>
                         @endif
                         <a class="btn btn-primary btn-sm" href="{{ route('dashboard.students.show', $student->id) }}">
-                            عرض
+                            <i class="fas fa-eye me-1"></i> عرض
                         </a>
+                        
                         <a class="btn btn-info btn-sm" href="{{ route('dashboard.students.edit', $student->id) }}">
-                            تعديل
+                            <i class="fas fa-edit me-1"></i> تعديل
                         </a>
+                        
+                        @if( $student->parentContract?->package?->payment_type == "tabby" )
+                            <button 
+                                @if($student->is_paid) disabled title="تم الدفع" @endif
+                                    type="button"
+                                    class="btn btn-sm px-4 text-white {{ $student->is_paid ? 'disabled cursor-not-allowed bg-secondary' : 'bg-success' }}"
+                                    style="background-color: #06A996; font-weight: 500; font-size: 0.95rem;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#payConfirmModal"
+                                    data-id="{{ $student->id }}"
+                                    data-name="{{ $student->name }}">
+                                    <i class="fas fa-credit-card me-1"></i> دفع
+                            </button>
+
+                        @endif
+                    
+                
+                         
                         {{-- <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $student->id }}">
                             حذف
                         </button> --}}
@@ -98,6 +118,28 @@
     </div>
 </div>
 
+<!-- Manual Payment Confirmation Modal -->
+<div class="modal fade" id="payConfirmModal" tabindex="-1" aria-labelledby="payConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" id="manualPayForm" action="">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payConfirmModalLabel">تأكيد الدفع اليدوي</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    هل تريد تأكيد الدفع اليدوي للطالب <strong id="studentName"></strong>؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit"  style="background-color: #06A996; font-weight: 500; font-size: 0.95rem;" class="btn btn-success text-white">تأكيد الدفع</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -107,6 +149,22 @@
             var studentId = button.getAttribute('data-id');
             var form = document.getElementById('deleteForm');
             form.action = "{{ route('dashboard.students.destroy', ':id') }}".replace(':id', studentId);
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var payModal = document.getElementById('payConfirmModal');
+        payModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var studentId = button.getAttribute('data-id');
+            var studentName = button.getAttribute('data-name');
+            
+            // Set student name in modal
+            document.getElementById('studentName').textContent = studentName;
+
+            // Update form action
+            let form = document.getElementById('manualPayForm');
+            form.action = "{{ route('dashboard.students.manual-pay', ':id') }}".replace(':id', studentId);
         });
     });
 </script>

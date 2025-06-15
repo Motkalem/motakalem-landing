@@ -34,8 +34,7 @@
 </head>
 <body style="margin:0px;padding:0px;min-width:100%;background-color:rgb(243,242,240)">
 <center style="width:100%;table-layout:fixed;background-color:rgb(243,242,240)">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:rgb(243,242,240)"
-           bgcolor="#f3f2f0">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:rgb(243,242,240)" bgcolor="#f3f2f0">
         <tbody>
         <tr>
             <td width="100%" style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
@@ -168,20 +167,36 @@
 
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
+                                                   
+                                                   
                                                     @if($data->package?->total > 0 || $data->package?->first_inst > 0 )
                                                         البند الثاني: التكلفة وجدول السداد:
                                                         <br/>
 
                                                          . التكلفة الإجمالية للبرنامج
-                                                        @if($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                        @if(($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                        
+                                                        ||
+                                                        $data->package?->payment_type === \App\Models\Package::TABBY
+                                                        )
+
                                                             {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
+                                                            <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+
+                                                            @if ($data->package?->payment_type === \App\Models\Package::TABBY)
+                                                           
+                                                                {!! '<span style="font-weight: bold;">' .'('.__('Paid With Tabby').')' . '</span>' !!}
+                                                            @endif
+
                                                         @else
+
                                                             {!! '<span style="font-weight: bold;">'
-                                                . ( $data->package?->first_inst + $data->package?->second_inst
-                                                    + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
-                                                        @endif
-                                                        <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
-                                                    @endif
+                                                            . ( $data->package?->first_inst + $data->package?->second_inst
+                                                                + $data->package?->third_inst +  $data->package?->fourth_inst +
+                                                                  $data->package?->fifth_inst) . '</span>' !!}
+                                                            <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                       @endif
+                                                     @endif
 
                                                     @if($data->package?->payment_type === 'installments')
                                                         <br/>

@@ -49,8 +49,9 @@
                             <td>{{ $package->name }}</td>
                             {{-- <td>{{ $package->starts_date }}</td> --}}
                             {{-- <td>{{ $package->ends_date }}</td> --}}
-                            <td>{{ $package->payment_type == 'one time' ? 'دفع مرة واحدة' : 'أقساط' }}</td>
+                            <td>{{ $package->payment_type == 'one time' ? 'دفع مرة واحدة' : ($package->payment_type == 'tabby' ? 'تابي' : 'أقساط') }}</td>
                             <td class="text-center">
+                                
                                 @if($package->is_active)
                                     <span class="text-success text-bold">نشط</span>
                                 @else
