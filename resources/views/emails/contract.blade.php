@@ -173,7 +173,7 @@
 
                                                         @if ($data->package?->payment_type == \App\Models\Package::TABBY)
 
-                                                            <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                            <img style="width:12px" src="https://admin.motkalem.sa/public/images/riyal-sym.svg.png" />.
 
                                                             {!! '<span style="font-weight: bold;">' .'('.__('Paid With Tabby').')' . '</span>' !!}
                                                         @endif
@@ -182,7 +182,7 @@
                                                     . ( $data->package?->first_inst + $data->package?->second_inst
                                                         + $data->package?->third_inst +  $data->package?->fourth_inst +  $data->package?->fifth_inst) . '</span>' !!}
                                                   
-                                                  <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
+                                                  <img style="width:12px" src="https://admin.motkalem.sa/public/images/riyal-sym.svg.png" />.
 
                                                   @endif
 
@@ -203,7 +203,7 @@
                                                             @if ($value > 0)
                                                                 ◦ القسط {{ $key }}: {{ $value }}
 
-                                                                <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" /> .
+                                                                <img style="width:12px" src="https://admin.motkalem.sa/public/images/riyal-sym.svg.png" /> .
                                                                 @if ($loop->first)
                                                                     يُدفع عند الاشتراك.
                                                                 @else
