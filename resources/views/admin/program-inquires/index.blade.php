@@ -19,11 +19,12 @@
                     <thead>
                     <tr>
                         <th class="text-start">التاريخ  </th>
-
                         <th class="text-center">الإسم</th>
                         <th class="text-center">الجوال</th>
                         <th class="text-center">العمر</th>
                         <th class="text-center">الرسالة</th>
+                        <th class="text-center">UTM Source</th>
+                        <th class="text-center">UTM Medium</th>
                         <th class="text-center">الإجراءات</th>
                     </tr>
                     </thead>
@@ -36,6 +37,8 @@
                             <td>{{ $inquiry->mobile_number }}</td>
                             <td>{{ $inquiry->age }}</td>
                             <td title="{{$inquiry->message}}">{{ \Illuminate\Support\Str::limit($inquiry->message , 50) }}</td>
+                            <td class="text-center">{{ $inquiry->utm_source??'-' }}</td>
+                            <td class="text-center">{{ $inquiry->utm_medium??'-' }}</td>
                             <td class="text-center">
 
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#showMessageModal" data-message="{{ $inquiry->message }}">

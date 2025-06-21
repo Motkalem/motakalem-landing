@@ -6,9 +6,7 @@ namespace App\Models;
 
  class ProgramInquiry extends Model
 {
-
-    protected $fillable = ['source','name',
-        'mobile_number','age','message','transaction_data','is_paid'];
+    protected $fillable = ['source','utm_source', 'utm_medium','name','mobile_number','age','message','transaction_data','is_paid'];
 
 
 
