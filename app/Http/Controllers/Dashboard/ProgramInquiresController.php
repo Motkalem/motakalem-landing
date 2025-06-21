@@ -37,6 +37,7 @@ class ProgramInquiresController extends AdminBaseController
 
     public function destroy($id): RedirectResponse
     {
+        
         $programInquiry = ProgramInquiry::query()->findOrFail($id);
         $programInquiry->delete();
         return redirect()->route('dashboard.program-inquires.index')

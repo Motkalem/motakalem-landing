@@ -23,11 +23,14 @@ class ProgramInquiryRequest extends FormRequest
      */
     public function rules()
     {
+        
         return [
             'name' => ['required', 'string', 'max:255'],
             'mobile_number' => ['required', 'digits:10'],
             'age' => ['required', 'numeric'],
-            "message" => ['required', 'string']
+            'message' => ['required', 'string'],
+            'utm_source' => ['nullable', 'string', 'max:255'],
+            'utm_medium' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
