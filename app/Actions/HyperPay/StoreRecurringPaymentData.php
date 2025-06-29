@@ -3,6 +3,7 @@
 namespace App\Actions\HyperPay;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreRecurringPaymentData
@@ -24,6 +25,12 @@ class StoreRecurringPaymentData
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
 
+        Log::debug('Initial Agreement ID', ['agreement' => $unique_transaction_id]);
+
+        $payment->update([
+            'recurring_agreement_id' => $unique_transaction_id
+        ]);
+
         $data = [
             'entityId' => $entity_id,
             'amount' => $package->first_inst,
@@ -38,7 +45,7 @@ class StoreRecurringPaymentData
             'standingInstruction.numberOfInstallments' => '99',
             'standingInstruction.recurringType' => 'SUBSCRIPTION', // For fixed amount
             'customParameters[paymentFrequency]' => 'OTHER',
-            'customParameters[recurringPaymentAgreement]' => $unique_transaction_id.rand(1,2000),
+            'customParameters[recurringPaymentAgreement]' => $unique_transaction_id,
             'merchantTransactionId' => $unique_transaction_id,
             "customer.email" => $payment?->student?->email,
             "billing.street1" => $payment?->student?->city,
