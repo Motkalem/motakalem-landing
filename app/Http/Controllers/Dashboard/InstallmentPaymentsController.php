@@ -108,8 +108,11 @@ class InstallmentPaymentsController extends AdminBaseController
 
         $notification = $this->getSuccessfulInitialNotification($installmentPayment);
 
-        $recurringPaymentAgreement = data_get($notification, 'payload.customParameters.recurringPaymentAgreement');
+        $recurringPaymentAgreement = $installmentPayment->recurring_agreement_id;
+
         $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+
+        Log::debug('Subsequent Agreement ID', ['agreement' => $recurringPaymentAgreement]);
 
         $url = env('SNB_HYPERPAY_URL');
         $recurring_entity_id = env('SNB_RECURRING_ENTITY_ID');

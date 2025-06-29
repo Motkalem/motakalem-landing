@@ -12,6 +12,7 @@ class InstallmentPayment extends Model
         'student_id',
         'package_id',
         'registration_id',
+        'recurring_agreement_id',
         'payment_id',
         'canceled',
         'is_completed',
