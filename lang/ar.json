@@ -88,7 +88,7 @@
     "success generate hyperpay url and sent to your email": "تم إنشاء رابط Hyperpay بنجاح وإرساله إلى بريدك الإلكتروني",
     "Error setting up recurring payment": "خطأ في إعداد الدفع المقسط",
     "Unable to process payment": "غير قادر على معالجة الدفع",
-    "successfully created checkout": "تم إنشاء الخروج بنجاح",
+    "successfully created checkout": "تم إنشاء رابط الدفع بنجاح",
     "success generate hyperpay url": "نجاح توليد رابط Hyperpay",
     "Student or package not found": "لم يتم العثور على الطالب أو الحزمة",
     "User is already registered and has paid for this package": "المستخدم مسجل بالفعل وقد دفع ثمن هذه الباقة",
