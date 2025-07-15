@@ -84,6 +84,19 @@
                     img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
                     ">
 
+    <style>
+        .wpwl-form {
+            max-width:100% !important;
+        }
+        .wpwl-apple-pay-button {
+            font-size: 16px !important;
+            display: block !important;
+            width: 100% !important;
+            -webkit-appearance: -apple-pay-button;
+            -apple-pay-button-type: buy;
+        }
+    </style>
+
     <script nonce="{{$nonce}}">
         const paymentMethod = @json( data_get($_GET,'brand'));
         // Apple Pay Script (Only if payment_method=APPLEPAY and Apple Pay is supported)
@@ -91,8 +104,8 @@
             window.ApplePaySession && ApplePaySession.canMakePayments()) {
             var wpwlOptions = {
                 applePay: {
-                    displayName: "Motakalem",
-                    total: { label: "Motakalem" },
+                    displayName: "Motkalem",
+                    total: { label: "Motkalem" },
                     currencyCode: "SAR",
                     countryCode: "SA",
                     supportedNetworks: ["mada", "visa", "masterCard"]
