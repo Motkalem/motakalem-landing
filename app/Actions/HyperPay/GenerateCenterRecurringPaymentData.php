@@ -13,11 +13,18 @@ class GenerateCenterRecurringPaymentData
         $url = env('RYD_HYPERPAY_URL')."/checkouts";
 
         $entity_id = env('RYD_ENTITY_ID'); //visa or master
+        $access_token = env('RYD_AUTH_TOKEN');
 
         if(request()->brand == 'MADA')
         {
             $entity_id = env('RYD_ENTITY_ID_MADA'); //mada
         }
+        if(request()->brand == 'applepay')
+        {
+            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
+                $access_token = config('hyperpay.ryd_apple_pay_token');
+        }
+
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
@@ -54,7 +61,7 @@ class GenerateCenterRecurringPaymentData
 
         if (env('VERSION_STATE') == 'STAGING_'){
             $data = [
-                'entityId' => env('RYD_ENTITY_ID'),
+                'entityId' =>$entity_id,
                 'amount' => $package->first_inst,
                 'currency' => 'SAR',
                 'paymentType' => 'DB',
@@ -84,7 +91,7 @@ class GenerateCenterRecurringPaymentData
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . env('RYD_AUTH_TOKEN'),
+            'Authorization: Bearer ' . $access_token,
         ]);
 
         curl_setopt($ch, CURLOPT_POST, 1);

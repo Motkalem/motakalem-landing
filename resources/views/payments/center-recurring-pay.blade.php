@@ -82,13 +82,29 @@
                     connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     ">
-
-
     <script nonce="{{$nonce}}">
-        var wpwlOptions = {
-            style:"card"
+        const paymentMethod = @json( data_get($_GET,'brand'));
+        // Apple Pay Script (Only if payment_method=APPLEPAY and Apple Pay is supported)
+        if (paymentMethod && paymentMethod.toUpperCase() === "APPLEPAY" &&
+            window.ApplePaySession && ApplePaySession.canMakePayments()) {
+            var wpwlOptions = {
+                applePay: {
+                    displayName: "Motakalem",
+                    total: { label: "Motakalem" },
+                    currencyCode: "SAR",
+                    countryCode: "SA",
+                    supportedNetworks: ["mada", "visa", "masterCard"]
+                }
+            };
+        } else {
+            var wpwlOptions = {
+                style: "card",
+                paymetTarget: "_top"
+            };
         }
     </script>
+
+
 </head>
 
 <script src="{{ env('RYD_HYPERPAY_URL') }}/paymentWidgets.js?checkoutId={{ $checkoutId }}"
@@ -182,9 +198,9 @@
 
         @if(data_get($_GET,'brand'))
 
-            @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada'] ))
+            @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','applepay'] ))
 
-                <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}"
+                <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}/{{strtoupper( data_get($_GET,'brand'))}}"
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}">
                 </form>
 
@@ -242,6 +258,28 @@
                             <img src="{{asset('images/brands/master.png')}}" alt="MasterCard" />
                         </a>
                     </div>
+
+
+
+                    <div id="applePayOption" style="display: none;">
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'applepay'])) }}"
+                           class="payment-option" style="display: inline-block; padding: 10px;
+                            border: 2px solid #e0e0e0; border-radius: 8px;
+                             transition: all 0.3s ease; background-color: #fff;
+                             box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 110px;">
+                            <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 65px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
+                        </a>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
+                            const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
+
+                            if (isAppleDevice && supportsApplePay) {
+                                document.getElementById("applePayOption").style.display = "block";
+                            }
+                        });
+                    </script>
 
                 </div>
                 <style>

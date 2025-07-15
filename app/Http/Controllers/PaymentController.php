@@ -29,6 +29,7 @@ class PaymentController extends Controller
 
     public function getPayPage()
     {
+
         $payment = Payment::with('package','student')->find(request()->pid);
 
         $responseData = null;
@@ -85,25 +86,16 @@ class PaymentController extends Controller
 
         }
 
+        if(request()->brand == 'applepay')
+        {
+            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
+            $access_token = config('hyperpay.ryd_apple_pay_token');
+        }
+
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
-
-        /*$data = 'entityId='.$entity_id.
-            "&amount=". $payment?->package?->total.
-            "&currency=SAR".
-            "&paymentType=DB".
-            "&merchantTransactionId=".$unique_transaction_id.
-            "&customer.email=".$payment?->student?->email.
-            "&billing.street1=".$payment?->student?->city .
-            "&billing.city=".$payment?->student?->city .
-            "&billing.state=".$payment?->student?->city  .
-            "&billing.country="."SA".
-            "&billing.postcode="."22230".
-            "&integrity=true".
-            "&customer.givenName=".$payment?->student?->name.
-            "&customer.surname="."Doe";*/
 
         $data = "entityId=".$entity_id .
         "&amount=".$payment?->package?->total.
@@ -132,6 +124,7 @@ class PaymentController extends Controller
                 "&cart.items[0].productUrl=http://url1.com";
 
         }
+
         Log::notice('=== Create Checkout == ',[$data]);
 
         $ch = curl_init();
@@ -174,7 +167,14 @@ class PaymentController extends Controller
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
 
+        if(request()->paymentMethod == 'APPLEPAY') {
+
+            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
+            $access_token = config('hyperpay.RYD_APPLE_PAY_ACCESS_TOKEN');
+        }
+
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+
         $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();

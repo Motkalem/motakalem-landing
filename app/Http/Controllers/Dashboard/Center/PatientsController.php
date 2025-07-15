@@ -82,6 +82,7 @@ class PatientsController extends AdminBaseController
 
         $this->createInstallments($installmentPayment);
         $this->generatePayUrl($installmentPayment);
+
         notify()->success('Patient data and installments created successfully.', 'Success');
 
         return redirect()->route('dashboard.center.center-patients.index');

@@ -19,20 +19,16 @@ class RecurringCheckoutAction
      */
     public function handle(ActionRequest $request)
     {
- 
          $installmentPayment = InstallmentPayment::query()
             ->where('id',$request->paymentId )
             ->where('student_id',$request->stdId )
             ->firstOrFail();
 
-         $amount = $installmentPayment?->package?->first_inst;
+        $amount = $installmentPayment?->package?->first_inst;
 
-         $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
-
+        $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
         $checkoutId = data_get($response, 'id');
-
-
-          $integrity = data_get( $response , "integrity");
+        $integrity = data_get( $response , "integrity");
 
         $nonce = bin2hex(random_bytes(16));
 

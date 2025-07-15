@@ -13,11 +13,19 @@ class StoreRecurringPaymentData
     {
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
+        $access_token = env('SNB_AUTH_TOKEN');
+
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
         if(request()->brand == 'MADA')
         {
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
+        }
+
+        if(request()->brand == 'applepay')
+        {
+            $entity_id = config('hyperpay.snb_entity_id_apple_pay');
+            $access_token = config('hyperpay.snb_apple_pay_token');
         }
 
         $timestamp = Carbon::now()->timestamp;
@@ -91,7 +99,7 @@ class StoreRecurringPaymentData
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . env('SNB_AUTH_TOKEN'),
+            'Authorization: Bearer ' . $access_token ,
         ]);
 
         curl_setopt($ch, CURLOPT_POST, 1);
