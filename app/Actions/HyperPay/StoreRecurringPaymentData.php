@@ -17,12 +17,14 @@ class StoreRecurringPaymentData
 
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
-        if(request()->brand == 'MADA')
+        $paymentMethod = strtoupper(request()->brand);
+
+        if($paymentMethod == 'MADA')
         {
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
 
-        if(request()->brand == 'applepay')
+        if($paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');

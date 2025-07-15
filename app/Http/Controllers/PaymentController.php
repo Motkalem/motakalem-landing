@@ -70,8 +70,9 @@ class PaymentController extends Controller
 
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
+        $paymentMethod = strtoupper(request()->brand);
 
-        if(request()->brand == 'MADA')
+        if($paymentMethod == 'MADA')
         {
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
@@ -79,17 +80,16 @@ class PaymentController extends Controller
         $access_token = env('SNB_AUTH_TOKEN');
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
-        if(request()->brand == 'tabby'){
+        if($paymentMethod == 'TABBY'){
             $entity_id = env('RYD_ENTITY_ID_MADA'); //mada
             $access_token = env('RYD_AUTH_TOKEN');
             $url = env('RYD_HYPERPAY_URL')."/checkouts";
-
         }
 
-        if(request()->brand == 'applepay')
+        if($paymentMethod == 'APPLEPAY')
         {
-            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
-            $access_token = config('hyperpay.ryd_apple_pay_token');
+            $entity_id = config('hyperpay.snb_entity_id_apple_pay');
+            $access_token = config('hyperpay.snb_apple_pay_token');
         }
 
         $timestamp = Carbon::now()->timestamp;
