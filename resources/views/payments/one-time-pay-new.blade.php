@@ -221,6 +221,9 @@
                         </a>
                     </div>
                     <script>
+                        console.log('HERe......')
+
+
                         document.addEventListener("DOMContentLoaded", function () {
                             const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
                             const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
