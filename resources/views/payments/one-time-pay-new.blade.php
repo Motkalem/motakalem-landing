@@ -6,7 +6,9 @@
     <title>متكلم - دفع الإشتراك</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script>
+        console.log('HERe 1111......')
+    </script>
     <meta http-equiv="Content-Security-Policy"
           content="
                        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline' ;
