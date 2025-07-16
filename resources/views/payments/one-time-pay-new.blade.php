@@ -6,7 +6,7 @@
     <title>متكلم - دفع الإشتراك</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
+    <script nonce="{{$nonce}}">
         console.log('HERe 1111......')
     </script>
     <meta http-equiv="Content-Security-Policy"
@@ -29,7 +29,7 @@
             -apple-pay-button-type: buy;
         }
     </style>
-    <script>
+    <script  nonce="{{$nonce}}">
         console.log('HERe 222222......')
     </script>
     <script nonce="{{$nonce}}">
@@ -56,7 +56,7 @@
             };
         }
     </script>
-    <script>
+    <script  nonce="{{$nonce}}">
         console.log('HERe 3333......')
     </script>
     @include('payments.assets.consaltation-pay')
@@ -227,7 +227,7 @@
                             <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                         </a>
                     </div>
-                    <script>
+                    <script nonce="{{$nonce}}">
                         console.log('HERe......')
 
 
