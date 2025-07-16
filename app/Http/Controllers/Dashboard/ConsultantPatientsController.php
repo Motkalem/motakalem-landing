@@ -220,7 +220,7 @@ class ConsultantPatientsController extends AdminBaseController
         $entity_id =  env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
         $paymentMethod = strtoupper(request()->brand);
-echo"<pre>";print_r($paymentMethod);echo"</pre>";die();
+
         if ($paymentMethod == 'MADA') {
 
             $entity_id = env('RYD_ENTITY_ID_MADA'); //MADA
