@@ -12,7 +12,7 @@
     <meta http-equiv="Content-Security-Policy"
           content="
                        style-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'unsafe-inline' ;
-                       frame-src 'self' https://oppwa.com {{env('SNB_HYPERPAY_WIDGET_URL')}};
+                       frame-src 'self' https://oppwa.com {{env('SNB_HYPERPAY_WIDGET_URL')}} https://staging-admin.motkalem.sa;
                        script-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}' ;
                        connect-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
                        img-src 'self' {{env('SNB_HYPERPAY_WIDGET_URL')}};
