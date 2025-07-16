@@ -42,7 +42,7 @@
      <meta http-equiv="Content-Security-Policy"
           content="
                     style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
-                    frame-src 'self' https://oppwa.com {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    frame-src 'self'  https://oppwa.com {{env('RYD_HYPERPAY_WIDGET_URL')}} https://geoissuer.cardinalcommerce.com/ https://eu-prod.ppipe.net/ https://authentication.cardinalcommerce.com/ https://admin.motkalem.sa https://staging-admin.motkalem.sa;
                     script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
                     connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
@@ -222,7 +222,7 @@
                             <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 65px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                         </a>
                     </div>
-                    <script>
+                    <script nonce="{{$nonce}}">
                         document.addEventListener("DOMContentLoaded", function () {
                             const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
                             const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
