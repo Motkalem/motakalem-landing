@@ -229,7 +229,7 @@ class ConsultantPatientsController extends AdminBaseController
         if($paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
-            $access_token = config('hyperpay.ryd_APPLE_PAY_ACCESS_TOKEN');
+            $access_token = config('hyperpay.ryd_apple_pay_token');
         }
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts";
@@ -295,7 +295,7 @@ class ConsultantPatientsController extends AdminBaseController
         if($paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
-            $access_token = config('hyperpay.ryd_APPLE_PAY_ACCESS_TOKEN');
+            $access_token = config('hyperpay.ryd_apple_pay_token');
         }
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
