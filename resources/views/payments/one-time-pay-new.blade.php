@@ -29,6 +29,9 @@
             -apple-pay-button-type: buy;
         }
     </style>
+    <script>
+        console.log('HERe 222222......')
+    </script>
     <script nonce="{{$nonce}}">
 
         const paymentMethod = @json( data_get($_GET,'brand'));
@@ -53,7 +56,9 @@
             };
         }
     </script>
-
+    <script>
+        console.log('HERe 3333......')
+    </script>
     @include('payments.assets.consaltation-pay')
     <style>
 
