@@ -79,6 +79,11 @@
             font-size: 2.3rem;
             font-weight: 100 !important;
         }
+        #changePaymentMethodLink{
+            color: #102202;
+            font-size: larger;
+            font-weight   : 400;
+        }
     </style>
 </head>
 
@@ -152,6 +157,7 @@
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total }}
             <span class="riyal-symbol">R</span> </h1>
 
+        <div style="max-width: 530px; margin: auto;">
         @if(data_get($_GET,'brand'))
 
             @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','tabby', 'applepay'] ))
@@ -160,25 +166,14 @@
                 <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'.strtoupper( data_get($_GET,'brand')).'/'}}"
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
 
-                <div style="text-align: center;margin-top: 40px;color: #ffc107;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center;  color: #ffc107; "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
-                </div>
+                <a href="#" id="changePaymentMethodLink" >تغيير وسيلة الدفع ؟</a>
+
             @else
                 <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].strtoupper( data_get($_GET,'brand')).'/'}}" class="paymentWidgets"
                       data-brands="VISA"></form>
 
                 <div style="text-align: center;margin-top: 40px; color: #ffc107;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center;  color: #ffc107; "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
+                    <a href="#" id="changePaymentMethodLink" style="color: #ffc107;">تغيير وسيلة الدفع ؟</a>
                 </div>
             @endif
         @else
@@ -252,13 +247,19 @@
             </style>
 
         @endif
-
+        </div>
     </div>
 
 
     @include('payments._inc.footer')
 </div>
     <script nonce="{{$nonce}}">
+
+      document.getElementById('changePaymentMethodLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            removeBrandParam();
+        });
+
         function removeBrandParam() {
             // Get the current URL
             let url = new URL(window.location.href);

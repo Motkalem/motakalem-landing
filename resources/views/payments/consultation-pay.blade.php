@@ -81,6 +81,12 @@
             -webkit-appearance: -apple-pay-button;
             -apple-pay-button-type: buy;
         }
+
+        #changePaymentMethodLink{
+            color: #102202;
+            font-size: larger;
+            font-weight   : 400;
+        }
     </style>
 
 
@@ -162,23 +168,15 @@
                 <form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{data_get($_GET,'brand')}}" class="paymentWidgets"
                       data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
                 <div style="text-align: center;margin-top: 10px;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center; color: #ffc107; "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
+                    <a href="#" id="changePaymentMethodLink" >تغيير وسيلة الدفع ؟</a>
+
                 </div>
             @else
                 <form action="{{route('checkout.consultation.status', $_GET['pid'])}}" class="paymentWidgets"
                       data-brands="VISA"></form>
                 <div style="text-align: center;margin-top: 40px;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center;  color: #ffc107; "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
+                    <a href="#" id="changePaymentMethodLink" style="color: #ffc107;">تغيير وسيلة الدفع ؟</a>
+
                 </div>
             @endif
         @else
@@ -250,7 +248,13 @@
     @include('payments._inc.footer')
 </div>
 <script nonce="{{$nonce}}">
+    document.getElementById('changePaymentMethodLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        removeBrandParam();
+    });
+
     function removeBrandParam() {
+        // Get the current URL
         let url = new URL(window.location.href);
         url.searchParams.delete('brand');
         window.location.href = url.toString();
