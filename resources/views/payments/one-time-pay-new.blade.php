@@ -224,7 +224,12 @@
                         document.addEventListener("DOMContentLoaded", function () {
                             const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
                             const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
-
+                            console.log('isAppleDevice')
+                            console.log(isAppleDevice)
+                            console.log('supportsApplePay')
+                            console.log(supportsApplePay)
+                            console.log('ApplePaySession')
+                            console.log(ApplePaySession)
                             if (!isAppleDevice && !supportsApplePay) {
                                 document.getElementById("applePayOption").style.display = "none";
                             }
