@@ -63,3 +63,24 @@ Route::post('encrypt-form-store', function (Request $request) {
     }
     return response()->json(['error' => 'Invalid data'], 400);
 })->name('process');
+
+
+
+Route::get('test-email', function () {
+    Mail::raw('This is a test email from Motkalem', function ($message) {
+        $message
+            ->to('dev@squarement.sa')
+            ->subject('Test Email');
+    });
+});
+
+Route::get('test-message', function () {
+    $msg = 'Hi From Code from Motkalem';
+    $mobile = '966550274677';
+    try {
+        (new \App\Http\Support\SMS())->setPhone($mobile)->SetMessage($msg)->build();
+    } catch (\Exception $e) {
+        return $e;
+    }
+    return 'msg done';
+});
