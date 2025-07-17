@@ -42,7 +42,7 @@ class CenterPaymentUrlNotification extends Notification
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(  ' رابط الدفع لإشتراكم في برنامج متكلم' )
+            ->subject(  'رابط الدفع للإشتراك في مركز متكلم' )
             ->view('emails.admin.center-payment-url-email',
                 [
                     'patient'=> $this->patient,

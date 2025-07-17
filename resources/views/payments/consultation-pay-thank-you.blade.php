@@ -220,7 +220,7 @@
                     <tr>
                         <th style="text-align: start;font-weight: normal">
 
-                            سعر الإستشارة
+                            سعر الخدمة
                             </th>
 
                         <td style="text-align: start">

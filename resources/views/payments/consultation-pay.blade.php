@@ -211,7 +211,7 @@
                         </a>
                     </div>
 
-                    <div>
+                    <div style="margin-top:32px ">
                         <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'master'])) }}"
                            class="payment-option">
                             <img src="{{asset('images/brands/master.png')}}" alt="MasterCard" />
