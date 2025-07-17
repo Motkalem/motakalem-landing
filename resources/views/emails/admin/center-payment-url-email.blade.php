@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>رابط الدفع لإشتراككم في برنامج متكلم</title>
+    <title>رابط الدفع  للإشتراك في مركز متكلم</title>
 </head>
 
 <body style="direction: rtl; font-family: 'Poppins', sans-serif;">
@@ -21,7 +21,7 @@
             مرحباً {{ $patient->name }}
         </h2>
         <p style="text-align: center; color: #666; margin-bottom: 1rem;">
-            نرجو منكم إتمام عملية الدفع الخاصة باشتراككم في مركز متكلم.
+            نرجو منكم إتمام عملية الدفع الخاصة بالاشتراك في مركز متكلم .
         </p>
         <p style="text-align: center; color: #666; margin-bottom: 2rem;">
             يمكنكم استخدام الرابط أدناه لإتمام الدفع بكل سهولة وأمان.

@@ -20,6 +20,8 @@ class ProgramInquiresController extends AdminBaseController
 
         if ($search) {
             $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('utm_source', 'LIKE', "%{$search}%")
+                ->orWhere('utm_medium', 'LIKE', "%{$search}%")
                 ->orWhere('mobile_number', 'LIKE', "%{$search}%");
         }
 
@@ -37,7 +39,7 @@ class ProgramInquiresController extends AdminBaseController
 
     public function destroy($id): RedirectResponse
     {
-        
+
         $programInquiry = ProgramInquiry::query()->findOrFail($id);
         $programInquiry->delete();
         return redirect()->route('dashboard.program-inquires.index')
