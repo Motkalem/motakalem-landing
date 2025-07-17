@@ -217,15 +217,20 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function createCheckoutId($consultationPatient): bool|string
     {
-
         $entity_id =  env('RYD_ENTITY_ID');
+        $access_token = env('RYD_AUTH_TOKEN');
+        $paymentMethod = strtoupper(request()->brand);
 
-        if (request()->brand == 'mada') {
+        if ($paymentMethod == 'MADA') {
 
             $entity_id = env('RYD_ENTITY_ID_MADA'); //MADA
         }
 
-        $access_token = env('RYD_AUTH_TOKEN');
+        if($paymentMethod == 'APPLEPAY')
+        {
+            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
+            $access_token = config('hyperpay.ryd_apple_pay_token');
+        }
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts";
 
@@ -280,13 +285,18 @@ class ConsultantPatientsController extends AdminBaseController
     {
 
         $entity_id =  env('RYD_ENTITY_ID');
+        $access_token = env('RYD_AUTH_TOKEN');
+        $paymentMethod = strtoupper(request()->brand);
 
-        if (request()->brand == 'mada') {
+        if ($paymentMethod == 'MADA') {
 
             $entity_id = env('RYD_ENTITY_ID_MADA'); //MADA
         }
-
-        $access_token = env('RYD_AUTH_TOKEN');
+        if($paymentMethod == 'APPLEPAY')
+        {
+            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
+            $access_token = config('hyperpay.ryd_apple_pay_token');
+        }
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;

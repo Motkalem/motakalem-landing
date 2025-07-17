@@ -97,7 +97,7 @@ class CreditAction
         ]);
 
         $data= request()->all();
-        
+
         $contract = $this->joinController->sendContract($student, $request->package_id, $data);
 
         if (!isset($contract)) {
@@ -121,7 +121,7 @@ class CreditAction
            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
         } else { # then it is tabby
 
-            try {   
+            try {
 
                 $adminEmails = explode(',', env('ADMIN_EMAILS'));
                 foreach ($adminEmails as $adminEmail) {
@@ -142,10 +142,10 @@ class CreditAction
                     'hyperpay_payment' => '',
                 ],
             ];
-            
+
             return response()->json($response, 200);
         }
-        
+
         if ($package->payment_type == Package::ONE_TIME) {
 
             $response = [
@@ -208,6 +208,7 @@ class CreditAction
             }
 
             try {
+
                 Notification::route('mail', $student->email)
                     ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
 
@@ -228,7 +229,7 @@ class CreditAction
             }
 
         }elseif($package->payment_type == Package::TABBY){
-            
+
             return [
                 'status' => 0,
                 'message' => __('You are already registered with a Tabby package.') . ' - '. $package->name,
@@ -237,7 +238,7 @@ class CreditAction
                     'hyperpay_payment' => ''
                 ]
             ];
-            
+
 
         }else {
 

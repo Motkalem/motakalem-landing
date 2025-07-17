@@ -72,23 +72,58 @@
             font-size: 2.3rem;
             font-weight: 100 !important;
         }
+
+        #changePaymentMethodLink{
+            color: #102202;
+            font-size: larger;
+            font-weight   : 400;
+        }
     </style>
 
     <meta http-equiv="Content-Security-Policy"
           content="
                     style-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'unsafe-inline';
                     frame-src 'self'  {{env('RYD_HYPERPAY_WIDGET_URL')}};
+                    frame-src 'self'  https://oppwa.com {{env('RYD_HYPERPAY_WIDGET_URL')}} https://geoissuer.cardinalcommerce.com/ https://eu-prod.ppipe.net/ https://authentication.cardinalcommerce.com/ https://admin.motkalem.sa https://staging-admin.motkalem.sa;
+
                     script-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}} 'nonce-{{$nonce}}';
                     connect-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     img-src 'self' {{env('RYD_HYPERPAY_WIDGET_URL')}};
                     ">
-
-
     <script nonce="{{$nonce}}">
-        var wpwlOptions = {
-            style:"card"
+        const paymentMethod = @json( data_get($_GET,'brand'));
+        // Apple Pay Script (Only if payment_method=APPLEPAY and Apple Pay is supported)
+        if (paymentMethod && paymentMethod.toUpperCase() === "APPLEPAY" &&
+            window.ApplePaySession && ApplePaySession.canMakePayments()) {
+            var wpwlOptions = {
+                applePay: {
+                    displayName: "Motkalem",
+                    total: { label: "Motkalem" },
+                    currencyCode: "SAR",
+                    countryCode: "SA",
+                    supportedNetworks: ["mada", "visa", "masterCard"]
+                }
+            };
+        } else {
+            var wpwlOptions = {
+                style: "card",
+                paymetTarget: "_top"
+            };
         }
     </script>
+    <style>
+        .wpwl-form {
+            max-width:100% !important;
+        }
+        .wpwl-apple-pay-button {
+            font-size: 16px !important;
+            display: block !important;
+            width: 100% !important;
+            -webkit-appearance: -apple-pay-button;
+            -apple-pay-button-type: buy;
+        }
+    </style>
+
 </head>
 
 <script src="{{ env('RYD_HYPERPAY_URL') }}/paymentWidgets.js?checkoutId={{ $checkoutId }}"
@@ -182,19 +217,15 @@
 
         @if(data_get($_GET,'brand'))
 
-            @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada'] ))
+            @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','applepay'] ))
 
-                <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}"
+                <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}/{{strtoupper( data_get($_GET,'brand'))}}"
                       class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}">
                 </form>
 
                 <div style="text-align: center;margin-top: 40px;">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center;color: #ffc107;  "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
+                    <a href="#" id="changePaymentMethodLink">تغيير وسيلة الدفع ؟</a>
+
                 </div>
             @else
 
@@ -202,12 +233,8 @@
                       data-brands="VISA"></form>
 
                 <div style="text-align: center;margin-top: 40px;color: #ffc107; ">
-                    <a href="javascript:void(0);"
-                       class="payment-method-title"
-                       style="text-align: center; color: #ffc107;   "
-                       onclick="removeBrandParam()">
-                        تغيير وسيلة الدفع ؟
-                    </a>
+                    <a href="#" id="changePaymentMethodLink" style="color: #ffc107;">تغيير وسيلة الدفع ؟</a>
+
                 </div>
             @endif
         @else
@@ -243,6 +270,28 @@
                         </a>
                     </div>
 
+
+
+                    <div id="applePayOption" style="display: none;">
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'applepay'])) }}"
+                           class="payment-option" style="display: inline-block; padding: 10px;
+                            border: 2px solid #e0e0e0; border-radius: 8px;
+                             transition: all 0.3s ease; background-color: #fff;
+                             box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 110px;">
+                            <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 65px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
+                        </a>
+                    </div>
+                    <script nonce="{{$nonce}}">
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
+                            const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
+
+                            if (isAppleDevice && supportsApplePay) {
+                                document.getElementById("applePayOption").style.display = "block";
+                            }
+                        });
+                    </script>
+
                 </div>
                 <style>
                     .payment-options a:hover {
@@ -258,6 +307,11 @@
     @include('payments._inc.footer')
 </div>
     <script nonce="{{$nonce}}">
+        document.getElementById('changePaymentMethodLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            removeBrandParam();
+        });
+
         function removeBrandParam() {
             // Get the current URL
             let url = new URL(window.location.href);
