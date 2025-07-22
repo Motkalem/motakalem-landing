@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use App\Models\InstallmentPayment;
 
+use Illuminate\Support\Facades\Crypt;
+
+Route::get('/test', function ( ) {
+
+       return $decryptedId = Crypt::encrypt(23);
+
+
+});
+
 
 ### ONE TIME PAYMENTS ### !
 Route::get('onetime/checkout', [PaymentController::class,'getPayPage'])->name('checkout.index');

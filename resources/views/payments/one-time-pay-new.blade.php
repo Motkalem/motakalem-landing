@@ -153,7 +153,7 @@
 
 <div class="routing">
 
-    <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: rtl ">
+    <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: rtl; ">
         <h1 class="text-center" style="text-align: center">ستقوم بدفع مبلغ {{$payment?->package?->total }}
             <span class="riyal-symbol">R</span> </h1>
 

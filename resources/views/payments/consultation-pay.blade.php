@@ -154,7 +154,7 @@
 
 
 <div class="routing">
-    <div style="padding-top:50px; padding-right: 15px ;margin-bottom:0px; direction: rtl;min-height: 500px ">
+    <div style="padding-top:50px; padding-right: 15px ;margin-bottom:0px; direction: rtl;min-height: 500px ;">
         <div class="payment-method-title"
              style="text-align: center; font-size: 20px; font-weight: bold;
               margin-bottom: 20px;padding-left: 5px;padding-right: 5px">
@@ -162,6 +162,8 @@
             {{$consultantPatient?->consultationType?->name}}
             {{$consultantPatient?->consultationType->price .' '  }} <span class="riyal-symbol">R</span>
         </div>
+
+        <div  style="max-width: 530px; margin: auto;">
 
         @if(data_get($_GET,'brand'))
             @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','applepay'] ))
@@ -243,6 +245,8 @@
             </style>
 
         @endif
+
+    </div>
     </div>
 
     @include('payments._inc.footer')
