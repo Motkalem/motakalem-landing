@@ -28,10 +28,10 @@
 
                         <!-- Consultation Type Field -->
                         <div class="mb-3 row">
-                            <label for="consultation_type_id" class="form-label col-sm-2 col-form-label">نوع الإستشارة</label>
+                            <label for="consultation_type_id" class="form-label col-sm-2 col-form-label">نوع الخدمة</label>
                             <div class="col-sm-10">
                                 <select class="form-control @error('consultation_type_id') is-invalid @enderror" id="consultation_type_id" name="consultation_type_id">
-                                    <option value="" disabled selected>اختر نوع الإستشارة</option>
+                                    <option value="" disabled selected>اختر نوع الخدمة</option>
                                     @foreach($consultationTypes as $type)
                                         <option value="{{ $type->id }}" {{ old('consultation_type_id', $consultantPatient->consultation_type_id ?? '') == $type->id ? 'selected' : '' }}>
                                             {{ $type->name }} ( {{$type->price .'' }} {{__('SAR')}} )

@@ -8,7 +8,7 @@
     <div class="gap-20 row pos-r" style="position: relative; height: 1095px;">
         <div class="col-md-12">
             <h3 class="text-bold">
-                أنواع الإستشارات
+                أنواع الخدمات
                 ({{ $consultantTypesCount }})
             </h3>
             <div class="mx-4 text-end">
@@ -27,7 +27,7 @@
                 <table class="table table-striped table-class">
                     <thead>
                     <tr>
-                        <th>اسم الاستشارة</th>
+                        <th>اسم الخدمة</th>
                         <th>السعر</th>
                         <th class="text-center"> مسجل بواسطة الادمن </th>
                         <th class="text-center"> مسجل من خلال حملة   </th>
@@ -80,11 +80,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="statusModalLabel">حذف نوع الاستشارة</h5>
+                    <h5 class="modal-title" id="statusModalLabel">حذف نوع الخدمة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    هل أنت متأكد أنك تريد حذف نوع الاستشارة هذا؟
+                    هل أنت متأكد أنك تريد حذف نوع الخدمة هذا؟
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>

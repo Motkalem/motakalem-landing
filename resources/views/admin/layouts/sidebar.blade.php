@@ -128,7 +128,7 @@
                     <span class="icon-holder">
                         <i class="c-indigo-500 ti-bag"></i>
                     </span>
-                    <span class="title">أنواع الإستشارات </span>
+                    <span class="title">أنواع الخدمات </span>
                 </a>
             </li>
 
@@ -138,7 +138,7 @@
                     <span class="icon-holder">
                         <i class="c-indigo-500 ti-comments-smiley"></i>
                     </span>
-                    <span class="title">مرضي الإستشارات </span>
+                    <span class="title">مرضي الخدمات </span>
                 </a>
             </li>
 

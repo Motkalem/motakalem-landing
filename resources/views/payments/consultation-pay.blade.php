@@ -3,7 +3,7 @@
       data-darkreader-proxy-injected="true" direction="rtl" dir="rtl" class="arabic" style="direction: rtl;">
 <head>
     <meta charset="utf-8">
-    <title>متكلم - دفع الاستشارة</title>
+    <title>متكلم - دفع الخدمة</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="./assets/img/motkalem-logo 1.png">
