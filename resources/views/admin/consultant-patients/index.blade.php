@@ -39,7 +39,7 @@
                         <th class="text-center">الجنس</th>
                         <th class="text-center">هاتف</th>
                         <th class="text-center">المدينة</th>
-                        <th class="text-center"> الإستشارة</th>
+                        <th class="text-center"> الخدمة</th>
                         <th class="text-center"> حالة الدفع </th>
                         <th class="text-center"> رابط الدفع  </th>
                         <th class="text-center"> المعاملات</th>

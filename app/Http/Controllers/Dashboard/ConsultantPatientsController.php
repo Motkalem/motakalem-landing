@@ -378,7 +378,7 @@ class ConsultantPatientsController extends AdminBaseController
             foreach ($adminEmails as $adminEmail) {
 
                 $result = "تمت المعاملة بنجاح !";
-                $subject = 'تنبيه بخصوص دفع استشارة';
+                $subject = 'تنبيه بخصوص دفع خدمة';
 
                 $transactionData = $consultationPatient->transaction_data;
                 $transactionDetails = json_encode($transactionData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -402,7 +402,7 @@ class ConsultantPatientsController extends AdminBaseController
                             <td style='text-align: right padding: 8px;'>{$consultationPatient->name}</td>
                         </tr>
                         <tr>
-                            <td style='text-align: right; padding: 8px; font-weight: bold; color: #2d3748;'>الإستشارة:</td>
+                            <td style='text-align: right; padding: 8px; font-weight: bold; color: #2d3748;'>الخدمة:</td>
                             <td style='text-align: right padding: 8px;'>{$consultationPatient->consultationType?->name}</td>
                         </tr>
                         <tr>
@@ -453,7 +453,7 @@ class ConsultantPatientsController extends AdminBaseController
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
             foreach ($adminEmails as $adminEmail) {
 
-                $subject = 'تنبيه بخصوص تسجيل استشارة';
+                $subject = 'تنبيه بخصوص تسجيل خدمة';
 
                 $logoUrl = 'https://motkalem.sa/assets/img/new-logo-colored.png'; // Update with your logo URL
 
@@ -467,7 +467,7 @@ class ConsultantPatientsController extends AdminBaseController
                 <!-- Email Content -->
                 <div style='text-align: right;background-color: #ffffff; padding: 30px; border-radius: 8px; margin: 20px auto; max-width: 600px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);'>
     <h2 style='text-align: rightcolor: #2d3748; text-align: center;
-                     margin-bottom: 20px;'>تم تسجيل إستشارة   :
+                     margin-bottom: 20px;'>تم تسجيل خدمة   :
                       </h2>
                     <table style='text-align: right; width: 100%; font-size: 14px; line-height: 1.6; color: #555; border-collapse: collapse; margin-bottom: 20px;'>
 
@@ -480,7 +480,7 @@ class ConsultantPatientsController extends AdminBaseController
                             <td style='text-align: right padding: 8px;'>{$consultationPatient->name}</td>
                         </tr>
                         <tr>
-                            <td style='text-align: right; padding: 8px; font-weight: bold; color: #2d3748;'>الإستشارة:</td>
+                            <td style='text-align: right; padding: 8px; font-weight: bold; color: #2d3748;'>الخدمة:</td>
                             <td style='text-align: right padding: 8px;'>{$consultationPatient->consultationType?->name}</td>
                         </tr>
                         <tr>

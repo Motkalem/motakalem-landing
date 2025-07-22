@@ -31,7 +31,7 @@ class ConsultantsController extends AdminBaseController
 
         $consultantTypes = $query->orderBy('id', 'desc')->paginate(12);
         $consultantTypesCount = ConsultantType::count();
-        $title = 'أنواع الإستشارات';
+        $title = 'أنواع الخدمات';
 
         return view('admin.consultant-types.index', compact('consultantTypes', 'title', 'consultantTypesCount'));
     }
@@ -39,7 +39,7 @@ class ConsultantsController extends AdminBaseController
 
     public function create()
     {
-        $title = 'إنشاء نوع استشارة';
+        $title = 'إنشاء نوع خدمة';
 
         return view('admin.consultant-types.create', compact('title'));
     }
@@ -59,14 +59,14 @@ class ConsultantsController extends AdminBaseController
             'is_active' => $request->is_active ? 1 : 0,
         ]);
 
-        notify()->success('تم إنشاء نوع الاستشارة.');
+        notify()->success('تم إنشاء نوع الخدمة.');
 
         return redirect()->route('dashboard.consultant-types.index')->with('success', 'Consultant type created successfully.');
     }
 
     public function edit($id)
     {
-        $title = 'تحديث نوع الاستشارة';
+        $title = 'تحديث نوع الخدمة';
         $consultantType = ConsultantType::findOrFail($id);
 
         return view('admin.consultant-types.create', compact('consultantType', 'title'));
@@ -92,7 +92,7 @@ class ConsultantsController extends AdminBaseController
 
         ]);
 
-        notify()->success('تم تحديث نوع الاستشارة.');
+        notify()->success('تم تحديث نوع الخدمة.');
 
         return redirect()->route('dashboard.consultant-types.index')->with('success', 'Consultant type updated successfully.');
     }
@@ -109,7 +109,7 @@ class ConsultantsController extends AdminBaseController
 
       if($result){
 
-        notify()->success('تم حذف نوع الاستشارة.');
+        notify()->success('تم حذف نوع الخدمة.');
       } else {
           notify()->error('لا يمكن الحذف .');
       }

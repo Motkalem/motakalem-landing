@@ -10,9 +10,9 @@
             <div class="p-20 bgc-white bd">
                 <h6 class="c-grey-900">
                     @isset($consultantType)
-                        تحديث نوع المستشار
+                        تحديث نوع الخدمة
                     @else
-                        إنشاء نوع مستشار
+                        إنشاء نوع خدمة
                     @endisset
                 </h6>
                 <div class="mx-4 text-end">
@@ -29,9 +29,9 @@
 
                         <!-- Consultant Type Name Field -->
                         <div class="mb-3 row">
-                            <label for="name" class="form-label col-sm-2 col-form-label">اسم نوع الإستشارة</label>
+                            <label for="name" class="form-label col-sm-2 col-form-label">اسم نوع الخدمة</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $consultantType->name ?? '') }}" placeholder="اسم نوع الإستشارة">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $consultantType->name ?? '') }}" placeholder="اسم نوع الخدمة">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -103,9 +103,9 @@
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" form="createConsultationType" class="btn btn-primary btn-color">
                         @isset($consultantType)
-                            تحديث نوع الإستشارة
+                            تحديث نوع الخدمة
                         @else
-                            إنشاء نوع الإستشارة
+                            إنشاء نوع الخدمة
                         @endisset
                     </button>
                 </div>

@@ -207,7 +207,7 @@
                         <td style="text-align: end;direction: ltr; ">{{ $consultationPatient?->mobile }}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: start;font-weight: normal">نوع الاستشارة</th>
+                        <th style="text-align: start;font-weight: normal">نوع الخدمة</th>
                         <td style="text-align: start">{{ $consultationPatient?->consultationType?->name }}</td>
                     </tr>
                     <tr>
