@@ -30,6 +30,7 @@ class PaymentController extends Controller
     public function getPayPage()
     {
 
+        
         $payment = Payment::with('package','student')->find(request()->pid);
 
         $responseData = null;
@@ -41,9 +42,10 @@ class PaymentController extends Controller
             echo "<p style='text-align:center'><a href=" . url('/') . ">" . url('/') . " </a></p>";
             die();
         }
-        try {
 
-            if ($payment->package?->payment_type == Package::ONE_TIME) {
+        try {
+            
+            if ($payment->package?->payment_type == Package::ONE_TIME && request()->brand) {
 
                  $responseData = $this->createCheckoutId($payment);
             }

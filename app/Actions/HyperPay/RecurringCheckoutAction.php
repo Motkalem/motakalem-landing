@@ -13,12 +13,14 @@ class RecurringCheckoutAction
 {
     use AsAction;
 
+   
     /**
      * @param ActionRequest $request
      * @return Application|Factory|View
      */
     public function handle(ActionRequest $request)
     {
+        
          $installmentPayment = InstallmentPayment::query()
             ->where('id',$request->paymentId )
             ->where('student_id',$request->stdId )
@@ -26,11 +28,17 @@ class RecurringCheckoutAction
 
         $amount = $installmentPayment?->package?->first_inst;
 
-        $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
-        $checkoutId = data_get($response, 'id');
-        $integrity = data_get( $response , "integrity");
-
-        $nonce = bin2hex(random_bytes(16));
+        if (request()->has('brand')) {
+            
+            $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
+            $checkoutId = data_get($response, 'id');
+            $integrity = data_get($response, "integrity");
+            $nonce = bin2hex(random_bytes(16));
+        } else {
+            $checkoutId = null;
+            $integrity = null;
+            $nonce = null;
+        }
 
         return view('payments.recurring-new-pay', compact('checkoutId',
             'amount','integrity','nonce'));
