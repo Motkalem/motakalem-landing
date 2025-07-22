@@ -189,23 +189,30 @@ class ConsultantPatientsController extends AdminBaseController
 
     public function getPayPage()
     {
+     
+
 
         $consultantPatient = ConsultantPatient::query()->findOrFail(request()->pid);
 
-        $responseData = null;
+        if (request()->has('brand')) {
+           
+            $responseData = null;
 
-        try {
+            try {
+                $responseData = $this->createCheckoutId($consultantPatient);
+            } catch (\Throwable $th) {
+                throw $th;
+            }
 
-            $responseData = $this->createCheckoutId($consultantPatient);
-
-        } catch (\Throwable $th) {
-
-            throw $th;
+            $paymentId = data_get(json_decode($responseData), "id");
+            $integrity = data_get(json_decode($responseData), "integrity");
+            $nonce = bin2hex(random_bytes(16));
+      
+        } else {
+            $paymentId = null;
+            $integrity = null;
+            $nonce = null;
         }
-
-        $paymentId = data_get(json_decode($responseData), "id");
-        $integrity = data_get(json_decode($responseData), "integrity");
-        $nonce = bin2hex(random_bytes(16));
 
         return view('payments.consultation-pay', compact('consultantPatient',
             'paymentId','integrity', 'nonce'));
