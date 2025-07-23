@@ -178,7 +178,6 @@
                       data-brands="VISA"></form>
                 <div style="text-align: center;margin-top: 40px;">
                     <a href="#" id="changePaymentMethodLink" style="color: #ffc107;">تغيير وسيلة الدفع ؟</a>
-
                 </div>
             @endif
         @else

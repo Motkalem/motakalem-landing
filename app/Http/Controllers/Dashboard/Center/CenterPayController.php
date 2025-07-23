@@ -42,16 +42,18 @@ class CenterPayController extends Controller
          $amount = $installmentPayment?->centerPackage?->first_inst;
 
         if (request()->has('brand')) {
-            
+
             $response = GenerateCenterRecurringPaymentData::make()->handle($installmentPayment?->centerPackage, $installmentPayment);
             $checkoutId = data_get($response, 'id');
             $integrity = data_get($response, "integrity");
-            $nonce = bin2hex(random_bytes(16));
+
         } else {
             $checkoutId = null;
             $integrity = null;
-            $nonce = null;
+
         }
+
+        $nonce = bin2hex(random_bytes(16));
 
         return view('payments.center-recurring-pay', compact('checkoutId',
             'amount','integrity','nonce'));
