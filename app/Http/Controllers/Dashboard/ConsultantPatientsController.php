@@ -189,13 +189,10 @@ class ConsultantPatientsController extends AdminBaseController
 
     public function getPayPage()
     {
-     
-
-
         $consultantPatient = ConsultantPatient::query()->findOrFail(request()->pid);
 
         if (request()->has('brand')) {
-           
+
             $responseData = null;
 
             try {
@@ -206,14 +203,15 @@ class ConsultantPatientsController extends AdminBaseController
 
             $paymentId = data_get(json_decode($responseData), "id");
             $integrity = data_get(json_decode($responseData), "integrity");
-            $nonce = bin2hex(random_bytes(16));
-      
+
+
         } else {
             $paymentId = null;
             $integrity = null;
-            $nonce = null;
+
         }
 
+        $nonce = bin2hex(random_bytes(16));
         return view('payments.consultation-pay', compact('consultantPatient',
             'paymentId','integrity', 'nonce'));
     }
