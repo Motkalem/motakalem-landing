@@ -136,6 +136,87 @@ class PayInstallmentController extends Controller
 
     public function getStatus()
     {
+        $instId = request()->route('instId');
+        $paymentMethod = request()->route('paymentMethod');
+
+        $entity_id = env('SNB_ENTITY_ID');
+        $access_token = env('SNB_AUTH_TOKEN');
+
+        if ($paymentMethod == 'MADA') {
+            $entity_id = env('SNB_ENTITY_ID_MADA'); // mada
+        }
+
+        if ($paymentMethod == 'APPLEPAY') {
+            $entity_id = config('hyperpay.snb_entity_id_apple_pay');
+            $access_token = config('hyperpay.snb_apple_pay_token');
+        }
+
+        // Assuming 'id' is passed via query param, else fallback to instId
+        $id = request()->query('id', $instId);
+
+        $url = env('SNB_HYPERPAY_URL') . "/checkouts/" . $id . "/payment";
+        $url .= "?entityId=" . $entity_id;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization:Bearer ' . $access_token]);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $responseData = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            return curl_error($ch);
+        }
+
+        curl_close($ch);
+
+        $res = new HyperpayNotificationProcessor($responseData);
+
+        $title = $res->processNotification();
+
+        $data = (array) json_decode($responseData);
+
+        $installment = Installment::query()->find($instId);
+
+        $transactionData = array_merge($data, [
+            'student_id' => $installment->installmentPayment?->student_id,
+            'payment_id' => $installment->installmentPayment?->id,
+            'title' => $title,
+        ]);
+
+        $transaction = $this->storeNotification($transactionData, $installment->installmentPayment, $installment);
+
+        $isSuccessful = $this->isSuccessfulResponse(data_get(data_get($transactionData, 'result'), 'code'));
+
+        if (data_get($transactionData, 'id') == null) {
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+
+            Notification::route('mail', $installment->installmentPayment?->student?->email)
+                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
+
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
+        }
+
+        $this->markInstallmentAsCompleted($installment, $installment->installmentPayment, $isSuccessful);
+
+        if ($isSuccessful == 'true') {
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=success');
+        } else {
+            // Send payment URL via email on failure
+            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
+
+            Notification::route('mail', $installment->installmentPayment?->student->email)
+                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
+
+            return Redirect::away(env(env('VERSION_STATE') . 'FRONT_URL') . '/one-step-closer?status=fail');
+        }
+    }
+
+
+    public function getStatusBKP()
+    {
 
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
@@ -149,12 +230,7 @@ class PayInstallmentController extends Controller
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
         }
-        $params = request()->route()->parameters();
 
-        echo "<pre>";
-        print_r($params);
-        echo "</pre>";
-        die();
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['instId'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
