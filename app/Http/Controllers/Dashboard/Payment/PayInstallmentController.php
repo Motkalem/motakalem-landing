@@ -150,7 +150,7 @@ class PayInstallmentController extends Controller
             $access_token = config('hyperpay.snb_apple_pay_token');
         }
 
-        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['instId'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
 
