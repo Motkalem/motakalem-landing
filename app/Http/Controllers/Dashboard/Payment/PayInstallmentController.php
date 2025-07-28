@@ -231,7 +231,7 @@ echo"<pre>";print_r($url);echo"</pre>";die();
             $access_token = config('hyperpay.snb_apple_pay_token');
         }
 
-        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['instId'] . "/payment";
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
 echo"<pre>";print_r($url);echo"</pre>";die();
