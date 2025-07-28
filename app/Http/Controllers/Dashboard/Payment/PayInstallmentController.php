@@ -134,7 +134,7 @@ class PayInstallmentController extends Controller
 
 
 
-    public function getStatus()
+    public function getStatuszzz()
     {
         $instId = request()->route('instId');
         $paymentMethod = request()->route('paymentMethod');
@@ -215,7 +215,7 @@ echo"<pre>";print_r($url);echo"</pre>";die();
     }
 
 
-    public function getStatusBKP()
+    public function getStatus()
     {
 
         $entity_id = env('SNB_ENTITY_ID');
@@ -234,7 +234,7 @@ echo"<pre>";print_r($url);echo"</pre>";die();
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['instId'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
-
+echo"<pre>";print_r($url);echo"</pre>";die();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
