@@ -4,6 +4,7 @@ use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Http\Controllers\Dashboard\Center\CenterPayController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
+use App\Http\Controllers\Dashboard\Payment\PayInstallmentController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
 use App\Notifications\Admin\HyperPayNotification;
@@ -13,13 +14,6 @@ use Illuminate\Support\Facades\Route;
 use App\Models\InstallmentPayment;
 
 use Illuminate\Support\Facades\Crypt;
-
-Route::get('/test', function ( ) {
-
-       return $decryptedId = Crypt::encrypt(23);
-
-
-});
 
 
 ### ONE TIME PAYMENTS ### !
@@ -47,6 +41,12 @@ Route::get('center/thank-you/{payid}/',  [CenterPayController::class,'getThankYo
 Route::get('invalid-url',  [CenterPayController::class,'invalidUrl'])->name('center.invalid.url');
 ### END ###
 
+
+### INSTALLMENT PAY ###
+Route::get('pay-installment/checkout/{instId}', [PayInstallmentController::class,'getPayPage'])
+    ->name('pay-installment.index');
+
+Route::get('pay-installment/result/{instId}/{paymentMethod?}', [PayInstallmentController::class,'getStatus']);
 
 
 Route::get('hash/{password}', function ($password) {

@@ -149,6 +149,8 @@ class CenterPaymentsController extends AdminBaseController
         return redirect()->back();
     }
 
+
+
     public function createWebHookNotification($response, $installment): Model|Builder
     {
 

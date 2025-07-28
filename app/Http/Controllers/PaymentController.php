@@ -30,7 +30,7 @@ class PaymentController extends Controller
     public function getPayPage()
     {
 
-        
+
         $payment = Payment::with('package','student')->find(request()->pid);
 
         $responseData = null;
@@ -44,7 +44,7 @@ class PaymentController extends Controller
         }
 
         try {
-            
+
             if ($payment->package?->payment_type == Package::ONE_TIME && request()->brand) {
 
                  $responseData = $this->createCheckoutId($payment);
@@ -83,9 +83,9 @@ class PaymentController extends Controller
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
         if($paymentMethod == 'TABBY'){
-            $entity_id = env('RYD_ENTITY_ID_MADA'); //mada
-            $access_token = env('RYD_AUTH_TOKEN');
-            $url = env('RYD_HYPERPAY_URL')."/checkouts";
+            $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
+            $access_token = env('SNB_AUTH_TOKEN');
+            $url = env('SNB_HYPERPAY_URL')."/checkouts";
         }
 
         if($paymentMethod == 'APPLEPAY')
@@ -169,10 +169,17 @@ class PaymentController extends Controller
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
 
+        if(request()->paymentMethod == 'MADA') {
+
+            $entity_id = env('SNB_ENTITY_ID_MADA');
+
+        }
+
         if(request()->paymentMethod == 'APPLEPAY') {
 
-            $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
-            $access_token = config('hyperpay.RYD_APPLE_PAY_ACCESS_TOKEN');
+            $entity_id = config('hyperpay.snb_entity_id_apple_pay');
+            $access_token = config('hyperpay.snb_apple_pay_token');
+
         }
 
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";

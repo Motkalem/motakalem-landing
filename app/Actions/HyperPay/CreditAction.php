@@ -116,6 +116,7 @@ class CreditAction
         if ($package->payment_type == Package::ONE_TIME) {
 
             $payment = $this->createOneTimePaymentUrl($student->id, $request->package_id);
+
         } elseif($package->payment_type == Package::INSTALLMENTS){
 
            return $this->createScheduledPayment($student->id, $request->package_id, $student, $request->all());
