@@ -37,7 +37,6 @@ class RecurringCheckoutAction
         } else {
             $checkoutId = null;
             $integrity = null;
-
         }
 
         $nonce = bin2hex(random_bytes(16));

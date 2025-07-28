@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Dashboard\AdminBaseController;
+use App\Models\Center\CenterInstallmentPayment;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\Installment;
 use App\Models\InstallmentPayment;
+use App\Notifications\Admin\CenterPaymentUrlNotification;
+use App\Notifications\Admin\ProgramInstallmentPayLinkNotification;
 use App\Notifications\SentPaymentUrlNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -190,7 +193,39 @@ class InstallmentPaymentsController extends AdminBaseController
             return redirect()->back();
         }
     }
-/**
+
+    public function sendPaymentUrl($id)
+    {
+
+
+        $installment = Installment::query()
+            ->with('installmentPayment')
+            ->findOrFail($id);
+
+
+        $url = route('pay-installment.index', [
+            'instId' => $installment->id,
+        ]);
+
+
+        try {
+
+            Notification::route('mail', $installment->installmentPayment?->student?->email)
+                ->notify(new ProgramInstallmentPayLinkNotification($installment->installmentPayment->student, $url));
+
+            notify()->success('تم إرسال الرباط: '  );
+
+        } catch (\Exception $e) {
+
+
+            notify()->error('حدث خطأ أثناء  إرسال الرابط: ' . $e);
+
+        }
+
+        return redirect()->back();
+    }
+
+    /**
  * Get the successful initial notification for the installment payment
  */
     protected function getSuccessfulInitialNotification($installmentPayment)

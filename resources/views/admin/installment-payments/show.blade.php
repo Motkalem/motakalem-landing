@@ -124,7 +124,6 @@
 
 @section('content')
 
-
 <div class="container-fluid">
     <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
     <div class="text-end mx-4 mb-3">
@@ -214,6 +213,10 @@
                             <th class="text-center">تاريخ الاستحقاق</th>
                             <th class="text-center">تاريخ الدفع</th>
                             <th class="text-center">حالة الدفع</th>
+
+                            <th class="text-center"> نوع الدفع</th>
+                            <th class="text-center">  رابط الدفع  </th>
+
                             <th class="text-center">الإجراء</th>
                         </tr>
                         </thead>
@@ -231,6 +234,24 @@
                                         <span class="text-success">مدفوع</span>
                                     @else
                                         <span class="text-danger">غير مدفوع</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if ($installment->paid_type == 'recurring' && $installment->is_paid)
+                                        <span class="text-primary">تقسط تلقائي</span>
+                                    @elseif($installment->paid_type == 'payment link'  && $installment->is_paid)
+                                        <span class="text-warning"> لينك دفع  </span>
+                                      @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if(!$installment->is_paid)
+                                        <button type="button" class="btn btn-primary bg-success
+                                        text-white border-0 btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#confirmSendPaymentUrlModal" data-installment-id="{{$installment->id}}">
+                                           إرسل الرابط
+                                        </button>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -268,6 +289,28 @@
                     </div>
                     <div class="modal-footer">
                         <form id="deductionForm" action="" method="POST">
+                            @csrf
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-danger bg-danger text-white">تأكيد</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmSendPaymentUrlModal" tabindex="-1"
+             aria-labelledby="confirmSendPaymentUrlModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmSendPaymentUrlModal">تأكيد إرسال الرابط </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        هل أنت متأكد أنك تريد إرسال رابط الدفع؟
+                    </div>
+                    <div class="modal-footer">
+                        <form id="sendUrlForm" action="" method="POST">
                             @csrf
                             <button type="button" class="btn btn-default" data-bs-dismiss="modal">إلغاء</button>
                             <button type="submit" class="btn btn-danger bg-danger text-white">تأكيد</button>
@@ -320,32 +363,11 @@
                 </section>
             </div>
         </div>
-
-
-
-
     </div>
 </div>
 
 
-<!-- Cancel Subscription Modal -->
-{{--<div class="modal fade" id="cancelSubscriptionModal" tabindex="-1" aria-labelledby="cancelSubscriptionModalLabel" aria-hidden="true">--}}
-{{--    <div class="modal-dialog">--}}
-{{--        <div class="modal-content">--}}
-{{--            <div class="modal-header">--}}
-{{--                <h5 class="modal-title" id="cancelSubscriptionModalLabel">تأكيد إلغاء الاشتراك</h5>--}}
-{{--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
-{{--            </div>--}}
-{{--            <div class="modal-body">--}}
-{{--                هل أنت متأكد أنك تريد إلغاء الاشتراك؟--}}
-{{--            </div>--}}
-{{--            <div class="modal-footer">--}}
-{{--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>--}}
-{{--                <a href="#" class="btn btn-danger btn-confirm-cancel">تأكيد الإلغاء</a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
+
 @endsection
 
 @push('scripts')
@@ -363,18 +385,20 @@
             const routeUrl = `{{ route('dashboard.deductInstallment', ':installmentId') }}`.replace(':installmentId', installmentId);
             deductionForm.action = routeUrl;
         });
+
+
+        // Script to handle modal action
+        const confirmSendPaymentUrlModal = document.getElementById('confirmSendPaymentUrlModal');
+        const sendUrlForm = document.getElementById('sendUrlForm');
+
+        confirmSendPaymentUrlModal.addEventListener('show.bs.modal', function (event) {
+            const link_button = event.relatedTarget;
+            const installmentId = link_button.getAttribute('data-installment-id');
+
+            // Update the form action dynamically with the installment ID
+            sendUrlForm.action = `{{ route('dashboard.send-pay-url', ':installmentId') }}`.replace(':installmentId', installmentId);
+        });
     </script>
 
 
-{{--    <script>--}}
-{{--        document.addEventListener('DOMContentLoaded', function() {--}}
-{{--            var cancelSubscriptionModal = document.getElementById('cancelSubscriptionModal');--}}
-{{--            cancelSubscriptionModal.addEventListener('show.bs.modal', function(event) {--}}
-{{--                var button = event.relatedTarget;--}}
-{{--                var url = button.getAttribute('data-url');--}}
-{{--                var confirmCancelButton = cancelSubscriptionModal.querySelector('.btn-confirm-cancel');--}}
-{{--                confirmCancelButton.setAttribute('href', url);--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
 @endpush
