@@ -156,7 +156,7 @@ class PayInstallmentController extends Controller
 
         $url = env('SNB_HYPERPAY_URL') . "/checkouts/" . $id . "/payment";
         $url .= "?entityId=" . $entity_id;
-
+echo"<pre>";print_r($url);echo"</pre>";die();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization:Bearer ' . $access_token]);
