@@ -231,10 +231,10 @@ echo"<pre>";print_r($url);echo"</pre>";die();
             $access_token = config('hyperpay.snb_apple_pay_token');
         }
 
+        echo"<pre>";print_r(request()->paymentMethod);echo"</pre>";die();
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
-echo"<pre>";print_r($url);echo"</pre>";die();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
