@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Payment;
 
 use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
+use App\Models\HyperpayWebHooksNotification;
 use App\Models\Installment;
 use App\Models\Package;
 use App\Models\ParentContract;
@@ -34,12 +35,18 @@ class PayInstallmentController extends Controller
 
         $installment = Installment::with('installmentPayment')->find(request()->instId);
 
-        $responseData = $this->createCheckoutId($installment);
+        if (request()->has('brand')) {
 
-        $checkoutId = data_get(json_decode($responseData), "id");
-        $integrity = data_get(json_decode($responseData), "integrity");
+            $responseData = $this->createCheckoutId($installment);
+            $checkoutId = data_get(json_decode($responseData), "id");
+            $integrity = data_get(json_decode($responseData), "integrity");
+
+        } else {
+            $checkoutId = null;
+            $integrity = null;
+        }
+
         $nonce = bin2hex(random_bytes(16));
-
         return view('payments.pay-installment', compact('installment', 'checkoutId', 'integrity', 'nonce'));
     }
 
@@ -133,10 +140,8 @@ class PayInstallmentController extends Controller
     }
 
 
-    /**
-     * @return string|RedirectResponse
-     */
-    public function getStatus(): string|RedirectResponse
+
+    public function getStatus()
     {
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
@@ -168,7 +173,7 @@ class PayInstallmentController extends Controller
 
        $response  = $responseData;
 
-        $res = new HyperpayNotificationProcessor( $response);
+         $res = new HyperpayNotificationProcessor( $response);
 
         $title =  $res->processNotification()   ;
 
@@ -183,21 +188,25 @@ class PayInstallmentController extends Controller
             'title' =>  $title
         ]);
 
-        $transaction = $this->createTransactions($transactionData,    $installment->installmentPayment);
+        $transaction = $this->storeNotification($transactionData, $installment->installmentPayment,   $installment );
 
+
+
+        $isSuccessful = $this->isSuccessfulResponse(data_get( data_get($transactionData,'result'), 'code'));
 
        if( data_get($transactionData, 'id') ==  null)
        {
             $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
-            Notification::route('mail', $installment->installmentPayment?->student?->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
+            Notification::route('mail', $installment->installmentPayment?->student?->email)
+                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
 
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
 
        }
 
-        $this->markInstallmentAsCompleted($installment,  $installment->installmentPayment);
+        $this->markInstallmentAsCompleted($installment,  $installment->installmentPayment, $isSuccessful);
 
-        if ($transaction->success == 'true') {
+        if ($isSuccessful == 'true') {
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
@@ -205,43 +214,38 @@ class PayInstallmentController extends Controller
             // Send payment URL via email on failure
             $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
 
-            Notification::route('mail', $payment->student->email)->notify(new SentPaymentUrlNotification($payment->student, $payment_url));
+            Notification::route('mail', $installment->installmentPayment?->student->email)
+                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
         }
     }
 
-    /**
-     * @param $data
-     * @param $payment
-     * @return mixed
-     */
-    public function createTransactions($data, $payment=null): mixed
+    private function isSuccessfulResponse(?string $resultCode): bool
     {
-
-        return  Transaction::query()->create([
-            'data' => $data,
-            'title' => data_get($data, 'title'),
-            'transaction_id' => data_get($data, 'id'),
-            'student_id' => data_get($data, 'student_id'),
-            'payment_id' => data_get($data, 'payment_id'),
-            'amount' => data_get($data, 'amount')??0.0,
-            'success' =>
-           in_array(data_get(data_get($data, 'result'), 'code'),
-               ['000.100.110','000.000.000'])  ? 'true' : 'false',
-        ]);
+        $successPattern = '/^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[12]0)/';
+        return preg_match($successPattern, $resultCode) === 1;
     }
 
+
+    public function storeNotification($response, $installmentPayment, $installment)
+    {
+      return  $notification = HyperpayWebHooksNotification::query()->create([
+            'title' => data_get($response, 'result.description'),
+            'installment_payment_id' => $installmentPayment->id,
+            'installment_id' => $installment->id,
+            'type' => 'pay installment with link',
+            'payload' => $response,
+            'log' => $response,
+        ]);
+    }
     /**
      * @param $payment
      * @return void
      */
-    private function markInstallmentAsCompleted($installment, $payment=null)
+    private function markInstallmentAsCompleted($installment, $payment=null, $isSuccessful)
     {
-
-        $transaction = Transaction::where('payment_id', $payment->id)->latest()->first();
-
-        if ($transaction->success == 'true')
+        if ($isSuccessful == 'true')
              {
                  $installment->update(['is_paid' => true, 'paid_at'=> now(), 'paid_type'=> 'payment link']);
             }

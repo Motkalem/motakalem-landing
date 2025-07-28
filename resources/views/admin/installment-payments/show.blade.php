@@ -240,7 +240,7 @@
                                     @if ($installment->paid_type == 'recurring' && $installment->is_paid)
                                         <span class="text-primary">تقسط تلقائي</span>
                                     @elseif($installment->paid_type == 'payment link'  && $installment->is_paid)
-                                        <span class="text-warning"> لينك دفع  </span>
+                                        <span class="text-default"> لينك دفع  </span>
                                       @else
                                         -
                                     @endif
