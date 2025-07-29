@@ -79,10 +79,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
         Route::resource('center-patients', PatientsController::class);
         Route::resource('center-payments', CenterPaymentsController::class);
 
-        Route::post('installment-payments/{id}', [CenterPaymentsController::class, 'deductInstallment'])
-            ->name('deductInstallment');
+        Route::post('installment-payments/{id}', [CenterPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
 
-
+       Route::post('center-installment-send-pay-url/{id}', [CenterPaymentsController::class, 'sendPaymentUrl'])->name('center-send-pay-url');
 
         Route::post('dashboard/send-pay-url/{id}', [CenterPaymentsController::class, 'sendPayUrl'])->name('send-pay-url');
     });

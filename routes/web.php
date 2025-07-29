@@ -5,6 +5,10 @@ use App\Actions\HyperPay\RecurringCheckoutResultAction;
 use App\Http\Controllers\Dashboard\Center\CenterPayController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
 use App\Http\Controllers\Dashboard\Payment\PayInstallmentController;
+use App\Http\Controllers\Dashboard\Payment\CenterPayInstallmentController;
+
+
+
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PaymentController;
 use App\Notifications\Admin\HyperPayNotification;
@@ -42,11 +46,15 @@ Route::get('invalid-url',  [CenterPayController::class,'invalidUrl'])->name('cen
 ### END ###
 
 
-### INSTALLMENT PAY ###
-Route::get('pay-installment/checkout/{instId}', [PayInstallmentController::class,'getPayPage'])
-    ->name('pay-installment.index');
-
+### PROGRAM INSTALLMENT WITH ONETIME PAY ###
+Route::get('pay-installment/checkout/{instId}', [PayInstallmentController::class,'getPayPage'])->name('pay-installment.index');
 Route::get('pay-installment/result/{instId}/{paymentMethod?}', [PayInstallmentController::class,'getStatus']);
+
+
+### CENTER INSTALLMENT WITH ONETIME PAY ###
+Route::get('pay-center-installment/checkout/{instId}', [CenterPayInstallmentController::class,'getPayPage'])->name('pay-center-installment.index');
+Route::get('pay-center-installment/result/{instId}/{paymentMethod?}', [CenterPayInstallmentController::class,'getStatus']);
+
 
 
 Route::get('hash/{password}', function ($password) {

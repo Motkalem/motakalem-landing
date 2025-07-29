@@ -65,12 +65,17 @@ class CenterPayController extends Controller
         $entity_id = env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
 
-        if(request()->brand == 'APPLEPAY')
+        if(request()->paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
         }
 
+        if(request()->paymentMethod == 'MADA')
+        {
+            $entity_id = env('RYD_ENTITY_ID_MADA');  
+        }
+        
         $url = env('RYD_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entity_id;
 

@@ -308,17 +308,57 @@
                     </div>
                     <div class="modal-body">
                         هل أنت متأكد أنك تريد إرسال رابط الدفع؟
+                        <div class="mt-3">
+                            <label for="paymentLink" class="form-label">رابط الدفع:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control d-none" id="paymentLink" readonly value="">
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <form id="sendUrlForm" action="" method="POST">
+                    <div class="modal-footer p-4">
+                        <form id="sendUrlForm" action="" method="POST" class="d-flex gap-2 align-items-center p-2">
                             @csrf
-                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">إلغاء</button>
-                            <button type="submit" class="btn btn-danger bg-danger text-white">تأكيد</button>
+                            <button type="button" class="btn btn-md btn-outline-danger" data-bs-dismiss="modal">
+                                <i class="bi bi-x-lg"></i> إلغاء
+                            </button>
+                            <button type="button" class="btn btn-md btn-outline-secondary" id="copyPaymentLinkBtn">
+                                <i class="fa fa-copy"></i> نسخ الرابط
+                            </button>
+                            <small id="copySuccessMsg" class="text-success d-none ms-2">تم نسخ الرابط!</small>
+                            <button type="submit" class="btn btn-md btn-outline-success">
+                                <i class="bi bi-send"></i> تأكيد
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            // Fill the payment link input when modal is shown
+            document.addEventListener('DOMContentLoaded', function () {
+                var confirmSendPaymentUrlModal = document.getElementById('confirmSendPaymentUrlModal');
+                confirmSendPaymentUrlModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var installmentId = button.getAttribute('data-installment-id');
+                    // Construct the payment link (adjust route as needed)
+                    var paymentLink = "{{ url('pay-installment/checkout') }}/" + installmentId;
+                    document.getElementById('paymentLink').value = paymentLink;
+                    document.getElementById('copySuccessMsg').classList.add('d-none');
+                });
+
+                document.getElementById('copyPaymentLinkBtn').addEventListener('click', function () {
+                    var paymentLinkInput = document.getElementById('paymentLink');
+                    // Temporarily show the input to select and copy
+                    paymentLinkInput.classList.remove('d-none');
+                    paymentLinkInput.select();
+                    paymentLinkInput.setSelectionRange(0, 99999); // For mobile devices
+                    document.execCommand('copy');
+                    document.getElementById('copySuccessMsg').classList.remove('d-none');
+                    // Hide the input again
+                    paymentLinkInput.classList.add('d-none');
+                });
+            });
+        </script>
 
 
     </div>

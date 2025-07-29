@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CenterInstallment extends Model
 {
 
-    protected $fillable = ['center_installment_payment_id', 'installment_amount',
-        'installment_date','paid_at','admin_ip', 'is_paid'];
+    protected $fillable = [
+        'center_installment_payment_id', 'installment_amount',
+        'paid_type', 'installment_date','paid_at',
+        'admin_ip', 'is_paid'];
+        
 
     /**
      * @return BelongsTo

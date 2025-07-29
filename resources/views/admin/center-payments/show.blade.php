@@ -214,6 +214,8 @@
                             <th class="text-center">تاريخ الاستحقاق</th>
                             <th class="text-center">تاريخ الدفع</th>
                             <th class="text-center">حالة الدفع</th>
+                            <th class="text-center"> نوع الدفع</th>
+                            <th class="text-center"> رابط الدفع</th>
                             <th class="text-center">الإجراء</th>
                         </tr>
                         </thead>
@@ -234,18 +236,42 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    @if ($installment->paid_type == 'recurring' && $installment->is_paid)
+                                        <span class="text-primary">تقسط تلقائي</span>
+                                    @elseif($installment->paid_type == 'payment link'  && $installment->is_paid)
+                                        <span class="text-default"> لينك دفع  </span>
+                                      @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
                                     @if (!$installment->is_paid)
-                                        <button type="button" class="btn btn-primary bg-success text-white border-0 btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#confirmDeductionModal"
-                                                data-installment-id="{{ $installment->id }}">
-                                            خصم القسط
-                                        </button>
-                                    @else
-                                        <button class="btn btn-secondary btn-sm" disabled>
-                                            تم الدفع
+                                        <button type="button"
+                                        class="btn btn-info btn-sm sendPaymentLinkBtn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#sendPaymentLinkModal"
+                                        data-installment-id="{{ $installment->id }}">
+                                            إرسال رابط الدفع
                                         </button>
                                     @endif
+
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex flex-column gap-1">
+                                        @if (!$installment->is_paid)
+                                            <button type="button" class="btn btn-primary bg-success text-white border-0 btn-sm mb-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#confirmDeductionModal"
+                                                    data-installment-id="{{ $installment->id }}">
+                                                خصم القسط
+                                            </button>
+                                         
+                                        @else
+                                            <button class="btn btn-secondary btn-sm" disabled>
+                                                تم الدفع
+                                            </button>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -254,6 +280,37 @@
                 </div>
             </div>
         </div>
+
+        <!-- Send Payment Link Modal -->
+        <div class="modal fade" id="sendPaymentLinkModal" tabindex="-1" aria-labelledby="sendPaymentLinkModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="sendPaymentLinkForm" action="" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="sendPaymentLinkModalLabel">إرسال رابط الدفع للقسط</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>هل أنت متأكد أنك تريد إرسال رابط الدفع لهذا القسط؟</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-md btn-outline-danger" data-bs-dismiss="modal">
+                                <i class="bi bi-x-lg"></i> إلغاء
+                            </button>
+                            <button type="button" class="btn btn-md btn-outline-secondary" id="copyPaymentLinkBtn">
+                                <i class="fa fa-copy"></i> نسخ الرابط
+                            </button>
+                            <small id="copySuccessMsg" class="text-success d-none ms-2">تم نسخ الرابط!</small>
+                            <button type="submit" class="btn btn-md btn-outline-success">
+                                <i class="bi bi-send"></i> تأكيد
+                            </button>
+                            <input type="text" id="paymentLinkInput" value="" readonly style="position:absolute; left:-9999px;">
+                        </div>
+                </form>
+            </div>
+        </div>
+ 
 
         <!-- Confirmation Modal -->
         <div class="modal fade" id="confirmDeductionModal" tabindex="-1" aria-labelledby="confirmDeductionModalLabel" aria-hidden="true">
@@ -354,18 +411,47 @@
             const routeUrl = `{{ route('dashboard.center.deductInstallment', ':installmentId') }}`.replace(':installmentId', installmentId);
             deductionForm.action = routeUrl;
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+                // Handle send payment link button click
+                document.querySelectorAll('.sendPaymentLinkBtn').forEach(function(btn) {
+                    btn.addEventListener('click', function () {
+                        var centerInstallmentId = this.getAttribute('data-installment-id');
+                        var form = document.getElementById('sendPaymentLinkForm');
+                        // Set the form action dynamically
+                        form.action = "{{ route('dashboard.center.center-send-pay-url', 'INSTALLMENT_ID') }}".replace('INSTALLMENT_ID', centerInstallmentId);
+                    });
+                });
+            });
+    
+    
+           
+      document.addEventListener('DOMContentLoaded', function () {
+                                    var copyBtn = document.getElementById('copyPaymentLinkBtn');
+                                    var paymentLinkInput = document.getElementById('paymentLinkInput');
+                                    var sendPaymentLinkModal = document.getElementById('sendPaymentLinkModal');
+
+                                    // Listen for modal show to set the link
+                                    sendPaymentLinkModal.addEventListener('show.bs.modal', function (event) {
+                                        var button = event.relatedTarget;
+                                        var installmentId = button ? button.getAttribute('data-installment-id') : null;
+                                        if (installmentId) {
+                                            var url = window.location.origin + '/pay-center-installment/checkout/' + installmentId;
+                                            paymentLinkInput.value = url;
+                                        }
+                                    });
+
+                                    copyBtn.addEventListener('click', function () {
+                                        paymentLinkInput.select();
+                                        paymentLinkInput.setSelectionRange(0, 99999); // For mobile devices
+                                        document.execCommand('copy');
+                                        copyBtn.innerText = 'تم النسخ!';
+                                        setTimeout(function () {
+                                            copyBtn.innerText = 'نسخ رابط الدفع';
+                                        }, 1500);
+                                    });
+                                });
+            
     </script>
-
-
-{{--    <script>--}}
-{{--        document.addEventListener('DOMContentLoaded', function() {--}}
-{{--            var cancelSubscriptionModal = document.getElementById('cancelSubscriptionModal');--}}
-{{--            cancelSubscriptionModal.addEventListener('show.bs.modal', function(event) {--}}
-{{--                var button = event.relatedTarget;--}}
-{{--                var url = button.getAttribute('data-url');--}}
-{{--                var confirmCancelButton = cancelSubscriptionModal.querySelector('.btn-confirm-cancel');--}}
-{{--                confirmCancelButton.setAttribute('href', url);--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
+ 
 @endpush

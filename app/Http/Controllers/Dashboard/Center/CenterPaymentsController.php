@@ -43,7 +43,8 @@ class CenterPaymentsController extends AdminBaseController
     public function show($id)
     {
         $title = 'عرض الدفعه';
-        $installmentPayment = CenterInstallmentPayment::with('centerInstallments')->findOrFail($id);
+
+        $installmentPayment = CenterInstallmentPayment::with('centerInstallments', 'centerTransaction')->findOrFail($id);
 
         return view('admin.center-payments.show', compact('installmentPayment', 'title'));
     }
@@ -150,11 +151,42 @@ class CenterPaymentsController extends AdminBaseController
     }
 
 
+    public function sendPaymentUrl($id)
+    {
+
+        $centerInstallment = CenterInstallment::query()
+            ->with('centerInstallmentPayment')
+            ->findOrFail($id);
+
+
+        $url = route('pay-center-installment.index', [
+            'instId' => $centerInstallment->id,
+        ]);
+
+
+        try {
+
+            Notification::route('mail', $centerInstallment->centerInstallmentPayment?->patient?->email)
+                ->notify(new \App\Notifications\Admin\CenterInstallmentPayLinkNotification($centerInstallment->centerInstallmentPayment->patient, $url));
+
+            notify()->success('تم إرسال الرباط: '  );
+
+        } catch (\Exception $e) {
+
+
+            notify()->error('حدث خطأ أثناء  إرسال الرابط: ' . $e);
+
+        }
+
+        return redirect()->back();
+    }
+
+
 
     public function createWebHookNotification($response, $installment): Model|Builder
     {
 
-        return HyperpayWebHooksNotification::query()->create([
+          HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
             'center_installment_payment_id' => $installment->id,
             'type' => 'execute center recurring payment',
