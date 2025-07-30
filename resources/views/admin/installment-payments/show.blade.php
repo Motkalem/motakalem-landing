@@ -298,67 +298,88 @@
             </div>
         </div>
 
-        <div class="modal fade" id="confirmSendPaymentUrlModal" tabindex="-1"
-             aria-labelledby="confirmSendPaymentUrlModal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmSendPaymentUrlModal">تأكيد إرسال الرابط </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        هل أنت متأكد أنك تريد إرسال رابط الدفع؟
-                        <div class="mt-3">
-                            <label for="paymentLink" class="form-label">رابط الدفع:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control d-none" id="paymentLink" readonly value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer p-4">
-                        <form id="sendUrlForm" action="" method="POST" class="d-flex gap-2 align-items-center p-2">
-                            @csrf
-                            <button type="button" class="btn btn-md btn-outline-danger" data-bs-dismiss="modal">
-                                <i class="bi bi-x-lg"></i> إلغاء
-                            </button>
-                            <button type="button" class="btn btn-md btn-outline-secondary" id="copyPaymentLinkBtn">
-                                <i class="fa fa-copy"></i> نسخ الرابط
-                            </button>
-                            <small id="copySuccessMsg" class="text-success d-none ms-2">تم نسخ الرابط!</small>
-                            <button type="submit" class="btn btn-md btn-outline-success">
-                                <i class="bi bi-send"></i> تأكيد
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            // Fill the payment link input when modal is shown
-            document.addEventListener('DOMContentLoaded', function () {
-                var confirmSendPaymentUrlModal = document.getElementById('confirmSendPaymentUrlModal');
-                confirmSendPaymentUrlModal.addEventListener('show.bs.modal', function (event) {
-                    var button = event.relatedTarget;
-                    var installmentId = button.getAttribute('data-installment-id');
-                    // Construct the payment link (adjust route as needed)
-                    var paymentLink = "{{ url('pay-installment/checkout') }}/" + installmentId;
-                    document.getElementById('paymentLink').value = paymentLink;
-                    document.getElementById('copySuccessMsg').classList.add('d-none');
-                });
 
-                document.getElementById('copyPaymentLinkBtn').addEventListener('click', function () {
-                    var paymentLinkInput = document.getElementById('paymentLink');
-                    // Temporarily show the input to select and copy
-                    paymentLinkInput.classList.remove('d-none');
-                    paymentLinkInput.select();
-                    paymentLinkInput.setSelectionRange(0, 99999); // For mobile devices
-                    document.execCommand('copy');
-                    document.getElementById('copySuccessMsg').classList.remove('d-none');
-                    // Hide the input again
-                    paymentLinkInput.classList.add('d-none');
-                });
-            });
-        </script>
+
+        <div class="modal fade" id="confirmSendPaymentUrlModal" tabindex="-1"
+        aria-labelledby="confirmSendPaymentUrlModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+       <form id="sendUrlForm" action="" method="POST" class="modal-content">
+         @csrf
+         <div class="modal-header">
+           <h5 class="modal-title" id="confirmSendPaymentUrlModalLabel">تأكيد إرسال الرابط</h5>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+         </div>
+         <div class="modal-body"> 
+           هل أنت متأكد أنك تريد إرسال رابط الدفع؟
+           <div class="mt-3">
+             <label for="paymentLinkInput" class="form-label">رابط الدفع:</label>
+             <div class="input-group">
+               <input type="text" class="form-control" id="paymentLinkInput" readonly value="">
+               <button type="button" class="btn btn-outline-secondary" id="copyPaymentLinkBtn" aria-label="نسخ الرابط">
+                 <i class="fa fa-copy"></i> نسخ الرابط
+               </button>
+             </div>
+             <small id="copySuccessMsg" class="text-success d-none ms-2">تم نسخ الرابط!</small>
+           </div>
+         </div>
+        
+         <div class="modal-footer d-flex gap-3 justify-content-end">
+            <button 
+              type="button" 
+              class="btn btn-danger px-4" 
+              data-bs-dismiss="modal" 
+              style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
+            >
+              <i class="bi bi-x-lg"></i> إلغاء
+            </button>
+            <button 
+              type="submit" 
+              class="btn btn-success px-4" 
+              style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
+            >
+              <i class="bi bi-send"></i> تأكيد
+            </button>
+          </div>
+          
+       </form>
+     </div>
+   </div>
+   
+   <script>
+     document.addEventListener('DOMContentLoaded', function () {
+       var modal = document.getElementById('confirmSendPaymentUrlModal');
+       var paymentLinkInput = document.getElementById('paymentLinkInput');
+       var copyBtn = document.getElementById('copyPaymentLinkBtn');
+       var copySuccessMsg = document.getElementById('copySuccessMsg');
+   
+       modal.addEventListener('show.bs.modal', function (event) {
+         var button = event.relatedTarget;
+         var installmentId = button.getAttribute('data-installment-id');
+         var paymentLink = "{{ url('pay-installment/checkout') }}/" + installmentId;
+         paymentLinkInput.value = paymentLink;
+         copySuccessMsg.classList.add('d-none');
+       });
+   
+       copyBtn.addEventListener('click', function () {
+         if (navigator.clipboard) {
+           navigator.clipboard.writeText(paymentLinkInput.value).then(function () {
+             copySuccessMsg.classList.remove('d-none');
+             setTimeout(() => copySuccessMsg.classList.add('d-none'), 2000);
+           }, function () {
+             alert('فشل نسخ الرابط، يرجى المحاولة يدويًا.');
+           });
+         } else {
+           // fallback for older browsers
+           paymentLinkInput.select();
+           paymentLinkInput.setSelectionRange(0, 99999);
+           document.execCommand('copy');
+           copySuccessMsg.classList.remove('d-none');
+           setTimeout(() => copySuccessMsg.classList.add('d-none'), 2000);
+         }
+       });
+     });
+   </script>
+   
 
 
     </div>
