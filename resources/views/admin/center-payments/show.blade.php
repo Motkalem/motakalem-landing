@@ -128,7 +128,7 @@
 <div class="container-fluid">
     <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
     <div class="text-end mx-4 mb-3">
-        <a class="px-4 btn btn-info" href="{{ route('dashboard.center.center-patients.index') }}">
+        <a class="px-4 btn btn-info" href="{{ route('dashboard.center.center-payments.index') }}">
             رجوع
         </a>
     </div>
@@ -265,7 +265,7 @@
                                                     data-installment-id="{{ $installment->id }}">
                                                 خصم القسط
                                             </button>
-                                         
+
                                         @else
                                             <button class="btn btn-secondary btn-sm" disabled>
                                                 تم الدفع
@@ -304,17 +304,17 @@
                   </div>
                 </div>
                 <div class="modal-footer d-flex gap-3 justify-content-end">
-                  <button 
-                    type="button" 
-                    class="btn btn-danger px-4" 
-                    data-bs-dismiss="modal" 
+                  <button
+                    type="button"
+                    class="btn btn-danger px-4"
+                    data-bs-dismiss="modal"
                     style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
                   >
                     <i class="bi bi-x-lg"></i> إلغاء
                   </button>
-                  <button 
-                    type="submit" 
-                    class="btn btn-success px-4" 
+                  <button
+                    type="submit"
+                    class="btn btn-success px-4"
                     style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
                   >
                     <i class="bi bi-send"></i> تأكيد
@@ -324,7 +324,7 @@
               </form>
             </div>
           </div>
-          
+
           <script>
             document.addEventListener('DOMContentLoaded', function () {
               var modalSend = document.getElementById('sendPaymentLinkModal');
@@ -332,7 +332,7 @@
               var copyBtnSend = document.getElementById('copyPaymentLinkBtnSend');
               var copySuccessMsgSend = document.getElementById('copySuccessMsgSend');
               var paymentLinkInputHiddenSend = document.getElementById('paymentLinkInputHiddenSend');
-          
+
               modalSend.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 var installmentId = button ? button.getAttribute('data-installment-id') : null;
@@ -343,7 +343,7 @@
                 }
                 copySuccessMsgSend.classList.add('d-none');
               });
-          
+
               copyBtnSend.addEventListener('click', function () {
                 if (navigator.clipboard) {
                   navigator.clipboard.writeText(paymentLinkInputSend.value).then(function () {
@@ -363,7 +363,7 @@
               });
             });
           </script>
-          
+
 
 
 
@@ -479,12 +479,12 @@
                     });
                 });
             });
-    
-    
-           
-  
-            
-  
+
+
+
+
+
+
   </script>
- 
+
 @endpush
