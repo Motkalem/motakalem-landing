@@ -128,7 +128,7 @@
 <div class="container-fluid">
     <h6 class="c-grey-900 h3">تفاصيل الدفعة</h6>
     <div class="text-end mx-4 mb-3">
-        <a class="px-4 btn btn-info" href="{{ route('dashboard.center.center-patients.index') }}">
+        <a class="px-4 btn btn-info" href="{{ route('dashboard.center.center-payments.index') }}">
             رجوع
         </a>
     </div>
@@ -265,7 +265,7 @@
                                                     data-installment-id="{{ $installment->id }}">
                                                 خصم القسط
                                             </button>
-                                         
+
                                         @else
                                             <button class="btn btn-secondary btn-sm" disabled>
                                                 تم الدفع
@@ -284,33 +284,88 @@
         <!-- Send Payment Link Modal -->
         <div class="modal fade" id="sendPaymentLinkModal" tabindex="-1" aria-labelledby="sendPaymentLinkModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <form id="sendPaymentLinkForm" action="" method="POST">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="sendPaymentLinkModalLabel">إرسال رابط الدفع للقسط</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>هل أنت متأكد أنك تريد إرسال رابط الدفع لهذا القسط؟</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-md btn-outline-danger" data-bs-dismiss="modal">
-                                <i class="bi bi-x-lg"></i> إلغاء
-                            </button>
-                            <button type="button" class="btn btn-md btn-outline-secondary" id="copyPaymentLinkBtn">
-                                <i class="fa fa-copy"></i> نسخ الرابط
-                            </button>
-                            <small id="copySuccessMsg" class="text-success d-none ms-2">تم نسخ الرابط!</small>
-                            <button type="submit" class="btn btn-md btn-outline-success">
-                                <i class="bi bi-send"></i> تأكيد
-                            </button>
-                            <input type="text" id="paymentLinkInput" value="" readonly style="position:absolute; left:-9999px;">
-                        </div>
-                </form>
+              <form id="sendPaymentLinkForm" action="" method="POST" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                  <h5 class="modal-title" id="sendPaymentLinkModalLabel">إرسال رابط الدفع للقسط</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                  هل أنت متأكد أنك تريد إرسال رابط الدفع لهذا القسط؟
+                  <div class="mt-3">
+                    <label for="paymentLinkInputSend" class="form-label">رابط الدفع:</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="paymentLinkInputSend" readonly value="">
+                      <button type="button" class="btn btn-outline-secondary" id="copyPaymentLinkBtnSend" aria-label="نسخ الرابط">
+                        <i class="fa fa-copy"></i> نسخ الرابط
+                      </button>
+                    </div>
+                    <small id="copySuccessMsgSend" class="text-success d-none ms-2">تم نسخ الرابط!</small>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex gap-3 justify-content-end">
+                  <button
+                    type="button"
+                    class="btn btn-danger px-4"
+                    data-bs-dismiss="modal"
+                    style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
+                  >
+                    <i class="bi bi-x-lg"></i> إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-success px-4"
+                    style="min-width: 100px; font-weight: 600; letter-spacing: 0.03em;"
+                  >
+                    <i class="bi bi-send"></i> تأكيد
+                  </button>
+                </div>
+                <input type="text" id="paymentLinkInputHiddenSend" value="" readonly style="position:absolute; left:-9999px;">
+              </form>
             </div>
-        </div>
- 
+          </div>
+
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              var modalSend = document.getElementById('sendPaymentLinkModal');
+              var paymentLinkInputSend = document.getElementById('paymentLinkInputSend');
+              var copyBtnSend = document.getElementById('copyPaymentLinkBtnSend');
+              var copySuccessMsgSend = document.getElementById('copySuccessMsgSend');
+              var paymentLinkInputHiddenSend = document.getElementById('paymentLinkInputHiddenSend');
+
+              modalSend.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var installmentId = button ? button.getAttribute('data-installment-id') : null;
+                if (installmentId) {
+                  var url = window.location.origin + '/pay-center-installment/checkout/' + installmentId;
+                  paymentLinkInputSend.value = url;
+                  paymentLinkInputHiddenSend.value = url;
+                }
+                copySuccessMsgSend.classList.add('d-none');
+              });
+
+              copyBtnSend.addEventListener('click', function () {
+                if (navigator.clipboard) {
+                  navigator.clipboard.writeText(paymentLinkInputSend.value).then(function () {
+                    copySuccessMsgSend.classList.remove('d-none');
+                    setTimeout(() => copySuccessMsgSend.classList.add('d-none'), 2000);
+                  }, function () {
+                    alert('فشل نسخ الرابط، يرجى المحاولة يدويًا.');
+                  });
+                } else {
+                  // fallback for older browsers
+                  paymentLinkInputSend.select();
+                  paymentLinkInputSend.setSelectionRange(0, 99999);
+                  document.execCommand('copy');
+                  copySuccessMsgSend.classList.remove('d-none');
+                  setTimeout(() => copySuccessMsgSend.classList.add('d-none'), 2000);
+                }
+              });
+            });
+          </script>
+
+
+
 
         <!-- Confirmation Modal -->
         <div class="modal fade" id="confirmDeductionModal" tabindex="-1" aria-labelledby="confirmDeductionModalLabel" aria-hidden="true">
@@ -333,6 +388,7 @@
                 </div>
             </div>
         </div>
+
 
 
     </div>
@@ -423,35 +479,12 @@
                     });
                 });
             });
-    
-    
-           
-      document.addEventListener('DOMContentLoaded', function () {
-                                    var copyBtn = document.getElementById('copyPaymentLinkBtn');
-                                    var paymentLinkInput = document.getElementById('paymentLinkInput');
-                                    var sendPaymentLinkModal = document.getElementById('sendPaymentLinkModal');
 
-                                    // Listen for modal show to set the link
-                                    sendPaymentLinkModal.addEventListener('show.bs.modal', function (event) {
-                                        var button = event.relatedTarget;
-                                        var installmentId = button ? button.getAttribute('data-installment-id') : null;
-                                        if (installmentId) {
-                                            var url = window.location.origin + '/pay-center-installment/checkout/' + installmentId;
-                                            paymentLinkInput.value = url;
-                                        }
-                                    });
 
-                                    copyBtn.addEventListener('click', function () {
-                                        paymentLinkInput.select();
-                                        paymentLinkInput.setSelectionRange(0, 99999); // For mobile devices
-                                        document.execCommand('copy');
-                                        copyBtn.innerText = 'تم النسخ!';
-                                        setTimeout(function () {
-                                            copyBtn.innerText = 'نسخ رابط الدفع';
-                                        }, 1500);
-                                    });
-                                });
-            
-    </script>
- 
+
+
+
+
+  </script>
+
 @endpush
