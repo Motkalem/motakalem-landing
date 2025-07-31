@@ -186,32 +186,16 @@ class PayInstallmentController extends Controller
 
         $transaction = $this->storeNotification($transactionData, $installment->installmentPayment,   $installment );
 
-
-
         $isSuccessful = $this->isSuccessfulResponse(data_get( data_get($transactionData,'result'), 'code'));
 
-        if( data_get($transactionData, 'id') ==  null)
-        {
-            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
-            Notification::route('mail', $installment->installmentPayment?->student?->email)
-                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
-
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
-
-        }
 
         $this->markInstallmentAsCompleted($installment,  $installment->installmentPayment, $isSuccessful);
 
         if ($isSuccessful == 'true') {
 
+
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
-
-            // Send payment URL via email on failure
-            $payment_url = route('checkout.index') . '?sid=' . request()->studentId . '&pid=' . request()->paymentId;
-
-            Notification::route('mail', $installment->installmentPayment?->student->email)
-                ->notify(new SentPaymentUrlNotification($installment->installmentPayment?->student, $payment_url));
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
         }
@@ -226,6 +210,8 @@ class PayInstallmentController extends Controller
 
     public function storeNotification($response, $installmentPayment, $installment)
     {
+
+
         return  $notification = HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
             'installment_payment_id' => $installmentPayment->id,

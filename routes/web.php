@@ -69,6 +69,7 @@ Route::get('encrypt-form', function () {
 Route::post('encrypt-form-store', function (Request $request) {
 
     if ($request->has(['data', 'iv'])) {
+
         $encryptedData = base64_decode($request->input('data'));
         $iv = base64_decode($request->input('iv'));
         $key = 'secret key 123';

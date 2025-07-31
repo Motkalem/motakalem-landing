@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Actions\HyperPay\ExecuteRecurringPayment;
 use App\Models\HyperpayWebHooksNotification;
 use App\Models\InstallmentPayment;
+use App\Notifications\Admin\CenterHyperPayNotification;
 use App\Notifications\Admin\HyperPayNotification;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -30,6 +31,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
             ->select([
                 "id",
                 "title",
+                "center_installment_payment_id",
                 "installment_payment_id",
                 "admin_notified",
                 "student_notified",
@@ -37,21 +39,32 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
                 "payload->result->code as code"
             ])
             ->with('installmentPayment.student:id,name,email,phone')
-            ->whereNotNull('installment_payment_id')
+            ->with('centerInstallmentPayment.patient')
             ->where(function ($query) {
                 $query->where('admin_notified', 0)
                     ->orWhere('student_notified', 0);
-            })
-            ->get();
+            })->get();
 
 
         foreach ($installmentNotifications as $notification) {
 
             if ( $notification->amount != 0 ) {
 
-                $this->notifyStudent($notification, $notification->installmentPayment?->student?->email);
-                $this->notifyAdmin($notification);
+                if ($notification->installment_payment_id){
+
+                    $this->notifyStudent($notification, $notification->installmentPayment?->student?->email);
+                    $this->notifyAdmin($notification);
+                }
+
+
+                if($notification->center_installment_payment_id){
+
+
+                    $this->notifyCenterPatient($notification, $notification->centerInstallmentPayment?->patient?->email);
+                    $this->notifyCenterAdmin($notification);
+                }
             }
+
         }
     }
 
@@ -111,5 +124,44 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
             Log::error($e->getMessage());
         }
     }
+
+
+
+    protected function notifyCenterPatient($notification, $email): void
+    {
+        try {
+
+            $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
+
+            Notification::route('mail', $email)->notify(new CenterHyperPayNotification($notification, $result));
+            $notification->update(['student_notified'=> 1]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
+    /**
+     * Notify the admin via email.
+     *
+     * @param $notification
+     * @return void
+     */
+    protected function notifyCenterAdmin($notification): void
+    {
+        try {
+            $adminEmails = explode(',', env('ADMIN_EMAILS'));
+            foreach ($adminEmails as $adminEmail) {
+
+                $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
+
+                Notification::route('mail', $adminEmail)->notify(new CenterHyperPayNotification($notification, $result));
+
+                $notification->update(['admin_notified'=> 1]);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
 
 }

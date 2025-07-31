@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Center\CenterInstallment;
 use App\Models\Center\CenterInstallmentPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,7 @@ class HyperpayWebHooksNotification extends Model
 
         return $this->belongsTo(CenterInstallmentPayment::class);
     }
+
 
     public function installment()
     {
