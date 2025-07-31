@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
 //        $schedule->job(new CheckInstallmentsPaymentsJob())->daily();
 
-        $schedule->job(new SendTransactionsNotificationsJob())->everyMinute();
+        $schedule->job(new SendTransactionsNotificationsJob())->everyFiveMinutes();
     }
 
     /**
