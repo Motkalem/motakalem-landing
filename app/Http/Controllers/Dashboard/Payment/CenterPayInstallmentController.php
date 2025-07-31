@@ -29,7 +29,7 @@ class CenterPayInstallmentController extends Controller
             $integrity = data_get(json_decode($responseData), "integrity");
 
         } else {
-            
+
             $checkoutId = null;
             $integrity = null;
         }
@@ -133,8 +133,8 @@ class CenterPayInstallmentController extends Controller
     public function getStatus()
     {
         $entity_id = env('RYD_ENTITY_ID');
-        $access_token = env('RYD_AUTH_TOKEN');
 
+        $access_token = env('RYD_AUTH_TOKEN');
 
         if(request()->paymentMethod == 'APPLEPAY') {
 
@@ -144,10 +144,10 @@ class CenterPayInstallmentController extends Controller
 
         if(request()->paymentMethod == 'MADA')
         {
-            $entity_id = env('RYD_ENTITY_ID_MADA');  
+            $entity_id = env('RYD_ENTITY_ID_MADA');
         }
 
-       
+
         $url = env('RYD_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
 
         $url .= "?entityId=" . $entity_id;
@@ -190,7 +190,7 @@ class CenterPayInstallmentController extends Controller
 
        if( data_get($transactionData, 'id') ==  null)
        {
-         
+
            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
        }
 
@@ -214,8 +214,8 @@ class CenterPayInstallmentController extends Controller
 
     public function storeNotification($response, $centerInstallmentPayment, $installment)
     {
-         
-         
+
+
         \App\Models\Center\CenterTransaction::query()->create([
             'title' => data_get($response, 'result.description'),
             'center_installment_payment_id' => $centerInstallmentPayment->id,
@@ -223,7 +223,7 @@ class CenterPayInstallmentController extends Controller
             'amount' => data_get($response, 'amount') ?? 0.0,
             'data' => $response,
         ]);
- 
+
       return  $notification = HyperpayWebHooksNotification::query()->create([
             'title' => data_get($response, 'result.description'),
             'center_installment_payment_id' => $centerInstallmentPayment->id,
