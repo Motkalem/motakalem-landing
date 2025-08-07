@@ -145,7 +145,7 @@ class InstallmentPaymentsController extends AdminBaseController
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
 
         Log::debug('deduct Installment', [$data]);
-print_r($data); die();
+//print_r($data); die();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
