@@ -68,6 +68,7 @@ class StoreRecurringPaymentData
             "customer.surname" => ""
         ];
 
+        Log::debug('Data Initial Agreement', [$data]);
 
         if (env('VERSION_STATE') == 'STAGING_'){
             $data = [

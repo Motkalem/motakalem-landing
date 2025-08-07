@@ -108,7 +108,7 @@ class InstallmentPaymentsController extends AdminBaseController
         $installmentPayment = $installment->installmentPayment;
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
-
+echo"<pre>";print_r($installmentPayment->toArray());echo"</pre>";die();
         $notification = $this->getSuccessfulInitialNotification($installmentPayment);
 
         $recurringPaymentAgreement = $installmentPayment->recurring_agreement_id;
@@ -144,6 +144,8 @@ class InstallmentPaymentsController extends AdminBaseController
             "&customParameters[recurringPaymentAgreement]=" . $recurringPaymentAgreement .
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
 
+        Log::debug('deduct Installment', [$data]);
+print_r($data); die();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
