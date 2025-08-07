@@ -220,9 +220,9 @@
                                                                     ﻳﺘﻢ ﺍﻻﺷﺘﺮﺍﻙ ﺑﻌﺪ ﺩﻓﻊ ﺍﻟﻘﺴﻂ ﺍﻷﻭﻝ ﻭﻗﻴﻤﺘﻪ {{ $value }}
                                                                     <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp; <span>. </span>
                                                                 @else
-                                                                    ◦ القسط {{ $key }}: {{ $value }}
+                                                                    <span>. </span> القسط {{ $key }}: {{ $value }}
                                                                     <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp; <span>. </span>
-                                                                    يُدفع قبل بدء المرحلة {{ $key }} <span>. </span>
+                                                                    يُدفع قبل بدء المرحلة {{ $key.'ة' }} <span>. </span>
                                                                 @endif
                                                                 <br/>
                                                             @endif
