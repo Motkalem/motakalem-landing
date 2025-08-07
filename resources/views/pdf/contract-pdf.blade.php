@@ -226,11 +226,12 @@
                                                                 @if ($value > 0)
                                                                     @if ($loop->first)
                                                                         ﻳﺘﻢ ﺍﻻﺷﺘﺮﺍﻙ ﺑﻌﺪ ﺩﻓﻊ ﺍﻟﻘﺴﻂ ﺍﻷﻭﻝ ﻭﻗﻴﻤﺘﻪ {{ $value }}
-                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp;.
+                                                                    <span>. </span>
+                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp;
                                                                     @else
-                                                                        ◦ القسط {{ $key }}: {{ $value }}
-                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp;.
-                                                                        يُدفع قبل بدء المرحلة {{ $key }}.
+                                                                        <span>. </span> القسط {{ $key }}: {{ $value }}
+                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp; <span>. </span>
+                                                                        يُدفع قبل بدء المرحلة {{ $key.'ة' }} <span>. </span>
                                                                     @endif
                                                                     <br/>
                                                                 @endif
