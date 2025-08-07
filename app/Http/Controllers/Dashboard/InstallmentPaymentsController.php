@@ -108,7 +108,7 @@ class InstallmentPaymentsController extends AdminBaseController
         $installmentPayment = $installment->installmentPayment;
         $registrationID = $installmentPayment->registration_id;
         $amount = $installment->installment_amount;
-echo"<pre>";print_r($installmentPayment->toArray());echo"</pre>";die();
+
         $notification = $this->getSuccessfulInitialNotification($installmentPayment);
 
         $recurringPaymentAgreement = $installmentPayment->recurring_agreement_id;
