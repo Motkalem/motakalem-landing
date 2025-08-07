@@ -114,6 +114,7 @@ class InstallmentPaymentsController extends AdminBaseController
         $recurringPaymentAgreement = $installmentPayment->recurring_agreement_id;
 
         $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+        $cardholderInitiatedTransactionID = data_get($notification, 'payload.resultDetails.CardholderInitiatedTransactionID');
 
         Log::debug('Subsequent Agreement ID', ['agreement' => $recurringPaymentAgreement]);
 
@@ -134,11 +135,12 @@ class InstallmentPaymentsController extends AdminBaseController
             "&currency=SAR" .
             "&paymentType=DB" .
             "&standingInstruction.mode=REPEATED" .
-            "&standingInstruction.type=RECURRING" .
+            "&standingInstruction.type=UNSCHEDULED" .
             "&standingInstruction.source=MIT" .
             "&standingInstruction.numberOfInstallments=99" .
             "&standingInstruction.recurringType=SUBSCRIPTION" .
-            "&customParameters[CardholderInitiatedTransactionID]=" .  $merchantTransactionId .
+            "&standingInstruction.initialTransactionId=" .$cardholderInitiatedTransactionID .
+            //"&customParameters[CardholderInitiatedTransactionID]=" .  $cardholderInitiatedTransactionID .
             "&customParameters[recurringPaymentAgreement]=" . $recurringPaymentAgreement .
             "&shopperResultUrl=" . env(env('VERSION_STATE') . 'FRONT_URL');
 

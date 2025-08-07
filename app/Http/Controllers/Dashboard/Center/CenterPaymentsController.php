@@ -69,7 +69,8 @@ class CenterPaymentsController extends AdminBaseController
 
 
         $recurringPaymentAgreement = data_get($notification, 'payload.customParameters.recurringPaymentAgreement');
-        $merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+        //$merchantTransactionId = data_get($notification, 'payload.merchantTransactionId');
+        $cardholderInitiatedTransactionID = data_get($notification, 'payload.resultDetails.CardholderInitiatedTransactionID');
 
          if (!$registrationID) {
             notify()->error('لا يوجد معرّف تسجيل.');
@@ -89,10 +90,11 @@ class CenterPaymentsController extends AdminBaseController
             'paymentType' => 'DB',
             'standingInstruction.mode' => 'REPEATED',
             'standingInstruction.source' => 'MIT',
-            'standingInstruction.type' => 'RECURRING',
+            'standingInstruction.type' => 'UNSCHEDULED',
             'standingInstruction.numberOfInstallments' => '99',
             'standingInstruction.recurringType' => 'SUBSCRIPTION',
-            'customParameters[CardholderInitiatedTransactionID]' => $merchantTransactionId,
+            "standingInstruction.initialTransactionId=" .$cardholderInitiatedTransactionID .
+            //'customParameters[CardholderInitiatedTransactionID]' => $merchantTransactionId,
             'customParameters[recurringPaymentAgreement]' => $recurringPaymentAgreement,
             'shopperResultUrl' => env(env('VERSION_STATE') . 'FRONT_URL')
         ]);
