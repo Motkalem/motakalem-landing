@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
 
-        عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
+        عقد الانضمام لبرنامج متكلم للتحكم ﺑﺎﻟﺘﺄﺗﺄﺓ
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,7 +101,7 @@
                                             style="padding:20px;font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
                                             <p align="center"
                                                style="font-weight:bold;font-size:20px;text-align:center;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)">
-                                                عقد الانضمام لبرنامج متكلم للتحكم بالتأتأه
+                                                ﻋﻘﺪ ﺍﻻﻧﻀﻤﺎﻡ ﻟﺒﺮﻧﺎﻣﺞ ﻣﺘﻜﻠﻢ ﻟﻠﺘﺤﻜﻢ ﺑﺎﻟﺘﺄﺗﺄﺓ
                                             </p>
                                             <hr/>
                                             @php
@@ -143,7 +143,7 @@
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     الطرف الثاني: {{data_get($data, 'name')}}, رقم
                                                     الهوية: {{data_get($data, 'id_number')}},  . (يشار إليه لاحقاً بـ
-                                                    رقم جوال: {{ data_get($data, 'phone') }}.
+
                                                     "العميل").
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
@@ -158,33 +158,43 @@
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الأول: تفاصيل البرنامج:
                                                     <br/>
-                                                     . اسم البرنامج: برنامج متكلم للتحكم بالتأتأة.
+                                                    1. اسم البرنامج: برنامج متكلم للتحكم بالتأتأة.
                                                     <br/>
-                                                     . مدة البرنامج: أربعة أشهر.
+                                                    2. مدة البرنامج: أربعة أشهر.
                                                     <br/>
-                                                     . محتوى البرنامج: تدريب على التحكم بالتأتأة.
+                                                    3. محتوى البرنامج: تدريب على التحكم بالتأتأة.
+                                                    <br/>
 
+                                                    @if(($data->package?->payment_type === \App\Models\Package::ONE_TIME)
+                                                       ||
+                                                       $data->package?->payment_type === \App\Models\Package::TABBY )
 
+                                                    4. ﺍﻟﺘﻜﻠﻔﺔ ﺍﻹﺟﻤﺎﻟﻴﺔ ﻟﻠﺒﺮﻧﺎﻣﺞ: {{$data->package?->total}} ﺭﻳﺎﻝ ﺳﻌﻮﺩﻱ.
+
+                                                    @else
+
+                                                        4. ﺍﻟﺘﻜﻠﻔﺔ ﺍﻹﺟﻤﺎﻟﻴﺔ ﻟﻠﺒﺮﻧﺎﻣﺞ: {{$data->package?->first_inst + $data->package?->second_inst
+                                                                + $data->package?->third_inst +  $data->package?->fourth_inst +
+                                                                  $data->package?->fifth_inst}} ﺭﻳﺎﻝ ﺳﻌﻮﺩﻱ.
+
+                                                    @endif
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
-                                                   
-                                                   
+
+
                                                     @if($data->package?->total > 0 || $data->package?->first_inst > 0 )
                                                         البند الثاني: التكلفة وجدول السداد:
                                                         <br/>
-
                                                          . التكلفة الإجمالية للبرنامج
                                                         @if(($data->package?->payment_type === \App\Models\Package::ONE_TIME)
-                                                        
                                                         ||
-                                                        $data->package?->payment_type === \App\Models\Package::TABBY
-                                                        )
+                                                        $data->package?->payment_type === \App\Models\Package::TABBY )
 
                                                             {!! '<span style="font-weight: bold;">' . $data->package?->total . '</span>' !!}
                                                             <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" />.
 
                                                             @if ($data->package?->payment_type === \App\Models\Package::TABBY)
-                                                           
+
                                                                 {!! '<span style="font-weight: bold;">' .'('.__('Paid With Tabby').')' . '</span>' !!}
                                                             @endif
 
@@ -198,59 +208,58 @@
                                                        @endif
                                                      @endif
 
-                                                    @if($data->package?->payment_type === 'installments')
-                                                        <br/>
-                                                         . جدول السداد: يتم دفع الأقساط على النحو التالي:
-                                                        <br/>
-                                                        @php
-                                                            $installments = [
-                                                                'الأول' => $data->package?->first_inst,
-                                                                'الثاني' => $data->package?->second_inst,
-                                                                'الثالث' => $data->package?->third_inst,
-                                                                'الرابع' => $data->package?->fourth_inst,
-                                                                'الخامس' => $data->package?->fifth_inst,
-                                                            ];
-                                                        @endphp
-                                                        @foreach ($installments as $key => $value)
-                                                            @if ($value > 0)
-                                                                ◦ القسط {{ $key }}: {{ $value }}
+                                                        @if($data->package?->payment_type === 'installments')
+                                                            <br/>
+                                                            جدول السداد: يتم دفع الأقساط على النحو التالي:
+                                                            <br/>
+                                                            @php
+                                                                $installments = [
+                                                                    'الأول' => $data->package?->first_inst,
+                                                                    'الثاني' => $data->package?->second_inst,
+                                                                    'الثالث' => $data->package?->third_inst,
+                                                                    'الرابع' => $data->package?->fourth_inst,
+                                                                    'الخامس' => $data->package?->fifth_inst,
+                                                                ];
+                                                            @endphp
 
-                                                                <img style="width:12px" src="{{public_path('/images/riyal-sym.svg.png')}}" /> .
-                                                                @if ($loop->first)
-                                                                    يُدفع عند الاشتراك.
-                                                                @else
-                                                                    يُدفع قبل بدء المرحلة {{ $key }}.
+                                                            @foreach ($installments as $key => $value)
+                                                                @if ($value > 0)
+                                                                    @if ($loop->first)
+                                                                        ﻳﺘﻢ ﺍﻻﺷﺘﺮﺍﻙ ﺑﻌﺪ ﺩﻓﻊ ﺍﻟﻘﺴﻂ ﺍﻷﻭﻝ ﻭﻗﻴﻤﺘﻪ {{ $value }}
+                                                                    <span>. </span>
+                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp;
+                                                                    @else
+                                                                        <span>. </span> القسط {{ $key }}: {{ $value }}
+                                                                        <img style="width:12px;" src="{{ public_path('/images/riyal-sym.svg.png') }}" />&nbsp; <span>. </span>
+                                                                        يُدفع قبل بدء المرحلة {{ $key.'ة' }} <span>. </span>
+                                                                    @endif
+                                                                    <br/>
                                                                 @endif
-
-                                                                <br/>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
+                                                            @endforeach
+                                                        @endif
 
                                                 </li>
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     البند الثالث: الالتزامات المتبادلة:
                                                     <br/>
-                                                     1. يلتزم الطرف الأول بتقديم كافة التدريب والمحتوى اللازم للطرف
-                                                    الثاني خلال مدة البرنامج.
+                                                    1. ﻳﻠﺘﺰﻡ ﺍﻟﻄﺮﻑ ﺍﻷﻭﻝ ﺑﺘﻘﺪﻳﻢ ﻛﺎﻓﺔ ﺍﻟﺘﺪﺭﻳﺐ ﻭﺍﻟﻤﺤﺘﻮﻯ ﺍﻟﻼﺯﻡ ﻟﻠﻄﺮﻑ ﺍﻟﺜﺎﻧﻲ ﺧﻼﻝ ﻣﺪﺓ ﺍﻟﺒﺮﻧﺎﻣﺞ.
                                                     <br/>
                                                      2. يلتزم الطرف الثاني بدفع جميع الأقساط في مواعيدها المحددة.
                                                     <br/>
                                                     3 . يلتزم الطرف الثاني بالالتزام بجميع تعليمات المدربين والمشاركة
                                                     الفعالة في البرنامج.
                                                     <br/>
-                                                     4. في حال عدم الالتزام بدفع الأقساط في المواعيد المحددة، يحق للطرف
-                                                    الأول إنهاء الاشتراك واسترداد المبلغ المدفوع.
+                                                    4. ﻓﻲ ﺣﺎﻝ ﻋﺪﻡ ﺍﻻﻟﺘﺰﺍﻡ ﺑﺪﻓﻊ ﺍﻷﻗﺴﺎﻁ ﻓﻲ ﺍﻟﻤﻮﺍﻋﻴﺪ ﺍﻟﻤﺤﺪﺩﺓ، ﻳﺤﻖ ﻟﻠﻄﺮﻑ ﺍﻷﻭﻝ ﺇﻧﻬﺎﺀ ﺍﻻﺷﺘﺮﺍﻙ ﻭﺍﻟﻤﻄﺎﻟﺒﺔ ﺑﻜﺎﻣﻞ ﺍﻟﻤﺒﻠﻎ ﺍﻭ ﺍﻟﺪﻓﻌﺎﺕ.
                                                     <br/>
                                                 </li>
 
 
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38)
                                                 ;padding-bottom:10px; ">
-                                                   
+
                                                     ‎البند الرابع: طرق السداد:<br/>
                                                     ‎ . تتم طرق السداد عبر القنوات البنكية الرسمية للشركة فقط.<br/>
-                                                    ‎ . يتم دفع المبلغ كامل او التقسيط على 4 دفعات  
+                                                    ‎ . يتم دفع المبلغ كامل او التقسيط على 4 دفعات
 
                                                 </li>
 
@@ -260,14 +269,12 @@
                                                     ‎  . يحق للطرف الثاني إلغاء الاشتراك واسترجاع الأموال في مدة لا
                                                     تزيدعن 3 أيام من تاريخ بداية الاشتراك ويبدا الاشتراك بعد سداد
                                                     الدفعةالاولى<br/>
-                                                  
+
                                                 </li>
 
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     ‎ البند السادس (المسؤولية العقدية للطرف الأول ):<br/>
-                                                    ‎ . لايضمن الطرف الأول الإلتزام بالنتيجة وإنما يلتزم ببذل العناية
-                                                    اللازمة في التطوير حيث أن البرنامج مقدم للتطوير،وتزيد أو تنخفض
-                                                    النتائج حسب التزام الطرف الثاني.<br/>
+                                                    . ﻻ ﻳﻀﻤﻦ ﺍﻟﻄﺮﻑ ﺍﻷﻭﻝ ﺍﻻﻟﺘﺰﺍﻡ ﺑﺎﻟﻨﺘﻴﺠﺔ ﻭﺇﻧﻤﺎ ﻳﻠﺘﺰﻡ ﺑﺒﺬﻝ ﺍﻟﻌﻨﺎﻳﺔ ﺍﻟﻼﺯﻣﺔ ﻓﻲ ﺍﻟﺘﻄﻮﻳﺮ ﺣﻴﺚ ﺃﻥ ﺍﻟﺒﺮﻧﺎﻣﺞ ﻣﻘﺪﻡ ﻟﻠﺘﻄﻮﻳﺮ ﻭﺗﺰﻳﺪ ﺃﻭ ﺗﻨﺨﻔﺾ ﺍﻟﻨﺘﺎﺋﺞ ﺣﺴﺐ ﺍﻟﺘﺰﺍﻡ ﺍﻟﻄﺮﻑ ﺍﻟﺜﺎﻧﻲ.النتائج حسب التزام الطرف الثاني.<br/>
 
                                                     ‎ البند السابع  :(الإخطارات)<br/>
                                                     ‎يقر كلا المتعاقدين أنه اتخذ موطنًا مختارًا له عنوانه الموضح قرين
@@ -279,7 +286,7 @@
 
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     ‎ البند الثامن : (طبيعة العلاقة القانونية بين الطرفين)<br/>
-                                                   
+
                                                     ‎أقر الطرفان بأن العلاقة القانونية التي تنشأ بينهم لا تعد علاقة عمل
                                                     ولا أن هذا العقد عقد عمل،  وأن الطرف الأول يسخر أداة التطوير
                                                     المملوكة له لتنفيذ الخدمة التطويريه فقط دون أن يكون له دورًا في
@@ -304,7 +311,7 @@
                                                 <li style="font-size:16px;font-family:Cairo,Geneva,sans-serif;color:rgb(38,38,38);padding-bottom:10px">
                                                     ‎البند العاشر ( حل النزاعات) : <br/>
                                                     ‎ . في حال حدوث أي نزاع بين الطرفين حول هذا العقد، يتم حله وديًا.
-                                                    وفي حال عدم التوصل لحل ودي، يتم اللجوء إلى التحكيم أو المحاكم المختصة
+                                                    وفي حال عدم التوصل لحل ودي، يتم اللجوء إلى المحاكم المختصة
                                                     في مدينة جدة.
 
                                                 </li>
