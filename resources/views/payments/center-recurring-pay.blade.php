@@ -220,7 +220,7 @@
 
                     @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','applepay'] ))
 
-                        <form action="/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}/{{strtoupper( data_get($_GET,'brand'))}}"
+                        <form action="{{ config('app.url') }}/center/checkout-result/{{ request()->payid }}/{{ request()->patid }}/{{strtoupper( data_get($_GET,'brand'))}}"
                               class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}">
                         </form>
 
@@ -230,7 +230,7 @@
                         </div>
                     @else
 
-                        <form action="/recurring/result/{{ request()->paymentId }}" class="paymentWidgets"
+                        <form action="{{ config('app.url') }}/recurring/result/{{ request()->paymentId }}" class="paymentWidgets"
                               data-brands="VISA"></form>
 
                         <div style="text-align: center;margin-top: 40px;color: #ffc107; ">
