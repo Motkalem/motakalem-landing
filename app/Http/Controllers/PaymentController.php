@@ -173,8 +173,10 @@ class PaymentController extends Controller
     {
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+        $url .= "?entityId=" . $entity_id;
 
-        if(request()->paymentMethod == 'MADA') {
+        /*if(request()->paymentMethod == 'MADA') {
 
             $entity_id = env('SNB_ENTITY_ID_MADA');
 
@@ -185,11 +187,9 @@ class PaymentController extends Controller
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
 
-        }
+        }*/
 
-        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
 
-        $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
