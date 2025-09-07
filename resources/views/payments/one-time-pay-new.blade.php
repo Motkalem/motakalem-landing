@@ -29,7 +29,7 @@
     </style>
     <script nonce="{{$nonce}}">
 
-        const paymentMethod = @json( data_get($_GET,'brand'));
+        const paymentMethod = @json($brand);
 
         // Apple Pay Script (Only if payment_method=APPLEPAY and Apple Pay is supported)
         if (paymentMethod && paymentMethod.toUpperCase() === "APPLEPAY" &&
@@ -158,24 +158,24 @@
             <span class="riyal-symbol">R</span> </h1>
 
         <div style="max-width: 530px; margin: auto;">
-        @if(data_get($_GET,'brand'))
+        @if($brand)
 
-            @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','tabby', 'applepay'] ))
+           {{-- @if(in_array(data_get($_GET,'brand'), ['visa', 'master','mada','tabby', 'applepay'] ))--}}
 
 
-                <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].'/'.strtoupper( data_get($_GET,'brand')).'/'}}"
-                      class="paymentWidgets" data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>
+                <form action="{{ config('app.url') }}/checkout/result/{{$pid}}/{{$sid}}/{{$brand}}"
+                      class="paymentWidgets" data-brands="{{$brand}}"></form>
 
                 <a href="#" id="changePaymentMethodLink" >تغيير وسيلة الدفع ؟</a>
 
-            @else
+            {{--@else
                 <form action="{{'/checkout/result/'.$_GET['pid'].'/'.$_GET['sid'].strtoupper( data_get($_GET,'brand')).'/'}}" class="paymentWidgets"
                       data-brands="VISA"></form>
 
                 <div style="text-align: center;margin-top: 40px; color: #ffc107;">
                     <a href="#" id="changePaymentMethodLink" style="color: #ffc107;">تغيير وسيلة الدفع ؟</a>
                 </div>
-            @endif
+            @endif--}}
         @else
             <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
                 اختر طريقة الدفع
@@ -184,7 +184,7 @@
                 <div class="payment-options" style="display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 200px; margin: 0 auto;">
 
                     <div>
-                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'mada'])) }}"
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'MADA'])) }}"
                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 151.61 50.54" style="width: 60px; height: 40px; display: block; margin: 0 auto;">
                                 <path d="M0,29.15H64.14V50.54H0Z" fill="#82bc00"/>
@@ -195,14 +195,14 @@
                     </div>
 
                     <div>
-                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'visa'])) }}"
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'VISA'])) }}"
                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                             <img src="{{asset('images/brands/visa.png')}}" alt="Visa" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                         </a>
                     </div>
 
                     <div>
-                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'master'])) }}"
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'MASTER'])) }}"
                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                             <img src="{{asset('images/brands/master.png')}}" alt="MasterCard" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                         </a>
@@ -210,7 +210,7 @@
 
 
                     <div id="applePayOption" style="display: none;">
-                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'applepay'])) }}"
+                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'APPLEPAY'])) }}"
                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                             <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                         </a>
@@ -227,14 +227,14 @@
                     </script>
 
 
-                    {{--@if($payment?->package?->total <= 5000)
+                    @if($payment?->package?->total >= 50)
                         <div>
-                            <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'tabby'])) }}"
+                            <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
                                class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                                 <img src="{{asset('images/brands/tabby.png')}}" alt="Tabby" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                             </a>
                         </div>
-                    @endif--}}
+                    @endif
                 </div>
             </div>
             <style>
