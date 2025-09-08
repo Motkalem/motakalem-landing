@@ -33,7 +33,7 @@ class PaymentController extends Controller
         $brand = strtoupper(request()->brand);
         $pid = request()->pid;
         $sid = request()->sid;
-        $payment = Payment::with('package','student')->find(request()->pid);
+        $payment = Payment::with('package','student')->find($pid);
 
         $responseData = null;
 
@@ -123,7 +123,7 @@ class PaymentController extends Controller
         if($paymentMethod == 'TABBY')
         {
             $data .=
-                "   &cart.items[0].name=item1".
+                "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
                 "&cart.items[0].price=".$payment?->package?->total.
                 "&cart.items[0].quantity=1".
