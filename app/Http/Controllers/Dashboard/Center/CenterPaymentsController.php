@@ -185,7 +185,7 @@ class CenterPaymentsController extends AdminBaseController
 
 
 
-    public function createWebHookNotification($response, $installment): Model|Builder
+    public function createWebHookNotification($response, $installment) 
     {
 
           HyperpayWebHooksNotification::query()->create([

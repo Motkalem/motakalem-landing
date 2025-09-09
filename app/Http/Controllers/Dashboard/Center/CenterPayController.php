@@ -144,7 +144,7 @@ class CenterPayController extends Controller
         }
     }
 
-    public function createWebHookNotification($response, $installment): Model|Builder
+    public function createWebHookNotification($response, $installment) 
     {
 
         return HyperpayWebHooksNotification::query()->create([
