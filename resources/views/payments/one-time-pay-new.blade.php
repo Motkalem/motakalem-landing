@@ -214,7 +214,7 @@
                         </script>
 
 
-                        @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 5000)
+                        @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 10000)
                             <div>
                                 <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
                                    class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
