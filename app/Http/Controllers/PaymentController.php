@@ -30,8 +30,10 @@ class PaymentController extends Controller
     public function getPayPage()
     {
 
-
-        $payment = Payment::with('package','student')->find(request()->pid);
+        $brand = strtoupper(request()->brand);
+        $pid = request()->pid;
+        $sid = request()->sid;
+        $payment = Payment::with('package','student')->find($pid);
 
         $responseData = null;
 
@@ -45,7 +47,7 @@ class PaymentController extends Controller
 
         try {
 
-            if ($payment->package?->payment_type == Package::ONE_TIME && request()->brand) {
+            if ($payment->package?->payment_type == Package::ONE_TIME && $brand) {
 
                  $responseData = $this->createCheckoutId($payment);
             }
@@ -60,7 +62,7 @@ class PaymentController extends Controller
         $nonce = bin2hex(random_bytes(16));
 
         return view('payments.one-time-pay-new', compact('payment', 'paymentId',
-            'integrity', 'nonce'));
+            'integrity', 'nonce','brand','pid','sid'));
     }
 
     /**
@@ -70,9 +72,12 @@ class PaymentController extends Controller
     public function createCheckoutId($payment): bool|string
     {
 
-        $entity_id = env('SNB_ENTITY_ID'); //visa or master
-
+        $entity_id = env('SNB_ENTITY_ID');
+        $access_token = env('SNB_AUTH_TOKEN');
+        $url = env('SNB_HYPERPAY_URL')."/checkouts";
         $paymentMethod = strtoupper(request()->brand);
+
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if($paymentMethod == 'MADA')
         {
@@ -92,7 +97,7 @@ class PaymentController extends Controller
         {
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
-        }
+        }*/
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
@@ -115,10 +120,10 @@ class PaymentController extends Controller
         "&customer.surname=Doe" .
         "&customer.mobile=" . $this->formatMobile($payment?->student?->phone);
 
-        if(request()->brand == 'tabby')
+        if($paymentMethod == 'TABBY')
         {
-            $data .="
-                &cart.items[0].name=item1".
+            $data .=
+                "&cart.items[0].name=item1".
                 "&cart.items[0].sku=15478".
                 "&cart.items[0].price=".$payment?->package?->total.
                 "&cart.items[0].quantity=1".
@@ -168,8 +173,10 @@ class PaymentController extends Controller
     {
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
+        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
+        $url .= "?entityId=" . $entity_id;
 
-        if(request()->paymentMethod == 'MADA') {
+        /*if(request()->paymentMethod == 'MADA') {
 
             $entity_id = env('SNB_ENTITY_ID_MADA');
 
@@ -180,11 +187,9 @@ class PaymentController extends Controller
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
 
-        }
+        }*/
 
-        $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
 
-        $url .= "?entityId=" . $entity_id;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
