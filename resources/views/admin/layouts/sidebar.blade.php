@@ -152,6 +152,15 @@
                 </a>
             </li>
 
+            <li class="nav-item mT-10 {{ Request::routeIs('dashboard.settings.*') ? 'bg-light m-3' : '' }}">
+                <a class="sidebar-link" href="{{ route('dashboard.settings.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-settings"></i>
+                    </span>
+                    <span class="title">الإعدادات</span>
+                </a>
+            </li>
+
 {{--            <li class="nav-item mT-10--}}
 {{--            {{ Request::routeIs('dashboard.medical-inquires.index') ? 'bg-light m-3' : '' }}">--}}
 {{--                <a class="sidebar-link" href="{{ route('dashboard.medical-inquires.index') }}">--}}
