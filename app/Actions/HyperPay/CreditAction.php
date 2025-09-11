@@ -200,7 +200,7 @@ class CreditAction
                 $latestTransaction = $payment->transactions()->latest()->first();
 
 
-                if ($latestTransaction && $latestTransaction->success) {
+                if ($latestTransaction && $latestTransaction->success == 'true') {
                     return [
                         'status' => 0,
                         'message' => __('User is already registered and has paid for this package')
