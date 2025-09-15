@@ -165,9 +165,11 @@ class ConsultantPatientsController extends AdminBaseController
             $msgTemplate
         );
 
-        echo"<pre>";print_r($msg);echo"</pre>";die();
         if (env('APP_ENV') == 'production') {
+            echo"<pre>";print_r(1);echo"</pre>";die();
             (new SMS())->setPhone($consultantPatient->mobile)->SetMessage($msg)->build();
+        }else{
+            echo"<pre>";print_r(2);echo"</pre>";die();
         }
 
         return redirect()->route('dashboard.consultant-patients.index')
