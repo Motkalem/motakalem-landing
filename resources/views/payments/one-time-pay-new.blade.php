@@ -84,6 +84,11 @@
             font-size: larger;
             font-weight   : 400;
         }
+
+
+        .wpwl-label-brand, .wpwl-wrapper-brand {
+  display: none !important;
+}
     </style>
 </head>
 
@@ -194,35 +199,36 @@
                         </div>
                     @endif
  
-
-                    <div id="applePayOption" style="display: none;">
-                        <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'APPLEPAY'])) }}"
-                           class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
-                            <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
-                        </a>
-                    </div>
-
-                    <script nonce="{{$nonce}}">
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
-                            const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
-
-                            if (isAppleDevice && supportsApplePay) {
-                                document.getElementById("applePayOption").style.display = "block";
-                            }
-                        });
-                    </script>
-
-
-                    @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 10000)
-                        <div>
-                            <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
-                               class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
-                                <img src="{{asset('images/brands/tabby.png')}}" alt="Tabby" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
+                    @if ( data_get($_GET, 'brand') ==  null)
+                        <div id="applePayOption" style="display: none;">
+                            <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'APPLEPAY'])) }}"
+                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
+                                <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                             </a>
                         </div>
-                    @endif
 
+                        <script nonce="{{$nonce}}">
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const isAppleDevice = /Mac|iPhone|iPod|iPad/.test(navigator.userAgent);
+                                const supportsApplePay = typeof ApplePaySession !== "undefined" && ApplePaySession.canMakePayments();
+
+                                if (isAppleDevice && supportsApplePay) {
+                                    document.getElementById("applePayOption").style.display = "block";
+                                }
+                            });
+                        </script>
+
+                  
+
+                        @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 10000)
+                                <div>
+                                    <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
+                                    class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
+                                        <img src="{{asset('images/brands/tabby.png')}}" alt="Tabby" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
+                                    </a>
+                                </div>
+                     @endif
+                    @endif               
 
                 </div>
             </div>
