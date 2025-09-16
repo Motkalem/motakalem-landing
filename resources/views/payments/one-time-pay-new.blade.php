@@ -220,6 +220,7 @@
 
                   
 
+
                         @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 10000)
                                 <div>
                                     <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
