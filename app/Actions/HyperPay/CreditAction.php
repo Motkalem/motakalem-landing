@@ -149,15 +149,20 @@ class CreditAction
 
         if ($package->payment_type == Package::ONE_TIME) {
 
+ 
+            
+
             $response = [
                 'status' => 1,
                 'message' => __('success generate hyperpay url'),
                 'payload' => [
                     'payment_token' => '#',
-                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id,
+                    'hyperpay_payment' => route('checkout.index') . '?pid=' . $payment?->id . '&sid=' . $student?->id   ,
                 ],
             ];
         } else {
+
+         
             $response = [
                 'status' => 1,
                 'message' => __('success generate hyperpay url'),
@@ -212,13 +217,14 @@ class CreditAction
 
                 Notification::route('mail', $student->email)
                     ->notify(new SentPaymentUrlNotification($student, $student->payment?->payment_url));
+ 
 
                 return [
                     'status' => 1,
                     'message' => __('success generate hyperpay url'),
                     'payload' => [
                         'payment_token' => '#',
-                        'hyperpay_payment' => $student->payment?->payment_url
+                        'hyperpay_payment' => $student->payment?->payment_url.'&payment_method='.request()?->payment_method
                     ]
                 ];
             } catch (\Exception $e) {

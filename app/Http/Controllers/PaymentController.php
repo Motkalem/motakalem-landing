@@ -31,6 +31,8 @@ class PaymentController extends Controller
     {
 
         $brand = strtoupper(request()->brand);
+        $payment_method = strtoupper(request()->payment_method);
+
         $pid = request()->pid;
         $sid = request()->sid;
         $payment = Payment::with('package','student')->find($pid);
@@ -48,21 +50,29 @@ class PaymentController extends Controller
         try {
 
             if ($payment->package?->payment_type == Package::ONE_TIME && $brand) {
-
                  $responseData = $this->createCheckoutId($payment);
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $th) {}
 
-            //throw $th;
-        }
 
         $paymentId = data_get(json_decode($responseData), "id");
 
         $integrity = data_get(json_decode($responseData), "integrity");
         $nonce = bin2hex(random_bytes(16));
 
+        
+        if ($brand == 'APPLEPAY' || $brand == 'TABBY') {
+
+            $brands = $brand;
+            $actionSuffix = $brand;
+
+        } else {
+            $brands = 'VISA MASTER MADA';
+            $actionSuffix = 'CARD';
+        }
+
         return view('payments.one-time-pay-new', compact('payment', 'paymentId',
-            'integrity', 'nonce','brand','pid','sid'));
+            'integrity', 'nonce','brands', 'brand','actionSuffix','pid','sid'));
     }
 
     /**
@@ -76,6 +86,23 @@ class PaymentController extends Controller
         $access_token = env('SNB_AUTH_TOKEN');
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
         $paymentMethod = strtoupper(request()->brand);
+
+        $paymentMethod = strtoupper($request->brand ?? 'CARD'); // Default to CARD
+
+        $configMap = [
+            'CARD'     => [
+                'entity_id'    => config('hyperpay.entity_id'),
+                'access_token' => config('hyperpay.access_token'),
+            ],
+            'APPLEPAY' => [
+                'entity_id'    => config('hyperpay.entity_id_apple_pay'),
+                'access_token' => config('hyperpay.access_token_apple_pay'),
+            ],
+            'TABBY'    => [
+                'entity_id'    => config('hyperpay.entity_id_tabby'),
+                'access_token' => config('hyperpay.access_token'),
+            ],
+        ];
 
         /*$paymentMethod = strtoupper(request()->brand);
 
