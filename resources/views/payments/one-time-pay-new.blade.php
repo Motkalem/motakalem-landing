@@ -162,7 +162,7 @@
             <div class="payment-options-container">
                 <div class="payment-options" style="display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 200px; margin: 0 auto;">
                    
-                    @if (data_get($_GET, 'payment_method') == 'CARD' && data_get($_GET, 'brand') ==  null)
+                    @if (  data_get($_GET, 'brand') ==  null)
                         <div style="display: flex;  align-items: center;background:white; border-radius:4px">
 
                             <div  >
@@ -192,7 +192,6 @@
                                 </a>
                             </div>
                         </div>
-                    
                     @endif
  
 
@@ -233,7 +232,6 @@
             @if($brand == 'CARD' )
                 <form action="{{ config('app.url') }}/checkout/result/{{$pid}}/{{$sid}}/{{$brand}}"
                       class="paymentWidgets" data-brands="{{$brands}}"></form>
- 
 
             @endif
         </div>

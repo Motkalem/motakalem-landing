@@ -224,7 +224,7 @@ class CreditAction
                     'message' => __('success generate hyperpay url'),
                     'payload' => [
                         'payment_token' => '#',
-                        'hyperpay_payment' => $student->payment?->payment_url.'&payment_method='.request()?->payment_method
+                        'hyperpay_payment' => $student->payment?->payment_url 
                     ]
                 ];
             } catch (\Exception $e) {

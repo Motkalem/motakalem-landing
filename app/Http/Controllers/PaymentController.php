@@ -85,25 +85,27 @@ class PaymentController extends Controller
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
-        $paymentMethod = strtoupper(request()->brand);
 
-        $paymentMethod = strtoupper($request->brand ?? 'CARD'); // Default to CARD
+        $paymentMethod = strtoupper($request->brand ?? 'CARD');  
 
         $configMap = [
             'CARD'     => [
-                'entity_id'    => config('hyperpay.entity_id'),
-                'access_token' => config('hyperpay.access_token'),
+                'entity_id'    => env('SNB_ENTITY_ID'),
+                'access_token' => env('SNB_AUTH_TOKEN'),
             ],
             'APPLEPAY' => [
-                'entity_id'    => config('hyperpay.entity_id_apple_pay'),
-                'access_token' => config('hyperpay.access_token_apple_pay'),
+                'entity_id'    => config('hyperpay.snb_entity_id_apple_pay'),
+                'access_token' => config('hyperpay.snb_apple_pay_token'),
             ],
             'TABBY'    => [
-                'entity_id'    => config('hyperpay.entity_id_tabby'),
-                'access_token' => config('hyperpay.access_token'),
+                'entity_id'    =>   env('SNB_ENTITY_ID_MADA'),
+                'access_token' => env('SNB_AUTH_TOKEN'),
             ],
         ];
 
+        $selectedPaymentMethod = $configMap[$paymentMethod] ?? $configMap['CARD'];
+
+  
         /*$paymentMethod = strtoupper(request()->brand);
 
         if($paymentMethod == 'MADA')
@@ -131,7 +133,7 @@ class PaymentController extends Controller
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
 
-        $data = "entityId=".$entity_id .
+        $data = "entityId=".$selectedPaymentMethod['entity_id']  .
         "&amount=".$payment?->package?->total.
         "&currency=SAR".
         "&paymentType=DB".
@@ -166,7 +168,7 @@ class PaymentController extends Controller
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
-            array('Authorization:Bearer ' . $access_token)
+            array('Authorization:Bearer ' . $selectedPaymentMethod['access_token'] )
         );
 
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -200,27 +202,33 @@ class PaymentController extends Controller
     {
         $entity_id = env('SNB_ENTITY_ID');
         $access_token = env('SNB_AUTH_TOKEN');
+
+        $paymentMethod = request()->paymentMethod;
+
+        $configMap = [
+            'CARD'     => [
+                'entity_id'    => env('SNB_ENTITY_ID'),
+                'access_token' => env('SNB_AUTH_TOKEN'),
+            ],
+            'APPLEPAY' => [
+                'entity_id'    => config('hyperpay.snb_entity_id_apple_pay'),
+                'access_token' => config('hyperpay.snb_apple_pay_token'),
+            ],
+            'TABBY'    => [
+                'entity_id'    =>   env('SNB_ENTITY_ID_MADA'),
+                'access_token' => env('SNB_AUTH_TOKEN'),
+            ],
+        ];
+
+        $selectedPaymentMethod = $configMap[$paymentMethod] ?? $configMap['CARD'];
+
         $url = env('SNB_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
-        $url .= "?entityId=" . $entity_id;
-
-        /*if(request()->paymentMethod == 'MADA') {
-
-            $entity_id = env('SNB_ENTITY_ID_MADA');
-
-        }
-
-        if(request()->paymentMethod == 'APPLEPAY') {
-
-            $entity_id = config('hyperpay.snb_entity_id_apple_pay');
-            $access_token = config('hyperpay.snb_apple_pay_token');
-
-        }*/
-
+        $url .= "?entityId=" . $selectedPaymentMethod['entity_id'];
 
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $selectedPaymentMethod['access_token']));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
