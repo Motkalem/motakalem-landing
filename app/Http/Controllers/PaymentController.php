@@ -48,21 +48,29 @@ class PaymentController extends Controller
         try {
 
             if ($payment->package?->payment_type == Package::ONE_TIME && $brand) {
-
                  $responseData = $this->createCheckoutId($payment);
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $th) {}
 
-            //throw $th;
-        }
 
         $paymentId = data_get(json_decode($responseData), "id");
 
         $integrity = data_get(json_decode($responseData), "integrity");
         $nonce = bin2hex(random_bytes(16));
 
+
+        if ($brand == 'APPLEPAY' || $brand == 'TABBY') {
+
+            $brands = $brand;
+            $actionSuffix = $brand;
+
+        } else {
+            $brands = 'VISA MASTER MADA';
+            $actionSuffix = 'CARD';
+        }
+
         return view('payments.one-time-pay-new', compact('payment', 'paymentId',
-            'integrity', 'nonce','brand','pid','sid'));
+            'integrity', 'nonce','brands', 'brand','actionSuffix','pid','sid'));
     }
 
     /**

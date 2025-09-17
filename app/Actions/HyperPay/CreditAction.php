@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use  App\Notifications\Admin\NotifyAdminWithTabbyNotification;
 
-
 class CreditAction
 {
     use AsAction, HelperTrait;
