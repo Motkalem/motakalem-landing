@@ -87,8 +87,8 @@
 
 
         .wpwl-label-brand, .wpwl-wrapper-brand {
-  display: none !important;
-}
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -163,16 +163,16 @@
             <span class="riyal-symbol">R</span> </h1>
 
         <div style="max-width: 530px; margin: auto;">
-           
+
             <div class="payment-options-container">
                 <div class="payment-options" style="display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 200px; margin: 0 auto;">
-                   
+
                     @if (  data_get($_GET, 'brand') ==  null)
                         <div style="display: flex;  align-items: center;background:white; border-radius:4px">
 
                             <div  >
                                 <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'CARD'])) }}"
-                                class="payment-option" style="display: inline-block; padding: 10px;   border-radius: 8px;
+                                   class="payment-option" style="display: inline-block; padding: 10px;   border-radius: 8px;
                                     transition: all 0.3s ease; width: 100px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 151.61 50.54" style="width: 60px; height: 40px; display: block; margin: 0 auto;">
                                         <path d="M0,29.15H64.14V50.54H0Z" fill="#82bc00"/>
@@ -181,28 +181,25 @@
                                     </svg>
                                 </a>
                             </div>
-                        
+
                             <div>
                                 <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'CARD'])) }}"
-                                class="payment-option" style="display: inline-block; padding: 10px;  border-radius: 8px; 
+                                   class="payment-option" style="display: inline-block; padding: 10px;  border-radius: 8px;
                                     width: 100px;">
                                     <img src="{{asset('images/brands/visa.png')}}" alt="Visa" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                                 </a>
                             </div>
-                        
+
                             <div>
                                 <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'CARD'])) }}"
-                                class="payment-option" style="display: inline-block; padding: 10px;  width: 100px;">
+                                   class="payment-option" style="display: inline-block; padding: 10px;  width: 100px;">
                                     <img src="{{asset('images/brands/master.png')}}" alt="MasterCard" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                                 </a>
                             </div>
                         </div>
-                    @endif
- 
-                    @if ( data_get($_GET, 'brand') ==  null)
                         <div id="applePayOption" style="display: none;">
                             <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'APPLEPAY'])) }}"
-                            class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
+                               class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
                                 <img src="{{asset('images/brands/apple-pay.png')}}" alt="Apple Pay" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
                             </a>
                         </div>
@@ -218,26 +215,21 @@
                             });
                         </script>
 
-                  
-
-
-
                         @if($payment?->package?->total >= 1000 && $payment?->package?->total <= 10000)
-                                <div>
-                                    <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
-                                    class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
-                                        <img src="{{asset('images/brands/tabby.png')}}" alt="Tabby" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
-                                    </a>
-                                </div>
-                     @endif
-                    @endif               
+                            <div>
+                                <a href="{{ url()->current() }}?{{ http_build_query(array_merge($_GET, ['brand' => 'TABBY'])) }}"
+                                   class="payment-option" style="display: inline-block; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 100px;">
+                                    <img src="{{asset('images/brands/tabby.png')}}" alt="Tabby" style="width: 60px; height: 40px; object-fit: contain; display: block; margin: 0 auto;" />
+                                </a>
+                            </div>
+                        @endif
+                    @endif
 
                 </div>
             </div>
-          
 
 
-            @if($brand == 'CARD' )
+            @if(data_get($_GET,'brand'))
                 <form action="{{ config('app.url') }}/checkout/result/{{$pid}}/{{$sid}}/{{$brand}}"
                       class="paymentWidgets" data-brands="{{$brands}}"></form>
 
