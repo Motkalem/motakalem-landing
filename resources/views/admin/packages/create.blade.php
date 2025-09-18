@@ -41,13 +41,6 @@
                                 {{ old('payment_type', $package->payment_type ?? '') == 'installments' ? 'checked' : '' }}>
                             <label class="form-check-label" for="installments">تقسيط</label>
                         </div>
-
-                        <div class=" form-check mx-4">
-                            <input class="form-check-input" required type="radio" name="payment_type" id="tabby" value="tabby"
-                                {{ old('payment_type', $package->payment_type ?? '') == 'tabby' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="tabby">تابي</label>
-                        </div>
-
                     </div>
                 </div>
                     <!-- Package Name Field -->
@@ -101,25 +94,25 @@
                             'fifth_inst' => 'القسط الخامس',
                         ];
                     @endphp
-                    
+
                     @foreach ($installments as $name => $label)
                         <label for="{{ $name }}" class="form-label col-sm-2 col-form-label">{{ $label }}</label>
                         <div class="col-sm-10 mb-2">
-                            <input type="number" 
-                                   class="form-control @error($name) is-invalid @enderror" 
-                                   id="{{ $name }}" 
-                                   name="{{ $name }}" 
-                                   value="{{ old($name, $package->$name ?? 0) }}" 
+                            <input type="number"
+                                   class="form-control @error($name) is-invalid @enderror"
+                                   id="{{ $name }}"
+                                   name="{{ $name }}"
+                                   value="{{ old($name, $package->$name ?? 0) }}"
                                    placeholder="{{ $label }}">
                             @error($name)
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     @endforeach
-                    
+
 
                     </div>
- 
+
 
                     <div class="mb-3 row">
                         <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>
