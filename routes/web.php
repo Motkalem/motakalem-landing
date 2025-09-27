@@ -2,22 +2,14 @@
 
 use App\Actions\HyperPay\RecurringCheckoutAction;
 use App\Actions\HyperPay\RecurringCheckoutResultAction;
+use App\Http\Controllers\CenterOneTimePaymentController;
 use App\Http\Controllers\Dashboard\Center\CenterPayController;
 use App\Http\Controllers\Dashboard\ConsultantPatientsController;
-use App\Http\Controllers\Dashboard\Payment\PayInstallmentController;
 use App\Http\Controllers\Dashboard\Payment\CenterPayInstallmentController;
-
-
-
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\Dashboard\Payment\PayInstallmentController;
 use App\Http\Controllers\PaymentController;
-use App\Notifications\Admin\HyperPayNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
-use App\Models\InstallmentPayment;
-
-use Illuminate\Support\Facades\Crypt;
 
 
 ### ONE TIME PAYMENTS ### !
@@ -43,6 +35,20 @@ Route::get('center-pay/{payid}/{patid}', [CenterPayController::class, 'getPayPag
 Route::get('center/checkout-result/{payid}/{patid}/{paymentMethod?}/',  [CenterPayController::class,'getStatus']);
 Route::get('center/thank-you/{payid}/',  [CenterPayController::class,'getThankYouPage'])->name('center.thank.you');
 Route::get('invalid-url',  [CenterPayController::class,'invalidUrl'])->name('center.invalid.url');
+### END ###
+
+### CENTER ONE-TIME PAYMENTS ###
+Route::get('center-onetime-checkout',
+[CenterOneTimePaymentController::class, 'getPayPage'])
+->name('checkout.center.onetime.index');
+
+Route::get('center-onetime/checkout/result/{payid}/{patid}/{paymentMethod?}',
+ [CenterOneTimePaymentController::class, 'getStatus']);
+
+ Route::get('center-onetime/invoice/{centerPayment}',
+ [CenterOneTimePaymentController::class, 'getInvoice'])
+ ->name('checkout.center.onetime.invoice');
+
 ### END ###
 
 

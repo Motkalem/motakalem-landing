@@ -166,6 +166,7 @@ class CenterPayController extends Controller
     }
 
 
+
     public function invalidUrl()
     {
         return view('payments.invalid-url');

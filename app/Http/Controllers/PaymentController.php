@@ -7,7 +7,7 @@ use App\Models\Package;
 use App\Models\ParentContract;
 use App\Models\Payment;
 use App\Models\Transaction;
-use App\Notifications\Admin\NewSubscriptionNotification;
+use App\Notifications\Admin\NewCenterSubscriptionNotification;
 use App\Notifications\SendContractNotification;
 use App\Notifications\SuccessSubscriptionPaidNotification;
 use App\Traits\HelperTrait;
@@ -331,7 +331,7 @@ class PaymentController extends Controller
                     $adminEmails = explode(',', env('ADMIN_EMAILS'));
                     foreach ($adminEmails as $adminEmail) {
                         NotificationFacade::route('mail', $adminEmail)
-                            ->notify(new  NewSubscriptionNotification(
+                            ->notify(new  NewCenterSubscriptionNotification(
                                 $student,
                                 $transaction
                             ));

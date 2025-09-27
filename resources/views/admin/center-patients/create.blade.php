@@ -90,6 +90,18 @@
                     </div>
                 </div>
 
+                <div class="mb-3 row">
+                    <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
+                    <div class="col-sm-10">
+                        <select id="payment_type" name="payment_type" class="form-control @error('payment_type') is-invalid @enderror">
+                            <option value="">-- اختر نوع الدفع --</option>
+                            <option value="installments" {{ old('payment_type') == 'installments' ? 'selected' : '' }}>أقساط</option>
+                            <option value="onetime" {{ old('payment_type') == 'onetime' ? 'selected' : '' }}>دفع مرة واحدة</option>
+                        </select>
+                        @error('payment_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
 
                 <div class="mb-3 row">
                     <div class="col-sm-10 offset-sm-2">

@@ -103,6 +103,22 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <!-- Payment Type Field -->
+                        <div class="mb-3 row">
+                            <label for="payment_type" class="form-label col-sm-2 col-form-label">نوع الدفع</label>
+                            <div class="col-sm-10">
+                                <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type">
+                                    <option value="" disabled selected>اختر نوع الدفع</option>
+                                    <option value="installment" {{ old('payment_type', $consultantPatient->payment_type ?? 'installment') == 'installment' ? 'selected' : '' }}>دفع بالأقساط</option>
+                                    <option value="one_time" {{ old('payment_type', $consultantPatient->payment_type ?? '') == 'one_time' ? 'selected' : '' }}>دفع لمرة واحدة</option>
+                                </select>
+                                @error('payment_type')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">دفع بالأقساط: يستخدم RYD Bank | دفع لمرة واحدة: يستخدم Tabby (SNB Bank)</small>
+                            </div>
+                        </div>
                         <!-- Submit Button -->
                         <div class="mb-3 row">
                             <div class="col-sm-10 offset-sm-2">

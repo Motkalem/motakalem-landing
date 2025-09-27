@@ -6,6 +6,9 @@ use App\Http\Controllers\Dashboard\AdminBaseController;
 use App\Models\Center\CenterInstallmentPayment;
 use App\Models\Center\CenterPackage;
 use App\Models\Center\CenterPatient;
+use App\Models\CenterPayment;
+
+
 use App\Notifications\Admin\CenterPaymentUrlNotification;
 use App\Traits\HelperTrait;
 use Illuminate\Contracts\View\View;
@@ -49,21 +52,25 @@ class PatientsController extends AdminBaseController
         return view('admin.center-patients.create', compact('title' ,'centerPackages'));
     }
 
-    public function store(Request $request)#: RedirectResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name'              => 'required|string|max:255',
-            'mobile_number' => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:center_patients,mobile_number'],
-            'email' => 'required|email',
-            'id_number' => 'nullable|digits:10',
-            'id_end_date' => ['nullable', 'date', function ($attribute, $value, $fail) {
+            'mobile_number'     => ['required', 'regex:/^(0\d{9}|966\d{9})$/', 'unique:center_patients,mobile_number'],
+            'email'             => 'required|email',
+            'id_number'         => 'nullable|digits:10',
+            'id_end_date'       => ['nullable', 'date', function ($attribute, $value, $fail) {
                 if (strtotime($value) <= strtotime(now())) {
                     $fail('يجب ان يكون تاريخ الإنتهاء لاحق لتاريخ اليوم');
                 }
             }],
             'age'               => 'required|integer|min:0',
             'center_package_id' => 'required|exists:center_packages,id',
-            'city'      => 'required|string',
+            'city'              => 'required|string',
+            'payment_type'      => ['required', 'string', Rule::in([
+                CenterPayment::PAYMENT_TYPE_ONE_TIME, 
+                CenterPayment::PAYMENT_TYPE_INSTALLMENT
+            ])],
         ]);
 
         $phone = $this->formatMobile($request->mobile_number);
@@ -71,21 +78,70 @@ class PatientsController extends AdminBaseController
             'mobile_number' => $phone,
             'source' => CenterPatient::DASHBOARD,
         ]);
+        
         $patient = CenterPatient::query()->create($validated);
+        $package = CenterPackage::find($validated['center_package_id']);
 
-        $installmentPayment = CenterInstallmentPayment::query()->create([
-            'patient_id'        => $patient->id,
-            'center_package_id' => $validated['center_package_id'],
-            'canceled'          => false,
-            'is_completed'      => false,
-        ]);
+        // Handle payment based on type
+        if ($validated['payment_type'] === CenterPayment::PAYMENT_TYPE_ONE_TIME) {
+          
 
-        $this->createInstallments($installmentPayment);
-        $this->generatePayUrl($installmentPayment);
+            $payment = CenterPayment::create([
+                'center_patient_id' => $patient->id,
+                'center_package_id' => $validated['center_package_id'],
+                'amount'            => $package->total,  
+                'payment_type'      => CenterPayment::PAYMENT_TYPE_ONE_TIME,
+                'status'            => CenterPayment::STATUS_PENDING,
+                'is_finished'       => false,
+                'payment_data'      => [
+                    'created_via' => 'dashboard',
+                    'admin_ip'    => request()->ip(),
+                ],
+            ]);
 
-        notify()->success('Patient data and installments created successfully.', 'Success');
+            $this->generateOneTimePayUrl($payment);
+            notify()->success('Patient data and one-time payment created successfully.', 'Success');
+            
+        } else {
+            // Create installment payment (existing logic)
+            $installmentPayment = CenterInstallmentPayment::query()->create([
+                'patient_id'        => $patient->id,
+                'center_package_id' => $validated['center_package_id'],
+                'canceled'          => false,
+                'is_completed'      => false,
+            ]);
+
+            $this->createInstallments($installmentPayment);
+            $this->generatePayUrl($installmentPayment);
+            notify()->success('Patient data and installments created successfully.', 'Success');
+        }
 
         return redirect()->route('dashboard.center.center-patients.index');
+    }
+
+
+   /**
+     * Generate payment URL for one-time payments
+     */
+    public function generateOneTimePayUrl($centerPayment)
+    {
+        $patient = $centerPayment->centerPatient;
+
+        $payid = $this->encrypt($centerPayment->id);
+        $patid = $this->encrypt($centerPayment->center_patient_id);
+
+        // You'll need to create a route for one-time payments
+        $url = route('checkout.center.onetime.index', [
+            'payid' => $payid,
+            'patid' => $patid
+        ]);
+
+        try {
+            Notification::route('mail', $patient?->email)
+                ->notify(new CenterPaymentUrlNotification($patient, $url));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 
 
