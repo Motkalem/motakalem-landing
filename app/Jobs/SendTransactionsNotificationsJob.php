@@ -25,7 +25,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
      */
     public function handle()
     {
-        Log::notice('Running == SendTransactionsNotificationsJob');
+        //Log::notice('Running == SendTransactionsNotificationsJob');
 
         $installmentNotifications = HyperpayWebHooksNotification::query()
             ->select([
@@ -48,12 +48,12 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
             ->get();
 
 
-        Log::notice('Notifications count: ' . $installmentNotifications->count());
+        //Log::notice('Notifications count: ' . $installmentNotifications->count());
 
         foreach ($installmentNotifications as $notification) {
 
             if ( $notification->amount != 0 ) {
-                Log::notice('Running == in loop');
+                //Log::notice('Running == in loop');
 
                 if ($notification->installment_payment_id){
 
@@ -98,7 +98,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
     {
         try {
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
-            $adminEmails = ['dev@squarement.sa'];
+//            $adminEmails = ['dev@squarement.sa'];
             foreach ($adminEmails as $adminEmail) {
 
                 $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
@@ -121,7 +121,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
      */
     protected function notifyStudent($notification, $email): void
     {
-        $email  = 'dev@squarement.sa';
+//        $email  = 'dev@squarement.sa';
         try {
             $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
@@ -137,7 +137,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
     protected function notifyCenterPatient($notification, $email): void
     {
         try {
-            $email  = 'dev@squarement.sa';
+//            $email  = 'dev@squarement.sa';
 
             $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
@@ -158,7 +158,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
     {
         try {
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
-            $adminEmails = ['dev@squarement.sa'];
+//            $adminEmails = ['dev@squarement.sa'];
 
             foreach ($adminEmails as $adminEmail) {
 
