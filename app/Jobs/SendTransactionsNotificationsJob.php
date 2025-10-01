@@ -44,7 +44,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
                 $query->where('admin_notified', 0)
                     ->orWhere('student_notified', 0);
             })
-            //->whereRaw("JSON_EXTRACT(payload, '$.amount') != 0")
+            ->whereRaw("JSON_EXTRACT(payload, '$.amount') != 0")
             ->get();
 
 
