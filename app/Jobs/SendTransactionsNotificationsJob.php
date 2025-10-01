@@ -43,8 +43,12 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
             ->where(function ($query) {
                 $query->where('admin_notified', 0)
                     ->orWhere('student_notified', 0);
-            })->get();
+            })
+            //->whereRaw("JSON_EXTRACT(payload, '$.amount') != 0")
+            ->get();
 
+
+        Log::notice('Notifications count: ' . $installmentNotifications->count());
 
         foreach ($installmentNotifications as $notification) {
 
