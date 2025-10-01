@@ -49,10 +49,11 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
         foreach ($installmentNotifications as $notification) {
 
             if ( $notification->amount != 0 ) {
+                Log::notice('Running == in loop');
 
                 if ($notification->installment_payment_id){
 
-                    //$this->notifyStudent($notification, $notification->installmentPayment?->student?->email);
+                    $this->notifyStudent($notification, $notification->installmentPayment?->student?->email);
                     $this->notifyAdmin($notification);
                 }
 
@@ -60,8 +61,8 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
                 if($notification->center_installment_payment_id){
 
 
-                    //$this->notifyCenterPatient($notification, $notification->centerInstallmentPayment?->patient?->email);
-                    //$this->notifyCenterAdmin($notification);
+                    $this->notifyCenterPatient($notification, $notification->centerInstallmentPayment?->patient?->email);
+                    $this->notifyCenterAdmin($notification);
                 }
             }
 
@@ -116,6 +117,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
      */
     protected function notifyStudent($notification, $email): void
     {
+        $email  = 'dev@squarement.sa';
         try {
             $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
@@ -131,6 +133,7 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
     protected function notifyCenterPatient($notification, $email): void
     {
         try {
+            $email  = 'dev@squarement.sa';
 
             $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
 
@@ -151,6 +154,8 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
     {
         try {
             $adminEmails = explode(',', env('ADMIN_EMAILS'));
+            $adminEmails = ['dev@squarement.sa'];
+
             foreach ($adminEmails as $adminEmail) {
 
                 $result = $this->isSuccessfulNotification($notification) ? "تمت المعاملة بنجاح !" : "فشلت العملية !";
