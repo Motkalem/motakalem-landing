@@ -44,9 +44,11 @@ class SendTransactionsNotificationsJob   implements ShouldQueue
                 $query->where('admin_notified', 0)
                     ->orWhere('student_notified', 0);
             })->get();
+        Log::notice('Found ' . $installmentNotifications->count() . ' notifications');
 
 
         foreach ($installmentNotifications as $notification) {
+            Log::notice('Processing notification ID: ' . $notification->id . ', amount: ' . $notification->amount);
 
             if ( $notification->amount != 0 ) {
 
