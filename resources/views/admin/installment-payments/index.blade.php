@@ -100,9 +100,11 @@
                             </a>
 
                            @if( $installmentPayment->installments()->where('is_paid', 1)->count() == 0)
-                                <button class="px-4 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
-
+                               <div class="mt-2" >
+                                <button class="px-4 pt-2 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
+                               </div>
                             @endif
+
                         </td>
                     </tr>
                     @endforeach
@@ -149,6 +151,27 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="cancelConfirmModal" tabindex="-1" role="dialog" aria-labelledby="cancelConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelConfirmModalLabel">تأكيد إلغاء الطلب</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد أنك تريد إلغاء هذا الطلب؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-danger" id="confirmCancelRequest">تأكيد الإلغاء</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -241,6 +264,67 @@
                         alert('حدث خطأ أثناء إرسال العقد: ' + error.message);
                     });
             });
+
+
+
+
+
+
+            let cancelPaymentId = null;
+
+            // When clicking the cancel-request button
+            $('.cancel-request').on('click', function () {
+                cancelPaymentId = $(this).data('id');
+
+                // Show the cancel confirmation modal
+                $('#cancelConfirmModal').modal('show');
+            });
+
+            // When user confirms cancellation in modal
+            $('#confirmCancelRequest').on('click', function () {
+                if (cancelPaymentId !== null) {
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    $.ajax({
+                        url: '/dashboard/installment-payments/' + cancelPaymentId,
+                        type: 'DELETE',
+                        data: {
+                            _token: csrfToken
+                        },
+                        success: function (response) {
+                            $('#cancelConfirmModal').modal('hide');
+                            alert("{{ __('Request cancelled successfully!') }}");
+                            // Optionally remove row or refresh page
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            $('#cancelConfirmModal').modal('hide');
+
+                            let message = '';
+
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                // Laravel-style JSON error
+                                message = xhr.responseJSON.message;
+                            } else if (xhr.responseText) {
+                                // If the response isn't JSON (e.g., HTML error page)
+                                message = xhr.responseText;
+                            } else {
+                                // Fallback generic message
+                                message = error || "An unknown error occurred.";
+                            }
+
+                            alert("Error: " + message);
+                            console.error("Error details:", xhr);
+                        }
+
+                    });
+                }
+            });
+
+
+
+
+
         }, { once: true }); // This ensures the event fires only once.
 
     </script>

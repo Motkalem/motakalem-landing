@@ -279,4 +279,41 @@ class InstallmentPaymentsController extends AdminBaseController
             '8ac9a4a49469716801946a204afd7cfd'
         ];
     }
+
+
+    public function destroy($id)
+    {
+        $payment = InstallmentPayment::with(['installments', 'student.parentContract'])->findOrFail($id);
+
+        // Check if any installments were paid
+        $hasPaidInstallments = $payment->installments()->where('is_paid', 1)->exists();
+        if ($hasPaidInstallments) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Cannot delete a payment that has already been paid.')
+            ], 403);
+        }
+
+        // Delete all related installments
+        $payment->installments()->delete();
+
+        // Delete related student and parent contract (if exist)
+        if ($payment->student) {
+            if ($payment->student->parentContract) {
+                $payment->student->parentContract->delete();
+            }
+            $payment->student->delete();
+        }
+
+        // Delete main InstallmentPayment
+        $payment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Payment request, related student, and parent contract deleted successfully.')
+        ]);
+    }
+
+
+
 }
