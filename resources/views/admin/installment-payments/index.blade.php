@@ -104,7 +104,6 @@
                                 <button class="px-4 pt-2 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
                                </div>
                             @endif
-
                         </td>
                     </tr>
                     @endforeach

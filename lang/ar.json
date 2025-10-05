@@ -127,5 +127,8 @@
     "SMS Notifications": "إشعارات الرسائل النصية",
     "Yes": "نعم",
     "No": "لا",
-    "Save All Settings": "حفظ جميع الإعدادات"
+    "Save All Settings": "حفظ جميع الإعدادات",
+    "Cannot delete student because some installment payments have been paid.": "لا يمكن حذف الطالب لأن بعض أقساط الدفع قد تم سدادها.",
+    "Cannot delete student because payment have been paid.": "لا يمكن حذف الطالب لأن بعض الدفعات قد تم سدادها.",
+    "Student and all related data deleted successfully.": "تم حذف الطالب وجميع البيانات المتعلقة به بنجاح."
 }
