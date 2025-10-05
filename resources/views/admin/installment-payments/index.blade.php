@@ -100,9 +100,11 @@
                             </a>
 
                            @if( $installmentPayment->installments()->where('is_paid', 1)->count() == 0)
-                                <button class="px-4 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
-
+                               <div class="mt-2" >
+                                <button class="px-4 pt-2 btn btn-primary btn-sm  send-payment-link" data-id="{{ $installmentPayment->id }}"> إرسال رابط الدفع</button>
+                               </div>
                             @endif
+
                         </td>
                     </tr>
                     @endforeach
