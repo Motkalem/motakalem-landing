@@ -84,7 +84,7 @@
     "Patients": "المرضي",
     "center payments": "مدفوعات المركز",
     "User is already registered and paid first installment for this package": "المستخدم مسجل بالفعل وقام بدفع القسط الأول لهذه الباقة",
-    "success generate hyperpay url and sent to your email": "تم إنشاء رابط Hyperpay بنجاح وإرساله إلى بريدك الإلكتروني",
+    "success generate hyperpay url and sent to your email": "تم إنشاء رابط بنجاح وإرساله إلى بريدك الإلكتروني",
     "Error setting up recurring payment": "خطأ في إعداد الدفع المقسط",
     "Unable to process payment": "غير قادر على معالجة الدفع",
     "successfully created checkout": "تم إنشاء رابط الدفع بنجاح",

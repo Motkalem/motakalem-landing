@@ -38,6 +38,25 @@
             </thead>
             <tbody>
                 @foreach($students as $student)
+                    @php
+                        $canDelete = true;
+
+                        // Check installment payments (never paid)
+                        foreach ($student->installmentPayments as $payment) {
+                            if ($payment->installments->where('is_paid', 1)->count() > 0) {
+                                $canDelete = false;
+                                break;
+                            }
+                        }
+
+                        // Check one-time payments (never paid)
+                        foreach ($student->payments as $payment) {
+                            if ($payment->is_finished == 1) {
+                                $canDelete = false;
+                                break;
+                            }
+                        }
+                    @endphp
                 <tr>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->created_at?->toDateString() }}</td>
@@ -59,13 +78,23 @@
                         <a class="btn btn-primary btn-sm" href="{{ route('dashboard.students.show', $student->id) }}">
                             <i class="fas fa-eye me-1"></i> عرض
                         </a>
-                        
+
                         <a class="btn btn-info btn-sm" href="{{ route('dashboard.students.edit', $student->id) }}">
                             <i class="fas fa-edit me-1"></i> تعديل
                         </a>
-                        
+
+                            @if($canDelete)
+                                <button class="btn btn-danger btn-sm delete-student" data-id="{{ $student->id }}">
+                                    حذف
+                                </button>
+                            @else
+                                <button class="btn btn-danger btn-sm" disabled>
+                                    حذف
+                                </button>
+                            @endif
+
                         @if( $student->parentContract?->package?->payment_type == "tabby" )
-                            <button 
+                            <button
                                 @if($student->is_paid) disabled title="تم الدفع" @endif
                                     type="button"
                                     class="btn btn-sm px-4 text-white {{ $student->is_paid ? 'disabled cursor-not-allowed bg-secondary' : 'bg-success' }}"
@@ -78,9 +107,9 @@
                             </button>
 
                         @endif
-                    
-                
-                         
+
+
+
                         {{-- <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $student->id }}">
                             حذف
                         </button> --}}
@@ -140,17 +169,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تأكيد حذف الطالب</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد أنك تريد حذف هذا الطالب وجميع بياناته؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteStudent">تأكيد الحذف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var studentId = button.getAttribute('data-id');
-            var form = document.getElementById('deleteForm');
-            form.action = "{{ route('dashboard.students.destroy', ':id') }}".replace(':id', studentId);
-        });
-    });
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
 
     document.addEventListener('DOMContentLoaded', function () {
         var payModal = document.getElementById('payConfirmModal');
@@ -158,7 +199,7 @@
             var button = event.relatedTarget;
             var studentId = button.getAttribute('data-id');
             var studentName = button.getAttribute('data-name');
-            
+
             // Set student name in modal
             document.getElementById('studentName').textContent = studentName;
 
@@ -168,5 +209,40 @@
         });
     });
 </script>
+
+<script>
+    let deleteStudentId = null;
+
+    // When clicking the delete button, show modal
+    $('.delete-student').on('click', function () {
+        deleteStudentId = $(this).data('id');
+        $('#deleteStudentModal').modal('show');
+    });
+
+    // When confirming deletion
+    $('#confirmDeleteStudent').on('click', function () {
+        if (!deleteStudentId) return;
+
+        $.ajax({
+            url: '/dashboard/students/' + deleteStudentId,
+            type: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function (res) {
+                $('#deleteStudentModal').modal('hide');
+                alert(res.message);
+                // Optionally remove the row without reloading:
+                $('button[data-id="'+deleteStudentId+'"]').closest('tr').remove();
+            },
+            error: function (xhr) {
+                $('#deleteStudentModal').modal('hide');
+                let msg = xhr.responseJSON?.message || 'حدث خطأ';
+                alert(msg);
+                console.error(xhr);
+            }
+        });
+    });
+</script>
+
+
 @endpush
 @endsection

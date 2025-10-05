@@ -33,6 +33,11 @@ class Student extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function package()
     {
         return $this->belongsTo(Package::class);
@@ -41,6 +46,11 @@ class Student extends Model
     public function installmentPayment()
     {
         return $this->hasOne(InstallmentPayment::class);
+    }
+
+    public function installmentPayments(): HasMany
+    {
+        return $this->hasMany(InstallmentPayment::class);
     }
 
     public function parentContract()

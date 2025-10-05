@@ -23,7 +23,6 @@ class StudentsController extends AdminBaseController
     public function index()
     {
         $title = 'الطلاب';
-
         $search = request()->query('search');
 
         $query = Student::query();
@@ -33,12 +32,20 @@ class StudentsController extends AdminBaseController
                 ->orWhere('phone', 'LIKE', "%{$search}%");
         }
 
-        $students =$query->orderBy('id', 'desc')->paginate(12);
-        $studentsCount = Student::query()->count();
+        // Eager load relationships needed for Blade logic
+        $students = $query->with([
+            'installmentPayments.installments',
+            'payments',
+            'parentContract'
+        ])
+            ->orderBy('id', 'desc')
+            ->paginate(12);
 
-        return view('admin.students.index',
-         compact('students','title', 'studentsCount'));
+        $studentsCount = Student::count();
+
+        return view('admin.students.index', compact('students','title','studentsCount'));
     }
+
 
     /**
      * @return Application|Factory|View
@@ -139,15 +146,60 @@ class StudentsController extends AdminBaseController
 
     public function destroy($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::with(['installmentPayments.installments', 'payments.transactions', 'parentContract'])
+            ->findOrFail($id);
+
+        // Prevent deletion if any installment payment is paid
+        foreach ($student->installmentPayments as $payment) {
+            if ($payment->installments->where('is_paid', 1)->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Cannot delete student because some installment payments have been paid.')
+                ], 403);
+            }
+        }
+        // Prevent deletion if any one-time payment is paid
+        foreach ($student->payments as $payment) {
+            if ($payment->is_finished == 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Cannot delete student because payment have been paid.')
+                ], 403);
+            }
+        }
+
+        // Delete installment payments and installments
+        foreach ($student->installmentPayments as $payment) {
+            $payment->installments()->delete();
+            $payment->delete();
+        }
+
+        // Delete one-time payments and transactions
+        foreach ($student->payments as $payment) {
+            $payment->transactions()->delete();
+            $payment->delete();
+        }
+
+        // Delete parent contract if exists
+        if ($student->parentContract) {
+            $student->parentContract->delete();
+        }
+
+        // Delete student
         $student->delete();
-        return redirect()->route('dashboard.students.index')->with('success', 'Student deleted successfully.');
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Student and all related data deleted successfully.')
+        ]);
     }
+
+
 
 
     public function sendContract($id)
     {
-      
+
         $student = Student::query()->with(['parentContract'])->findOrFail($id);
 
         $contractData = [
@@ -163,7 +215,7 @@ class StudentsController extends AdminBaseController
 
         // Create the contract and handle potential exceptions
         try {
-         
+
             $contract = ParentContract::query()->with('course')->create(array_merge($contractData, ['accept_terms']));
 
             $contract = $contract->load('package');
@@ -215,7 +267,7 @@ class StudentsController extends AdminBaseController
     public function payManually($id)
     {
         $student = Student::findOrFail($id);
-    
+
         // Update the student to mark as paid manually
         $student->update([
             'is_paid' => true,
@@ -226,5 +278,5 @@ class StudentsController extends AdminBaseController
 
         return redirect()->back();
     }
-    
+
 }
