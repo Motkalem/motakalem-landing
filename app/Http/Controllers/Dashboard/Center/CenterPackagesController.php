@@ -44,22 +44,34 @@ class CenterPackagesController extends AdminBaseController
     public function store(Request $request)
     {
 
-          $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255|unique:packages,name',
-            'total' => 'nullable|numeric|min:0|required_without_all:first_inst,number_of_months',
+            'total' => 'required|numeric|min:1',
             'number_of_months' => 'nullable|integer|min:1|required_if:total,null',
             'first_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'second_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'third_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
-            'starts_date' => 'required|date|before:ends_date',
-            'ends_date' => 'required|date|after:starts_date',
+            'starts_date' => 'nullable|date|before:ends_date',
+            'ends_date' => 'nullable|date|after:starts_date',
             'is_active' => 'nullable',
+            'payment_type' => 'required',
         ]);
 
+        if ($request->payment_type == CenterPackage::ONE_TIME) {
+            $request->merge([
+                'number_of_months' => 0,
+                'first_inst' => 0,
+                'second_inst' => 0,
+                'third_inst' => 0,
+                'fourth_inst' => 0,
+                'fifth_inst' => 0,
+            ]);
+        }
 
         $package = new CenterPackage([
+            'payment_type' => $request->payment_type,
             'number_of_months' => $request->number_of_months,
             'first_inst' => $request->first_inst??0,
             'second_inst' => $request->second_inst??0,
@@ -104,17 +116,29 @@ class CenterPackagesController extends AdminBaseController
             'fourth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'fifth_inst' => 'nullable|numeric|min:0|required_if:total,null',
             'is_active' => 'sometimes',
-            'starts_date' => 'required|date|before:ends_date',
-            'ends_date' => 'required|date|after:starts_date',
+            'starts_date' => 'nullable|date|before:ends_date',
+            'ends_date' => 'nullable|date|after:starts_date',
             'name' => ['required','string','max:255', Rule::unique('packages', 'name')
-            ->ignore($id)],
+                ->ignore($id)],
         ]);
 
         $package = CenterPackage::query()->findOrFail($id);
-
-        $numberOfMonths = $package->centerPayments?->count()
-            ? $package->number_of_months
-            : $request->number_of_months;
+        if($package->payment_type == CenterPackage::ONE_TIME)
+        {
+            $numberOfMonths = 0;
+            $request->merge([
+                'number_of_months' => 0,
+                'first_inst' => 0,
+                'second_inst' => 0,
+                'third_inst' => 0,
+                'fourth_inst' => 0,
+                'fifth_inst' => 0,
+            ]);
+        }else {
+            $numberOfMonths = $package->centerPayments?->count()
+                ? $package->number_of_months
+                : $request->number_of_months;
+        }
 
         $package->update([
             'number_of_months' => $numberOfMonths,

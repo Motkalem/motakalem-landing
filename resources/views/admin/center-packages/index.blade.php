@@ -33,7 +33,8 @@
                 <table class="table table-striped table-class">
                     <thead>
                     <tr>
-                        <th class="text-center"  >اسم الباقة</th>
+                        <th class="text-center">اسم الباقة</th>
+                        <th class="text-center">نوع الدفع</th>
                         <th class="text-center" > تاريخ البدأ  </th>
                         <th class="text-center" > تاريخ الإنتهاء  </th>
                         <th class="text-center">الحالة</th>
@@ -47,6 +48,7 @@
                     @foreach($packages as $package)
                         <tr>
                             <td class="text-center"> {{ $package->name }}</td>
+                            <td class="text-center">{{ $package->payment_type == 'one time' ? 'دفع مرة واحدة' : 'تقسيط' }}</td>
                             <td class="text-center"> {{ $package->starts_date }}</td>
                             <td class="text-center"> {{ $package->ends_date }}</td>
                             <td class="text-center">

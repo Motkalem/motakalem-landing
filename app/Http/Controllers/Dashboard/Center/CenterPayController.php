@@ -73,9 +73,9 @@ class CenterPayController extends Controller
 
         if(request()->paymentMethod == 'MADA')
         {
-            $entity_id = env('RYD_ENTITY_ID_MADA');  
+            $entity_id = env('RYD_ENTITY_ID_MADA');
         }
-        
+
         $url = env('RYD_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entity_id;
 
@@ -128,7 +128,7 @@ class CenterPayController extends Controller
         }
 
         if ($transaction->success == 'true') {
-
+            //@todo: notify
             $centerInstallmentPayment->centerInstallments->first()?->update([
                 'is_paid' => true,
                 'paid_at' => now(),
@@ -144,7 +144,7 @@ class CenterPayController extends Controller
         }
     }
 
-    public function createWebHookNotification($response, $installment) 
+    public function createWebHookNotification($response, $installment)
     {
 
         return HyperpayWebHooksNotification::query()->create([
