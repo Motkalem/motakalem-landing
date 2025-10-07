@@ -195,7 +195,7 @@ class CenterOneTimePaymentController extends Controller
         {
 
             return redirect(route('checkout.center.onetime.index',
-                ['payid'=> $this->encrypt(request()->payid), 'patid'=>  request()->patid ]))
+                ['payid'=> request()->patid, 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
