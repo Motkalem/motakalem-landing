@@ -81,4 +81,5 @@ class HyperPayWebHooksController extends Controller
                 Log::error($e->getMessage());
             }
     }
+
 }

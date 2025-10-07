@@ -23,7 +23,6 @@
         .invoice-container {
             max-width: 700px;
             margin: 50px auto;
-
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -47,14 +46,11 @@
 
         .invoice-details {
             margin-bottom:50px;
-
-
         }
 
         .invoice-details table {
             width: 100%;
             border-collapse: collapse;
-
         }
 
         .invoice-details th, .invoice-details td {
@@ -70,7 +66,32 @@
             color: #555;
         }
 
+        .payment-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-cancelled {
+            background-color: #e2e3e5;
+            color: #6c757d;
+        }
     </style>
 
     <style>
@@ -109,7 +130,6 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-
             font-family: 'SarRegular', sans-serif !important;
             font-size: 1.3rem;
             font-weight: 100 !important;
@@ -120,7 +140,6 @@
         src="{{env('HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"></script>
 
 <body class="mat-typography arabic" cz-shortcut-listen="true">
-<!-- Google Tag Manager (noscript) -->
 <div class="invoice-container">
 
     <app-navbar _ngcontent-ng-c277388621="" _nghost-ng-c2170032471="">
@@ -136,12 +155,11 @@
                     <input _ngcontent-ng-c2170032471="" type="checkbox" id="menuToggle" class="hidden">
                     <div _ngcontent-ng-c2170032471="" class="nav-container">
                         <ul _ngcontent-ng-c2170032471="" class=" ">
-
                             <li _ngcontent-ng-c2170032471=""
-                                class="nav-tab text-end d-flex justify-content-center align-items-center p-0"><a
-                                        _ngcontent-ng-c2170032471=""
-                                        href="https://www.instagram.com/motkalemsa/?igshid=OGQ5ZDc2ODk2ZA%3D%3D"
-                                        target="_blank" class="mx-3 mx-md-4">
+                                class="nav-tab text-end d-flex justify-content-center align-items-center p-0">
+                                <a _ngcontent-ng-c2170032471=""
+                                   href="https://www.instagram.com/motkalemsa/?igshid=OGQ5ZDc2ODk2ZA%3D%3D"
+                                   target="_blank" class="mx-3 mx-md-4">
                                     <svg _ngcontent-ng-c2170032471="" width="29" height="29" viewBox="0 0 29 29"
                                          fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path _ngcontent-ng-c2170032471=""
@@ -149,9 +167,10 @@
                                               fill="#144356" data-darkreader-inline-fill=""
                                               style="--darkreader-inline-fill: #34474f;"></path>
                                     </svg>
-                                </a><a _ngcontent-ng-c2170032471=""
-                                       href="https://twitter.com/motkalemsa/status/1687890975023091712?s=20"
-                                       target="_blank" class="mx-3 mx-md-4">
+                                </a>
+                                <a _ngcontent-ng-c2170032471=""
+                                   href="https://twitter.com/motkalemsa/status/1687890975023091712?s=20"
+                                   target="_blank" class="mx-3 mx-md-4">
                                     <svg _ngcontent-ng-c2170032471="" xmlns="http://www.w3.org/2000/svg" height="29"
                                          width="29" viewBox="0 0 512 512">
                                         <path _ngcontent-ng-c2170032471=""
@@ -159,9 +178,10 @@
                                               fill="#144356" data-darkreader-inline-fill=""
                                               style="--darkreader-inline-fill: #34474f;"></path>
                                     </svg>
-                                </a><a _ngcontent-ng-c2170032471=""
-                                       href="https://www.facebook.com/MotkalemSASS?mibextid=LQQJ4d" target="_blank"
-                                       class="mx-3 mx-md-4">
+                                </a>
+                                <a _ngcontent-ng-c2170032471=""
+                                   href="https://www.facebook.com/MotkalemSASS?mibextid=LQQJ4d" target="_blank"
+                                   class="mx-3 mx-md-4">
                                     <svg _ngcontent-ng-c2170032471="" width="29" height="29" viewBox="0 0 18 33"
                                          fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path _ngcontent-ng-c2170032471=""
@@ -169,7 +189,8 @@
                                               fill="#144356" data-darkreader-inline-fill=""
                                               style="--darkreader-inline-fill: #34474f;"></path>
                                     </svg>
-                                </a></li>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -191,15 +212,28 @@
                 <table>
                     <tr>
                         <th style="text-align: start; font-weight: normal">رقم التسجيل</th>
-                        <td style="text-align: start">{{ $centerInstallmentPayment->id }}</td>
+                        <td style="text-align: start">{{ $centerPayment->id }}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: start; font-weight: normal">   الاسم</th>
-                        <td style="text-align: start">{{ $centerInstallmentPayment->patient?->name }}</td>
+                        <th style="text-align: start; font-weight: normal">الاسم</th>
+                        <td style="text-align: start">{{ $centerPayment->centerPatient?->name }}</td>
                     </tr>
                     <tr>
                         <th style="text-align: start; font-weight: normal">تاريخ العملية</th>
-                        <td style="text-align: start">{{ $centerInstallmentPayment->created_at->format('Y-m-d H:i') }}</td>
+                        <td style="text-align: start">{{ $centerPayment->created_at->format('Y-m-d H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: start; font-weight: normal">حالة الدفع</th>
+                        <td style="text-align: start">
+                            <span class="payment-status 
+                               
+                                @if($centerPayment->is_finished) status-completed @endif">
+
+                                @if($centerPayment->is_finished)
+                                     تم الدفع
+                                @endif
+                            </span>
+                        </td>
                     </tr>
                 </table>
 
@@ -207,73 +241,60 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>تاريخ القسط</th>
+                        <th>الباقة</th>
                         <th>المبلغ</th>
-                        <th>حالة الدفع</th>
+                        <th>تاريخ الدفع</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($centerInstallmentPayment->centerInstallments as $installment)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::parse($installment->installment_date)->format('Y-m-d') }}</td>
-                            <td>{{ number_format($installment->installment_amount, 2) }} ريال</td>
-                            <td>{{ $installment->is_paid ? 'مدفوع' : 'غير مدفوع' }}</td>
-                        </tr>
-                        @break
-                    @endforeach
+                    <tr>
+                        <td>{{ $centerPayment->centerPackage?->name ?? 'غير محدد' }}</td>
+                        <td>{{ number_format($centerPayment->amount, 2) }} ريال</td>
+                        <td>{{ $centerPayment->paid_at ? $centerPayment->paid_at->format('Y-m-d H:i') : 'لم يتم الدفع بعد' }}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
-            <section _ngcontent-ng-c3011216936="" class="first_footer py-3" style="margin-top: 62px">
-                <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
-                    <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
-
-                        <div _ngcontent-ng-c3011216936=""
-                             class="col-md-4 text-center align-self-center mt-1 border-left">
-
-                            <p _ngcontent-ng-c3011216936="" class="text-white"> رقم السجل التجاري </p>
-                            <p _ngcontent-ng-c3011216936="" class="text-white"> 4030511477 </p>
-                        </div>
-                        <div _ngcontent-ng-c3011216936=""
-                             class="col-md-4 text-center align-self-center mt-1 border-left">
-
-                            <p _ngcontent-ng-c3011216936="" class="text-white"> رقم التسجيل الضريبي </p>
-                            <p _ngcontent-ng-c3011216936="" class="text-white"> 312011490100003 </p>
-                        </div>
-
+        
+        <section _ngcontent-ng-c3011216936="" class="first_footer py-3" style="margin-top: 62px">
+            <div _ngcontent-ng-c3011216936="" class="container-fluid align-self-center">
+                <div _ngcontent-ng-c3011216936="" class="row justify-content-center p-1 mb-0">
+                    <div _ngcontent-ng-c3011216936=""
+                         class="col-md-4 text-center align-self-center mt-1 border-left">
+                        <p _ngcontent-ng-c3011216936="" class="text-white"> رقم السجل التجاري </p>
+                        <p _ngcontent-ng-c3011216936="" class="text-white"> 4030511477 </p>
+                    </div>
+                    <div _ngcontent-ng-c3011216936=""
+                         class="col-md-4 text-center align-self-center mt-1 border-left">
+                        <p _ngcontent-ng-c3011216936="" class="text-white"> رقم التسجيل الضريبي </p>
+                        <p _ngcontent-ng-c3011216936="" class="text-white"> 312011490100003 </p>
                     </div>
                 </div>
-            </section>
-            <footer _ngcontent-ng-c3011216936="">
-                <div _ngcontent-ng-c3011216936="" class="container">
-                    <div _ngcontent-ng-c3011216936="" class="row justify-content-center align-items-center">
-                        <div _ngcontent-ng-c3011216936="" class="col-md-2 text-center"><a _ngcontent-ng-c3011216936=""
-                                                                                          href="/home"><img
-                                        _ngcontent-ng-c3011216936="" src="../../../../assets/img/motkalem-new-logo.png"
-                                        alt=""
-                                        class="w-75"></a></div>
-                        <div _ngcontent-ng-c3011216936="" class="col-md-12 text-center">
-                            <div _ngcontent-ng-c3011216936="" class="d-flex justify-content-around align-items-center">
-                                <a
-                                        _ngcontent-ng-c3011216936="" href="https://motkalem.sa">الرئيسية</a>
-                            </div>
-                            <div _ngcontent-ng-c3011216936="" class="d-flex flex-column mt-2"><a
-                                        _ngcontent-ng-c3011216936="" href="mailto:“info@motkalem.sa”"
-                                        class="text-decoration-underline">info@motkalem.sa</a></div>
-                            <sm class="text-white text-sm-center">&copy; {{ '2025' }} متكلم - جميع الحقوق محفوظة</sm>
+            </div>
+        </section>
+        
+        <footer _ngcontent-ng-c3011216936="">
+            <div _ngcontent-ng-c3011216936="" class="container">
+                <div _ngcontent-ng-c3011216936="" class="row justify-content-center align-items-center">
+                    <div _ngcontent-ng-c3011216936="" class="col-md-2 text-center">
+                        <a _ngcontent-ng-c3011216936="" href="/home">
+                            <img _ngcontent-ng-c3011216936="" src="../../../../assets/img/motkalem-new-logo.png" alt="" class="w-75">
+                        </a>
+                    </div>
+                    <div _ngcontent-ng-c3011216936="" class="col-md-12 text-center">
+                        <div _ngcontent-ng-c3011216936="" class="d-flex justify-content-around align-items-center">
+                            <a _ngcontent-ng-c3011216936="" href="https://motkalem.sa">الرئيسية</a>
                         </div>
-
+                        <div _ngcontent-ng-c3011216936="" class="d-flex flex-column mt-2">
+                            <a _ngcontent-ng-c3011216936="" href="mailto:info@motkalem.sa" class="text-decoration-underline">info@motkalem.sa</a>
+                        </div>
+                        <sm class="text-white text-sm-center">&copy; {{ '2025' }} متكلم - جميع الحقوق محفوظة</sm>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </footer>
     </div>
-
-
 </div>
 </body>
 </html>
-
-
-

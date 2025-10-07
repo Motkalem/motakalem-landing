@@ -90,7 +90,6 @@
                     </div>
                 </div>
 
-
                 <div class="mb-3 row">
                     <div class="col-sm-10 offset-sm-2">
                         <button type="submit" class="btn btn-primary">حفظ المريض</button>

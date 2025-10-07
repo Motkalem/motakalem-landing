@@ -1,6 +1,8 @@
 <?php
 
 use App\Actions\HyperPay\CancelRecurringPayment;
+use App\Http\Controllers\CenterOneTimePaymentController;
+use App\Http\Controllers\Dashboard\Center\CenterOneTimeController;
 use App\Http\Controllers\Dashboard\Center\CenterPackagesController;
 use App\Http\Controllers\Dashboard\Center\CenterPaymentsController;
 use App\Http\Controllers\Dashboard\Center\PatientsController;
@@ -18,10 +20,7 @@ use App\Http\Controllers\Dashboard\ProgramInquiresController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\StudentsController;
 use App\Http\Controllers\Dashboard\TransactionsController;
-use App\Models\ParentContract;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 // --------------------------
 // Admin Routes
@@ -79,6 +78,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:dashboard', 'as' =>
 
         Route::resource('center-patients', PatientsController::class);
         Route::resource('center-payments', CenterPaymentsController::class);
+
+        Route::resource('center-onetime-payments', CenterOneTimeController::class);
+
+        Route::post('/center/onetime-payments/{id}/send-payment-url',
+            [CenterOneTimeController::class, 'sendPaymentUrl'])
+            ->name('center-onetime-payments.send-payment-url');
+
 
         Route::post('installment-payments/{id}', [CenterPaymentsController::class, 'deductInstallment'])->name('deductInstallment');
 

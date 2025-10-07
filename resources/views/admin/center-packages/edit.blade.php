@@ -21,7 +21,30 @@
                         @if(isset($package))
                             @method('PUT')
                         @endif
-
+                        <!-- Payment Type Radio Buttons -->
+                        <div class="mb-3 row">
+                            <label class="form-label col-sm-2 col-form-label">نوع الدفع</label>
+                            <div class="cursor-pointer col-sm-10 d-flex align-items-center">
+                                @if($package->payment_type == \App\Models\Center\CenterPackage::ONE_TIME)
+                                    <div class="cursor-pointer form-check me-4 ">
+                                        <input class="form-check-input"
+                                               required type="radio"
+                                               checked
+                                               value="one time"
+                                            {{   $package->payment_type  }}>
+                                        <label class="form-check-label" for="one_time">دفع مرة واحدة</label>
+                                    </div>
+                                @elseif($package->payment_type == \App\Models\Center\CenterPackage::INSTALLMENTS)
+                                    <div class=" form-check">
+                                        <input class="form-check-input"
+                                               checked
+                                               required type="radio" value="installments"
+                                            {{  $package->payment_type   }}>
+                                        <label class="form-check-label" for="installments">تقسيط</label>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                         <!-- Package Name -->
                         <div class="mb-3 row">
                             <label for="name" class="form-label col-sm-2 col-form-label">إسم الباقة</label>
@@ -44,79 +67,79 @@
                                        value="{{ old('total', $package->total ?? '') }}" placeholder="إجمالي المبلغ">
 
                                 @error('total')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Number of Months -->
-                        <div class="mb-3 row">
-                            <label for="number_of_months" class="form-label col-sm-2 col-form-label">عدد الشهور</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control @error('number_of_months') is-invalid @enderror"
-                                       id="number_of_months" name="number_of_months"
-                                       value="{{ old('number_of_months', $package->number_of_months ?? '') }}"
-                                       placeholder="عدد الشهور">
-                                @error('number_of_months')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-
-                        <!-- Installments -->
-                        <div class="mb-3 row py-2 px-2">
-                            @php
-                                $installments = [
-                                    'first_inst'  => 'القسط الاول',
-                                    'second_inst' => 'القسط الثاني',
-                                    'third_inst'  => 'القسط الثالث',
-                                    'fourth_inst' => 'القسط الرابع',
-                                    'fifth_inst'  => 'القسط الخامس',
-                                ];
-                            @endphp
-
-                            @foreach ($installments as $field => $label)
-                                <label for="{{ $field }}" class="form-label col-sm-2 col-form-label">{{ $label }}</label>
-                                <div class="col-sm-10 mb-2">
-                                    <input type="number"
-                                           class="form-control @error($field) is-invalid @enderror"
-                                           id="{{ $field }}"
-                                           name="{{ $field }}"
-                                           value="{{ old($field, $package->$field ?? 0) }}"
-                                           placeholder="{{ $label }}">
-                                    @error($field)
+                        @if($package->payment_type == \App\Models\Center\CenterPackage::INSTALLMENTS)
+                            <!-- Number of Months -->
+                            <div class="mb-3 row">
+                                <label for="number_of_months" class="form-label col-sm-2 col-form-label">عدد الشهور</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control @error('number_of_months') is-invalid @enderror"
+                                           id="number_of_months" name="number_of_months"
+                                           value="{{ old('number_of_months', $package->number_of_months ?? '') }}"
+                                           placeholder="عدد الشهور">
+                                    @error('number_of_months')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            @endforeach
-                        </div>
-
-                        <!-- Start Date -->
-                        <div class="mb-3 row">
-                            <label for="starts_date" class="form-label col-sm-2 col-form-label">تاريخ البدأ</label>
-                            <div class="col-sm-10">
-                                <input type="date" class="form-control @error('starts_date') is-invalid @enderror"
-                                       id="starts_date" name="starts_date"
-                                       value="{{ old('starts_date', $package->starts_date ?? '') }}">
-                                @error('starts_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
-                        </div>
 
-                        <!-- End Date -->
-                        <div class="mb-3 row">
-                            <label for="ends_date" class="form-label col-sm-2 col-form-label">تاريخ الإنتهاء</label>
-                            <div class="col-sm-10">
-                                <input type="date" class="form-control @error('ends_date') is-invalid @enderror"
-                                       id="ends_date" name="ends_date"
-                                       value="{{ old('ends_date', $package->ends_date ?? '') }}">
-                                @error('ends_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Installments -->
+                            <div class="mb-3 row py-2 px-2">
+                                @php
+                                    $installments = [
+                                        'first_inst'  => 'القسط الاول',
+                                        'second_inst' => 'القسط الثاني',
+                                        'third_inst'  => 'القسط الثالث',
+                                        'fourth_inst' => 'القسط الرابع',
+                                        'fifth_inst'  => 'القسط الخامس',
+                                    ];
+                                @endphp
+
+                                @foreach ($installments as $field => $label)
+                                    <label for="{{ $field }}" class="form-label col-sm-2 col-form-label">{{ $label }}</label>
+                                    <div class="col-sm-10 mb-2">
+                                        <input type="number"
+                                               class="form-control @error($field) is-invalid @enderror"
+                                               id="{{ $field }}"
+                                               name="{{ $field }}"
+                                               value="{{ old($field, $package->$field ?? 0) }}"
+                                               placeholder="{{ $label }}">
+                                        @error($field)
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endforeach
                             </div>
-                        </div>
 
+                            <!-- Start Date -->
+                            <div class="mb-3 row">
+                                <label for="starts_date" class="form-label col-sm-2 col-form-label">تاريخ البدأ</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control @error('starts_date') is-invalid @enderror"
+                                           id="starts_date" name="starts_date"
+                                           value="{{ old('starts_date', $package->starts_date ?? '') }}">
+                                    @error('starts_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="mb-3 row">
+                                <label for="ends_date" class="form-label col-sm-2 col-form-label">تاريخ الإنتهاء</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control @error('ends_date') is-invalid @enderror"
+                                           id="ends_date" name="ends_date"
+                                           value="{{ old('ends_date', $package->ends_date ?? '') }}">
+                                    @error('ends_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
                         <!-- Active -->
                         <div class="mb-3 row">
                             <label for="is_active" class="form-label col-sm-2 col-form-label">نشط</label>

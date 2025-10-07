@@ -43,6 +43,21 @@
                     <span class="icon-holder">
                         <i class="c-indigo-500 ti-credit-card"></i>
                     </span>
-        <span class="title">{{ __('center payments') }}</span>
+        <span class="title">{{ __('Installment payments') }}</span>
+    </a>
+</li>
+
+<li class="nav-item mT-10
+            {{ Request::routeIs('dashboard.center.center-onetime-payments.index')
+            ||
+             Request::routeIs('dashboard.center.center-onetime-payments.show')
+
+             ? 'bg-light m-3' : '' }}">
+
+    <a class="sidebar-link" href="{{ route('dashboard.center.center-onetime-payments.index') }}">
+                    <span class="icon-holder">
+                        <i class="c-indigo-500 ti-credit-card"></i>
+                    </span>
+        <span class="title">{{ __('Onetime payments') }}</span>
     </a>
 </li>
