@@ -158,6 +158,43 @@
 
 <div class="routing">
     <div style="height: 650px;padding-top:50px;  margin-bottom:0px; direction: rtl; ">
+        @if (session('status') && session('message'))
+            <div id="customAlert" class="custom-alert {{ session('status') === 'success' ? 'success' : 'error' }}">
+                <span class="text">{{ session('message') }}</span>
+            </div>
+
+            <style>
+                .custom-alert {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    margin: 20px auto;
+                    max-width: 600px;
+                    font-family: 'Tajawal', sans-serif;
+                    font-size: 16px;
+                    color: #fff;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    animation: slideIn 0.5s ease-out;
+                    direction: rtl;
+                    text-align: center;
+                }
+
+                /* Success Green */
+                .custom-alert.success { background-color: #4CAF50; }
+
+                /* Noticeable Red */
+                .custom-alert.error { background-color: #f05c5c; }
+
+                @keyframes slideIn {
+                    from { opacity: 0; transform: translateY(-20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            </style>
+        @endif
+
+
         <h1 class="text-center" style="text-align: center"> تكلفة   {{$centerPayment?->amount .' '  }}
             <span class="riyal-symbol">R</span> </h1>
 
