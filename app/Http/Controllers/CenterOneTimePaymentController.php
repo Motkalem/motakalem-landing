@@ -195,7 +195,7 @@ class CenterOneTimePaymentController extends Controller
         {
 
             return redirect(route('checkout.center.onetime.index',
-                ['payid'=> request()->patid, 'patid'=>  request()->patid ]))
+                ['payid'=> request()->payid, 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
@@ -218,7 +218,7 @@ class CenterOneTimePaymentController extends Controller
 
         } else {
             return redirect(route('checkout.center.onetime.index',
-                ['payid'=> request()->patid, 'patid'=>  request()->patid ]))
+                ['payid'=> request()->payid, 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
