@@ -212,8 +212,19 @@ class ConsultantPatientsController extends AdminBaseController
         }
 
         $nonce = bin2hex(random_bytes(16));
+
+        $brand = strtoupper(request()->brand);
+        if ($brand == 'APPLEPAY') {
+
+            $brands = $brand;
+            $actionSuffix = $brand;
+
+        } else {
+            $brands = 'VISA MASTER MADA';
+            $actionSuffix = 'CARD';
+        }
         return view('payments.consultation-pay', compact('consultantPatient',
-            'paymentId','integrity', 'nonce'));
+            'paymentId','integrity', 'nonce','brands', 'brand','actionSuffix'));
     }
 
     /**
@@ -224,7 +235,7 @@ class ConsultantPatientsController extends AdminBaseController
     {
         $entity_id =  env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if ($paymentMethod == 'MADA') {
 
@@ -235,7 +246,7 @@ class ConsultantPatientsController extends AdminBaseController
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
-        }
+        }*/
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts";
 
@@ -257,9 +268,9 @@ class ConsultantPatientsController extends AdminBaseController
             "&billing.city=" . $consultationPatient?->city .
             "&billing.state=" . $consultationPatient?->city .
             "&billing.country=" . "SA" .
-            "&billing.postcode=" . "" .
+            "&billing.postcode=" . "22230" .
             "&customer.givenName=" . $consultationPatient?->name .
-            "&customer.surname=" . "";
+            "&customer.surname=Doe";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -271,7 +282,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
