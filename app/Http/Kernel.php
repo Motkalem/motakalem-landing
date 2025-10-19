@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\IpWhitelist::class,
         ],
     ];
 
@@ -64,6 +65,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth:dashboard' => \Illuminate\Auth\Middleware\Authenticate::class,
-
+        'ip.whitelist' => \App\Http\Middleware\IpWhitelist::class,
     ];
 }
