@@ -9,11 +9,15 @@ class IpWhitelist
 {
     public function handle(Request $request, Closure $next)
     {
-        // Get allowed IPs from .env and convert to array
+        // Get allowed IPs from .env
         $whitelist = explode(',', env('ALLOWED_API_IPS', ''));
 
-        // Check if the request IP is in the whitelist
-        if (!in_array($request->ip(), $whitelist)) {
+        // Always allow requests from the server itself
+        $serverIps = ['127.0.0.1', '::1', $_SERVER['SERVER_ADDR'] ?? ''];
+
+        $requestIp = $request->ip();
+
+        if (!in_array($requestIp, $whitelist) && !in_array($requestIp, $serverIps)) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
