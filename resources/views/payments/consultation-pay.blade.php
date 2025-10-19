@@ -213,13 +213,10 @@
         <div  style="max-width: 530px; margin: auto;">
 
         @if(data_get($_GET,'brand'))
-                {{--<form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{$brand}}" class="paymentWidgets"
-                      data-brands="{{strtoupper( data_get($_GET,'brand'))}}"></form>--}}
-                    <form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{data_get($_GET,'brand')}}"
-                          class="paymentWidgets" data-brands="{{$brands}}"></form>
+                <form action="{{route('checkout.consultation.status', $_GET['pid'])}}&brand={{$brand}}" class="paymentWidgets"
+                      data-brands="{{$brands}}"></form>
                 <div style="text-align: center;margin-top: 10px;">
                     <a href="#" id="changePaymentMethodLink" >تغيير وسيلة الدفع ؟</a>
-
                 </div>
         @else
             <div class="payment-method-title" style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
