@@ -54,4 +54,18 @@ trait HelperTrait
         }
     }
 
+    function sanitizeUsername(string $username): string
+    {
+        if (function_exists('transliterator_transliterate')) {
+            $transliterated = transliterator_transliterate(
+                'Any-Latin; Latin-ASCII; [^A-Za-z0-9] remove',
+                $username
+            );
+        } else {
+            $transliterated = iconv('UTF-8', 'ASCII//TRANSLIT', $username);
+            $transliterated = preg_replace('/[^A-Za-z0-9]/', '', $transliterated);
+        }
+
+        return strtolower($transliterated) . '@email.com';
+    }
 }
