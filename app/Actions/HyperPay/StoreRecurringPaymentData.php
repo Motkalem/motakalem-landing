@@ -2,13 +2,14 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Traits\HelperTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreRecurringPaymentData
 {
-    use AsAction;
+    use AsAction, HelperTrait;
     public function handle($package, $payment, $paymentBrand=null)
     {
         $url = env('SNB_HYPERPAY_URL')."/checkouts";
@@ -17,7 +18,7 @@ class StoreRecurringPaymentData
 
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
 
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if($paymentMethod == 'MADA')
         {
@@ -28,7 +29,7 @@ class StoreRecurringPaymentData
         {
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
-        }
+        }*/
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
@@ -40,6 +41,16 @@ class StoreRecurringPaymentData
         $payment->update([
             'recurring_agreement_id' => $unique_transaction_id
         ]);
+
+        $customer_email = $payment?->student?->email ?? $this->sanitizeUsername($payment?->student?->name);
+        $billing_street1 = $payment?->student?->city ?? '123 Test Street';
+        $billing_city = $payment?->student?->city ?? 'Jeddah';
+        $billing_state = $payment?->student?->city ?? 'JED';
+        $billing_country = 'SA';
+        $billing_postcode = '22230';
+        $customer_given_name = $payment?->student?->name ?? 'John';
+        $customer_surname = 'Doe';
+
 
         $data = [
             'entityId' => $entity_id,
@@ -57,15 +68,15 @@ class StoreRecurringPaymentData
             'customParameters[paymentFrequency]' => 'OTHER',
             'customParameters[recurringPaymentAgreement]' => $unique_transaction_id,
             'merchantTransactionId' => $unique_transaction_id,
-            "customer.email" => $payment?->student?->email,
-            "billing.street1" => $payment?->student?->city,
-            "billing.city" => $payment?->student?->city,
-            "billing.state" => $payment?->student?->city,
-            "billing.country" => "SA",
-            "billing.postcode" => "",
+            "customer.email" => $customer_email,
+            "billing.street1" => $billing_street1,
+            "billing.city" => $billing_city,
+            "billing.state" => $billing_state,
+            "billing.country" => $billing_country,
+            "billing.postcode" => $billing_postcode,
             "integrity" => "true",
-            "customer.givenName" => $payment?->student?->name,
-            "customer.surname" => ""
+            "customer.givenName" => $customer_given_name,
+            "customer.surname" => $customer_surname
         ];
 
         Log::debug('Data Initial Agreement', [$data]);
@@ -87,15 +98,15 @@ class StoreRecurringPaymentData
                 'customParameters[paymentFrequency]' => 'OTHER',
                 'customParameters[recurringPaymentAgreement]' => $unique_transaction_id.rand(1,2000),
                 'merchantTransactionId' => $unique_transaction_id,
-                "customer.email" => $payment?->student?->email,
-                "billing.street1" => $payment?->student?->city,
-                "billing.city" => $payment?->student?->city,
-                "billing.state" => $payment?->student?->city,
-                "billing.country" => "SA",
-                "billing.postcode" => "",
+                "customer.email" => $customer_email,
+                "billing.street1" => $billing_street1,
+                "billing.city" => $billing_city,
+                "billing.state" => $billing_state,
+                "billing.country" => $billing_country,
+                "billing.postcode" => $billing_postcode,
                 "integrity" => "true",
-                "customer.givenName" => $payment?->student?->name,
-                "customer.surname" => ""
+                "customer.givenName" => $customer_given_name,
+                "customer.surname" => $customer_surname
             ];
         }
 

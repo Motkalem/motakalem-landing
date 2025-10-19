@@ -28,6 +28,14 @@ class RecurringCheckoutAction
 
         $amount = $installmentPayment?->package?->first_inst;
 
+        $brand = strtoupper(request()->brand);
+
+        if ($brand == 'APPLEPAY') {
+            $brands = $brand;
+        } else {
+            $brands = 'VISA MASTER MADA';
+        }
+
         if (request()->has('brand')) {
 
             $response = StoreRecurringPaymentData::make()->handle($installmentPayment?->package, $installmentPayment);
@@ -41,6 +49,6 @@ class RecurringCheckoutAction
 
         $nonce = bin2hex(random_bytes(16));
         return view('payments.recurring-new-pay', compact('checkoutId',
-            'amount','integrity','nonce'));
+            'amount','integrity','nonce', 'brand', 'brands'));
     }
 }
