@@ -20,8 +20,6 @@
             margin-top: 20px;
         }
 
-
-
         @font-face {
             font-family: 'SarRegular';
             src: url('/fonts/font/sar-Regular.otf') format('opentype');
@@ -47,6 +45,22 @@
 
         .wpwl-label-brand, .wpwl-wrapper-brand {
             display: none !important;
+        }
+        .wpwl-form {
+            max-width:100% !important;
+        }
+        .wpwl-apple-pay-button {
+            font-size: 16px !important;
+            display: block !important;
+            width: 100% !important;
+            -webkit-appearance: -apple-pay-button;
+            -apple-pay-button-type: buy;
+        }
+
+        #changePaymentMethodLink{
+            color: #102202;
+            font-size: larger;
+            font-weight   : 400;
         }
     </style>
      <meta http-equiv="Content-Security-Policy"
@@ -79,26 +93,7 @@
             };
         }
     </script>
-
-    <style>
-        .wpwl-form {
-            max-width:100% !important;
-        }
-        .wpwl-apple-pay-button {
-            font-size: 16px !important;
-            display: block !important;
-            width: 100% !important;
-            -webkit-appearance: -apple-pay-button;
-            -apple-pay-button-type: buy;
-        }
-
-        #changePaymentMethodLink{
-            color: #102202;
-            font-size: larger;
-            font-weight   : 400;
-        }
-    </style>
-
+</head>
 
 <script src="{{env('RYD_HYPERPAY_URL')}}/paymentWidgets.js?checkoutId={{$paymentId??data_get($_GET,'checkoutId')}}"
         integrity="{{$integrity}}"
