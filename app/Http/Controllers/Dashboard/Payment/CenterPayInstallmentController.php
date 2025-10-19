@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Payment;
 
+use App\Actions\HyperPay\GenerateCenterRecurringPaymentData;
 use App\Classes\HyperpayNotificationProcessor;
 use App\Http\Controllers\Controller;
 use App\Models\HyperpayWebHooksNotification;
@@ -17,10 +18,18 @@ class CenterPayInstallmentController extends Controller
 {
     use HelperTrait;
 
+    // USED IN center recurring manual payment link
     public function getPayPage()
     {
 
         $installment = CenterInstallment::with('centerInstallmentPayment')->find(request()->instId);
+        $brand = strtoupper(request()->brand);
+
+        if ($brand == 'APPLEPAY') {
+            $brands = $brand;
+        } else {
+            $brands = 'VISA MASTER MADA';
+        }
 
         if (request()->has('brand')) {
 
@@ -35,7 +44,7 @@ class CenterPayInstallmentController extends Controller
         }
 
         $nonce = bin2hex(random_bytes(16));
-        return view('payments.pay-center-installment', compact('installment', 'checkoutId', 'integrity', 'nonce'));
+        return view('payments.pay-center-installment', compact('installment', 'checkoutId', 'integrity', 'nonce','brands', 'brand'));
     }
 
 
@@ -46,9 +55,11 @@ class CenterPayInstallmentController extends Controller
     public function createCheckoutId($installment): bool|string
     {
 
-        $entity_id = env('RYD_ENTITY_ID'); //visa or master
+        $entity_id =  env('RYD_ENTITY_ID');
+        $access_token = env('RYD_AUTH_TOKEN');
+        $url = env('RYD_HYPERPAY_URL')."/checkouts";
 
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if($paymentMethod == 'MADA')
         {
@@ -70,12 +81,22 @@ class CenterPayInstallmentController extends Controller
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
-        }
+        }*/
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $installment->id.'-'. $unique_transaction_id;
+
+        $customer_email = $installment?->centerInstallmentPayment?->patient?->email ?? $this->sanitizeUsername($installment?->centerInstallmentPayment?->patient?->name);
+        $billing_street1 = $installment?->centerInstallmentPayment?->patient?->city ?? '123 Test Street';
+        $billing_city = $installment?->centerInstallmentPayment?->patient?->city ?? 'Jeddah';
+        $billing_state = $installment?->centerInstallmentPayment?->patient?->city ?? 'JED';
+        $billing_country = 'SA';
+        $billing_postcode = '22230';
+        $customer_given_name = $installment?->centerInstallmentPayment?->patient?->name ?? 'John';
+        $customer_surname = 'Doe';
+        $customer_mobile = $this->formatMobile($installment?->centerInstallmentPayment?->patient?->mobile_number ?? '0555555555');
 
         $data = "entityId=".$entity_id .
         "&amount=".$installment?->installment_amount.
@@ -83,28 +104,15 @@ class CenterPayInstallmentController extends Controller
         "&paymentType=DB".
         "&integrity=true".
         "&merchantTransactionId=".$unique_transaction_id .
-        "&customer.email=".$installment?->centerInstallmentPayment?->patient?->email.
-        "&billing.street1=".$installment?->centerInstallmentPayment?->patient?->city .
-        "&billing.city=".$installment?->centerInstallmentPayment?->patient?->city .
-        "&billing.state=".$installment?->centerInstallmentPayment?->patient?->city .
-        "&billing.country="."SA".
-        "&billing.postcode="."22230".
-        "&customer.givenName=".$installment?->centerInstallmentPayment?->patient?->name.
-        "&customer.surname=Doe" .
-        "&customer.mobile=" . $this->formatMobile($installment?->centerInstallmentPayment?->patient?->phone ?? '0555555555');
-
-
-//        if(request()->brand == 'tabby')
-//        {
-//            $data .="
-//                &cart.items[0].name=item1".
-//                "&cart.items[0].sku=15478".
-//                "&cart.items[0].price=".$installment?->installmentPayment?->installments?->sum('installment_amount').
-//                "&cart.items[0].quantity=1".
-//                "&cart.items[0].description=test1".
-//                "&cart.items[0].productUrl=http://url1.com";
-//        }
-
+        "&customer.email=".$customer_email.
+        "&billing.street1=".$billing_street1.
+        "&billing.city=".$billing_city.
+        "&billing.state=".$billing_state.
+        "&billing.country=".$billing_country.
+        "&billing.postcode=".$billing_postcode.
+        "&customer.givenName=".$customer_given_name.
+        "&customer.surname=".$customer_surname.
+        "&customer.mobile=".$customer_mobile;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -132,11 +140,10 @@ class CenterPayInstallmentController extends Controller
 
     public function getStatus()
     {
-        $entity_id = env('RYD_ENTITY_ID');
-
+        $entity_id =  env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
 
-        if(request()->paymentMethod == 'APPLEPAY') {
+        /*if(request()->paymentMethod == 'APPLEPAY') {
 
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
@@ -145,7 +152,7 @@ class CenterPayInstallmentController extends Controller
         if(request()->paymentMethod == 'MADA')
         {
             $entity_id = env('RYD_ENTITY_ID_MADA');
-        }
+        }*/
 
 
         $url = env('RYD_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
@@ -190,8 +197,9 @@ class CenterPayInstallmentController extends Controller
 
        if( data_get($transactionData, 'id') ==  null)
        {
-
-           return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
+           return redirect()->route('pay-center-installment.index', ['instId' => intval(request()->instId)])
+               ->with('status', 'fail')
+               ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
        }
 
         $this->markInstallmentAsCompleted($centerInstallment,  $centerInstallment->installmentPayment, $isSuccessful);
@@ -200,9 +208,9 @@ class CenterPayInstallmentController extends Controller
 
             return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=success');
         } else {
-
-            return Redirect::away(env(env('VERSION_STATE').'FRONT_URL').'/one-step-closer?status=fail');
-        }
+            return redirect()->route('pay-center-installment.index', ['instId' => intval(request()->instId)])
+                ->with('status', 'fail')
+                ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');        }
     }
 
     private function isSuccessfulResponse(?string $resultCode): bool
