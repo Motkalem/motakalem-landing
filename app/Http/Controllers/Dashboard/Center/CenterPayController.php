@@ -17,6 +17,8 @@ use Lorisleiva\Actions\ActionRequest;
 class CenterPayController extends Controller
 {
     use HelperTrait;
+
+    // USED IN center recurring 1st payment
     public function getPayPage(ActionRequest $request)
     {
 
@@ -40,8 +42,15 @@ class CenterPayController extends Controller
         }
 
          $amount = $installmentPayment?->centerPackage?->first_inst;
+        $brand = strtoupper(request()->brand);
 
-        if (request()->has('brand')) {
+        if ($brand == 'APPLEPAY') {
+            $brands = $brand;
+        } else {
+            $brands = 'VISA MASTER MADA';
+        }
+
+        if ($brand) {
 
             $response = GenerateCenterRecurringPaymentData::make()->handle($installmentPayment?->centerPackage, $installmentPayment);
             $checkoutId = data_get($response, 'id');
@@ -56,7 +65,7 @@ class CenterPayController extends Controller
         $nonce = bin2hex(random_bytes(16));
 
         return view('payments.center-recurring-pay', compact('checkoutId',
-            'amount','integrity','nonce'));
+            'amount','integrity','nonce','brands', 'brand'));
     }
 
     public function getStatus() #: string|RedirectResponse
@@ -65,7 +74,7 @@ class CenterPayController extends Controller
         $entity_id = env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
 
-        if(request()->paymentMethod == 'APPLEPAY')
+        /*if(request()->paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
@@ -74,7 +83,7 @@ class CenterPayController extends Controller
         if(request()->paymentMethod == 'MADA')
         {
             $entity_id = env('RYD_ENTITY_ID_MADA');
-        }
+        }*/
 
         $url = env('RYD_HYPERPAY_URL')."/checkouts/" . $_GET['id'] . "/payment";
         $url .= "?entityId=" . $entity_id;
@@ -122,7 +131,7 @@ class CenterPayController extends Controller
         if( data_get($transactionData, 'id') ==  null)
         {
             return redirect(route('center.recurring.checkout',
-                ['payid'=> $this->encrypt(request()->payid), 'patid'=>  request()->patid ]))
+                ['payid'=>  request()->payid, 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
@@ -138,7 +147,7 @@ class CenterPayController extends Controller
         } else {
 
             return redirect(route('center.recurring.checkout',
-                ['payid'=>  request()->payid , 'patid'=>  request()->payid ] ))
+                ['payid'=>  request()->payid, 'patid'=>  request()->patid ]))
                 ->with('status', 'fail')
                 ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }

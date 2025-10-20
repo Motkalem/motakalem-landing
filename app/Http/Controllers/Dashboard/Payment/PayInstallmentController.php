@@ -35,6 +35,14 @@ class PayInstallmentController extends Controller
 
         $installment = Installment::with('installmentPayment')->find(request()->instId);
 
+        $brand = strtoupper(request()->brand);
+
+        if ($brand == 'APPLEPAY') {
+            $brands = $brand;
+        } else {
+            $brands = 'VISA MASTER MADA';
+        }
+
         if (request()->has('brand')) {
 
             $responseData = $this->createCheckoutId($installment);
@@ -47,7 +55,7 @@ class PayInstallmentController extends Controller
         }
 
         $nonce = bin2hex(random_bytes(16));
-        return view('payments.pay-installment', compact('installment', 'checkoutId', 'integrity', 'nonce'));
+        return view('payments.pay-installment', compact('installment', 'checkoutId', 'integrity', 'nonce','brands'));
     }
 
 
@@ -59,27 +67,35 @@ class PayInstallmentController extends Controller
     {
 
         $entity_id = env('SNB_ENTITY_ID'); //visa or master
+        $access_token = env('SNB_AUTH_TOKEN');
+        $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
         $paymentMethod = strtoupper(request()->brand);
-
-        if($paymentMethod == 'MADA')
+        /*if($paymentMethod == 'MADA')
         {
             $entity_id = env('SNB_ENTITY_ID_MADA'); //mada
         }
-
-        $access_token = env('SNB_AUTH_TOKEN');
-        $url = env('SNB_HYPERPAY_URL')."/checkouts";
 
         if($paymentMethod == 'APPLEPAY')
         {
             $entity_id = config('hyperpay.snb_entity_id_apple_pay');
             $access_token = config('hyperpay.snb_apple_pay_token');
-        }
+        }*/
 
         $timestamp = Carbon::now()->timestamp;
         $micro_time = microtime(true);
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $installment->id.'-'. $unique_transaction_id;
+
+        $customer_email = $installment?->installmentPayment?->student?->email ?? $this->sanitizeUsername($installment?->installmentPayment?->student?->name);
+        $billing_street1 = $installment?->installmentPayment?->student?->city ?? '123 Test Street';
+        $billing_city = $installment?->installmentPayment?->student?->city ?? 'Jeddah';
+        $billing_state = $installment?->installmentPayment?->student?->city ?? 'JED';
+        $billing_country = 'SA';
+        $billing_postcode = '22230';
+        $customer_given_name = $installment?->installmentPayment?->student?->name ?? 'John';
+        $customer_surname = 'Doe';
+        $customer_mobile = $this->formatMobile($installment?->installmentPayment?->student?->phone);
 
         $data = "entityId=".$entity_id .
             "&amount=".$installment?->installment_amount.
@@ -87,28 +103,15 @@ class PayInstallmentController extends Controller
             "&paymentType=DB".
             "&integrity=true".
             "&merchantTransactionId=".$unique_transaction_id .
-            "&customer.email=".$installment?->installmentPayment?->student?->email.
-            "&billing.street1=".$installment?->installmentPayment?->student?->city .
-            "&billing.city=".$installment?->installmentPayment?->student?->city .
-            "&billing.state=".$installment?->installmentPayment?->student?->city .
-            "&billing.country="."SA".
-            "&billing.postcode="."22230".
-            "&customer.givenName=".$installment?->installmentPayment?->student?->name.
-            "&customer.surname=Doe" .
-            "&customer.mobile=" . $this->formatMobile($installment?->installmentPayment?->student?->phone);
-
-
-//        if(request()->brand == 'tabby')
-//        {
-//            $data .="
-//                &cart.items[0].name=item1".
-//                "&cart.items[0].sku=15478".
-//                "&cart.items[0].price=".$installment?->installmentPayment?->installments?->sum('installment_amount').
-//                "&cart.items[0].quantity=1".
-//                "&cart.items[0].description=test1".
-//                "&cart.items[0].productUrl=http://url1.com";
-//        }
-
+            "&customer.email=".$customer_email.
+            "&billing.street1=".$billing_street1 .
+            "&billing.city=".$billing_city .
+            "&billing.state=".$billing_state.
+            "&billing.country=".$billing_country.
+            "&billing.postcode=".$billing_postcode.
+            "&customer.givenName=".$customer_given_name.
+            "&customer.surname=".$customer_surname.
+            "&customer.mobile=".$customer_mobile;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

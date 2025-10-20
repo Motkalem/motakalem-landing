@@ -2,12 +2,15 @@
 
 namespace App\Actions\HyperPay;
 
+use App\Traits\HelperTrait;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GenerateCenterRecurringPaymentData
 {
-    use AsAction;
+    use AsAction, HelperTrait;
+
+
     public function handle($package, $payment, $paymentBrand=null)
     {
         $url = env('RYD_HYPERPAY_URL')."/checkouts";
@@ -15,7 +18,7 @@ class GenerateCenterRecurringPaymentData
         $entity_id = env('RYD_ENTITY_ID'); //visa or master
         $access_token = env('RYD_AUTH_TOKEN');
 
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
         if(request()->brand == 'MADA')
         {
             $entity_id = env('RYD_ENTITY_ID_MADA'); //mada
@@ -25,7 +28,7 @@ class GenerateCenterRecurringPaymentData
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
                 $access_token = config('hyperpay.ryd_apple_pay_token');
-        }
+        }*/
 
 
         $timestamp = Carbon::now()->timestamp;
@@ -33,6 +36,16 @@ class GenerateCenterRecurringPaymentData
         $unique_transaction_id = $timestamp . str_replace('.', '', $micro_time);
         $unique_transaction_id = $payment->id.'-'. $unique_transaction_id;
         $unique_agreement_id = $payment->id.'-'. $unique_transaction_id.rand(10,9999);
+
+        $customer_email = $payment?->patient?->email ?? $this->sanitizeUsername($payment?->patient?->name);
+        $billing_street1 = $payment?->patient?->city ?? '123 Test Street';
+        $billing_city = $payment?->patient?->city ?? 'Jeddah';
+        $billing_state = $payment?->patient?->city ?? 'JED';
+        $billing_country = 'SA';
+        $billing_postcode = '22230';
+        $customer_given_name = $payment?->patient?->name ?? 'John';
+        $customer_surname = 'Doe';
+        $customer_mobile = $this->formatMobile($payment?->patient?->mobile_number ?? '0555555555');
 
         $data = [
             'entityId' => $entity_id,
@@ -50,15 +63,16 @@ class GenerateCenterRecurringPaymentData
             'customParameters[paymentFrequency]' => 'OTHER',
             'customParameters[recurringPaymentAgreement]' => $unique_agreement_id,
             'merchantTransactionId' => $unique_transaction_id,
-            "customer.email" => $payment?->patient?->email,
-            "billing.street1" => $payment?->patient?->city,
-            "billing.city" => $payment?->patient?->city,
-            "billing.state" => $payment?->patient?->city,
-            "billing.country" => "SA",
-            "billing.postcode" => "",
+            "customer.email" => $customer_email,
+            "billing.street1" => $billing_street1,
+            "billing.city" => $billing_city,
+            "billing.state" => $billing_state,
+            "billing.country" => $billing_country,
+            "billing.postcode" => $billing_postcode,
             "integrity" => "true",
-            "customer.givenName" => $payment?->patient?->name,
-            "customer.surname" => ""
+            "customer.givenName" => $customer_given_name,
+            "customer.surname" => $customer_surname,
+            "customer.mobile" => $customer_mobile
         ];
 
         if (env('VERSION_STATE') == 'STAGING_'){
@@ -78,15 +92,16 @@ class GenerateCenterRecurringPaymentData
                 'customParameters[paymentFrequency]' => 'OTHER',
                 'customParameters[recurringPaymentAgreement]' => $unique_agreement_id,
                 'merchantTransactionId' => $unique_transaction_id,
-                "customer.email" => $payment?->patient?->email,
-                "billing.street1" => $payment?->patient?->city,
-                "billing.city" => $payment?->patient?->city,
-                "billing.state" => $payment?->patient?->city,
-                "billing.country" => "SA",
-                "billing.postcode" => "",
+                "customer.email" => $customer_email,
+                "billing.street1" => $billing_street1,
+                "billing.city" => $billing_city,
+                "billing.state" => $billing_state,
+                "billing.country" => $billing_country,
+                "billing.postcode" => $billing_postcode,
                 "integrity" => "true",
-                "customer.givenName" => $payment?->patient?->name,
-                "customer.surname" => ""
+                "customer.givenName" => $customer_given_name,
+                "customer.surname" => $customer_surname,
+                "customer.mobile" => $customer_mobile
             ];
         }
 

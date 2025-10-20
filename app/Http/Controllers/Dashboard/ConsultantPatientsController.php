@@ -212,8 +212,15 @@ class ConsultantPatientsController extends AdminBaseController
         }
 
         $nonce = bin2hex(random_bytes(16));
+
+        $brand = strtoupper(request()->brand);
+        if ($brand == 'APPLEPAY') {
+            $brands = $brand;
+        } else {
+            $brands = 'VISA MASTER MADA';
+        }
         return view('payments.consultation-pay', compact('consultantPatient',
-            'paymentId','integrity', 'nonce'));
+            'paymentId','integrity', 'nonce','brands', 'brand'));
     }
 
     /**
@@ -222,9 +229,10 @@ class ConsultantPatientsController extends AdminBaseController
      */
     public function createCheckoutId($consultationPatient): bool|string
     {
+
         $entity_id =  env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if ($paymentMethod == 'MADA') {
 
@@ -235,7 +243,7 @@ class ConsultantPatientsController extends AdminBaseController
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
-        }
+        }*/
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts";
 
@@ -245,21 +253,30 @@ class ConsultantPatientsController extends AdminBaseController
         $unique_transaction_id = $consultationPatient->id .'-'.$timestamp . str_replace('.', '', $micro_time);
 
 
-        $data = 'entityId='
-            . $entity_id
-            . "&amount=" . $consultationPatient->consultationType?->price
+        $customer_email = $consultationPatient->email ?? $this->sanitizeUsername($consultationPatient->name);
+        $billing_street1 = $consultationPatient?->city ?? '123 Test Street';
+        $billing_city = $consultationPatient->city ?? 'Jeddah';
+        $billing_state = $consultationPatient->city ?? 'JED';
+        $billing_country = $consultationPatient->country ?? 'SA';
+        $billing_postcode = $consultationPatient->postcode ?? '22230';
+        $customer_given_name = $consultationPatient->name ?? 'John';
+        $customer_surname = $consultationPatient->surname ?? 'Doe';
+
+        $data =
+            'entityId='. $entity_id
+            ."&amount=" . $consultationPatient->consultationType?->price
             ."&currency=SAR"
-            ."&paymentType=DB" .
-            "&integrity=true".
-            "&merchantTransactionId=" . $unique_transaction_id .
-            "&customer.email=" . $consultationPatient?->email .
-            "&billing.street1=" . $consultationPatient?->city .
-            "&billing.city=" . $consultationPatient?->city .
-            "&billing.state=" . $consultationPatient?->city .
-            "&billing.country=" . "SA" .
-            "&billing.postcode=" . "" .
-            "&customer.givenName=" . $consultationPatient?->name .
-            "&customer.surname=" . "";
+            ."&paymentType=DB"
+            ."&integrity=true"
+            ."&merchantTransactionId=" . $unique_transaction_id
+            ."&customer.email=" . $customer_email
+            ."&billing.street1=" . $billing_street1
+            ."&billing.city=" . $billing_city
+            ."&billing.state=" . $billing_state
+            ."&billing.country=" . $billing_country
+            ."&billing.postcode=" . $billing_postcode
+            ."&customer.givenName=" . $customer_given_name
+            ."&customer.surname=" .$customer_surname;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -271,7 +288,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
@@ -291,7 +308,7 @@ class ConsultantPatientsController extends AdminBaseController
 
         $entity_id =  env('RYD_ENTITY_ID');
         $access_token = env('RYD_AUTH_TOKEN');
-        $paymentMethod = strtoupper(request()->brand);
+        /*$paymentMethod = strtoupper(request()->brand);
 
         if ($paymentMethod == 'MADA') {
 
@@ -301,7 +318,7 @@ class ConsultantPatientsController extends AdminBaseController
         {
             $entity_id = config('hyperpay.ryd_entity_id_apple_pay');
             $access_token = config('hyperpay.ryd_apple_pay_token');
-        }
+        }*/
 
         $url = env('RYD_HYPERPAY_URL') . "/checkouts/" . data_get($_GET,'id') . "/payment";
         $url .= "?entityId=" . $entity_id;
@@ -310,7 +327,7 @@ class ConsultantPatientsController extends AdminBaseController
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:Bearer ' . $access_token));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, env('SSL_VERIFYPEER'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responseData = curl_exec($ch);
         if (curl_errno($ch)) {
@@ -332,11 +349,13 @@ class ConsultantPatientsController extends AdminBaseController
             'title' => $title
         ]);
 
-        $consultationPatient = ConsultantPatient::query()->with('consultationType')->find(request()->pid);
+        $consultationPid = intval(request()->pid);
+        $consultationPatient = ConsultantPatient::query()->with('consultationType')->find($consultationPid);
 
         if (data_get($transactionData, 'id') == null) {
-
-
+            return redirect()->route('checkout.consultation.index', ['pid' => $consultationPid])
+                ->with('status', 'fail')
+                ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
 
         $this->createTransactions($consultationPatient, $title,$transactionData);
@@ -359,8 +378,9 @@ class ConsultantPatientsController extends AdminBaseController
           return $this->getInvoice($consultationPatient->id);
         } else {
 
-            echo "<h2 style='text-align: center; color: red;padding-top: 20px'> !  لم تنجح عملية الدفع </h2>";
-            echo "<a href='https://motkalem.sa' style='text-align: center; padding-top: 20px;display: block'> الرئيسية ! </a>";
+            return redirect()->route('checkout.consultation.index', ['pid' => $consultationPid])
+                ->with('status', 'fail')
+                ->with('message', 'فشل في عملية الدفع، يرجى المحاولة مرة أخرى.');
         }
     }
 
