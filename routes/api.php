@@ -58,4 +58,4 @@ Route::get('/settings', [PaymentSettingsController::class, 'getAllSettings']);
 
 Route::get('/test-whitelist', function (Request $request) {
     return response()->json(['message' => '✅ Allowed!']);
-})->middleware('ip.whitelist');
+});
