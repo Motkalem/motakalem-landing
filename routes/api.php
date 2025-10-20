@@ -54,3 +54,8 @@ Route::post('/medical-inquiry', [MedicalInquiresController::class, 'store']);
 
 // SETTINGS API
 Route::get('/settings', [PaymentSettingsController::class, 'getAllSettings']);
+
+
+Route::get('/test-whitelist', function (Request $request) {
+    return response()->json(['message' => '✅ Allowed!']);
+})->middleware('ip.whitelist');

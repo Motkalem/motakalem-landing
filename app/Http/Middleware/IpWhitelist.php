@@ -9,18 +9,32 @@ class IpWhitelist
 {
     public function handle(Request $request, Closure $next)
     {
-        // Get allowed IPs from .env
-        /*$whitelist = explode(',', env('ALLOWED_API_IPS', ''));
+        // Allowed domains
+        $allowedDomains = [
+            'https://motkalem.sa',
+            'http://motkalem.sa',
+            'https://www.motkalem.sa',
+            'http://www.motkalem.sa',
+        ];
 
-        // Always allow requests from the server itself
-        $serverIps = ['127.0.0.1', '::1', $_SERVER['SERVER_ADDR'] ?? ''];
+        // Get the request Origin or Referer
+        $origin = $request->headers->get('origin') ?? $request->headers->get('referer');
 
-        $requestIp = $request->ip();
-
-        if (!in_array($requestIp, $whitelist) && !in_array($requestIp, $serverIps)) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }*/
+        // If no Origin/Referer header or it's not from allowed domains, block it
+        if (!$origin || !$this->isAllowedDomain($origin, $allowedDomains)) {
+            return response()->json(['message' => 'Unauthorized request source'], 403);
+        }
 
         return $next($request);
+    }
+
+    private function isAllowedDomain($origin, $allowedDomains)
+    {
+        foreach ($allowedDomains as $domain) {
+            if (stripos($origin, $domain) === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
