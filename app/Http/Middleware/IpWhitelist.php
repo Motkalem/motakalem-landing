@@ -11,7 +11,7 @@ class IpWhitelist
     {
         // Allowed domains
         $allowedDomains = [
-            'https://smotkalem.sa',
+            'https://motkalem.sa',
             'http://motkalem.sa',
             'https://www.motkalem.sa',
             'http://www.motkalem.sa',
