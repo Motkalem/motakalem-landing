@@ -11,10 +11,10 @@ class IpWhitelist
     {
         // Allowed domains
         $allowedDomains = [
-            'https://motkalem.sa',
-            'http://motkalem.sa',
-            'https://www.motkalem.sa',
-            'http://www.motkalem.sa',
+            'https://smotkalem.sa',
+            'http://smotkalem.sa',
+            'https://www.smotkalem.sa',
+            'http://www.smotkalem.sa',
         ];
 
         // Get the request Origin or Referer
