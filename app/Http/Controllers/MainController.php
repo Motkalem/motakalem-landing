@@ -37,8 +37,8 @@ class MainController extends Controller
     {
 
         $this->joinService->store($request->validated());
-        
-        // $noReplayEmail = "info@motkalem.com";
+
+        // $noReplayEmail = "info@motkalem.sa";
         // Mail::to($noReplayEmail)->send(new ContactMail($request->all()));
 
         return redirect()->route('thankyou')->with(['success' => 'تم الارسال بنجاح']);

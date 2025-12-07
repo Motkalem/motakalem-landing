@@ -48,7 +48,7 @@ return [
     'email' => 'يجب أن يكون :attribute عنوان بريد إلكتروني صحيح البُنية',
     'ends_with' => 'الـ :attribute يجب ان ينتهي بأحد القيم التالية :value.',
     'enum' => 'الحقل :attribute غير صحيح',
-    'exists' => 'الحقل :attribute لاغٍ',
+    'exists' => 'الحقل :attribute غير موجود',
     'file' => 'الـ :attribute يجب أن يكون من ملفا.',
     'filled' => 'الحقل :attribute إجباري',
     'gt' => [
@@ -209,6 +209,20 @@ return [
         'payment_type'                  => 'نوع الدفع',
         'clienttermsConsent'                  => 'الموافقة علي الشروط والاحكام',
         'id_number'                  => 'رقم الهوية',
+        'installment_value' => 'قيمة القسط',
+        'number_of_months' => 'عدد الشهور',
+        'is_active' => 'الحالة',
+        'package_id' => 'الباقة',
+        'student_id' => 'الطالب',
+        'payment_url' => 'رابط الدفع',
+        'total_payment_amount'=> 'اجمالي المبلغ المدفوع',
+        'total'=> 'الإجمالي',
+        'starts_date'=> 'تاريخ البدأ',
+        'ends_date'=> ' تاريخ الانتهاء',
+        "consultation_type_id"=> "نوع الخدمة",
+        "middle_name"=> "اسم الاب",
+        "center_package_id"=> "الباقه ",
+        "mobile_number"=> "رقم الهاتف"
     ],
 
 ];

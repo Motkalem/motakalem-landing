@@ -14,8 +14,7 @@ class SendContractNotification extends Notification
      *
      * @return void
      */
-    public function __construct(public $data)
-    {}
+    public function __construct(public $data) {}
 
     /**
      * Get the notification's delivery channels.
@@ -36,7 +35,7 @@ class SendContractNotification extends Notification
      */
     public function toMail(mixed $notifiable): MailMessage
     {
-        $adminEmails = explode(',', env('ADMIN_EMAILS', 'default@example.com'));
+        $adminEmails = explode(',', env('ADMIN_EMAILS'));
 
         return (new MailMessage)
             ->subject('عقد انضمام برنامج متكلم للتأتأه')
@@ -47,7 +46,6 @@ class SendContractNotification extends Notification
                     'data' => $this->data,
                 ]
             );
-
 
     }
 }

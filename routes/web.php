@@ -1,47 +1,110 @@
 <?php
 
- use App\Actions\Paymob\callbackAction;
-use App\Http\Controllers\MainController;
-use App\Models\ParentContract;
-use App\Notifications\SendContractNotification;
-use App\Notifications\SuccessSubscriptionPaidNotification;
-use Illuminate\Support\Facades\Notification;
+use App\Actions\HyperPay\RecurringCheckoutAction;
+use App\Actions\HyperPay\RecurringCheckoutResultAction;
+use App\Http\Controllers\CenterOneTimePaymentController;
+use App\Http\Controllers\Dashboard\Center\CenterPayController;
+use App\Http\Controllers\Dashboard\ConsultantPatientsController;
+use App\Http\Controllers\Dashboard\Payment\CenterPayInstallmentController;
+use App\Http\Controllers\Dashboard\Payment\PayInstallmentController;
+use App\Http\Controllers\PaymentController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-Route::get('/test', function (){
 
-      $data  = ParentContract::latest()->take(4)->first();
+### ONE TIME PAYMENTS ### !
+Route::get('onetime/checkout', [PaymentController::class,'getPayPage'])->name('checkout.index');
+Route::get('checkout/result/{paymentId}/{studentId}/{paymentMethod?}',  [PaymentController::class,'getStatus']);
+### END ###!!!!
 
+### CONSULTATION PAYMENT CYCLE ### !
+Route::get('consultation-checkout',  [ConsultantPatientsController::class,'getPayPage'])->name('checkout.consultation.index');
+Route::get('consultation/checkout/result/{pid}',  [ConsultantPatientsController::class,'getStatus'])->name('checkout.consultation.status');
+Route::get('consultation/invoice/{pid}',  [ConsultantPatientsController::class,'getInvoice'])->name('checkout.send-sms-invoice-link');
+Route::get('consultation/send-invoice/{pid}',  [ConsultantPatientsController::class,'sendInvoiceLink'])->name('checkout.consultation.send-invoice');;
+### END ###
 
 
-    return view('emails.contract', compact('data'));
+### Program RECURRING PAYMENTS ### !
+Route::get('checkout-recurring/{paymentId}/{stdId}',RecurringCheckoutAction::class)->name('recurring.checkout');
+Route::get('recurring/result/{paymentId}',RecurringCheckoutResultAction::class);
+### END ###
 
+### CENTER RECURRING PAYMENTS ###
+Route::get('center-pay/{payid}/{patid}', [CenterPayController::class, 'getPayPage'])->name('center.recurring.checkout');
+Route::get('center/checkout-result/{payid}/{patid}/{paymentMethod?}/',  [CenterPayController::class,'getStatus']);
+Route::get('center/thank-you/{payid}/',  [CenterPayController::class,'getThankYouPage'])->name('center.thank.you');
+Route::get('invalid-url',  [CenterPayController::class,'invalidUrl'])->name('center.invalid.url');
+### END ###
+
+### CENTER ONE-TIME PAYMENTS ###
+Route::get('center-onetime-checkout',
+[CenterOneTimePaymentController::class, 'getPayPage'])
+->name('checkout.center.onetime.index');
+
+Route::get('center-onetime/checkout/result/{payid}/{patid}/{paymentMethod?}',
+ [CenterOneTimePaymentController::class, 'getStatus']);
+
+ Route::get('center-onetime/invoice/{centerPayment}',
+ [CenterOneTimePaymentController::class, 'getInvoice'])
+ ->name('checkout.center.onetime.invoice');
+
+### END ###
+
+
+### PROGRAM INSTALLMENT WITH ONETIME PAY ###
+Route::get('pay-installment/checkout/{instId}', [PayInstallmentController::class,'getPayPage'])->name('pay-installment.index');
+Route::get('pay-installment/result/{instId}/{paymentMethod?}', [PayInstallmentController::class,'getStatus']);
+
+
+### CENTER INSTALLMENT WITH ONETIME PAY ###
+Route::get('pay-center-installment/checkout/{instId}', [CenterPayInstallmentController::class,'getPayPage'])->name('pay-center-installment.index');
+Route::get('pay-center-installment/result/{instId}/{paymentMethod?}', [CenterPayInstallmentController::class,'getStatus']);
+
+
+
+Route::get('hash/{password}', function ($password) {
+    return Hash::make($password);
 });
 
+Route::get('encrypt-form', function () {
 
-Route::get('/callback', callbackAction::class)->name('callback');
+    return view('encrypt-form');
+});
+
+Route::post('encrypt-form-store', function (Request $request) {
+
+    if ($request->has(['data', 'iv'])) {
+
+        $encryptedData = base64_decode($request->input('data'));
+        $iv = base64_decode($request->input('iv'));
+        $key = 'secret key 123';
+        $decryptedData = openssl_decrypt($encryptedData, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        return response()->json([
+            'decryptedData' => $decryptedData,
+            'iv' => $iv
+        ]);
+    }
+    return response()->json(['error' => 'Invalid data'], 400);
+})->name('process');
 
 
-Route::get('/', [MainController::class,'index'])->name('home');
-Route::get('/join', [MainController::class,'join'])->name('join');
-Route::post('/join', [MainController::class,'sendEmail'])->name('sendEmail');
-Route::get('/thankyou', [MainController::class,'thankyouPage'])->name('thankyou');
-Route::get('/terms_privacy', [MainController::class,'terms'])->name('terms_privacy');
 
+Route::get('test-email', function () {
+    Mail::raw('This is a test email from Motkalem', function ($message) {
+        $message
+            ->to('dev@squarement.sa')
+            ->subject('Test Email');
+    });
+});
 
-
-
-Route::get('hash/{password}',function($password) {
-
-    return Hash::make($password);
+Route::get('test-message', function () {
+    $msg = 'Hi From Code from Motkalem';
+    $mobile = '966550274677';
+    try {
+        (new \App\Http\Support\SMS())->setPhone($mobile)->SetMessage($msg)->build();
+    } catch (\Exception $e) {
+        return $e;
+    }
+    return 'msg done';
 });

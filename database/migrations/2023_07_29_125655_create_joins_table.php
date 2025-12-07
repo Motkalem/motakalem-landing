@@ -31,23 +31,17 @@ return new class extends Migration
             $table->enum('excited_overcome_stuttering',['متوسطة','خفيفة','شديدة'])->nullable();
             $table->enum('have_physical_disability',['yes','no'])->nullable();
             $table->string('type_disability')->nullable();
-
             $table->enum('have_physical_mental_illness',['yes','no'])->nullable();
             $table->string('type_disease')->nullable();
-
             $table->enum('anything_related_health',['yes','no'])->nullable();
             $table->string('notice')->nullable();
-
             $table->enum('treatments_entered_club_anything_related_stuttering_before',['yes','no'])->nullable();
             $table->string('write_down_notes_dates')->nullable();
-
             $table->enum('anything_out_it',['yes','no'])->nullable();
             $table->string('write_what_got')->nullable();
             $table->string('write_reasons_not_benefiting')->nullable();
-
             $table->enum('how_find_out_about_us',['website','social','man','other'])->nullable();
             $table->string('improvement_points_ideas_like_change_programs_clubs')->nullable();
-
             $table->string('admin_note')->nullable();
             $table->string('is_read')->default(false);
 
